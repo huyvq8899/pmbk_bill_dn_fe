@@ -1,0 +1,55 @@
+<div style="padding: 15px;">
+    <nz-spin [nzSpinning]="spinning">
+        <div style="padding: 15px 15px 0px 15px !important;">
+            <div class="alert-start-title">
+                <h3 style="color: #1877f2;"><i nz-icon nzType="info-circle" nzTheme="outline" class='customIcon'></i>
+                    {{toHTML(this.titleAlert)}}</h3>
+            </div>
+            <div id="contentAlert" class="content-alert">
+                <!-- <p><b>Trong khoảng thời gian từ thời điểm hiện tại đến các thời điểm sau:</b></p>
+                <p>- Thời điểm 23:59:59 ngày 31/12/2021 (Thời điểm <b style="color: rgb(237, 125, 49);">ngày cuối cùng của kỳ kê khai</b> thuế GTGT tháng 12/2021 và kỳ kê khai thuế GTGT quý 4/2021)</p>
+                <p>- Thời điểm 23:59:59 ngày 20/01/2022 (Thời điểm <b style="color: rgb(0, 112, 192);">ngày cuối cùng của thời hạn kê khai</b> thuế GTGT của kỳ kê khai thuế GTGT tháng 12/2021)</p>
+                <p>- Thời điểm 23:59:59 ngày 31/01/2022 (Thời điểm <b style="color: rgb(0, 112, 192);">ngày cuối cùng của thời hạn kê khai</b> thuế GTGT của kỳ kê khai thuế GTGT quý 4/2021)</p>
+                <br/>
+                <p><b>Tổ chức cung cấp dịch vụ về hóa đơn điện tử khuyến nghị người bán các nội dung sau:</b></p>
+                <p>1.Thời điểm lập hóa đơn thực hiện theo hướng dẫn tại điều 9, Nghị định số 123/2020/NĐ-CP<i nzTooltipPlacement="right" nz-tooltip [nzTooltipTitle]="tooltipTemplate1" style="cursor: pointer;color: rgb(0, 112, 192);">...xem thêm</i></p>
+                <p>2.Thời điểm ký số trên hóa đơn điện tử thực hiện theo hướng dẫn tại điểm 9, điều 10, Nghị định số 123/2020/NĐ-CP<i nzTooltipPlacement="right" nz-tooltip [nzTooltipTitle]="tooltipTemplate2" style="cursor: pointer;color: rgb(0, 112, 192);">...xem thêm</i></p>
+                <p>3.Thời điểm người bán ký số trên hóa đơn cần ngay sau thời điểm lập hóa đơn để: (1) Ngày ký điện tử không quá xa thời điểm lập hóa đơn; (2) Ngày lập hóa đơn và Ngày ký điện tử thuộc 2 kỳ kê khai thuế GTGT khác nhau; (3) Ngày ký điện tử lớn
+                    hơn
+                    <b style="color: rgb(237, 125, 49);">ngày cuối cùng của thời hạn kê khai</b> thuế GTGT; (4) Ngày ký điện tử thuộc kỳ kê khai thuế sau thì dẫn đến người mua (khách hàng) phải kê khai thuế GTGT đầu vào trong kỳ kê khai thuế sau.</p>
+                <p>4.Sau khi xử lý hóa đơn điện tử có sai sót <i nzTooltipPlacement="right" nz-tooltip [nzTooltipTitle]="tooltipTemplate3" style="cursor: pointer;color: rgb(0, 112, 192);">(Thông tư số 78/2021/TT-BTC....xem thêm)</i> theo hình thức điều chỉnh
+                    hoặc thay thế, người bán cần <b style="color: red;">ngay lập tức</b> gửi Thông báo hóa đơn điện tử có sai sót theo Mẫu số 04/SS-HĐĐT đến CQT vì thời hạn phải gửi đến CQT chậm nhất là ngày cuối cùng của kỳ kê khai thuế GTGT phát sinh hóa
+                    đơn điện tử điều chỉnh (<b style="color: rgb(237, 125, 49);">Ngày cuối cùng của kỳ kê khai</b>, không phải <b style="color: rgb(0, 112, 192);">ngày cuối cùng của thời hạn kê khai</b>)</p> -->
+    
+            </div>
+            <!-- <ng-template #tooltipTemplate1 let-event>
+                <div style="width: 450px; background-color: #495057 !important;
+            margin: -4px -6px -4px -6px;border-radius: 3px; padding: 4px 6px;">
+                    <span style="font-family: 'Times New Roman', Times, serif; font-size: 13px !important;">1. Thời điểm lập hóa đơn đối với bán hàng hóa (bao gồm cả bán tài sản nhà nước, tài sản tịch thu, sung quỹ nhà nước và bán hàng dự trữ quốc gia) là thời điểm chuyển giao quyền sở hữu hoặc quyền sử dụng hàng hóa cho người mua, không phân biệt đã thu được tiền hay chưa thu được tiền.</span><br/>
+                    <span style="font-family: 'Times New Roman', Times, serif; font-size: 13px !important;">2. Thời điểm lập hóa đơn đối với cung cấp dịch vụ là thời điểm hoàn thành việc cung cấp dịch vụ không phân biệt đã thu được tiền hay chưa thu được tiền. Trường hợp người cung cấp dịch vụ có thu tiền trước hoặc trong khi cung cấp dịch vụ thì thời điểm lập hóa đơn là thời điểm thu tiền (không bao gồm trường hợp thu tiền đặt cọc hoặc tạm ứng để đảm bảo thực hiện hợp đồng cung cấp các dịch vụ: kế toán, kiểm toán, tư vấn tài chính, thuế; thẩm định giá; khảo sát, thiết kế kỹ thuật; tư vấn giám sát; lập dự án đầu tư xây dựng).</span><br/>
+                    <span style="font-family: 'Times New Roman', Times, serif; font-size: 13px !important;">3. Trường hợp giao hàng nhiều lần hoặc bàn giao từng hạng mục, công đoạn dịch vụ thì mỗi lần giao hàng hoặc bàn giao đều phải lập hóa đơn cho khối lượng, giá trị hàng hóa, dịch vụ được giao tương ứng.</span><br/>
+                </div>
+            </ng-template>
+            <ng-template #tooltipTemplate2 let-event>
+                <div style="width: 450px; background-color: #495057 !important;
+            margin: -4px -6px -4px -6px;border-radius: 3px; padding: 4px 6px;">
+                    <span style="font-family: 'Times New Roman', Times, serif; font-size: 13px !important;">9. Thời điểm ký số trên hóa đơn điện tử là thời điểm người bán, người mua sử dụng chữ ký số để ký trên hóa đơn điện tử được hiển thị theo định dạng ngày, tháng, năm của năm dương lịch. Trường hợp hóa đơn điện tử đã lập có thời điểm ký số trên hóa đơn khác thời điểm lập hóa đơn thì thời điểm khai thuế là thời điểm lập hóa đơn.</span><br/>
+                </div>
+            </ng-template>
+            <ng-template #tooltipTemplate3 let-event>
+                <div style="width: 450px; background-color: #495057 !important;
+          margin: -4px -6px -4px -6px;border-radius: 3px; padding: 4px 6px;">
+                    <span style="font-family: 'Times New Roman', Times, serif; font-size: 13px !important;">Thông tư số 78/2021/TT-BTC, quy định:</span><br/>
+                    <span style="font-family: 'Times New Roman', Times, serif; font-size: 13px !important;">Điều 7. Xử lý hóa đơn điện tử, bảng tổng hợp dữ liệu hóa đơn điện tử đã gửi cơ quan thuế có sai sót trong một số trường hợp</span><br/>
+                    <span style="font-family: 'Times New Roman', Times, serif; font-size: 13px !important;">1. Đối với hóa đơn điện tử: </span><br/>
+                    <span style="font-family: 'Times New Roman', Times, serif; font-size: 13px !important;">a) Trường hợp hóa đơn điện tử đã lập có sai sót phải cấp lại mã của cơ quan thuế hoặc hóa đơn điện tử có sai sót cần xử lý theo hình thức điều chỉnh hoặc thay thế theo quy định tại Điều 19 Nghị định số 123/2020/NĐ-CP thì người bán được lựa chọn sử dụng Mẫu số 04/SS-HĐĐT tại Phụ lục IA ban hành kèm theo Nghị định số 123/2020/NĐ-CP để thông báo việc điều chỉnh cho từng hóa đơn có sai sót hoặc thông báo việc điều chỉnh cho nhiều hóa đơn điện tử có sai sót và gửi thông báo theo Mẫu số 04/SS-HĐĐT đến cơ quan thuế bất cứ thời gian nào nhưng chậm nhất là ngày cuối cùng của kỳ kê khai thuế giá trị gia tăng phát sinh hóa đơn điện tử điều chỉnh</span><br/>
+                </div>
+            </ng-template> -->
+        </div>
+    </nz-spin>
+</div>
+
+<ng-container *nzModalFooter>
+    <button nz-button nzSize="small" nzType="default" (click)="destroyModal()" class="button-cancel">
+        <i nz-icon nzType="close" nzTheme="outline"></i>Đóng</button>
+</ng-container>

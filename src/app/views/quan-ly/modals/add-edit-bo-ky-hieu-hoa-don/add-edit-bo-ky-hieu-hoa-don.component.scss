@@ -1,0 +1,232 @@
+@import "../../../../shared/scss/modal.scss";
+:host ::ng-deep .card-custom .ant-card-body {
+    padding: 0 !important;
+}
+
+.card-title {
+    border-bottom: 1px solid #d1d1d1;
+    background-color: #dedede;
+    padding: 5px;
+    font-weight: bold;
+}
+
+.card-body {
+    margin-top: 5px;
+}
+
+.card-content-padding-hor {
+    padding: 0 5px;
+}
+
+.card-item1 {
+    border-bottom: 1px solid #d1d1d1;
+    padding: 0 5px !important;
+}
+
+.form-control-margin-right {
+    margin-right: 5px;
+}
+
+.box-nhat-ky-xac-thuc {
+    border-top: 1px solid #d1d1d1;
+}
+
+.content-nhat-ky-xac-thuc {
+    overflow-y: scroll;
+    padding: 10px 0 0 5px;
+    // ul {
+    //     list-style-type: none;
+    //     margin: 0;
+    //     padding: 0;
+    //     li {
+    //         margin-bottom: 10px;
+    //     }
+    // }
+}
+
+.status-nhat-ky {
+    font-weight: bold;
+    padding-top: 1px;
+}
+
+.status-chua-xac-thuc {
+    color: #ed7d31;
+}
+
+.status-da-xac-thuc {
+    color: #0099FF;
+}
+
+.status-dang-su-dung {
+    color: #008000;
+}
+
+.status-ngung-su-dung {
+    color: #ff0000b2;
+}
+
+.button-xacthuc {
+    background-color: #0099FF;
+    color: #fff;
+    border: 1px solid #0099FF;
+    font-weight: 600 !important;
+    &:hover {
+        background-color: #fff;
+        color: #0099FF !important;
+    }
+    &:disabled {
+        border-color: #d9d9d9;
+        text-shadow: none;
+        box-shadow: none;
+        color: rgba(0, 0, 0, 0.25) !important;
+    }
+}
+
+.button-ngungsudung {
+    background-color: #ff0000b2;
+    border: 1px solid #ff0000b2;
+    color: #fff;
+    font-weight: 600 !important;
+    &:hover {
+        background-color: #fff;
+        color: #ff0000b2 !important;
+    }
+}
+
+.status-het-hieu-luc {
+    color: #a5a5a5;
+}
+
+.inner-content {
+    margin: 5px !important;
+}
+
+nz-form-label {
+    padding: 0 0 0 5px !important;
+}
+
+.divide {
+    border-top: 1px solid #d1d1d1;
+    margin: 5px;
+    width: 100%;
+}
+
+nz-form-item {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+:host ::ng-deep .select-group-with-suffix {
+    .ant-select {
+        width: 100%;
+    }
+    .ant-input-group-addon {
+        background-color: initial;
+        border: none;
+    }
+}
+
+:host ::ng-deep .input-group-with-suffix {
+    .ant-input {
+        border-radius: 4px !important;
+    }
+    .ant-input-group-addon {
+        background-color: initial;
+        border: none;
+    }
+}
+
+.info-circle {
+    background-color: #fff !important;
+    color: #1877f2;
+    font-weight: bold;
+}
+
+.ky-hieu-control-wrapper {
+    display: flex;
+
+    & > div {
+        flex: 1;
+    }
+
+    & > div:not(:last-child) {
+        margin-right: 5px;
+    }
+}
+
+.hdsd {
+    .col-right {
+        text-align: right;
+        align-items: center;
+    }
+    .col-left {
+        padding: 3px 0;
+    }
+    .box-content-hd {
+        // margin-bottom: 1em;
+        p {
+            margin-bottom: 0px;
+        }
+        .xemhd {
+            background: #ffffff;
+            padding: 2px 13px !important;
+            margin-right: 0px;
+            border-radius: 4px;
+            color: black;
+            border: 1px solid #000;
+            cursor: pointer;
+            font-weight: normal;
+            margin-left: 5px;
+            display: inline-flex;
+            align-items: center;
+            box-shadow: 2px 3px 6px 0px rgb(0 0 0 / 45%);
+            &:hover {
+                background: #a4a4a4 !important;
+                border: 1px solid #a4a4a4;
+            }
+        }
+        .xemvideo {
+            span {
+                color: black;
+                margin-top: 0px;
+                padding-right: 5px;
+            }
+            box-shadow: 2px 3px 6px 0px rgb(0 0 0 / 45%);
+            color: black;
+            font-weight: normal !important;
+            float: right;
+            border-radius: 4px;
+            padding: 2px 13px !important;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            margin-left: 5px;
+        }
+    }
+}
+
+.card-content {
+    padding: 2px 10px;
+}
+
+.card-title {
+    
+    background-color: #dedede;
+    padding: 5px;
+    font-weight: bold;
+    text-align: left !important;
+}
+
+.status {
+    padding: 2px 10px;
+    border-radius: 30px;
+    color: white;
+
+    &-orange {
+        background-color: #ed7d31;
+    }
+
+    &-green {
+        background-color: #0070C0;
+    }
+}

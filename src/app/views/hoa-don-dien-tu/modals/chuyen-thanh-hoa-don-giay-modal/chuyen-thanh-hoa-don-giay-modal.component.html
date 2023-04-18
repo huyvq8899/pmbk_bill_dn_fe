@@ -1,0 +1,120 @@
+<nz-spin [nzSpinning]="spinning">
+  <form nz-form [formGroup]="mainForm">
+    <div class="box-border" style="margin: 5px;">
+      <nz-form-item>
+        <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="kyHieuShow">Ký hiệu</nz-form-label>
+        <nz-form-control [nzSm]="6" [nzXs]="24">
+          <input nzSize="small" nz-input formControlName="kyHieuShow" id="kyHieuShow" [disabled] = "true" readonly/>
+        </nz-form-control>
+  
+        <nz-form-label [nzOffset]="1" [nzSm]="5" [nzXs]="24" nzFor="tongTienThanhToanShow">Tổng tiền thanh toán</nz-form-label>
+        <nz-form-control [nzSm]="8" [nzXs]="24">
+          <input nzSize="small" style="text-align: right;" nz-input formControlName="tongTienThanhToanShow" id="tongTienThanhToanShow"  [disabled] = "true" readonly/>
+        </nz-form-control>
+      </nz-form-item>
+  
+      <nz-form-item>
+        <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="soHoaDonShow">Số hóa đơn</nz-form-label>
+        <nz-form-control [nzSm]="6" [nzXs]="24">
+          <input nzSize="small" nz-input formControlName="soHoaDonShow" id="soHoaDonShow" [disabled] = "true" readonly/>
+        </nz-form-control>
+  
+        <nz-form-label [nzOffset]="1" [nzSm]="5" [nzXs]="24">Hình thức hóa đơn</nz-form-label>
+        <nz-form-control [nzSm]="8" [nzXs]="24" style="text-align: right;">
+          <span class="daCDRoundedShape" [ngClass]="{
+            'daCDRoundedShape-orange': data.boKyHieuHoaDon.hinhThucHoaDon === 1,
+            'daCDRoundedShape-green': data.boKyHieuHoaDon.hinhThucHoaDon === 0
+          }">
+            {{data.boKyHieuHoaDon.tenHinhThucHoaDon}}
+          </span>
+        </nz-form-control>
+      </nz-form-item>
+  
+      <nz-form-item>
+        <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="ngayHoaDonShow">Ngày hóa đơn</nz-form-label>
+        <nz-form-control [nzSm]="6" [nzXs]="24">
+          <input nzSize="small" nz-input formControlName="ngayHoaDonShow" id="ngayHoaDonShow" [disabled] = "true" readonly/>
+        </nz-form-control>
+        <ng-container *ngIf="data.loaiHoaDon !== 9 && data.loaiHoaDon !==10">
+          <nz-form-label [nzOffset]="1" [nzSm]="5" [nzXs]="24">Ủy nhiệm lập hóa đơn</nz-form-label>
+          <nz-form-control [nzSm]="8" [nzXs]="24" style="text-align: right;">
+            <span class="daCDRoundedShape" [ngClass]="{
+              'daCDRoundedShape-orange': data.boKyHieuHoaDon.uyNhiemLapHoaDon === 1,
+              'daCDRoundedShape-green': data.boKyHieuHoaDon.uyNhiemLapHoaDon === 0
+            }">
+              {{data.boKyHieuHoaDon.tenUyNhiemLapHoaDon}}
+            </span>
+          </nz-form-control>
+        </ng-container>
+      </nz-form-item>
+  
+      <nz-form-item>
+        <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="tenKhachHangShow">Tên khách hàng</nz-form-label>
+        <nz-form-control [nzSm]="20" [nzXs]="24">
+          <textarea nzSize="small" nz-input formControlName="tenKhachHangShow" id="tenKhachHangShow" rows="2" 
+          title = "{{mainForm.get('tenKhachHangShow').value}}" [disabled] = "true" readonly></textarea>
+        </nz-form-control>
+      </nz-form-item>
+  
+      <nz-form-item *ngIf="data.soLanChuyenDoi && data.soLanChuyenDoi > 0">
+        <nz-form-label [nzSm]="4" [nzXs]="24" [nzNoColon]="true">&nbsp;</nz-form-label>
+        <nz-form-control [nzSm]="20" [nzXs]="24">
+          <nz-form-label [nzSm]="15" [nzXs]="24">Trạng thái chuyển đổi</nz-form-label>
+          <span class="daCDRoundedShape">Đã chuyển đổi {{data.soLanChuyenDoi}} lần</span>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div style="margin: 5px!important; margin-top: 0px!important;">
+      <nz-form-item nz-row [nzGutter]="{ xs: 8, sm: 16, md: 24, lg: 32 }" style="margin-bottom: 5px;">
+        <nz-form-label  nz-col class="gutter-row" [nzSm]="4" [nzXs]="24" nzFor="nguoiChuyenDoi" title="Người chuyển đổi">Người chuyển đổi
+        </nz-form-label>
+        <nz-form-control  nz-col class="gutter-row pd-left-7" [nzSm]="20" [nzXs]="24" [nzErrorTip]="errorNguoiChuyenDoi">
+          <input nzSize="small" nz-input formControlName="nguoiChuyenDoi" id="nguoiChuyenDoi" />
+          <ng-template #errorNguoiChuyenDoi let-control>
+            <ng-container *ngIf="control.hasError('required')">
+              <div class="tooltip-error">Vui lòng nhập người chuyển đổi!</div>
+            </ng-container>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item nz-row [nzGutter]="{ xs: 8, sm: 16, md: 24, lg: 32 }">
+        <nz-form-label nz-col class="gutter-row" [nzSm]="4" [nzXs]="24" nzFor="ngayChuyenDoi" title="Ngày chuyển đổi">Ngày chuyển đổi
+        </nz-form-label>
+        <nz-form-control nz-col class="gutter-row pd-left-7" [nzSm]="6" [nzXs]="24" [nzErrorTip]="errorNgayChuyenDoi">
+          <input type="date" nzSize="small" nz-input formControlName="ngayChuyenDoi" id="ngayChuyenDoi" />
+          <ng-template #errorNgayChuyenDoi let-control>
+            <ng-container *ngIf="control.hasError('required')">
+              <div class="tooltip-error">Vui lòng nhập ngày chuyển đổi!</div>
+            </ng-container>
+          </ng-template>
+        </nz-form-control>
+        <nz-form-control nz-col class="gutter-row" [nzOffset]="1" [nzSm]="13" [nzXs]="24">
+          <label (ngModel)="ngayChuyenDoiLaNgayHoaDon" style="top: 3px!important"
+          [ngModelOptions]="{standalone: true}" (ngModelChange)="changeCheckNgayCD($event)" nz-checkbox>Ngày chuyển đổi là ngày ký điện tử</label>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </form>
+</nz-spin>
+
+<div nz-row *nzModalFooter>
+  <div nz-row>
+    <div nz-col nzSpan="12" style="text-align: left;">
+      <button nzSize="small" nz-button nzType="default" class="blueButton" (click)="view()" [nzLoading]="loading">
+        <i nz-icon nzSize="small" nzType="eye"></i>Xem hóa đơn
+      </button>
+    </div>
+    <div nz-col nzSpan="12">
+      <button nzSize="small" nz-button nzType="default" (click)="ChuyenDoiHoaDon()" [nzLoading]="loading" 
+      [disabled] = "mainForm && !(mainForm.get('ngayChuyenDoi').value || mainForm.get('ngayChuyenDoi').value)" 
+      [ngClass]="mainForm && !(mainForm.get('ngayChuyenDoi').value || mainForm.get('ngayChuyenDoi').value) ? 'disabled-button-state-v2': 'button-agree'">
+        <i nz-icon nzSize="small" nzType="scan"></i>Thực hiện
+      </button>
+      <button nzSize="small" nz-button nzType="default" (click)="destroyModal()" class="button-cancel" [nzLoading]="loading">
+        <i nz-icon nzSize="small" nzType="close"></i>Hủy
+      </button>
+    </div>
+</div>
+</div>

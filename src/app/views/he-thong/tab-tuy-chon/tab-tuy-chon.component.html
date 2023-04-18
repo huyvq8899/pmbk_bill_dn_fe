@@ -1,0 +1,1195 @@
+<nz-spin [nzSpinning]="spinning">
+  <form nz-form [formGroup]="mainForm" style="border: solid 1px #d1d1d1">
+    <div>
+      <nz-tabset [nzTabPosition]="'left'" [nzSelectedIndex]="selectedTab" (nzSelectedIndexChange)="changeTab($event)">
+        <!-- <nz-tab nzTitle="Tùy chọn riêng">
+          </nz-tab> -->
+        <nz-tab nzTitle="Tùy chọn chung" (nzSelect)="selectTuyChon(1)"
+          *ngIf="permission == true || (listTenQuyens && listTenQuyens.indexOf('TuyChonChung') > 0)">
+          <div
+            style="overflow-y: scroll; max-height: calc(100vh - 180px)!important; padding: 5px; margin: -7px -7px 7px -7px;">
+            <div nz-row class="inner-content">
+              <div class="title">Tiền</div>
+              <div nz-row>
+                <nz-form-item style="margin-bottom: 0;">
+                  <nz-form-label [nzSm]="6" [nzXs]="24" [nzNoColon]="true">Cách đọc số 0 ở hàng chục
+                  </nz-form-label>
+                  <nz-form-control [nzSm]="6" [nzXs]="24">
+                    <nz-select [nzDisabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0"
+                      style="width: 100px" nzSize="small" nzShowSearch formControlName="CachDocSo0OHangChuc"
+                      title="Cách đọc số 0 ở hàng chục">
+                      <nz-option nzLabel="Linh" nzValue="linh"></nz-option>
+                      <nz-option nzLabel="Lẻ" nzValue="lẻ"></nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                  <nz-form-label [nzSm]="6" [nzXs]="24" [nzNoColon]="true">Cách đọc số tiền ở hàng nghìn
+                  </nz-form-label>
+                  <nz-form-control [nzSm]="6" [nzXs]="24">
+                    <nz-select [nzDisabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0"
+                      style="width: 100px" nzSize="small" nzShowSearch formControlName="CachDocSoTienOHangNghin"
+                      title="Cách đọc số tiền ở hàng nghìn">
+                      <nz-option nzLabel="Nghìn" nzValue="nghìn"></nz-option>
+                      <nz-option nzLabel="Ngàn" nzValue="ngàn"></nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-row>
+                <nz-form-item>
+                  <nz-form-control [nzSm]="24" [nzXs]="24">
+                    <label [nzDisabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0" nz-checkbox
+                      formControlName="BoolHienThiTuChanKhiDocSoTien">Hiển thị từ “chẵn” khi đọc
+                      số tiền</label>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div style="text-align: justify!important; background-color: #FFF2CC; padding: 8px; margin-bottom: 10px;">
+                <div>Ví dụ: </div>
+                <div>2.020.605 đọc là: <b>Hai triệu không trăm hai mươi
+                    {{mainForm.getRawValue().CachDocSoTienOHangNghin}}
+                    sáu trăm {{mainForm.getRawValue().CachDocSo0OHangChuc}} năm đồng
+                    <span
+                      *ngIf="mainForm.getRawValue().BoolHienThiTuChanKhiDocSoTien === true || mainForm.getRawValue().BoolHienThiTuChanKhiDocSoTien === 'true'">chẵn</span>
+                  </b>
+                </div>
+              </div>
+              <div nz-row>
+                <nz-form-item>
+                  <nz-form-control [nzSm]="24" [nzXs]="24">
+                    <label [nzDisabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0" nz-checkbox
+                      (ngModelChange)="changeCoPhatSinhNghiepVuNgoaiTe($event)"
+                      formControlName="BoolCoPhatSinhNghiepVuNgoaiTe">
+                      Có phát sinh nghiệp vụ liên quan đến ngoại tệ
+                    </label>
+                    <div style="margin-left: 25px;">
+                      <label [nzDisabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0" nz-checkbox
+                        formControlName="BoolHienThiDonViTienNgoaiTeTrenHoaDon"
+                        id="BoolHienThiDonViTienNgoaiTeTrenHoaDon" style="margin-top: 5px;">
+                        Hiển thị đồng tiền ngoại tệ trên hóa đơn
+                      </label>
+                    </div>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-row>
+                <nz-form-item style="margin: 5px 0;">
+                  <label>Cách thể hiện dòng <b>Số tiền bằng chữ</b> trên hóa đơn điều chỉnh</label>
+                  <div>
+                    <nz-radio-group style="display: block;"
+                      [nzDisabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0"
+                      formControlName="CachTheHienSoTienBangChu">
+                      <label [ngStyle]="radioStyle" nz-radio nzValue="1">
+                        [Giảm/Tăng] [Tổng tiền thanh toán]
+                      </label>
+                      <div *ngIf="mainForm.getRawValue().CachTheHienSoTienBangChu === '1'"
+                        style="text-align: justify!important; background-color: #FFF2CC; padding: 8px;">
+                        <div>Ví dụ: </div>
+                        <div>- 1.560.000 đọc là: <b>Giảm một triệu năm trăm sáu mươi nghìn đồng</b></div>
+                        <div>&nbsp;&nbsp;1.560.000 đọc là: <b>Tăng một triệu năm trăm sáu mươi nghìn đồng</b></div>
+                      </div>
+                      <label [ngStyle]="radioStyle" nz-radio nzValue="2">
+                        [Điều chỉnh giảm/Điều chỉnh tăng] [Tổng tiền thanh toán]
+                      </label>
+                      <div *ngIf="mainForm.getRawValue().CachTheHienSoTienBangChu === '2'"
+                        style="text-align: justify!important; background-color: #FFF2CC; padding: 8px;">
+                        <div>Ví dụ: </div>
+                        <div>- 1.560.000 đọc là: <b>Điều chỉnh giảm một triệu năm trăm sáu mươi nghìn đồng</b></div>
+                        <div>&nbsp;&nbsp;1.560.000 đọc là: <b>Điều chỉnh tăng một triệu năm trăm sáu mươi nghìn đồng</b>
+                        </div>
+                      </div>
+                      <label [ngStyle]="radioStyle" nz-radio nzValue="3">
+                        [Tổng tiền thanh toán] [(Giảm)/(Tăng)]
+                      </label>
+                      <div *ngIf="mainForm.getRawValue().CachTheHienSoTienBangChu === '3'"
+                        style="text-align: justify!important; background-color: #FFF2CC; padding: 8px;">
+                        <div>Ví dụ: </div>
+                        <div>- 1.560.000 đọc là: <b>Một triệu năm trăm sáu mươi nghìn đồng (Giảm)</b></div>
+                        <div>&nbsp;&nbsp;1.560.000 đọc là: <b>Một triệu năm trăm sáu mươi nghìn đồng (Tăng)</b></div>
+                      </div>
+                      <label [ngStyle]="radioStyle" nz-radio nzValue="4">
+                        [Tổng tiền thanh toán] [(Điều chỉnh giảm)/(Điều chỉnh tăng)]
+                      </label>
+                      <div *ngIf="mainForm.getRawValue().CachTheHienSoTienBangChu === '4'"
+                        style="text-align: justify!important; background-color: #FFF2CC; padding: 8px;">
+                        <div>Ví dụ: </div>
+                        <div>- 1.560.000 đọc là: <b>Một triệu năm trăm sáu mươi nghìn đồng (Điều chỉnh giảm)</b></div>
+                        <div>&nbsp;&nbsp;1.560.000 đọc là: <b>Một triệu năm trăm sáu mươi nghìn đồng (Điều chỉnh
+                            tăng)</b></div>
+                      </div>
+                      <label [ngStyle]="radioStyle" nz-radio nzValue="5">
+                        [Âm/] [Tổng tiền thanh toán]
+                      </label>
+                      <div *ngIf="mainForm.getRawValue().CachTheHienSoTienBangChu === '5'"
+                        style="text-align: justify!important; background-color: #FFF2CC; padding: 8px;">
+                        <div>Ví dụ: </div>
+                        <div>- 1.560.000 đọc là: <b>Âm một triệu năm trăm sáu mươi nghìn đồng</b></div>
+                        <div>&nbsp;&nbsp;1.560.000 đọc là: <b>Một triệu năm trăm sáu mươi nghìn đồng</b></div>
+                      </div>
+                      <label [ngStyle]="radioStyle" nz-radio nzValue="6">
+                        [Giảm/] [Tổng tiền thanh toán]
+                      </label>
+                      <div *ngIf="mainForm.getRawValue().CachTheHienSoTienBangChu === '6'"
+                        style="text-align: justify!important; background-color: #FFF2CC; padding: 8px;">
+                        <div>Ví dụ: </div>
+                        <div>- 1.560.000 đọc là: <b>Giảm một triệu năm trăm sáu mươi nghìn đồng</b></div>
+                        <div>&nbsp;&nbsp;1.560.000 đọc là: <b>Một triệu năm trăm sáu mươi nghìn đồng</b></div>
+                      </div>
+                      <label [ngStyle]="radioStyle" nz-radio nzValue="0">
+                        [Tổng tiền thanh toán]
+                      </label>
+                      <div *ngIf="mainForm.getRawValue().CachTheHienSoTienBangChu === '0'"
+                        style="text-align: justify!important; background-color: #FFF2CC; padding: 8px;">
+                        <div>Ví dụ: </div>
+                        <div>- 1.560.000 đọc là: <b>Một triệu năm trăm sáu mươi nghìn đồng</b></div>
+                        <div>&nbsp;&nbsp;1.560.000 đọc là: <b>Một triệu năm trăm sáu mươi nghìn đồng</b></div>
+                      </div>
+                    </nz-radio-group>
+                  </div>
+                </nz-form-item>
+              </div>
+              <div nz-row>
+                <nz-form-item style="margin-bottom: 0;">
+                  <nz-form-label [nzSm]="12" [nzXs]="24" [nzNoColon]="true">
+                    Cách thể hiện <b>Số tiền thuế</b> trên bản thể hiện hóa đơn điện tử khi thuế suất GTGT là <b>KCT</b>
+                  </nz-form-label>
+                  <nz-form-control [nzSm]="3" [nzXs]="24">
+                    <nz-select [nzDisabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0"
+                      style="width: 100px" nzSize="small" nzShowSearch formControlName="CachTheHienSoTienThueLaKCT">
+                      <nz-option *ngFor="let item of listCachTheHienSoTienThue" [nzLabel]="item" [nzValue]="item">
+                      </nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                  <nz-form-label [nzSm]="9" [nzXs]="24" [nzNoColon]="true">
+                    <i>Trên tệp <.xml> thì luôn thể hiện theo chuẩn dữ liệu của CQT là số 0</i>
+                  </nz-form-label>
+                </nz-form-item>
+              </div>
+              <div nz-row>
+                <nz-form-item style="margin-bottom: 0;">
+                  <nz-form-label [nzSm]="12" [nzXs]="24" [nzNoColon]="true">
+                    Cách thể hiện <b>Số tiền thuế</b> trên bản thể hiện hóa đơn điện tử khi thuế suất GTGT là
+                    <b>KKKNT</b>
+                  </nz-form-label>
+                  <nz-form-control [nzSm]="3" [nzXs]="24">
+                    <nz-select [nzDisabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0"
+                      style="width: 100px" nzSize="small" nzShowSearch formControlName="CachTheHienSoTienThueLaKKKNT">
+                      <nz-option *ngFor="let item of listCachTheHienSoTienThue" [nzLabel]="item" [nzValue]="item">
+                      </nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                  <nz-form-label [nzSm]="9" [nzXs]="24" [nzNoColon]="true">
+                    <i>Trên tệp <.xml> thì luôn thể hiện theo chuẩn dữ liệu của CQT là số 0</i>
+                  </nz-form-label>
+                </nz-form-item>
+              </div>
+              <div style="text-align: justify!important; background-color: #FFF2CC; padding: 8px;">
+                Tùy chọn thể hiện liên quan đến tiền đã thiết lập sẽ áp dụng cho hóa đơn phát hành sau thời điểm tùy
+                chọn
+              </div>
+            </div>
+
+            <div nz-row class="inner-content">
+              <div nz-row class="title">Hóa đơn</div>
+              <nz-form-item style="margin: 10px 0px 5px 0px;">
+                <label [nzDisabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0" nz-checkbox
+                  formControlName="PhatSinhBanHangTheoDGSauThue" (ngModelChange)="changePhatSinhBanHang($event)">
+                  Có phát sinh bán hàng theo đơn giá sau thuế
+                </label>
+                <div style="margin-left: 25px;">
+                  <label [nzDisabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0" nz-checkbox
+                    formControlName="TinhTienTheoDGSauThue" id="TinhTienTheoDGSauThue" style="margin-top: 5px;"
+                    (click)="tichChonTuyChon('TinhTienTheoDGSauThue')">Tính thành tiền theo đơn giá sau thuế
+                  </label>
+                  <br />
+                  <label [nzDisabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0" nz-checkbox
+                    formControlName="TinhTienTheoSLvaDGSauThue" id="TinhTienTheoSLvaDGSauThue" style="margin-top: 5px;"
+                    (click)="tichChonTuyChon('TinhTienTheoSLvaDGSauThue')">Tính thành tiền sau thuế theo số lượng và đơn
+                    giá sau thuế
+                  </label>
+                  <br />
+                  <label [nzDisabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0" nz-checkbox
+                    formControlName="TinhSLTheoDGvaTienSauThue" id="TinhSLTheoDGvaTienSauThue" style="margin-top: 5px;"
+                    (click)="tichChonTuyChon('TinhSLTheoDGvaTienSauThue')">Tính số lượng theo đơn giá sau thuế và thành
+                    tiền sau thuế
+                  </label>
+                </div>
+              </nz-form-item>
+
+              <nz-form-item style="margin: 5px 0;">
+                <label nz-checkbox nzSize="small"
+                  [nzDisabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0"
+                  formControlName="BoolCanhBaoNguoiBanKhacNguoiKy">
+                  Cảnh báo thông tin tên người bán khác thông tin người ký khi phát hành hóa đơn</label>
+              </nz-form-item>
+
+
+              <nz-form-item style="margin: 5px 0;">
+                <label [nzDisabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0" nz-checkbox
+                  formControlName="CanhBaoHDChenhLech">Cảnh báo khi phát hành hóa đơn có số liệu phát
+                  sinh chênh lệch</label>
+              </nz-form-item>
+
+              <div style="text-align: justify!important; background-color: #FFF2CC; margin-top: 5px; padding: 8px;">
+                <div>Ví dụ:</div>
+                <div>- Thành tiền <strong>có thể lớn hơn hoặc nhỏ hơn</strong> Số lượng * Đơn giá</div>
+                <div>- Tiền chiết khấu <strong>có thể lớn hơn hoặc nhỏ hơn</strong> Thành tiền * Tỷ lệ chiết khấu</div>
+                <div>- Tiền thuế GTGT <strong>có thể lớn hơn hoặc nhỏ hơn</strong> (Thành tiền - Tiền chiết khấu) * Thuế
+                  suất GTGT</div>
+                <div>
+                </div>
+              </div>
+
+              <nz-form-item style="margin: 5px 0;">
+                <label [nzDisabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0" nz-checkbox
+                  formControlName="BoolChoPhepNhapSoAm">
+                  Cho phép được ghi dấu âm (-) các nội dung về giá trị trên hóa đơn đối với hóa đơn có trạng thái hóa
+                  đơn là Hóa đơn gốc và Hóa đơn thay thế
+                </label>
+                <div style="text-align: justify!important; background-color: #FFF2CC; margin-top: 5px; padding: 8px;">
+                  <div>Đối với hóa đơn có trạng thái hóa đơn là <b>Hóa đơn gốc</b> và <b>Hóa đơn thay thế</b> thì:</div>
+                  <div>- Giá trị: <b>Số lượng</b>, <b>Đơn giá</b> được thể hiện ghi dấu âm</div>
+                  <div>- <b>Thành tiền</b>, <b>Tiền chiết khấu</b>, <b>Tiền thuế GTGT</b> và <b>Tổng tiền thanh toán</b>
+                    được có giá trị âm</div>
+                  Người dùng cân nhắc kỹ trước khi áp dụng.
+
+                </div>
+              </nz-form-item>
+
+              <!-- <nz-form-item style="margin: 5px 0;">
+                  <label [disabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0" nz-checkbox
+                    (ngModelChange)="changeQLNhanVienBanHang($event)"
+                    formControlName="BoolKhongPhatHanhHoaDonKhacNamHienTai">
+                    Không phát hành hóa đơn khác năm hiện tại
+                  </label>
+                  <div style="margin-left: 25px;">
+                    <label nz-checkbox
+                      formControlName="BoolKhongPhatHanhHoaDonKhacNamHienTaiKhiDaCoHoaDonCuaNamHienTaiDuocPhatHanh"
+                      style="margin-top: 5px;">
+                      Không phát hành hóa đơn khác năm hiện tại khi đã có hóa đơn của năm hiện tại được phát hành
+                    </label>
+                  </div>
+                </nz-form-item> -->
+
+              <nz-form-item style="margin: 5px 0;">
+                <label [nzDisabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0" nz-checkbox
+                  (ngModelChange)="changeQLNhanVienBanHang($event)"
+                  formControlName="BoolQuanLyNhanVienBanHangTrenHoaDon">Quản lý nhân viên bán hàng trên
+                  hóa đơn</label>
+                <div style="margin-left: 25px;">
+                  <label nz-checkbox formControlName="BoolCanhBaoKhiKhongChonNhanVienBanHangTrenHoaDon"
+                    id="BoolCanhBaoKhiKhongChonNhanVienBanHangTrenHoaDon" style="margin-top: 5px;">Cảnh báo khi không
+                    chọn
+                    nhân viên bán hàng trên hóa đơn
+                  </label>
+                </div>
+              </nz-form-item>
+
+              <nz-form-item style="margin: 5px 0;">
+                <label [nzDisabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0" nz-checkbox
+                  formControlName="IsNopThueTheoThongTu1032014BTC" id="isNopThueTheoThongTu1032014BTC">
+                  Nộp thuế theo quy định tại Điều 11, Thông tư số 103/2014/TT-BTC
+                </label>
+              </nz-form-item>
+
+              <!-- <nz-form-item style="margin: 5px 0;">
+                                <label>Cảnh báo khi không lập văn bản điện tử thỏa thuận trước khi lập hóa đơn điều chỉnh, hóa đơn
+                  thay
+                  thế cho hóa đơn đã lập có sai sót
+                  &nbsp;<i nz-icon class="info-circle" [nzTheme]="'fill'" nzType="info-circle" nz-tooltip
+                    [nzTooltipTitle]="canhBaoKhiKhongLapVanBanTemp"></i>
+                  <ng-template #canhBaoKhiKhongLapVanBanTemp>
+                    <div>- Khi hóa đơn đã lập có sai sót thì người bán và người mua phải lập và hoàn thành ký điện tử
+                      văn
+                      bản thỏa thuận ghi rõ sai sót trước khi người bán lập hóa đơn điều chỉnh hoặc hóa đơn thay thế
+                      cho
+                      hóa đơn đã lập có sai sót.</div>
+                    <div>- Ngày lập hóa đơn hóa đơn điều chỉnh hoặc hóa đơn thay thế phải lớn hơn hoặc bằng ngày ký
+                      điện
+                      tử văn bản thỏa thuận và ngày lập của hóa đơn đã lập có sai sót.</div>
+                  </ng-template>
+                </label>
+                                <div style="margin-left: 25px;">
+                                    <nz-radio-group [nzDisabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0" formControlName="IntCanhBaoKhiKhongLapVBDTTT">
+                                        <label nz-radio style="margin-top: 5px; margin-right: 10px;" nzValue="0">Không cảnh báo</label>
+                                        <label nz-radio style="margin-top: 5px; margin-right: 10px;" nzValue="1">Cảnh báo</label>
+                                        <label nz-radio style="margin-top: 5px;" nzValue="2">Cảnh báo và không cho phép lưu</label>
+                                    </nz-radio-group>
+                                </div>
+                            </nz-form-item> -->
+
+              <!-- <nz-form-item style="margin: 5px 0;">
+                                <label>Cảnh báo khi nhập mã số thuế không hợp lệ</label>
+                                <div style="margin-left: 25px;">
+                                    <nz-radio-group [nzDisabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0" formControlName="CanhBaoKhiNhapMaSoThueKhongHopLe">
+                                        <label nz-radio style="margin-top: 5px; margin-right: 10px;" nzValue="KhongCB">Không cảnh
+                      báo</label>
+                                        <label nz-radio style="margin-top: 5px; margin-right: 10px;" nzValue="CB">Cảnh báo</label>
+                                        <label nz-radio style="margin-top: 5px;" nzValue="CBVaKhongLuu">Cảnh báo và không lưu</label>
+                                    </nz-radio-group>
+                                </div>
+                            </nz-form-item> -->
+
+              <!-- <nz-form-item style="margin: 5px 0;">
+                  <label><strong>Kỳ nộp báo cáo tình hình sử dụng hóa đơn</strong></label>
+                  <div style="margin-left: 25px;">
+                    <nz-radio-group formControlName="KyNopBaoCaoTinhHinhSuDungHoaDon">
+                      <label nz-radio style="margin-top: 5px; margin-right: 10px;" nzValue="Thang">Tháng</label>
+                      <label nz-radio style="margin-top: 5px;" nzValue="Quy">Quý</label>
+                    </nz-radio-group>
+                  </div>
+                </nz-form-item> -->
+              <!--
+              <nz-form-item style="margin: 5px 0;">
+                <label>Kỳ kê khai thuế GTGT</label>
+                <div style="margin-left: 25px;">
+                  <nz-radio-group [nzDisabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0"
+                    formControlName="KyKeKhaiThueGTGT" (ngModelChange)="changeKyKeKhai()">
+                    <label nz-radio style="margin-top: 5px; margin-right: 10px;" nzValue="Thang">Tháng</label>
+                    <label nz-radio style="margin-top: 5px;" nzValue="Quy">Quý</label>
+                  </nz-radio-group>
+                </div>
+                <div style="text-align: justify!important;
+                    background-color: #FFF2CC; margin-top: 5px; padding: 8px;">
+                  <strong>Theo Nghị định số 126/2020/NĐ-CP quy định:</strong><br><br>
+
+                  <strong>Điều 9. Tiêu chí khai thuế theo quý đối với thuế giá trị gia tăng và thuế thu nhập cá
+                    nhân</strong><br> 1. Tiêu chí khai thuế theo quý<br> a) Khai thuế giá trị gia tăng theo quý áp dụng
+                  đối với:<br> a.1) Người nộp thuế thuộc diện khai thuế giá trị gia tăng theo tháng được quy định
+                  tại điểm a khoản 1 Điều 8 Nghị định này nếu có tổng doanh thu bán hàng hoá và cung cấp dịch vụ của năm
+                  trước liền kề từ 50 tỷ đồng trở xuống thì được khai thuế giá trị gia tăng theo quý. Doanh thu bán hàng
+                  hóa, cung
+                  cấp dịch vụ được xác định là tổng doanh thu trên các tờ khai thuế giá trị gia tăng của các kỳ tính
+                  thuế trong năm dương lịch.<br>
+                  <span (click)="xemThem()" class="xemThem" *ngIf="!daXemThem">...Xem thêm</span>
+                  <ng-container *ngIf="daXemThem">
+                    Trường hợp người nộp thuế thực hiện khai thuế tập trung tại trụ sở chính cho đơn vị phụ thuộc, địa
+                    điểm kinh doanh thì doanh thu bán hàng hóa, cung cấp dịch vụ bao gồm cả doanh thu của đơn vị phụ
+                    thuộc, địa điểm kinh doanh.<br> a.2) Trường hợp người nộp thuế mới bắt đầu hoạt động, kinh doanh thì
+                    được lựa chọn khai thuế giá trị gia tăng theo quý. Sau khi sản xuất kinh doanh đủ 12 tháng thì từ
+                    năm dương lịch liền kề tiếp theo năm đã đủ 12
+                    tháng sẽ căn cứ theo mức doanh thu của năm dương lịch trước liền kề (đủ 12 tháng) để thực hiện khai
+                    thuế giá trị gia tăng theo kỳ tính thuế tháng hoặc quý.
+                    <br>b) Khai thuế thu nhập cá nhân theo quý như sau:
+                    <br>b.1) Người nộp thuế thuộc diện khai thuế thu nhập cá nhân theo tháng được quy định tại điểm a
+                    khoản 1 Điều 8 Nghị định này nếu đủ điều kiện khai thuế giá trị gia tăng theo quý thì được lựa chọn
+                    khai thuế thu
+                    nhập cá nhân theo quý.
+                    <br>b.2) Việc khai thuế theo quý được xác định một lần kể từ quý đầu tiên phát sinh nghĩa vụ khai
+                    thuế và được áp dụng ổn định trong cả năm dương lịch.
+                    <br>2. Người nộp thuế có trách nhiệm tự xác định thuộc đối tượng khai thuế theo quý để thực hiện
+                    khai thuế theo quy định.
+                    <br>a) Người nộp thuế đáp ứng tiêu chí khai thuế theo quý được lựa chọn khai thuế theo tháng hoặc
+                    quý ổn định trọn năm dương lịch.
+                    <br>b) Trường hợp người nộp thuế đang thực hiện khai thuế theo tháng nếu đủ điều kiện khai thuế theo
+                    quý và lựa chọn chuyển sang khai thuế theo quý thì <span style="color: red">gửi văn bản đề
+                      nghị quy định tại Phụ lục I ban hành kèm theo Nghị định này đề nghị thay đổi kỳ tính thuế đến cơ
+                      quan thuế quản lý trực tiếp chậm nhất là 31 tháng 01 của năm bắt đầu khai thuế theo quý. Nếu sau
+                      thời hạn này người nộp thuế không gửi văn bản đến cơ quan thuế thì người nộp thuế tiếp tục thực
+                      hiện khai thuế theo tháng ổn định trọn năm dương lịch.</span>
+                    <br>c) Trường hợp người nộp thuế tự phát hiện không đủ điều kiện khai thuế theo quý thì người nộp
+                    thuế phải thực hiện khai thuế theo tháng kể từ tháng đầu của quý tiếp theo. Người nộp thuế không
+                    phải nộp lại hồ
+                    sơ khai thuế theo tháng của các quý trước đó nhưng phải nộp Bản xác định số tiền thuế phải nộp theo
+                    tháng tăng thêm so với số đã kê khai theo quý quy định tại Phụ lục I ban hành kèm theo Nghị định này
+                    và phải tính
+                    tiền chậm nộp theo quy định.
+                    <br>d) Trường hợp cơ quan thuế phát hiện người nộp thuế không đủ điều kiện khai thuế theo quý thì cơ
+                    quan thuế phải xác định lại số tiền thuế phải nộp theo tháng tăng thêm so với số người nộp thuế đã
+                    kê khai và
+                    phải tính tiền chậm nộp theo quy định. Người nộp thuế phải thực hiện khai thuế theo tháng kể từ thời
+                    điểm nhận được văn bản của cơ quan thuế.
+                  </ng-container>
+                  <ng-container *ngIf="daXemThem">
+                    <br>
+                    <span (click)="xemThem()" class="xemThem">...Thu gọn</span>
+                  </ng-container>
+                </div>
+              </nz-form-item> -->
+
+              <nz-form-item style="margin: 5px 0;">
+                <label [nzDisabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0" nz-checkbox
+                  formControlName="BoolCoPhatSinhUyNhiemLapHoaDon">
+                  Có phát sinh ủy nhiệm lập hóa đơn
+                </label>
+              </nz-form-item>
+
+              <nz-form-item style="margin: 5px 0;">
+                <label [nzDisabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0" nz-checkbox
+                  formControlName="BoolChoPhepLapHDDTMTT">
+                  Cho phép lập hóa đơn điện tử khởi tạo từ máy tính tiền (Hóa đơn gốc) trên phần mềm giải pháp
+
+                </label>
+              </nz-form-item>
+
+              <nz-form-item style="margin: 5px 0;">
+                <label [nzDisabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0" nz-checkbox
+                  formControlName="BoolAutoSendHd">
+                  Cho phép hệ thống tự động gửi hóa đơn điện tử lên cơ quan thuế.
+                </label>
+                <div nz-row style="text-align: justify!important; background-color: #FFF2CC; padding: 8px;">
+                  - Tùy chọn áp dụng cho hóa đơn điện tử có mã của cơ quan thuế được gửi từ các phần mềm vệ tinh của phần mềm bách khoa có trạng thái quy trình là <b>Chưa
+                      ký điện tử</b><br>
+                    - Tùy chọn này chỉ áp dụng cho Doanh Nghiệp có sử dụng chữ ký số HSM <br>
+                    - Tùy chọn này nhằm mục đích tự động gửi hóa đơn lên cơ quan thuế <br>
+                </div>
+              </nz-form-item>
+              <nz-form-item style="margin: 5px 0;">
+                <label style="width: 100%;" [nzDisabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0"
+                  nz-checkbox formControlName="BoolAutoSendHDDTMTT">
+                  Cho phép hệ thống tự động gửi hóa đơn điện tử khởi tạo từ máy tính tiền lên cơ quan thuế.
+                </label>
+                <div  nz-row style="margin-left: 28px;">
+                  <nz-form-label [nzSm]="2" [nzXs]="24" [nzNoColon]="true">
+                    Cài đặt thời gian:</nz-form-label>
+                  <nz-form-control [nzSm]="3" [nzXs]="24">
+                    <nz-input-number class="show-tang-giam-input"
+                      [nzDisabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0" nzSize="small"
+                      formControlName="IntTimeStartAutoSendHDDTMTT" ngModel="22" [nzMin]="0" [nzMax]="23" [nzStep]="1">
+                    </nz-input-number>
+                    <span> giờ</span>
+                  </nz-form-control>
+     
+                </div>
+                <div nz-row style="text-align: justify!important; background-color: #FFF2CC; padding: 8px;">
+                  - Tùy chọn áp dụng cho hóa đơn điện tử khởi tạo từ máy tính tiền có trạng thái quy trình là <b>Chưa
+                      gửi</b>, <b>Gửi TCTN lỗi</b> và <b>Gửi CQT lỗi</b><br>
+                    - Tùy chọn này chỉ áp dụng cho Doanh Nghiệp có sử dụng chữ ký số HSM <br>
+                    - Tùy chọn này nhằm mục đích tự động gửi hóa đơn khởi tạo từ máy tính tiền lên cơ quan thuế <br>
+                    - Tùy chọn này chỉ tự động gửi hóa đơn đơn khởi tạo từ máy tính tiền trong ngày hiện tại <br>
+                    - Tùy chọn này tự động gửi trong 2 giờ tính từ thời điểm cài đặt <br>
+                    - Khuyến nghị cài đặt thời gian bắt đầu là 22 giờ.
+                </div>
+              </nz-form-item>
+            </div>
+
+            <div nz-row class="inner-content">
+              <div nz-row class="title">Xử lý hóa đơn/chứng từ có sai sót liên quan đến trạng thái gửi hóa đơn/chứng từ
+              </div>
+
+              <nz-form-item style="margin: 5px 0;">
+                <label [nzDisabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0" nz-checkbox
+                  formControlName="BoolChoPhepXacNhanHDDaGuiKhachHang">
+                  Cho phép xác nhận hóa đơn/chứng từ đã gửi cho khách hàng/người nộp thuế
+                </label>
+                <div style="text-align: justify!important; background-color: #FFF2CC; margin-top: 5px; padding: 8px;">
+                  <div>Tùy chọn áp dụng cho hóa đơn/chứng từ phát hành và có nhật ký gửi hóa đơn cho khách hàng/người
+                    nộp thuế qua Email chưa xuất hiện trạng thái Đã gửi cho khách hàng/người nộp thuế
+                  </div>
+                </div>
+              </nz-form-item>
+
+              <nz-form-item style="margin: 5px 0;">
+                <label [nzDisabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0" nz-checkbox
+                  formControlName="BoolChoPhepXuLySaiSotMTTDuaTrenLichSuGuiEmail">
+                  Cho phép xử lý hóa đơn điện tử khởi tạo từ máy tính có sai sót căn cứ vào lịch sử gửi hóa đơn khách
+                  hàng trên phần mềm giải pháp
+                </label>
+                <div style="text-align: justify!important; background-color: #FFF2CC; margin-top: 5px; padding: 8px;">
+                  <div>Xác định hình thức xử lý hóa đơn điện tử khởi tạo từ máy tính tiền (Hóa đơn gốc) có sai sót sẽ
+                    căn cứ vào lịch sử gửi hóa đơn cho khách hàng bằng cách sử dụng chức năng <b>Gửi hóa đơn</b> qua
+                    email có sẵn trên phần mềm giải pháp
+                  </div>
+                </div>
+              </nz-form-item>
+            </div>
+          </div>
+        </nz-tab>
+        <nz-tab nzTitle="Định dạng số" (nzSelect)="selectTuyChon(2)"
+          *ngIf="permission == true || (listTenQuyens && listTenQuyens.indexOf('DinhDangSo') >= 0)">
+          <div
+            style="overflow-y: none; max-height: calc(100vh - 180px)!important; padding: 5px; margin: -7px -7px 7px -7px;">
+            <div nz-row class="inner-content">
+              <div class="title">Số chữ số của phần thập phân</div>
+              <nz-form-item style="margin: 5px 0;">
+                <nz-form-label [nzOffset]="2" [nzSm]="3" [nzXs]="24" [nzNoColon]="true" style="text-align: left;">
+                  Tiền quy đổi</nz-form-label>
+                <nz-form-control [nzOffset]="1" [nzSm]="3" [nzXs]="24">
+                  <nz-input-number class="show-tang-giam-input"
+                    [nzDisabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0 || isVnd" nzSize="small"
+                    formControlName="IntDinhDangSoThapPhanTienQuyDoi" [nzMin]="0" [nzMax]="6" [nzStep]="1"
+                    (ngModelChange)="changeDinhDangChuSo($event, 'IntDinhDangSoThapPhanTienQuyDoi')"
+                    (nzBlur)="blurDinhDangChuSo('IntDinhDangSoThapPhanTienQuyDoi')">
+                  </nz-input-number>
+                </nz-form-control>
+                <nz-form-label [nzSm]="6" [nzXs]="24" [nzNoColon]="true" style="text-align: left; margin-left: 5px;">
+                  Ví dụ: <strong>{{dinhDangSo.IntDinhDangSoThapPhanTienQuyDoi}}</strong>
+                </nz-form-label>
+              </nz-form-item>
+              <nz-form-item style="margin: 5px 0;">
+                <nz-form-label [nzOffset]="2" [nzSm]="3" [nzXs]="24" [nzNoColon]="true" style="text-align: left;">
+                  Tiền ngoại tệ</nz-form-label>
+                <nz-form-control [nzOffset]="1" [nzSm]="3" [nzXs]="24">
+                  <nz-input-number class="show-tang-giam-input"
+                    [nzDisabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0" nzSize="small"
+                    formControlName="IntDinhDangSoThapPhanTienNgoaiTe" [nzMin]="0" [nzMax]="6" [nzStep]="1"
+                    (ngModelChange)="changeDinhDangChuSo($event, 'IntDinhDangSoThapPhanTienNgoaiTe')"
+                    (nzBlur)="blurDinhDangChuSo('IntDinhDangSoThapPhanTienNgoaiTe')">
+                  </nz-input-number>
+                </nz-form-control>
+                <nz-form-label [nzSm]="6" [nzXs]="24" [nzNoColon]="true" style="text-align: left; margin-left: 5px;">
+                  Ví dụ: <strong>{{dinhDangSo.IntDinhDangSoThapPhanTienNgoaiTe}}</strong>
+                </nz-form-label>
+              </nz-form-item>
+              <nz-form-item style="margin: 5px 0;">
+                <nz-form-label [nzOffset]="2" [nzSm]="3" [nzXs]="24" [nzNoColon]="true" style="text-align: left;">
+                  Đơn giá quy đổi</nz-form-label>
+                <nz-form-control [nzOffset]="1" [nzSm]="3" [nzXs]="24">
+                  <nz-input-number class="show-tang-giam-input"
+                    [nzDisabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0" nzSize="small"
+                    formControlName="IntDinhDangSoThapPhanDonGiaQuyDoi" [nzMin]="0" [nzMax]="6" [nzStep]="1"
+                    (ngModelChange)="changeDinhDangChuSo($event, 'IntDinhDangSoThapPhanDonGiaQuyDoi')"
+                    (nzBlur)="blurDinhDangChuSo('IntDinhDangSoThapPhanDonGiaQuyDoi')">
+                  </nz-input-number>
+                </nz-form-control>
+                <nz-form-label [nzSm]="6" [nzXs]="24" [nzNoColon]="true" style="text-align: left; margin-left: 5px;">
+                  Ví dụ: <strong>{{dinhDangSo.IntDinhDangSoThapPhanDonGiaQuyDoi}}</strong>
+                </nz-form-label>
+              </nz-form-item>
+              <nz-form-item style="margin: 5px 0;">
+                <nz-form-label [nzOffset]="2" [nzSm]="3" [nzXs]="24" [nzNoColon]="true" style="text-align: left;">
+                  Đơn giá ngoại tệ</nz-form-label>
+                <nz-form-control [nzOffset]="1" [nzSm]="3" [nzXs]="24">
+                  <nz-input-number class="show-tang-giam-input"
+                    [nzDisabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0" nzSize="small"
+                    formControlName="IntDinhDangSoThapPhanDonGiaNgoaiTe" [nzMin]="0" [nzMax]="6" [nzStep]="1"
+                    (ngModelChange)="changeDinhDangChuSo($event, 'IntDinhDangSoThapPhanDonGiaNgoaiTe')"
+                    (nzBlur)="blurDinhDangChuSo('IntDinhDangSoThapPhanDonGiaNgoaiTe')">
+                  </nz-input-number>
+                </nz-form-control>
+                <nz-form-label [nzSm]="6" [nzXs]="24" [nzNoColon]="true" style="text-align: left; margin-left: 5px;">
+                  Ví dụ: <strong>{{dinhDangSo.IntDinhDangSoThapPhanDonGiaNgoaiTe}}</strong>
+                </nz-form-label>
+              </nz-form-item>
+              <nz-form-item style="margin: 5px 0;">
+                <nz-form-label [nzOffset]="2" [nzSm]="3" [nzXs]="24" [nzNoColon]="true" style="text-align: left;">
+                  Số lượng</nz-form-label>
+                <nz-form-control [nzOffset]="1" [nzSm]="3" [nzXs]="24">
+                  <nz-input-number class="show-tang-giam-input"
+                    [nzDisabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0" nzSize="small"
+                    formControlName="IntDinhDangSoThapPhanSoLuong" [nzMin]="0" [nzMax]="6" [nzStep]="1"
+                    (ngModelChange)="changeDinhDangChuSo($event, 'IntDinhDangSoThapPhanSoLuong')"
+                    (nzBlur)="blurDinhDangChuSo('IntDinhDangSoThapPhanSoLuong')">
+                  </nz-input-number>
+                </nz-form-control>
+                <nz-form-label [nzSm]="6" [nzXs]="24" [nzNoColon]="true" style="text-align: left; margin-left: 5px;">
+                  Ví dụ: <strong>{{dinhDangSo.IntDinhDangSoThapPhanSoLuong}}</strong>
+                </nz-form-label>
+              </nz-form-item>
+              <nz-form-item style="margin: 5px 0;">
+                <nz-form-label [nzOffset]="2" [nzSm]="3" [nzXs]="24" [nzNoColon]="true" style="text-align: left;">
+                  Tỷ giá</nz-form-label>
+                <nz-form-control [nzOffset]="1" [nzSm]="3" [nzXs]="24">
+                  <nz-input-number class="show-tang-giam-input"
+                    [nzDisabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0" nzSize="small"
+                    formControlName="IntDinhDangSoThapPhanTyGia" [nzMin]="0" [nzMax]="2" [nzStep]="1"
+                    (ngModelChange)="changeDinhDangChuSo($event, 'IntDinhDangSoThapPhanTyGia')"
+                    (nzBlur)="blurDinhDangChuSo('IntDinhDangSoThapPhanTyGia')">
+                  </nz-input-number>
+                </nz-form-control>
+                <nz-form-label [nzSm]="6" [nzXs]="24" [nzNoColon]="true" style="text-align: left; margin-left: 5px;">
+                  Ví dụ: <strong>{{dinhDangSo.IntDinhDangSoThapPhanTyGia}}</strong>
+                </nz-form-label>
+              </nz-form-item>
+              <nz-form-item style="margin: 5px 0;">
+                <nz-form-label [nzOffset]="2" [nzSm]="3" [nzXs]="24" [nzNoColon]="true" style="text-align: left;">
+                  Hệ số, tỷ lệ</nz-form-label>
+                <nz-form-control [nzOffset]="1" [nzSm]="3" [nzXs]="24">
+                  <nz-input-number class="show-tang-giam-input"
+                    [nzDisabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0" nzSize="small"
+                    formControlName="IntDinhDangSoThapPhanHeSoTyLe" [nzMin]="0" [nzMax]="4" [nzStep]="1"
+                    (ngModelChange)="changeDinhDangChuSo($event, 'IntDinhDangSoThapPhanHeSoTyLe')"
+                    (nzBlur)="blurDinhDangChuSo('IntDinhDangSoThapPhanHeSoTyLe')">
+                  </nz-input-number>
+                </nz-form-control>
+                <nz-form-label [nzSm]="6" [nzXs]="24" [nzNoColon]="true" style="text-align: left; margin-left: 5px;">
+                  Ví dụ: <strong>{{dinhDangSo.IntDinhDangSoThapPhanHeSoTyLe}}</strong>
+                </nz-form-label>
+              </nz-form-item>
+              <!-- <nz-form-item style="margin: 5px 0;">
+                  <nz-form-label [nzOffset]="2" [nzSm]="3" [nzXs]="24" [nzNoColon]="true" style="text-align: left;">
+                    Tỷ lệ phân bổ</nz-form-label>
+                  <nz-form-control [nzOffset]="1" [nzSm]="3" [nzXs]="24">
+                    <nz-input-number nzSize="small" formControlName="IntDinhDangSoThapPhanTyLePhanBo" [nzMin]="0"
+                      [nzMax]="10" [nzStep]="1"
+                      (ngModelChange)="changeDinhDangChuSo($event, 'IntDinhDangSoThapPhanTyLePhanBo')"
+                      (nzBlur)="blurDinhDangChuSo('IntDinhDangSoThapPhanTyLePhanBo')">
+                    </nz-input-number>
+                  </nz-form-control>
+                  <nz-form-label [nzSm]="6" [nzXs]="24" [nzNoColon]="true" style="text-align: left; margin-left: 5px;">
+                    Ví dụ: <strong>{{dinhDangSo.IntDinhDangSoThapPhanTyLePhanBo}}</strong>
+                  </nz-form-label>
+                </nz-form-item> -->
+              <div style="margin: 5px 0;">
+                <button nz-button nzType="default" nzSize="small" type="button"
+                  [disabled]="checkIsDefaultDinhDangThapPhan() || (permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0)"
+                  [ngClass]="{'button-bold': !(checkIsDefaultDinhDangThapPhan() || (permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0)), 'disabled-button-state-v2': checkIsDefaultDinhDangThapPhan() || (permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0)}"
+                  (click)="setDefaultDinhDangThapPhan()">
+                  <i nz-icon nzType="rollback" nzTheme="outline"></i>&nbsp;Lấy lại thiết lập mặc định
+                </button>
+              </div>
+
+              <div style="text-align: justify!important; background-color: #FFF2CC; margin-top: 5px; padding: 8px;">
+                <div>
+                  &bull; Nếu thay đổi định dạng số thì lập tức số tiền thể hiện trên tất cả hóa đơn chưa phát hành có
+                  liên quan sẽ thay đổi và thể hiện theo định dạng số mới.
+                </div>
+                <br />
+                <div>
+                  &bull; Nếu thay đổi số chữ số phần thập phân từ <strong>nhiều số thành ít số</strong> thì có thể ảnh
+                  hưởng lớn đến tính đúng đắn của số liệu thể hiện trên hóa đơn.
+                </div>
+                <div>Ví dụ:</div>
+                <div>- Thành tiền <strong>có thể lớn hơn hoặc nhỏ hơn</strong> Số lượng * Đơn giá</div>
+                <div>- Tiền chiết khấu <strong>có thể lớn hơn hoặc nhỏ hơn</strong> Thành tiền * Tỷ lệ chiết khấu</div>
+                <div>- Tiền thuế GTGT <strong>có thể lớn hơn hoặc nhỏ hơn</strong> (Thành tiền - Tiền chiết khấu) * Thuế
+                  suất GTGT</div>
+                <div>
+                  Do đó, để đảm bảo số liệu thể hiện đúng đắn và không phát sinh chênh lệch thì người dùng cần sửa lại
+                  trực tiếp số tiền trên từng hóa đơn chưa phát hành có liên quan và bị ảnh hưởng theo định dạng số mới.
+                </div>
+                <br />
+                <div>
+                  Người dùng cần cân nhắc kỹ trước khi thay đổi định dạng số.
+                </div>
+              </div>
+            </div>
+          </div>
+        </nz-tab>
+        <!-- <nz-tab nzTitle="Thông tin tài nguyên" (nzSelect)="selectTuyChon(3)" *ngIf="permission == true || (listTenQuyens && listTenQuyens.indexOf('ThongTinTaiNguyen') > 0)">
+            <div nz-row class="inner-content">
+              <div nz-row class="box-border">
+                <span class="box-title">Thông tin tài nguyên</span>
+                <div style="margin: 5px" nz-col nzSpan="11">
+                  <div class="box-border" style="margin: 5px 0;">
+                    <span class="box-title">Kế toán Bách khoa</span>
+                    <div nz-row style="margin-bottom: 4px;">
+                      <div nz-col style="padding-left: 5px" nzSpan="12">
+                        Thông tin phiên bản:
+                      </div>
+                      <div nz-col style="text-align: right; padding-right: 5px" nzSpan="12">
+                        <span>Phần mềm kế toán bách khoa 2020.v2(bị giới hạn)</span>
+                      </div>
+                    </div>
+                    <div nz-row style="margin-bottom: 4px;">
+                      <div style="padding-left: 5px" nz-col nzSpan="12">
+                        Số hợp đồng:
+                      </div>
+                      <div nz-col style="text-align: right; padding-right: 5px; font-weight: bold;" nzSpan="12">
+                        30-2021/PMKT/PMBK-HOANGDUNGPHAT
+                      </div>
+                    </div>
+                    <div nz-row style="margin-bottom: 4px;">
+                      <div style="padding-left: 5px" nz-col nzSpan="12">
+                        Ngày ký hợp đồng:
+                      </div>
+                      <div nz-col style="text-align: right; padding-right: 5px; font-weight: bold;" nzSpan="12">
+                        04/05/2021
+                      </div>
+                    </div>
+                    <div nz-row style="margin-bottom: 4px;">
+                      <div style="padding-left: 5px" nz-col nzSpan="12">
+                        Thời hạn hợp đồng:
+                      </div>
+                      <div nz-col style="text-align: right; padding-right: 5px; font-weight: bold;" nzSpan="12">
+                        05 năm, kể từ ngày 04/05/2021 đến hết ngày 03/05/2026
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div style="margin: 5px" nz-col nzSpan="12">
+                  <div class="box-border" style="margin: 5px 0;">
+                    <span class="box-title">Hóa đơn Bách khoa</span>
+                    <div nz-row style="margin-bottom: 4px;">
+                      <div nz-col style="padding-left: 5px" nzSpan="8">
+                        Hóa đơn chưa sử dụng đầu năm:
+                      </div>
+                      <div nz-col style="text-align: right; padding-right: 5px; font-weight: bold;" nzSpan="4">
+                        560
+                      </div>
+                      <div nz-col style="padding-left: 5px" nzSpan="8">
+                        Tổng hóa đơn đã mua:
+                      </div>
+                      <div nz-col style="text-align: right; padding-right: 5px; font-weight: bold;" nzSpan="4">
+                        3.000
+                      </div>
+                    </div>
+                    <div nz-row style="margin-bottom: 4px;">
+                      <div nz-col style="padding-left: 5px" nzSpan="8">
+                        Hóa đơn mua trong năm:
+                      </div>
+                      <div nz-col style="text-align: right; padding-right: 5px; font-weight: bold;" nzSpan="4">
+                        2.000
+                      </div>
+                      <div nz-col style="padding-left: 5px" nzSpan="8">
+                        Tổng hóa đơn đã sử dụng:
+                      </div>
+                      <div nz-col style="text-align: right; padding-right: 5px; font-weight: bold;" nzSpan="4">
+                        760
+                      </div>
+                    </div>
+                    <div nz-row style="margin-bottom: 4px;">
+                      <div nz-col style="padding-left: 5px" nzSpan="8">
+                        Hóa đơn đã sử dụng trong năm:
+                      </div>
+                      <div nz-col style="text-align: right; padding-right: 5px; font-weight: bold;" nzSpan="4">
+                        200
+                      </div>
+                      <div nz-col style="padding-left: 5px" nzSpan="8">
+                        Tổng hóa đơn sử dụng được:
+                      </div>
+                      <div nz-col style="text-align: right; padding-right: 5px; font-weight: bold;" nzSpan="4">
+                        2.240
+                      </div>
+                    </div>
+                    <div nz-row style="margin-bottom: 4px;">
+                      <div nz-col style="padding-left: 5px" nzSpan="8">
+                        Hóa đơn còn được sử dụng tới cuối năm:
+                      </div>
+                      <div nz-col style="text-align: right; padding-right: 5px; font-weight: bold;" nzSpan="4">
+                        2.240
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div nz-row class="inner-content">
+              <div nz-row class="box-border">
+                <div style="margin: 5px" nz-col nzSpan="11">
+                  <div class="box-border" style="margin: 5px 0;">
+                    <span class="box-title">Lịch sử giao dịch</span>
+                    <div nz-row style="margin-bottom: 4px;">
+                      <nz-table [nzNoResult]="null" style="margin-top: 5px;" nzSize="small" #fixedTable
+                        [nzData]="lsGiaoDichs" [nzScroll]="{ x: '650px', y: '280px' }" [nzShowPagination]="false"
+                        [nzFrontPagination]="false" [nzTotal]="total" [nzPageIndex]="1" [(nzPageSize)]="total" nzBordered
+                        [nzLoading]="loading">
+                        <thead>
+                          <tr>
+                            <th nzAlign="center" nzWidth="50px">STT</th>
+                            <th nzAlign="center" nzWidth="150px">Ngày mua</th>
+                            <th nzAlign="center" nzWidth="200px">Sản phẩm</th>
+                            <th nzAlign="center" nzWidth="100px">Trạng thái</th>
+                            <th nzAlign="center" nzWidth="150px">Hạn sử dụng</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let data of fixedTable.data" [class.row-selected]="data.selected">
+                            <td [class.row-selected]="data.selected">{{ data?.STT}}
+                            </td>
+                            <td [class.row-selected]="data.selected">{{ data?.ngayMua | date: 'dd/MM/yyyy'}}
+                            </td>
+                            <td [class.row-selected]="data.selected">{{ data?.sanPham }}</td>
+                            <td [class.row-selected]="data.selected">{{ data?.status }}</td>
+                            <td [class.row-selected]="data.selected">{{ data?.hanSuDung | date: 'dd/MM/yyyy' }}</td>
+                          </tr>
+                        </tbody>
+                      </nz-table>
+                    </div>
+                  </div>
+                </div>
+                <div style="margin: 5px" nz-col nzSpan="12">
+                  <div class="box-border" style="margin: 5px 0;">
+                    <span class="box-title">Liên hệ</span>
+                    <div nz-row style="margin-bottom: 4px;">
+                      Công ty cổ phần phát triển và ứng dụng phần mềm Bách Khoa
+                    </div>
+                    <div nz-row style="margin-bottom: 4px;">
+                      561 Nguyễn Bỉnh Khiêm, Đông Hải 1, Hải An, Hải Phòng
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </nz-tab> -->
+        <nz-tab nzTitle="Thiết lập công cụ ký" (nzSelect)="selectTuyChon(4)"
+          *ngIf="permission == true || (listTenQuyens && listTenQuyens.indexOf('ThietLapCongCuKy') >= 0)">
+          <div nz-row nzGutter="8">
+            <div nz-col nzSpan="12">
+              <nz-card class="card-custom">
+                <div class="card-title">
+                  Ký trực tiếp qua USB
+                </div>
+                <div class="card-body card-content-padding-hor" style="height: 171px;padding-top: 7px;">
+                  <div nz-row class="inner-content"
+                    style="width: 100%; height: 19h;margin-bottom: 0px;padding-bottom: 0px;">
+                    <div nz-col nzSm="24">
+                      <div nz-row>
+                        <div nz-col nzXs="6" nzSm="4" nzMd="4" nzLg="4" nzXl="5">
+                          <div class="usb-sign-logo"></div>
+                        </div>
+                        <div nz-col nzXs="18" nzSm="20" nzMd="20" nzLg="20" nzXl="19" style="margin-top: 5px;">
+                          <div nz-row>
+                            <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="24" nzXl="24">
+                              <div _ngcontent-okf-c24="" style="display: flex; height: 28px;">
+                                <span>
+                                  <p>1. Tải phần mềm ký điện tử <strong>BKSOFT KYSO </strong></p>
+                                </span> &nbsp;
+                                <span>
+                                  <button nz-button nzSize="small" style="z-index: 1000; margin-top: -3px;"
+                                    class="blueButton" nzType="default" (click)="downloadBKSOFT()">
+                                    <i nz-icon nzType="vertical-align-bottom" nzTheme="outline"></i>
+                                    Tải về BKSOFT KYSO
+                                  </button>
+
+                                </span>
+                              </div>
+
+                              <p>2. Cài đặt phần mềm ký điện tử trên máy tính</p>
+                              <p>3. Kết nối máy tính với USB chứa chứng thư số trước khi thực hiện ký điện tử.</p>
+
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div style="margin-top: 5px; float: right;">
+                      <label nz-checkbox [disabled]="isSelectChuKiCungShow" [(ngModel)]="isSelectChuKiCungShow"
+                        (ngModelChange)="selectChuKySo(true)" [ngModelOptions]="{standalone: true}">Sử
+                        dụng</label>
+                    </div>
+                  </div>
+
+                </div>
+              </nz-card>
+            </div>
+            <div nz-col nzSpan="12">
+              <nz-card class="card-custom">
+                <div class="card-title">
+                  Ký thông qua máy chủ HSM
+                </div>
+                <div class="card-body card-content-padding-hor" style="height: 171px; padding-top: 7px;">
+                  <div nz-col style="margin-top:10px">
+                    <div nz-col nzXs="4" nzSm="4" nzMd="4" nzLg="4" nzXl="5">
+                      <div style="margin-top: 1vh;" class="hsm-logo"></div>
+                    </div>
+                    <div nz-col nzXs="20" nzSm="20" nzMd="20" nzLg="20" nzXl="19">
+                      <div nz-row style="padding-top: 11px !important;">
+                        <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="24" nzXl="24">
+                          <p>1. Sử dụng chữ kí số HSM để kí điên tử.</p>
+                          <p>2. Chọn nhà cung cấp dịch vụ để kết nối.</p>
+                        </div>
+                        <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="24" [nzLg]="24" [nzXl]="24">
+                          <div [(ngModel)]="signValue" nzName="radiogroup" (ngModelChange)="changeRadioKiSo($event)"
+                            [ngModelOptions]="{standalone: true}" name="radiogroup" ngDefaultControl
+                            style="display: inline-flex; text-align: center;">
+                            <div>
+                              <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="12" nzXl="8"
+                                style="display: grid; padding-left: 0.2vw;">
+                                <button nz-button nzType="default" class="ICORP-logo"></button>
+                                <label nz-checkbox [(ngModel)]="isSelectChuKiMemShow"
+                                  (ngModelChange)="dangNhapESignCloud($event)" [nzDisabled]="isSelectChuKiMemShow"
+                                  [ngModelOptions]="{standalone: true}" style="padding-left: 0vw"></label>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </nz-card>
+            </div>
+          </div>
+          <div style="text-align: justify!important;
+          background-color: #FFF2CC;
+          margin-top: 5px;
+          padding: 8px;
+          margin-bottom: 5px;">
+            <div>Cài đặt công cụ ký nhằm kết nối chứng thư số với giải pháp hóa đơn điện tử để thực hiện ký điện tử.
+            </div>
+          </div>
+        </nz-tab>
+
+        <nz-tab nzTitle="Máy chủ gửi email" (nzSelect)="selectTuyChon(5)"
+          *ngIf="permission == true || (listTenQuyens && listTenQuyens.indexOf('MayChuGuiEmail') >= 0)">
+
+          <div nz-row nzGutter="8" style="height: 100%!important">
+            <div nz-col nzSpan="24">
+              <div nz-row class="card-content" style="height: 180px !important;">
+                <div class="title">Thông tin máy chủ gửi email</div>
+                <nz-form-item style="margin: 5px 0;">
+                  <nz-form-label [nzSm]="3" [nzXs]="24" title="Nhà cung cấp">Nhà cung cấp</nz-form-label>
+                  <nz-form-control [nzSm]="6" [nzXs]="24">
+                    <nz-select [nzDisabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0"
+                      style="width: 100%;" nzSize="small" nzShowSearch formControlName="NhaCungCapDichVuEmail"
+                      title="Nhà cung cấp" (ngModelChange)="changeNCCDV($event)">
+                      <nz-option nzLabel="DỊCH VỤ EMAIL BKSOFT" nzValue="1"></nz-option>
+                      <nz-option nzLabel="Gmail" nzValue="2"></nz-option>
+                    </nz-select>
+                  </nz-form-control>
+
+                  <nz-form-label [nzOffset]="1" [nzSm]="2" [nzXs]="24" nzFor="tenMayChu" title="Máy chủ">Máy chủ
+                  </nz-form-label>
+                  <nz-form-control [nzSm]="5" [nzXs]="24">
+                    <input type="text" nzSize="small" nz-input formControlName="TenMayChu" id="mayChu" />
+                  </nz-form-control>
+
+                  <nz-form-label [nzOffset]="1" [nzSm]="3" [nzXs]="24" nzFor="soCong" title="Cổng">Cổng</nz-form-label>
+                  <nz-form-control [nzSm]="3" [nzXs]="24">
+                    <input type="number" nzSize="small" nz-input formControlName="SoCong" id="soCong"
+                      [disabled]="true" />
+                  </nz-form-control>
+                </nz-form-item>
+
+                <nz-form-item style="margin: 5px 0;">
+                  <nz-form-label [nzSm]="3" [nzXs]="24" nzFor="tenNguoiGui" title="Tên người gửi">Tên người gửi
+                  </nz-form-label>
+                  <nz-form-control [nzSm]="6" [nzXs]="24" [nzErrorTip]="errorTenNguoiGui">
+                    <input [disabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0" type="text"
+                      nzSize="small" nz-input formControlName="TenNguoiGui" id="tenNguoiGui" />
+                    <ng-template #errorTenNguoiGui let-control>
+                      <ng-container *ngIf="control.hasError('required')">
+                        <div class="tooltip-error">&lt;Tên người gửi&gt; không được để trống.</div>
+                      </ng-container>
+                    </ng-template>
+                  </nz-form-control>
+
+                  <nz-form-label [nzOffset]="1" [nzSm]="2" [nzXs]="24" nzFor="tenDangNhapEmail" title="Email">Email
+                  </nz-form-label>
+                  <nz-form-control [nzSm]="5" [nzXs]="24" [nzErrorTip]="errorTenDangNhapEmail">
+                    <input type="text" nzSize="small" nz-input formControlName="TenDangNhapEmail" id="tenDangNhapEmail"
+                      [disabled]="(permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0)" />
+                    <ng-template #errorTenDangNhapEmail let-control>
+                      <ng-container *ngIf="control.hasError('required')">
+                        <div class="tooltip-error">&lt;Email&gt; không được để trống.</div>
+                      </ng-container>
+                    </ng-template>
+                  </nz-form-control>
+
+                  <nz-form-label [nzOffset]="1" [nzSm]="3" [nzXs]="24" nzFor="matKhauEmail" title="Mật khẩu email">
+                    Mật khẩu email
+                  </nz-form-label>
+                  <nz-form-control [nzSm]="3" [nzXs]="24" [nzErrorTip]="errorMatKhauEmail">
+                    <input type="password" nzSize="small" nz-input formControlName="MatKhauEmail" id="matKhauEmail"
+                      [disabled]="(permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0)" />
+                    <ng-template #errorMatKhauEmail let-control>
+                      <ng-container *ngIf="control.hasError('required')">
+                        <div class="tooltip-error">&lt;Mật khẩu&gt; không được để trống.</div>
+                      </ng-container>
+                    </ng-template>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+            </div>
+          </div>
+        </nz-tab>
+
+        <nz-tab nzTitle="Email gửi hóa đơn" (nzSelect)="selectTuyChon(6)"
+          *ngIf="permission == true || (listTenQuyens && listTenQuyens.indexOf('EmailGuiHoaDon') >= 0)">
+          <div
+            style="overflow-y: none; max-height: calc(100vh - 180px)!important; padding: 5px; margin: -7px -7px 7px -7px;">
+            <div nz-row class="card-content" style="height: calc(100vh - 180px)!important;">
+              <div nz-row class="title">Nội dung email gửi hóa đơn</div>
+              <!-- <div style="display: flex;">
+                  <div style="flex: 1;">cc</div>
+                  <div style=""></div>
+                </div> -->
+
+              <nz-form-item style="margin: 5px 0;">
+                <nz-form-label [nzSm]="3" [nzXs]="24" nzFor="loaiEmail" title="Loại email">Loại email
+                </nz-form-label>
+                <nz-form-control [nzSm]="14" [nzXs]="24">
+                  <nz-select style="width: 100%" style="width: 100%" nzSize="small" nzShowSearch
+                    formControlName="loaiEmail" title="Loại email" (ngModelChange)="changeLoaiEmail($event)">
+                    <nz-option nzCustomContent *ngFor="let item of loaiEmails" [nzLabel]="item.ten" [nzValue]="item.id">
+                      <div class="justify-content-wrap">{{item.ten}}</div>
+                    </nz-option>
+                  </nz-select>
+                </nz-form-control>
+
+                <nz-form-control [nzSm]="4" [nzXs]="24" style="text-align: right;">
+                  <button style="width: 98%"
+                    [disabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0 || isEmailMacDinh"
+                    nzSize="small" nz-button nzType="default" (click)="getDefaultEmail()"
+                    [class.blueButton]="!(permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0 || isEmailMacDinh)"
+                    [class.disabled-button-state-v3]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0 || isEmailMacDinh">
+                    <i nz-icon nzType="rollback" nzTheme="outline"></i>&nbsp;Lấy lại mẫu email mặc định
+                  </button>
+                </nz-form-control>
+
+                <nz-form-control [nzSm]="3" [nzXs]="24" style="text-align: right;">
+                  <button style="width: 98%" [nzDisabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0"
+                    nzSize="small" nz-button nzType="default" (click)="getDefaultEmail()" nz-dropdown
+                    [nzDropdownMenu]="menuThemTruongTron" [nzClickHide]="false" nzPlacement="bottomRight"
+                    [class.blueButton]="!(permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0)"
+                    [class.disabled-button-state-v3]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0">
+                    <i nz-icon nzType="select" nzTheme="outline"></i>Thêm nội dung<i nz-icon nzType="down"></i>
+                    <nz-dropdown-menu #menuThemTruongTron="nzDropdownMenu">
+                      <ul nz-menu style="overflow-y: scroll; height: 300px; min-width: 700px !important;">
+                        <li nz-menu-item class="menu-item-header">
+                          <div nz-row>
+                            <div nz-col nzXs="10" nzSm="10" nzMd="10" nzLg="10" nzXl="10">
+                              Mã nội dung
+                            </div>
+                            <div nz-col nzXs="14" nzSm="14" nzMd="14" nzLg="14" nzXl="14">
+                              Nội dung
+                            </div>
+                          </div>
+                        </li>
+                        <li nz-menu-item *ngFor="let item of danhSachTruongTronsHD" (click)="selectTruongTron(item)">
+                          <div nz-row>
+                            <div title="{{item?.tenTruong}}" nz-col nzXs="10" nzSm="10" nzMd="10" nzLg="10" nzXl="10">
+                              <div class="text-ellipsis">{{item?.tenTruong}}</div>
+                            </div>
+                            <div title="{{item?.tenHienThi}}" nz-col nzXs="14" nzSm="14" nzMd="14" nzLg="14" nzXl="14">
+                              <div class="text-ellipsis">{{item?.tenHienThi}}</div>
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
+                    </nz-dropdown-menu>
+                  </button>
+                </nz-form-control>
+              </nz-form-item>
+
+              <nz-form-item style="margin: 5px 0;">
+                <nz-form-control [nzSm]="24" [nzXs]="24">
+                  <div class="noiDungEmail">
+                    <ckeditor *ngIf="selectedTab === listTenQuyens.indexOf('EmailGuiHoaDon')"
+                      [disabled]="(permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0) || isEmailMacDinh"
+                      #ckEditor [config]="config" [(ngModel)]="noiDungEmail" [ngModelOptions]="{standalone: true}"
+                      (change)="changeNoiDungEmail($event)" (focus)="isFocusCKEditor = true"
+                      (blur)="isFocusCKEditor = false">
+                    </ckeditor>
+                  </div>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+          </div>
+        </nz-tab>
+
+        <!-- <nz-tab nzTitle="Email gửi phiếu xuất kho" (nzSelect)="selectTuyChon(7)"
+          *ngIf="permission == true || (listTenQuyens && listTenQuyens.indexOf('EmailGuiPhieuXuatKho') >= 0)">
+          <div
+            style="overflow-y: none; max-height: calc(100vh - 180px)!important; padding: 5px; margin: -7px -7px 7px -7px;">
+            <div nz-row class="card-content" style="height: calc(100vh - 180px)!important;">
+              <div nz-row class="title">Nội dung email gửi phiếu xuất kho</div>
+              <div style="display: flex;">
+                <div style="flex: 1;">cc</div>
+                <div style=""></div>
+              </div>
+
+              <nz-form-item style="margin: 5px 0;">
+                <nz-form-label [nzSm]="3" [nzXs]="24" nzFor="loaiEmail" title="Loại email">Loại email
+                </nz-form-label>
+                <nz-form-control [nzSm]="14" [nzXs]="24">
+                  <nz-select style="width: 100%" style="width: 100%" nzSize="small" nzShowSearch
+                    formControlName="loaiEmailPXK" title="Loại email" (ngModelChange)="changeLoaiEmailPXK($event)">
+                    <nz-option nzCustomContent *ngFor="let item of loaiEmailPXKs" [nzLabel]="item.ten"
+                      [nzValue]="item.id">
+                      <div class="justify-content-wrap">{{item.ten}}</div>
+                    </nz-option>
+                  </nz-select>
+                </nz-form-control>
+
+                <nz-form-control [nzSm]="4" [nzXs]="24" style="text-align: right;">
+                  <button style="width: 98%"
+                    [disabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0 || isEmailPXKMacDinh"
+                    nzSize="small" nz-button nzType="default" (click)="getDefaultEmailPXK()"
+                    [class.blueButton]="!(permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0 || isEmailPXKMacDinh)"
+                    [class.disable-button-state-v3]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0 || isEmailPXKMacDinh">
+                    <i nz-icon nzType="rollback" nzTheme="outline"></i>&nbsp;Lấy lại mẫu email mặc định
+                  </button>
+                </nz-form-control>
+
+                <nz-form-control [nzSm]="3" [nzXs]="24" style="text-align: right;">
+                  <button style="width: 98%" [nzDisabled]="(permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0)"
+                    nzSize="small" nz-button nzType="default" (click)="getDefaultEmail()" nz-dropdown
+                    [nzDropdownMenu]="menuThemTruongTron" [nzClickHide]="false" nzPlacement="bottomRight"
+                    [class.blueButton]="!((permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0))"
+                    [class.disabled-button-state-v3]="(permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0)">
+                    <i nz-icon nzType="select" nzTheme="outline"></i>Thêm nội dung<i nz-icon nzType="down"></i>
+                    <nz-dropdown-menu #menuThemTruongTron="nzDropdownMenu">
+                      <ul nz-menu style="overflow-y: scroll; height: 300px; min-width: 700px !important;">
+                        <li nz-menu-item class="menu-item-header">
+                          <div nz-row>
+                            <div nz-col nzXs="10" nzSm="10" nzMd="10" nzLg="10" nzXl="10">
+                              Mã nội dung
+                            </div>
+                            <div nz-col nzXs="14" nzSm="14" nzMd="14" nzLg="14" nzXl="14">
+                              Nội dung
+                            </div>
+                          </div>
+                        </li>
+                        <li nz-menu-item *ngFor="let item of danhSachTruongTronsPXK" (click)="selectTruongTron(item)">
+                          <div nz-row>
+                            <div title="{{item?.tenTruong}}" nz-col nzXs="10" nzSm="10" nzMd="10" nzLg="10" nzXl="10">
+                              <div class="text-ellipsis">{{item?.tenTruong}}</div>
+                            </div>
+                            <div title="{{item?.tenHienThi}}" nz-col nzXs="14" nzSm="14" nzMd="14" nzLg="14" nzXl="14">
+                              <div class="text-ellipsis">{{item?.tenHienThi}}</div>
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
+                    </nz-dropdown-menu>
+                  </button>
+                </nz-form-control>
+              </nz-form-item>
+
+              <nz-form-item style="margin: 5px 0;">
+                <nz-form-control [nzSm]="24" [nzXs]="24">
+                  <div class="noiDungEmail">
+                    <ckeditor *ngIf="selectedTab === listTenQuyens.indexOf('EmailGuiPhieuXuatKho')"
+                      [disabled]="(permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0) || isEmailPXKMacDinh"
+                      #ckEditorPXK [config]="configPXK" [(ngModel)]="noiDungEmailPXK"
+                      [ngModelOptions]="{standalone: true}" (change)="changeNoiDungEmailPXK($event)"
+                      (focus)="isFocusCKEditorPXK = true" (blur)="isFocusCKEditorPXK = false">
+                    </ckeditor>
+                  </div>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+          </div>
+        </nz-tab> -->
+      </nz-tabset>
+    </div>
+
+    <!-- <ng-template #tplFooter>
+      <div style="padding-right: 4px!important;">
+        <button [disabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0" nzSize="small" nz-button
+          nzType="default" (click)="saveChangesTplModal()" style="float: none;" class="button-agree">
+          <i nz-icon nzTheme="outline"></i>Xác nhận
+        </button>
+
+        <button nzSize="small" nz-button nzType="default" (click)="destroyTplModal()" class="button-cancel">
+          <i nz-icon nzTheme="outline"></i>Hủy
+        </button>
+      </div>
+    </ng-template> -->
+
+    <div nz-row
+      style="padding-right: 4px!important; border-top: solid 1px #d1d1d1; padding-top: 5px; padding-bottom: 5px;">
+      <!-- Ghi chú: viết code html để 2 nút xác nhận như này để nó ko bị giật/nháy chiều rộng của nút khi có thao tác như vậy xuất hiện,
+        nên không dùng [ngClass] và [disabled] theo điều kiện ở đây
+      -->
+      <div nz-col nzSpan="18">
+        <span *ngIf="note && note != ''"
+          style="margin-left: 2px;padding: 2px!important; background: #ec7d31!important;display: flex; justify-content: flex-start; align-items: center!important;box-shadow: 2px 2px #d1d1d1;">
+          <i nz-icon nzType="exclamation-circle" nzTheme="twotone" nzTwotoneColor="#ec7d31"
+            style="font-weight: bold;"></i>&nbsp;
+          <span style="color: #fff!important;" [innerHtml]="note"></span>
+        </span>
+      </div>
+      <div nz-col nzSpan="6" style="text-align: right;">
+        <button [disabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0 || isEmailMacDinh" nzSize="small"
+          *ngIf="selectedTab == 3 && emailTab == 1" style="margin-right: 4px;" nz-button nzType="default"
+          (click)="getDefaultEmail()"
+          [class.blueButton]="!(permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0 || isEmailMacDinh)">
+          <i nz-icon nzType="select" nzTheme="outline"></i>Lấy lại mẫu email mặc định
+        </button>
+        <button nzSize="small" style="margin-right: 4px!important; float:right" nz-button nzType="default"
+          (click)="saveChanges()" class="button-agree" *ngIf="mainForm.dirty || changeChuKySo == true"><i nz-icon
+            nzType="check" nzTheme="outline"></i>Xác nhận</button>
+
+        <button nzSize="small" style="margin-right: 4px!important; float:right" nz-button nzType="default"
+          [disabled]="true" class="disabled-button-state-v2" *ngIf="!mainForm.dirty && changeChuKySo == false"><i
+            nz-icon nzType="check" nzTheme="outline"></i>Xác nhận</button>
+      </div>
+    </div>
+  </form>
+</nz-spin>

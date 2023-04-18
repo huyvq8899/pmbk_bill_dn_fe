@@ -1,0 +1,52 @@
+:host {
+    /* background: #f5f5f5; */
+    overflow: hidden;
+    /* padding: 24px; */
+    display: block;
+}
+
+.card-container ::ng-deep .ant-tabs-card .ant-tabs-content {
+    /* height: 120px; */
+    margin-top: -16px;
+}
+
+.card-container ::ng-deep .ant-tabs-card .ant-tabs-content .ant-tabs-tabpane {
+    background: #fff;
+    padding-top: 5px;
+}
+
+.card-container ::ng-deep .ant-tabs-card .ant-tabs-bar {
+    border-color: #fff;
+}
+
+.card-container ::ng-deep .ant-tabs-card .ant-tabs-bar .ant-tabs-tab {
+    border-color: transparent;
+    background: transparent;
+}
+
+.card-container ::ng-deep .ant-tabs-card .ant-tabs-bar .ant-tabs-tab-active {
+    border-color: #fff;
+    background: #fff;
+}
+
+ :host ::ng-deep .ant-tabs-extra-content {
+    background: #F3F3F3;
+    line-height: 30px !important;
+}
+
+.soLuongHoaDonSaiSot {
+    cursor: pointer;
+    font-weight: bold;
+    margin-right: 5px;
+    border: 1px solid black;
+    border-radius: 15px;
+    padding: 4px 10px
+}
+
+.soLuongHoaDonSaiSot:hover {
+    color: #1877f2;
+    border: 1px solid #1877f2;
+    span {
+        color: #1877f2 !important;
+    }
+}

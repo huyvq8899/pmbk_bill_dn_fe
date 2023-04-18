@@ -1,0 +1,701 @@
+<nz-spin [nzSpinning]="spinning">
+    <div nz-row id="backgroundLayout">
+        <div nz-row style="margin-left: 118px !important; margin-right: 120px!important; float:inline-start">
+            <div nz-row>
+                <div nz-col nzSpan="16">
+                    <button style="margin: 2px;" nz-button nzSize="small" (click)="export()" class="blueButton disabled-button-state-v2" [disabled]="(permission != true  && thaoTacs.indexOf('MNG_FULL') < 0 && thaoTacs.indexOf('MNG_EXPORT') < 0) || isSigned === false || dTKhai == null">
+            <i nz-icon nzType="vertical-align-bottom" nzTheme="outline"></i>Xuất khẩu<i nz-icon nzType="down"></i>
+          </button>
+                    <!-- <nz-dropdown-menu #menuXuatKhau="nzDropdownMenu">
+            <ul nz-menu>
+              <li nz-menu-item (click) = "downloadFile('pdf')">
+                <img src="../../../../../../assets/pdf.png" width="15" height="15" />&nbsp;<span>PDF</span>
+              </li>
+              <li nz-menu-item (click) = "downloadFile('docx')">
+                <img src="../../../../../../assets/docx.png" width="15" height="15" />&nbsp;<span>DOCX</span>
+              </li>
+              <li nz-menu-item (click) = "downloadFile('xml')">
+                <img src="../../../../../../assets/xml.png" width="15" height="15" />&nbsp;<span>XML (chưa ký)</span>
+              </li>
+              <li nz-menu-item (click) = "downloadFile('xml', true)" *ngIf = "dTKhai && this.dTKhai.fileXMLDaKy != null">
+                <img src="../../../../../../assets/xml.png" width="15" height="15" />&nbsp;<span>XML (đã ký)</span>
+              </li>
+            </ul>
+          </nz-dropdown-menu> -->
+                    <button style="margin: 2px;" nzSize="small" *ngIf="isSigned == false" [disabled]="(permission != true  && thaoTacs.indexOf('MNG_FULL') < 0 && thaoTacs.indexOf('MNG_SEND') < 0) || isSigned == true || isSaved == false || autoSign == true" nz-button nzType="default"
+                        (click)="eSign()" class="button-cancel disabled-button-state-v2 ">
+                        <span class="material-icons-outlined" style="transform: rotate(315deg);">send</span>&nbsp;Ký và Gửi
+          </button>
+                </div>
+                <div nz-col nzSpan="8" style="text-align: right;">
+                    <button style="margin: 2px;" nzSize="small" nz-button nz-tooltip nzTooltipTitle="F8" nzType="default" (click)="onEditClick()" *ngIf="isSigned == false" [disabled]="(permission != true  && thaoTacs.indexOf('MNG_FULL') < 0 && thaoTacs.indexOf('MNG_UPDATE') < 0) || isSaved == false || (dTKhai && dTKhai.signedStatus == true) || autoSign == true"
+                        class="blueButton disabled-button-state-v2">
+            <i nz-icon nzSize="small" nzType="edit" nzTheme="outline"></i>Sửa
+          </button>
+                    <button style="margin: 2px;" nzSize="small" nz-button nz-tooltip nzTooltipTitle="F9" nzType="default" (click)="onDeleteClick()" *ngIf="isSigned == false" [disabled]="(permission != true  && thaoTacs.indexOf('MNG_FULL') < 0 && thaoTacs.indexOf('MNG_DELETE') < 0) || isSaved == false || (dTKhai && dTKhai.signedStatus == true) || autoSign == true"
+                        class="button-cancel disabled-button-state-v2">
+            <i nz-icon nzSize="small" nzType="delete" nzTheme="outline"></i>Xóa
+          </button>
+                    <button style="margin: 2px;" nzSize="small" nz-button nz-tooltip nzTooltipTitle="Alt + S" nzType="default" (click)="submitForm()" *ngIf="isSigned == false" [disabled]="(!isAddNew && permission != true  && thaoTacs.indexOf('MNG_FULL') < 0 && thaoTacs.indexOf('MNG_UPDATE') < 0 && thaoTacs.indexOf('MNG_CREATE') < 0) || isSaved == true || (dTKhai && dTKhai.signedStatus == true) || autoSign == true"
+                        class="disabled-button-state-v2 greenButton">
+            <i nz-icon nzSize="small" nzType="save" nzTheme="outline"></i>Lưu
+          </button>
+                    <button style="margin: 2px 0px 2px 2px;" nz-button nzType="default" class="button-cancel disabled-button-state-v2" nz-tooltip nzTooltipTitle="ESC" (click)="destroyModal()" nzSize="small"><i nz-icon nzSize="small" nzType="close"></i>Đóng</button>
+                </div>
+            </div>
+        </div>
+
+        <div nz-row id="layoutContent">
+            <div style="margin-top: 5px">
+                <h1 style="text-align: center;text-transform: uppercase;"><strong>Cộng hòa xã hội chủ nghĩa Việt Nam</strong></h1>
+                <h2 style="text-align: center;"><strong>Độc lập - Tự do - Hạnh phúc</strong></h2>
+                <span style="padding: 5px 15px; border: #E5E5E5 solid 1px; position: absolute; z-index: 10; right: 60px; top: 5px">Mẫu số 01/ĐKTĐ-HĐĐT</span>
+            </div>
+            <h3 style="text-align: center; margin-top: -5px; display: block;"><strong>_____________________</strong></h3>
+            <h1 style="text-align: center;text-transform: uppercase; margin-bottom: 5px; display: block;"><strong>TỜ KHAI</strong></h1>
+            <h3 style="text-align: center; margin-bottom: 5px; display: block;"><strong>Đăng ký/thay đổi thông tin sử dụng dịch vụ hóa đơn điện tử  </strong></h3>
+            <h3 style="text-align: center; margin-top: -5px; display: block;"><strong>_____________________</strong></h3>
+
+            <div nz-row style="margin-top: 5px; text-align: center;">
+                <nz-radio-group [(ngModel)]="isThemMoi" nzDisabled [ngClass]="{'notOpacityRadio': 1 == 1}">
+                    <label nz-radio [nzValue]="true">Đăng ký mới</label>
+                    <label nz-radio [nzValue]="false">Thay đổi thông tin</label>
+                </nz-radio-group>
+            </div>
+
+            <div nz-row id="formLayout">
+                <form nz-form [formGroup]="mainForm" *ngIf="mainForm">
+                    <div nz-row class="inner-content">
+                        <nz-form-item>
+                            <nz-form-label class="title-form" [nzSm]="4" [nzXs]="24" [nzNoColon]="true" nzFor="tNNT" title="Tên người nộp thuế">Tên người nộp thuế:
+                            </nz-form-label>
+                            <nz-form-control [nzSm]="20" [nzXs]="24" [nzErrorTip]="errorTNNT">
+                                <input nzSize="small" nz-input formControlName="tNNT" id="tNNT" />
+                                <ng-template #errorTNNT let-control>
+                                    <ng-container *ngIf="control.hasError('required')">
+                                        <div class="tooltip-error" style="color: red;">&lt;Tên người nộp thuế&gt; không được để trống.</div>
+                                    </ng-container>
+                                </ng-template>
+                            </nz-form-control>
+                        </nz-form-item>
+
+                        <nz-form-item>
+                            <nz-form-label class="title-form" [nzSm]="4" [nzXs]="24" [nzNoColon]="true" nzFor="mST" title="Mã số thuế">Mã số thuế:
+                            </nz-form-label>
+                            <nz-form-control [nzSm]="20" [nzXs]="24" [nzErrorTip]="errorMST">
+                                <input nzSize="small" nz-input formControlName="mST" id="mST" />
+                                <ng-template #errorMST let-control>
+                                    <ng-container *ngIf="control.hasError('required')">
+                                        <div class="tooltip-error" style="color: red;">&lt;Mã số thuế&gt; không được để trống.</div>
+                                    </ng-container>
+                                    <ng-container *ngIf="!control.hasError('required') && control.hasError('invalid')">
+                                        <div class="tooltip-error" style="color: red;">Mã số thuế hợp lệ là: 1-Để trống; 2-Số ký tự của MST bằng 10 hoặc bằng 14</div>
+                                    </ng-container>
+                                    <ng-container *ngIf="!control.hasError('required') && !control.hasError('invalid') && control.hasError('invalidLength')">
+                                        <div class="tooltip-error" style="color: red;">Mã số thuế phải nhỏ hơn 15 ký tự</div>
+                                    </ng-container>
+                                </ng-template>
+                            </nz-form-control>
+                        </nz-form-item>
+
+                        <nz-form-item>
+                            <nz-form-label class="title-form" [nzSm]="4" [nzXs]="24" [nzNoColon]="true" nzFor="mCQTQLy" title="Cơ quan thuế quản lý">Cơ quan thuế quản lý:
+                            </nz-form-label>
+                            <nz-form-control [ngClass]="{'hidden':(this.tenCQTQLy === null || this.tenCQTQLy === '')}" [nzSm]="20" [nzXs]="24">
+                                <input style="width: 100%;" nz-input nzSize="small" type="text" formControlName="mCQTQLyInput" readonly style="background-color: #F2F2F2" />
+                            </nz-form-control>
+                            <!-- <nz-form-control [ngClass]="{'hidden':(this.tenCQTQLy !== null || this.tenCQTQLy !== '')}" [nzSm]="20" [nzXs]="24" [nzErrorTip]="errorCoQuanThueQuanLy">
+                                <nz-select nzSize="small" nzShowSearch formControlName="mCQTQLy" tooltipInput>
+                                    <nz-option *ngFor="let item of coQuanThueQuanLys" [nzLabel]="item?.name" [nzValue]="item?.code">
+                                    </nz-option>
+                                </nz-select>
+                                <ng-template #errorCoQuanThueQuanLy let-control>
+                                    <ng-container *ngIf="control.hasError('required')">
+                                        <div class="tooltip-error" style="color: red;">&lt;Cơ quan thuế&gt; không được để trống.</div>
+                                    </ng-container>
+                                </ng-template>
+                            </nz-form-control> -->
+                        </nz-form-item>
+
+                        <nz-form-item>
+                            <nz-form-label class="title-form" [nzSm]="4" [nzXs]="24" [nzNoColon]="true" nzFor="nLHe" title="Người liên hệ">Người liên hệ:
+                            </nz-form-label>
+                            <nz-form-control [nzSm]="8" [nzXs]="24" [nzErrorTip]="errorNLH">
+                                <input nzSize="small" (ngModelChange)="blur('nLHe')" nz-input formControlName="nLHe" id="nLHe" placeholder="{{hoSoHDDT.hoTenNguoiDaiDienPhapLuat}}" />
+                                <ng-template #errorNLH let-control>
+                                    <ng-container *ngIf="control.hasError('required')">
+                                        <div class="tooltip-error"><b>Người liên hệ</b> không được để trống.</div>
+                                    </ng-container>
+                                    <ng-container *ngIf="!control.hasError('required') && control.hasError('maxlength')">
+                                        <div class="tooltip-error"><b>Người liên hệ</b> không nhập quá 50 ký tự.</div>
+                                    </ng-container>
+                                </ng-template>
+                            </nz-form-control>
+                            <nz-form-label class="title-form" [nzSm]="1" [nzXs]="24" [nzNoColon]="true">
+                            </nz-form-label>
+                            <nz-form-label class="title-form" [nzSm]="3" [nzXs]="24" [nzNoColon]="true" nzFor="dTLHe" title="Điện thoại liên hệ">Điện thoại liên hệ:
+                            </nz-form-label>
+                            <nz-form-control [nzSm]="8" [nzXs]="24" [nzErrorTip]="errorDTLH">
+                                <input (ngModelChange)="blur('dTLHe')" nzSize="small" nz-input formControlName="dTLHe" id="dTLHe" placeholder="{{hoSoHDDT.soDienThoaiLienHe}}" />
+                                <ng-template #errorDTLH let-control>
+                                    <ng-container *ngIf="control.hasError('required')">
+                                        <div class="tooltip-error"><b>Điện thoại liên hệ</b> không được để trống.</div>
+                                    </ng-container>
+                                    <ng-container *ngIf="!control.hasError('required') && control.hasError('invalid')">
+                                        <div class="tooltip-error"><b>Điện thoại liên hệ</b> đã nhập không hợp lệ.</div>
+                                    </ng-container>
+                                    <ng-container *ngIf="!control.hasError('required') && !control.hasError('invalid') && control.hasError('maxlength')">
+                                        <div class="tooltip-error"><b>Điện thoại liên hệ</b> phải nhỏ hơn 20 ký tự.</div>
+                                    </ng-container>
+                                </ng-template>
+                            </nz-form-control>
+                        </nz-form-item>
+
+                        <nz-form-item>
+                            <nz-form-label class="title-form" [nzSm]="4" [nzXs]="24" [nzNoColon]="true" nzFor="dCLHe" title="Địa chỉ liên hệ">Địa chỉ liên hệ:
+                            </nz-form-label>
+                            <nz-form-control [nzSm]="8" [nzXs]="24" [nzErrorTip]="errorDCLH">
+                                <input (ngModelChange)="blur('dCLHe')" nzSize="small" nz-input formControlName="dCLHe" id="dCLHe" placeholder="{{hoSoHDDT.diaChi}}" />
+                                <ng-template #errorDCLH let-control>
+                                    <ng-container *ngIf="control.hasError('required')">
+                                        <div class="tooltip-error"><b>Địa chỉ liên hệ</b> không được để trống.</div>
+                                    </ng-container>
+                                    <ng-container *ngIf="!control.hasError('required') && control.hasError('maxlength')">
+                                        <div class="tooltip-error"><b>Địa chỉ liên hệ</b> không nhập quá 400 ký tự.</div>
+                                    </ng-container>
+                                </ng-template>
+                            </nz-form-control>
+                            <nz-form-label class="title-form" [nzSm]="1" [nzXs]="24" [nzNoColon]="true">
+                            </nz-form-label>
+                            <nz-form-label class="title-form" [nzSm]="3" [nzXs]="24" [nzNoColon]="true" nzFor="dCTDTu" title="Thư điện tử">Địa chỉ thư điện tử:
+                            </nz-form-label>
+                            <nz-form-control [nzSm]="8" [nzXs]="24" [nzErrorTip]="errorEmail">
+                                <input (ngModelChange)="blur('dCTDTu')" nzSize="small" placeholder='Mỗi email cách nhau bởi dấu ";"' nz-input formControlName="dCTDTu" id="dCTDTu" placeholder="{{hoSoHDDT.emailLienHe}}" />
+                                <ng-template #errorEmail let-control>
+                                    <ng-container *ngIf="control.hasError('required')">
+                                        <div class="tooltip-error"><b>Email</b> không được để trống.</div>
+                                    </ng-container>
+                                    <ng-container *ngIf="!control.hasError('required') && control.hasError('invalid')">
+                                        <div class="tooltip-error"><b>Email</b> không hợp lệ. Mỗi email cách nhau bởi dấu ";"</div>
+                                    </ng-container>
+                                    <ng-container *ngIf="!control.hasError('required') && !control.hasError('invalid') && control.hasError('maxlength')">
+                                        <div class="tooltip-error"><b>Email</b> không quá 50 ký tự</div>
+                                    </ng-container>
+                                </ng-template>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-row class="inner-content">
+                        <p>{{nghiDinh}}</p>
+                    </div>
+                    <div nz-row class="inner-content">
+                        <div nz-row>
+                            <div nz-row style="margin-top: 5px; margin-left: 2px;">
+                                <span style="font-weight: bold; margin-left: 2px; margin-bottom: 4px;">1. Hình thức hóa đơn</span>
+                                <div nz-row style="margin-top: 4px;">
+                                    <div nz-col nzSpan="8">
+                                        <nz-form-item>
+                                            <nz-form-control [nzSm]="24" [nzXs]="24">
+                                                <label [disabled]="nhanUyNhiem == true" nz-checkbox
+                                                    (ngModelChange)="changeCMa($event)" formControlName="cMa">Có mã của
+                                                    cơ quan thuế</label>
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                    </div>
+                                    <div nz-col nzSpan="8">
+                                        <nz-form-item>
+                                            <nz-form-control [nzSm]="24" [nzXs]="24">
+                                                <label [disabled]="nhanUyNhiem == true" nz-checkbox
+                                                     formControlName="cmtmtTien">Có mã của cơ quan thuế khởi tạo từ máy tính tiền
+                                                    <i  nz-icon class="info-circle" [nzTheme]="'fill'"
+                                                    nzType="info-circle"
+                                                    nzTooltipTitle='Người nộp thuế có ngành nghề kinh doanh thuộc đối tượng sử dụng hóa đơn điện tử khởi tạo từ máy tính tiền (có hoạt động cung cấp hàng hóa,
+                                                    dịch vụ trực tiếp đến người tiêu dùng theo mô hình kinh doanh: trung tâm thương mại; siêu thị; bán lẻ hàng tiêu dùng; ăn uống; nhà hàng; khách sạn;
+                                                    bán lẻ thuốc tân dược; dịch vụ vui chơi, giải trí và các dịch vụ khác).
+                                                    '
+                                                    nzTooltipPlacement="top" nz-tooltip></i>
+                                                </label>
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                    </div>
+                                    <div nz-col nzSpan="8">
+                                        <nz-form-item>
+                                            <nz-form-control [nzSm]="24" [nzXs]="24">
+                                                <label [disabled]="nhanUyNhiem == true" nz-checkbox
+                                                    (ngModelChange)="changeKCMa($event)" formControlName="kCMa">Không có
+                                                    mã của cơ quan thuế</label>
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div *ngIf="nhanUyNhiem == true" nz-row style="margin-top: 1px; margin-left: 2px;">
+                                <span style="font-weight: bold; font-style: italic; color:#1877f2; margin-left: 2px"><i nz-icon class="info-circle" [nzTheme]="'fill'" nzType="info-circle"></i>
+                  Trường hợp Ủy nhiệm lập hóa đơn thì không điền thông tin tại mục 1 “Hình thức hóa đơn”
+                </span>
+                            </div>
+                        </div>
+
+                        <div nz-row>
+                            <div nz-row style="margin-top: 5px; margin-left: 2px;">
+                                <span style="font-weight: bold; margin-left: 2px; margin-bottom: 4px;">2. Hình thức gửi dữ liệu hóa đơn điện tử</span>
+                                <div nz-row style="margin-top: 5px; margin-left: 2px;">
+                                    <span style="font-weight: bold; margin-left: 2px; margin-bottom: 4px;">a. Trường hợp sử dụng hóa đơn điện tử có mã không phải trả tiền dịch vụ theo khoản 1 Điều 14 của Nghị định:</span>
+                                    <div nz-row style="margin-top: 2px;">
+                                        <nz-form-item>
+                                            <!-- <nz-form-control [nzSm]="24" [nzXs]="24">
+                                                <label (ngModelChange)="changeKKhan($event)" [disabled]="nhanUyNhiem == true" nz-checkbox formControlName="nNTDBKKhan">Doanh nghiệp nhỏ và vừa, hợp tác xã, hộ, cá nhân kinh doanh tại địa bàn có điều kiện kinh tế xã hội khó khăn, địa bàn có điều kiện kinh tế xã hội đặc biệt khó khăn</label>
+                                            </nz-form-control> -->
+                                            <nz-form-control [nzSm]="24" [nzXs]="24">
+                                                <label [disabled]="nhanUyNhiem == true" nz-checkbox formControlName="nNTDBKKhan">Doanh nghiệp nhỏ và vừa, hợp tác xã, hộ, cá nhân kinh doanh tại địa bàn có điều kiện kinh tế xã hội khó khăn, địa bàn có điều kiện kinh tế xã hội đặc biệt khó khăn</label>
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                        <nz-form-item>
+                                            <!-- <nz-form-control [nzSm]="24" [nzXs]="24">
+                                                <label (ngModelChange)="changeUBND($event)" [disabled]="nhanUyNhiem == true" nz-checkbox formControlName="nNTKTDNUBND">Doanh nghiệp nhỏ và vừa khác theo đề nghị của Ủy ban nhân dân tỉnh, thành phố trực thuộc trung ương gửi Bộ Tài chính trừ doanh nghiệp hoạt động tại các khu kinh tế, khu công nghiệp, khu công nghệ cao</label>
+                                            </nz-form-control> -->
+                                            <nz-form-control [nzSm]="24" [nzXs]="24">
+                                                <label  [disabled]="nhanUyNhiem == true" nz-checkbox formControlName="nNTKTDNUBND">Doanh nghiệp nhỏ và vừa khác theo đề nghị của Ủy ban nhân dân tỉnh, thành phố trực thuộc trung ương gửi Bộ Tài chính trừ doanh nghiệp hoạt động tại các khu kinh tế, khu công nghiệp, khu công nghệ cao</label>
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                    </div>
+                                </div>
+                                <div nz-row style="margin-top: 5px; margin-left: 2px;">
+                                    <span style="font-weight: bold; margin-left: 2px; margin-bottom: 4px;">b. Trường hợp sử dụng hóa đơn không có mã của cơ quan thuế</span>
+                                    <div nz-row style="margin-top: 2px;">
+                                        <nz-form-item>
+                                            <nz-form-control [nzSm]="24" [nzXs]="24">
+                                                <label (ngModelChange)="changeCDLDCQT($event)" nzDisabled nz-checkbox formControlName="cDLTTDCQT">Chuyển dữ liệu hóa đơn điện tử trực tiếp đến cơ quan thuế (điểm b1, khoản 3, Điều 22 của Nghị định)
+                          <i *ngIf="nhanUyNhiem == false" nz-icon class="info-circle"[nzTheme]="'fill'" nzType="info-circle" nzTooltipTitle="Trường hợp doanh nghiệp là tổ chức kết nối chuyển dữ liệu hóa đơn điện tử theo hình thức gửi trực tiếp đến cơ quan thuế thì đăng ký sử dụng hóa đơn điện tử thông qua Cổng thông tin điện tử của Tổng cục Thuế (khoản 1, Điều 15 của Nghị định)"
+                            nzTooltipPlacement="rightTop" nz-tooltip>
+                          </i>
+                        </label>
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                        <nz-form-item>
+                                            <nz-form-control [nzSm]="24" [nzXs]="24">
+                                                <label (ngModelChange)="changeCDLQTCTN($event)" [disabled]="nhanUyNhiem == true" nz-checkbox formControlName="cDLQTCTN">Thông qua tổ chức cung cấp dịch vụ hóa đơn điện tử (điểm b2, khoản 3, Điều 22 của Nghị định)</label>
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div *ngIf="nhanUyNhiem == true" nz-row style="margin-top: 1px; margin-left: 2px;">
+                                <span style="font-weight: bold; font-style: italic; color:#1877f2; margin-left: 2px"><i nz-icon class="info-circle" [nzTheme]="'fill'" nzType="info-circle"></i>
+                  Trường hợp Ủy nhiệm lập hóa đơn thì không điền thông tin tại mục 2 “Hình thức gửi dữ liệu hóa đơn điện tử”
+                </span>
+                            </div>
+                        </div>
+
+                        <div nz-row>
+                            <div nz-row style="margin-top: 5px; margin-left: 2px;">
+                                <span style="font-weight: bold; margin-left: 2px; margin-bottom: 4px;">3. Phương thức chuyển dữ liệu hóa đơn điện tử</span>
+                                <div nz-row style="margin-top: 4px;">
+                                    <div nz-col nzSpan="12">
+                                        <nz-form-item>
+                                            <nz-form-control [nzSm]="24" [nzXs]="24">
+                                                <label [disabled]="nhanUyNhiem == true" nz-checkbox formControlName="cDDu" (ngModelChange)="changeCDDu($event)">Chuyển đầy đủ nội dung từng hóa đơn
+                          <i *ngIf="nhanUyNhiem == false" nz-icon class="info-circle" [nzTheme]="'fill'" nzType="info-circle" [nzTooltipTitle]="titleCDDu"
+                            nzTooltipPlacement="rightTop" nz-tooltip>
+                          </i>
+                          <ng-template #titleCDDu>
+                            <div>
+                              Chuyển đầy đủ nội dung hóa đơn áp dụng đối với trường hợp bán hàng hóa, cung cấp dịch vụ không thuộc quy định tại điểm a1, khoản 3, Điều 22 của Nghị định.
+                              <br>Người bán sau khi lập đầy đủ các nội dung trên hóa đơn gửi hóa đơn cho người mua và đồng thời gửi hóa đơn cho cơ quan thuế.
+                            </div>
+                          </ng-template>
+                        </label>
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                    </div>
+                                    <div nz-col nzSpan="12">
+                                        <nz-form-item>
+                                            <nz-form-control [nzSm]="24" [nzXs]="24">
+                                                <label [disabled]="nhanUyNhiem == true" nz-checkbox formControlName="cBTHop" (ngModelChange)="changeCBTHop($event)">Chuyển theo bảng tổng hợp dữ liệu hóa đơn điện tử (điểm a1, khoản 3, Điều 22 của Nghị định)
+                          <i *ngIf="nhanUyNhiem == false" nz-icon class="info-circle" [nzTheme]="'fill'" nzType="info-circle" [nzTooltipTitle]="titleCBTH"
+                            nzTooltipPlacement="rightTop" nz-tooltip>
+                          </i>
+                          <ng-template #titleCBTH>
+                            <div>
+                              Chuyển dữ liệu hóa đơn điện tử cùng thời hạn nộp hồ sơ khai thuế giá trị gia tăng áp dụng đối với các trường hợp sau:
+                              <br>&nbsp;- Cung cấp dịch vụ thuộc lĩnh vực: bưu chính viễn thông, bảo hiểm, tài chính ngân hàng, vận tải hàng không, chứng khoán.
+                              <br>&nbsp;- Bán hàng hóa là điện, nước sạch nếu có thông tin về mã khách hàng hoặc mã số thuế của khách hàng.
+                            </div>
+                          </ng-template>
+                        </label>
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div *ngIf="nhanUyNhiem == true" nz-row style="margin-top: 1px; margin-left: 2px;">
+                                <span style="font-weight: bold; font-style: italic; color:#1877f2; margin-left: 2px"><i nz-icon class="info-circle" [nzTheme]="'fill'" nzType="info-circle"></i>
+                  Trường hợp Ủy nhiệm lập hóa đơn thì không điền thông tin tại mục 3 “Phương thức chuyển dữ liệu hóa đơn điện tử”
+                </span>
+                            </div>
+                        </div>
+
+                        <div nz-row>
+                            <div nz-row style="margin-top: 5px; margin-left: 2px;">
+                                <span style="font-weight: bold; margin-left: 2px; margin-bottom: 4px;">4. Loại hóa đơn sử dụng</span>
+                                <div nz-row style="margin-top: 4px;">
+                                    <div nz-col nzSpan="12">
+                                        <nz-form-item>
+                                            <nz-form-control [nzSm]="24" [nzXs]="24">
+                                                <label [disabled]="nhanUyNhiem == true" nz-checkbox formControlName="hDGTGT">Hóa đơn GTGT
+                          <i *ngIf="nhanUyNhiem == false" nz-icon class="info-circle" nzType="info-circle" [nzTheme]="'fill'" [nzTooltipTitle]="titleGTGT"
+                            nzTooltipPlacement="rightTop" nz-tooltip>
+                          </i>
+                          <ng-template #titleGTGT>
+                            <div>
+                              Hóa đơn giá trị gia tăng là hóa đơn dành cho các tổ chức khai thuế giá trị gia tăng theo phương pháp khấu trừ sử dụng cho các hoạt động:
+                                <br>a) Bán hàng hoá, cung cấp dịch vụ trong nội địa;
+                                <br>b) Hoạt động vận tải quốc tế;
+                                <br>c) Xuất vào khu phi thuế quan và các trường hợp được coi như xuất khẩu;
+                                <br>d) Xuất khẩu hàng hóa, cung cấp dịch vụ ra nước ngoài
+                            </div>
+                          </ng-template>
+                        </label>
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                    </div>
+                                    <div nz-col nzSpan="12">
+                                        <nz-form-item>
+                                            <nz-form-control [nzSm]="24" [nzXs]="24">
+                                                <label [disabled]="nhanUyNhiem == true" nz-checkbox formControlName="hDBHang">Hóa đơn bán hàng
+                          <i *ngIf="nhanUyNhiem == false" nz-icon class="info-circle" nzType="info-circle" [nzTheme]="'fill'" [nzTooltipTitle]="titleBHang"
+                            nzTooltipPlacement="rightTop" nz-tooltip>
+                          </i>
+                          <ng-template #titleBHang>
+                            <div>
+                              Hóa đơn bán hàng là hóa đơn dành cho các tổ chức, cá nhân như sau:
+                              <br>a) Tổ chức, cá nhân khai, tính thuế giá trị gia tăng theo phương pháp trực tiếp sử dụng cho các hoạt động:
+                              <br>&nbsp;- Bán hàng hoá, cung cấp dịch vụ trong nội địa;
+                              <br>&nbsp;- Hoạt động vận tải quốc tế;
+                              <br>&nbsp;- Xuất vào khu phi thuế quan và các trường hợp được coi như xuất khẩu;
+                              <br>&nbsp;- Xuất khẩu hàng hóa, cung cấp dịch vụ ra nước ngoài.
+                              <br>b) Tổ chức, cá nhân trong khu phi thuế quan khi bán hàng hoá, cung cấp dịch vụ vào nội địa và khi bán hàng hoá, cung ứng dịch vụ giữa các tổ chức, cá nhân trong khu phi thuế quan với nhau, xuất khẩu hàng hóa, cung cấp dịch vụ ra nước ngoài, trên hóa đơn ghi rõ “Dành cho tổ chức, cá nhân trong khu phi thuế quan”.
+                            </div>
+                          </ng-template>
+                        </label>
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                    </div>
+                                </div>
+
+                                <div nz-row style="margin-top: 2px;">
+                                    <div nz-col nzSpan="12">
+                                        <nz-form-item>
+                                            <nz-form-control [nzSm]="24" [nzXs]="24">
+                                                <label [disabled]="nhanUyNhiem == true" nz-checkbox formControlName="hDBTSCong" >Hóa đơn bán tài sản công
+                          <i *ngIf="nhanUyNhiem == false" nz-icon  [nzTheme]="'fill'" class="info-circle" nzType="info-circle" [nzTooltipTitle]="titleTSC"
+                            nzTooltipPlacement="rightTop" nz-tooltip>
+                          </i>
+                          <ng-template #titleTSC>
+                            <div>
+                              Hóa đơn điện tử bán tài sản công được sử dụng khi bán các tài sản sau:
+                              <br>a) Tài sản công tại cơ quan, tổ chức, đơn vị (bao gồm cả nhà ở thuộc sở hữu nhà nước);
+                              <br>b) Tài sản kết cấu hạ tầng;
+                              <br>c) Tài sản công được Nhà nước giao cho doanh nghiệp quản lý không tính thành phần vốn nhà nước tại doanh nghiệp;
+                              <br>d) Tài sản của dự án sử dụng vốn nhà nước;
+                              <br>đ) Tài sản được xác lập quyền sở hữu toàn dân;
+                              <br>e) Tài sản công bị thu hồi theo quyết định của cơ quan, người có thẩm quyền;
+                              <br>g) Vật tư, vật liệu thu hồi được từ việc xử lý tài sản công.
+                            </div>
+                          </ng-template>
+                        </label>
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                    </div>
+                                    <div nz-col nzSpan="12">
+                                        <nz-form-item>
+                                            <nz-form-control [nzSm]="24" [nzXs]="24">
+                                                <label [disabled]="nhanUyNhiem == true" nz-checkbox formControlName="hDBHDTQGia">Hóa đơn bán hàng dự trữ quốc gia
+                          <i *ngIf="nhanUyNhiem == false" nz-icon [nzTheme]="'fill'" class="info-circle" nzType="info-circle" [nzTooltipTitle]="titleDTQG"
+                            nzTooltipPlacement="rightTop" nz-tooltip>
+                          </i>
+                          <ng-template #titleDTQG>
+                            <div>
+                              Hóa đơn điện tử bán hàng dự trữ quốc gia được sử dụng khi các cơ quan, đơn vị thuộc hệ thống cơ quan dự trữ nhà nước bán hàng dự trữ quốc gia theo quy định của pháp luật.
+                            </div>
+                          </ng-template>
+                        </label>
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                    </div>
+                                </div>
+
+                                <div nz-row style="margin-top: 2px;">
+                                    <div nz-col nzSpan="12">
+                                        <nz-form-item>
+                                            <nz-form-control [nzSm]="24" [nzXs]="24">
+                                                <label [disabled]="nhanUyNhiem == true" nz-checkbox formControlName="hDKhac">Các loại hóa đơn khác
+                          <i *ngIf="nhanUyNhiem == false" nz-icon [nzTheme]="'fill'"  class="info-circle" nzType="info-circle" [nzTooltipTitle]="titleKhac"
+                            nzTooltipPlacement="rightTop" nz-tooltip>
+                          </i>
+                          <ng-template #titleKhac>
+                            <div>
+                              Các loại hóa đơn khác, gồm:
+                              <br>a) Tem, vé, thẻ;
+                              <br>b) Phiếu thu tiền cước vận chuyển hàng không; chứng từ thu cước phí vận tài quốc tế; chứng từ thu phí dịch vụ ngân hàng trừ trường hợp: tem, vé, thẻ có hình thức và nội dung được lập theo thông lệ quốc tế và các quy định của pháp luật có liên quan
+                            </div>
+                          </ng-template>
+                        </label>
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                    </div>
+                                    <div nz-col nzSpan="12">
+                                        <nz-form-item>
+                                            <nz-form-control [nzSm]="24" [nzXs]="24">
+                                                <label [disabled]="nhanUyNhiem == true" nz-checkbox formControlName="cTu">Các chứng từ được in, phát hành, sử dụng và quản lý như hóa đơn
+                          <i *ngIf="nhanUyNhiem == false" nz-icon [nzTheme]="'fill'" class="info-circle" nzType="info-circle" nzTooltipTitle="Các chứng từ được in, phát hành, sử dụng và quản lý như hóa đơn gồm phiếu xuất kho kiểm vận chuyển nội bộ, phiếu xuất kho hàng gửi bán đại lý.
+                          "
+                            nzTooltipPlacement="rightTop" nz-tooltip>
+                          </i>
+                        </label>
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="nhanUyNhiem == true" nz-row style="margin-top: 1px; margin-left: 2px;">
+                                <span style="font-weight: bold; font-style: italic; color:#1877f2; margin-left: 2px"><i nz-icon class="info-circle" [nzTheme]="'fill'" nzType="info-circle"></i>
+                  Trường hợp Ủy nhiệm lập hóa đơn thì không điền thông tin tại mục 4 “Loại hóa đơn sử dụng”
+                </span>
+                            </div>
+                        </div>
+
+                        <div nz-row>
+                            <div nz-row style="margin-top: 5px;">
+                                <span style="font-weight: bold; margin-left: 2px;">5. Danh sách chứng thư số sử dụng</span>
+                                <span style="float: right; margin-bottom: 2px; margin-right: 2px;"><button *ngIf="!isSigned && !autoSign" [disabled]="isSaved == true || disabledCTS == true || addCTS == true" [nzLoading]="addCTS" nz-button nzSize="small" (click)="chonCTS()" class="ant-btn-cus" [ngClass]="{'disabled-button-state-v2': isSaved == true || addCTS == true || disabledCTS, 'blueButton': !isSaved && !addCTS && !disabledCTS}" [title]="this.isKymem != true ? 'Kết nối USB Token với thiết bị trước khi thao tác' : ''"><i nz-icon nzType="usb" nzTheme="outline"></i>Chọn CTS</button></span>
+                                <span style="float: right; margin-bottom: 2px; margin-right: 2px;"><button *ngIf="!isSigned && !autoSign" [disabled]="isSaved == true" nz-button nzSize="small" (click)="layTuThongTinNNT()" class="ant-btn-cus" [ngClass]="{'disabled-button-state-v2': isSigned == true || isSaved == true || autoSign == true|| addCTS == true, 'filterDefaultButton': !isSigned  && !isSaved && !autoSign}"><i nz-icon nzType="select" nzTheme="outline"></i>Lấy từ thông tin người nộp thuế</button></span>
+                                <div nz-row style="margin: 2px;">
+                                    <nz-table [nzNoResult]="null" nzSize="small" nzBordered #basicTable nzShowPagination="false" [nzData]="this.mainForm.get('cTS').value" [nzWidthConfig]="widthConfigTabCTS" [nzScroll]="scrollConfigTabCTS">
+                                        <thead>
+                                            <tr>
+                                                <th rowspan="2" nzAlign="center" nzLeft="0px">
+                                                    <button nz-button nzType="default" type="button" nzSize="small" (click)="addItem()" class="circleButton" [disabled]="!fbEnableEdit"><i nz-icon nzType="plus" nzTheme="outline"></i></button>
+                                                </th>
+                                                <th rowspan="2" nzAlign="center" nzLeft="50px">STT</th>
+                                                <th rowspan="2" nzAlign="center">
+                                                    Tên tổ chức/cơ quan chứng thực/cấp/công nhận chữ ký số, chữ ký điện tử
+                                                </th>
+                                                <th rowspan="2" nzAlign="center">
+                                                    Số seri chứng thư
+                                                </th>
+                                                <th colspan="2" nzAlign="center">
+                                                    Thời hạn sử dụng chứng thư số
+                                                </th>
+                                                <th rowspan="2" nzAlign="center">
+                                                    Hình thức đăng ký (Thêm mới, gia hạn, ngừng sử dụng)
+                                                </th>
+                                            </tr>
+                                            <tr>
+                                                <th nzAlign="center">Từ ngày</th>
+                                                <th nzAlign="center">Đến ngày</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody formArrayName="cTS">
+                                            <tr *ngFor="let data of mainForm.get('cTS')['controls']; let i = index" [formGroupName]="i">
+                                                <td nzAlign="center" nzLeft="0px">
+                                                    <button nzSize="small" type="button" nz-button nzType="default" (click)="removeRow(i)" class="circleButtonRed" [disabled]="!fbEnableEdit"><i nz-icon nzType="minus"
+                              nzTheme="outline"></i></button>
+                                                </td>
+                                                <td nzAlign="center" nzLeft="50px">{{i+1}}</td>
+                                                <td nzAlign="center">
+                                                    <nz-form-item>
+                                                        <nz-form-control [nzSm]="24" [nzXs]="24" [nzErrorTip]="errorTTC">
+                                                            <input class="no-border" nz-input nzSize="small" formControlName="tTChuc" style="width: 100%;" (ngModelChange)="checkTrung(i); blurDetail(i, 'tTChuc')">
+                                                            <ng-template #errorTTC let-control>
+                                                                <ng-container *ngIf="control.hasError('required')">
+                                                                    <div class="tooltip-error"><b>Tên tổ chức</b> không được để trống.</div>
+                                                                </ng-container>
+                                                            </ng-template>
+                                                        </nz-form-control>
+                                                    </nz-form-item>
+                                                </td>
+                                                <td nzAlign="center">
+                                                    <nz-form-item>
+                                                        <nz-form-control [nzSm]="24" [nzXs]="24" [nzErrorTip]="errorSeri">
+                                                            <input class="no-border" nz-input nzSize="small" formControlName="seri" style="width: 100%;" (ngModelChange)="checkTrung(i); blurDetail(i, 'seri')">
+                                                            <ng-template #errorSeri let-control>
+                                                                <ng-container *ngIf="control.hasError('required')">
+                                                                    <div class="tooltip-error"><b>Seri</b> không được để trống.</div>
+                                                                </ng-container>
+                                                            </ng-template>
+                                                        </nz-form-control>
+                                                    </nz-form-item>
+                                                </td>
+                                                <td nzAlign="center">
+                                                    <nz-form-item>
+                                                        <nz-form-control [nzSm]="24" [nzXs]="24" [nzErrorTip]="errorTN">
+                                                            <input class="no-border" type="date" nz-input nzSize="small" formControlName="tNgayD" (ngModelChange)="blurDetail(i, 'tNgayD')" style="width: 100%;text-align: center;">
+                                                            <ng-template #errorTN let-control>
+                                                                <ng-container *ngIf="control.hasError('required')">
+                                                                    <div class="tooltip-error"><b>Từ ngày</b> không được để trống.</div>
+                                                                </ng-container>
+                                                            </ng-template>
+                                                        </nz-form-control>
+                                                    </nz-form-item>
+                                                </td>
+                                                <td nzAlign="center">
+                                                    <nz-form-item>
+                                                        <nz-form-control [nzSm]="24" [nzXs]="24" [nzErrorTip]="errorDN">
+                                                            <input class="no-border" type="date" nz-input nzSize="small" formControlName="dNgayD" (ngModelChange)="blurDetail(i, 'dNgayD')" style="width: 100%;text-align: center;">
+                                                            <ng-template #errorDN let-control>
+                                                                <ng-container *ngIf="control.hasError('required')">
+                                                                    <div class="tooltip-error"><b>Đến ngày</b> không được để trống.</div>
+                                                                </ng-container>
+                                                            </ng-template>
+                                                        </nz-form-control>
+                                                    </nz-form-item>
+                                                </td>
+                                                <td nzAlign="center">
+                                                    <nz-form-item>
+                                                        <nz-form-control [nzSm]="24" [nzXs]="24" [nzErrorTip]="errorHThuc">
+                                                            <nz-select class="no-border" nzSize="small" nzShowSearch formControlName="hThuc" tooltipInput (ngModelChange)="checkTrung(i)">
+                                                                <nz-option *ngFor="let item of hinhThucDangKys" [nzLabel]="item?.name" [nzValue]="item?.id">
+                                                                </nz-option>
+                                                            </nz-select>
+                                                            <ng-template #errorHThuc let-control>
+                                                                <ng-container *ngIf="control.hasError('required')">
+                                                                    <div class="tooltip-error"><b>Hình thức đăng ký</b> không được để trống.</div>
+                                                                </ng-container>
+                                                            </ng-template>
+                                                        </nz-form-control>
+                                                    </nz-form-item>
+                                                </td>
+                                            </tr>
+                                            <tr class="total-footer" *ngIf="mainForm.get('cTS').value.length <= 0">
+                                              <td colspan="24"> Không có dữ liệu hiển thị.</td>
+                                            </tr>
+                                        </tbody>
+                                    </nz-table>
+                                </div>
+                            </div>
+                            <div *ngIf="nhanUyNhiem == true" nz-row style="margin-top: 1px; margin-left: 2px;">
+                                <span style="font-weight: bold; font-style: italic; color:#1877f2; margin-left: 2px"><i nz-icon class="info-circle" [nzTheme]="'fill'" nzType="info-circle"></i>
+                  Đối với bên ủy nhiệm và bên nhận ủy nhiệm tại mục 5 “Danh sách chứng thư số sử dụng” điền thông tin đầy đủ chứng thư số sử dụng của cả hai bên
+                </span>
+                            </div>
+                        </div>
+
+                        <div nz-row *ngIf="nhanUyNhiem == true">
+                            <div nz-row style="margin-top: 5px;">
+                                <span style="font-weight: bold; margin-left: 2px;">6. Đăng ký ủy nhiệm lập hóa đơn</span>
+                                <span style="float: right; margin-bottom: 2px; margin-right: 2px;"><button *ngIf="nhanUyNhiem == true" [disabled]="isSigned == true || isSaved == true || autoSign == true" nz-button nzSize="small" (click)="chonDKUN()" class="ant-btn-cus" [ngClass]="{'blueButton': true}" nzTheme="outline"><i nz-icon nzType="plus" nzTheme="outline"></i>Đăng ký</button></span>
+                                <div *ngIf="nhanUyNhiem == true" nz-row style="margin: 2px;">
+                                    <nz-table [nzNoResult]="null" nzSize="small" nzBordered #basicTable nzShowPagination="false" [nzData]="listDangKyUyNhiem" [nzWidthConfig]="widthConfigTabDKUN" [nzScroll]="scrollConfigTabDKUN">
+                                        <thead>
+                                            <tr>
+                                                <th nzAlign="center" nzLeft="0px">STT</th>
+                                                <th nzAlign="center">
+                                                    Tên loại hóa đơn ủy nhiệm
+                                                </th>
+                                                <th nzAlign="center">
+                                                    Ký hiệu mẫu hóa đơn
+                                                </th>
+                                                <th nzAlign="center">
+                                                    Ký hiệu hóa đơn ủy nhiệm
+                                                </th>
+                                                <th nzAlign="center">
+                                                    Tên tổ chức được ủy nhiệm
+                                                </th>
+                                                <th nzAlign="center">
+                                                    Mục đích ủy nhiệm
+                                                </th>
+                                                <th nzAlign="center">
+                                                    Thời hạn ủy nhiệm
+                                                </th>
+                                                <th nzAlign="center">
+                                                    Phương thức thanh toán hóa đơn ủy nhiệm
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let data of basicTable.data; let i = index">
+                                                <td nzAlign="center" nzLeft="0px">{{i+1}}</td>
+                                                <td nzAlign="center">
+                                                    {{data.tLHDon}}
+                                                </td>
+                                                <td nzAlign="center">
+                                                    {{data.kHMSHDon}}
+                                                </td>
+                                                <td nzAlign="center">
+                                                    {{data.kHHDon}}
+                                                </td>
+                                                <td nzAlign="center">
+                                                    {{data.mST}} - {{data.tTChuc}}
+                                                </td>
+                                                <td nzAlign="center">
+                                                    {{data.mDich}}
+                                                </td>
+                                                <td nzAlign="center">
+                                                    {{data.tNgayDisplay}} - {{data.dNgayDisplay}}
+                                                </td>
+                                                <td nzAlign="center">
+                                                    {{data.tenPThuc}}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </nz-table>
+                                </div>
+                            </div>
+                            <div *ngIf="nhanUyNhiem == true" nz-row style="margin-top: 1px; margin-left: 2px;">
+                                <span style="font-weight: bold; font-style: italic; color:#1877f2; margin-left: 2px"><i nz-icon class="info-circle" [nzTheme]="'fill'" nzType="info-circle"></i>
+                  Đối với bên nhận ủy nhiệm tại cột 5 mục 6 “Đăng ký ủy nhiệm lập hóa đơn” điền thông tin tên, tổ chức ủy nhiệm và mã số thuế của bên ủy nhiệm.
+                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div nz-row style="margin-top: 5px; margin-right: 2px">
+                        <nz-form-control [nzSm]="12" [nzXs]="24">
+                            <nz-form-item>
+                                <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="dDanh">Địa danh</nz-form-label>
+                                <nz-form-control [nzSm]="8" [nzXs]="24">
+                                    <nz-select style="width: 100%;" nzSize="small" formControlName="dDanh" nzShowSearch nzPlaceHolder="Chọn địa danh">
+                                        <nz-option *ngFor="let item of diaDanhs" [nzLabel]="item.name" [nzValue]="item.code"></nz-option>
+                                    </nz-select>
+                                </nz-form-control>
+                            </nz-form-item>
+
+                            <nz-form-item>
+                                <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="nLap">Ngày lập</nz-form-label>
+                                <nz-form-control [nzSm]="8" [nzXs]="24">
+                                    <input nz-input nzSize="small" type="date" formControlName="nLap" max="2999-12-31" (blur)="kiemTraNgayLapHopLe()" />
+                                </nz-form-control>
+                            </nz-form-item>
+
+                            <nz-form-item>
+                                <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="nNT">Người nộp thuế</nz-form-label>
+                                <nz-form-control [nzSm]="8" [nzXs]="24">
+                                    <input nz-input type="text" nzSize="small" formControlName="nNT" />
+                                </nz-form-control>
+                            </nz-form-item>
+                        </nz-form-control>
+
+                        <nz-form-control [nzSm]="12" [nzXs]="24">
+                            <div style="width: 350px; margin-top: 0px; margin-left: auto; margin-right: 0; text-align: center;">
+                                {{getChuoiDiaDanhNgayThang()}}
+                            </div>
+                            <div style="width: 350px; text-transform: uppercase; text-align: center; font-weight: bold; margin-left: auto; margin-right: 0;">
+                                NGƯỜI NỘP THUẾ
+                            </div>
+                            <div style="width: 350px; text-align: center; margin-left: auto; margin-right: 0;">
+                                (Chữ ký số, chữ ký điện tử của người nộp thuế)
+                            </div>
+                            <div style="width: 350px; margin-top: 3px; margin-left: auto; margin-right: 0; margin-bottom: 5px; text-align: center;">
+                                <app-chu-ky-dien-tu [tenDonVi]="isSigned ? mainForm.get('tNNT').value: ''" [ngayKy]="isSigned ? ngayKyGui : ''"></app-chu-ky-dien-tu>
+                            </div>
+                        </nz-form-control>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</nz-spin>

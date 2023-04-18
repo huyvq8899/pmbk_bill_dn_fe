@@ -1,0 +1,103 @@
+<nz-spin [nzSpinning]="spinning">
+    <div class="container">
+        <div class="inner-content">
+            <div style="flex: 1;">
+                <nz-table [nzNoResult]="null" nzSize="small" nzBordered nzShowPagination="false"
+                    [nzData]="listTruongDuLieuTemp" [nzPageSize]="listTruongDuLieuTemp.length"
+                    [nzWidthConfig]="widthConfig" [nzScroll]="scrollConfig">
+                    <thead>
+                        <tr>
+                            <th nzAlign="center">Thứ tự</th>
+                            <th *ngIf="loaiTruong === LoaiTruongDuLieu.NhomHangHoaDichVu" nzAlign="center">
+                                Mã trường
+                            </th>
+                            <th nzAlign="center">Tên trường dữ liệu</th>
+                            <th nzAlign="center">
+                                Tên trường hiển thị
+                            </th>
+                            <th nzAlign="center">
+                                Ghi chú
+                            </th>
+                            <th *ngIf="loaiTruong !== LoaiTruongDuLieu.NhomThongTinNguoiMua" nzAlign="center">
+                                Độ rộng
+                            </th>
+                            <th nzAlign="center">Hiển thị</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr (click)="selectedRow(data)" *ngFor="let data of listTruongDuLieuTemp"
+                            [class.row-selected]="data.selected">
+                            <td [class.row-selected]="data.selected" nzAlign="center">
+                                {{data.stt}}
+                            </td>
+                            <td [class.row-selected]="data.selected"
+                                *ngIf="loaiTruong === LoaiTruongDuLieu.NhomHangHoaDichVu">
+                                {{data?.maTruong }}
+                            </td>
+                            <td [class.row-selected]="data.selected">
+                                {{data?.tenTruong }}
+                            </td>
+                            <td [class.row-selected]="data.selected">
+                                <input nz-input style="width: 100%;" [(ngModel)]="data.tenTruongHienThi"
+                                    *ngIf="data?.tenCot.indexOf('TruongThongTinBoSung') == -1">
+                                <input nz-input style="width: 100%;" [(ngModel)]="data.tenTruongHienThi"
+                                    *ngIf="data?.tenCot.indexOf('TruongThongTinBoSung') == 0" [disabled]="true"
+                                    [readonly]="true">
+                            </td>
+                            <td [class.row-selected]="data.selected">
+                                <input nz-input style="width: 100%;" [(ngModel)]="data.ghiChu">
+                            </td>
+                            <td [class.row-selected]="data.selected"
+                                *ngIf="loaiTruong !== LoaiTruongDuLieu.NhomThongTinNguoiMua">
+                                <input nz-input style="width: 100%;" [(ngModel)]="data.doRong">
+                            </td>
+                            <td [class.row-selected]="data.selected" nzAlign="center">
+                                <label nz-checkbox [nzDisabled]="data.disabled" [(ngModel)]="data.hienThi"></label>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot *ngIf="listTruongDuLieuTemp.length > 0" class="total-footer">
+                        <td colspan="2">Số dòng = {{listTruongDuLieuTemp.length}}</td>
+                        <td [attr.colspan]="listTruongDuLieuTemp.length"></td>
+                    </tfoot>
+                </nz-table>
+            </div>
+            <div *ngIf="loaiTruong !== LoaiTruongDuLieu.NhomThongTinNguoiMua" class="sort-wrapper">
+                <button nz-button nzType="default" nzSize="small" class="button-default button-clear" (click)="first()"
+                    style="padding-top: 3px!important;">
+                    <i nz-icon nzType="caret-up" nzTheme="outline"></i>
+                </button>
+                <button nz-button nzType="default" nzSize="small" class="button-default filterDefaultButton"
+                    (click)="prev()" style="padding-top: 3px!important;">
+                    <i nz-icon nzType="up" nzTheme="outline"></i>
+                </button>
+                <button nz-button nzType="default" nzSize="small" class="button-default filterDefaultButton"
+                    (click)="next()" style="padding-top: 3px!important;">
+                    <i nz-icon nzType="down" nzTheme="outline"></i>
+                </button>
+                <button nz-button nzType="default" nzSize="small" class="button-default button-clear" (click)="last()"
+                    style="padding-top: 4px!important;">
+                    <i nz-icon nzType="caret-down" nzTheme="outline"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</nz-spin>
+
+<div *nzModalFooter>
+    <div nz-row>
+        <div nz-col nzSpan="12" style="text-align: left;">
+            <button nz-button nzType="default" nzSize="small" (click)="layLaiThietLapMacDinh()" class="button-clear">
+                <i nz-icon nzType="rollback" nzTheme="outline"></i>Lấy lại thiết lập mặc định
+            </button>
+        </div>
+        <div nz-col nzSpan="12" style="text-align: right;">
+            <button nz-button nzType="default" nzSize="small" (click)="saveChanges()" class="button-agree">
+                <i nz-icon nzType="check" nzTheme="outline"></i>Đồng ý
+            </button>
+            <button nz-button nzType="default" nzSize="small" (click)="destroyModal()" class="button-cancel">
+                <i nz-icon nzType="close" nzTheme="outline"></i>Hủy
+            </button>
+        </div>
+    </div>
+</div>

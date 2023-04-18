@@ -1,0 +1,161 @@
+.container {
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+
+    .header {
+        height: 50px;
+        background-color: white;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        border-bottom: 1px solid rgba(119, 119, 119, 0.6);
+
+        &-row {
+            width: 1060px;
+            margin: 0 auto;
+
+            .right-col {
+                position: relative;
+
+                .btn-wrapper {
+                    position: absolute;
+                    right: 0;
+                    top: 5px;
+
+                    .btn {
+                   
+                        border: 1px solid rgba(119, 119, 119, 0.6);
+                        padding: 10px 20px;
+                        border-radius: 20px;
+                        cursor: pointer;
+    
+                        &:hover {
+                            border: 1px solid #0068ff;
+                            background-color: #0068ff;
+                            color: white;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .body {
+        background-color: #525659;
+        flex: 1;
+        padding: 50px 0 50px 0;
+
+        .content {
+            margin: 0 auto;
+            background-color: white;
+            width: 900px;
+            padding: 50px;
+
+            .title-1 {
+                font-weight: bold;
+                font-size: 18px !important;
+                text-align: center;
+            }
+
+            .title-2 {
+                font-weight: bold;
+                font-size: 14px !important;
+                text-align: center;
+            }
+
+            .title-3 {
+                font-weight: bold;
+                font-size: 13px !important;
+                text-align: center;
+            }
+
+            .row {
+                margin: 6px 0;
+                display: flex;
+
+                .col-1 {
+                    flex: 1;
+                    display: flex;
+                    flex-direction: row;
+                }
+
+                .label {
+                    width: 100px;
+                }
+
+                .value {
+                    flex: 1;
+                }
+            }
+
+            .font-italic {
+                font-style: italic;
+            }
+
+            .font-bold {
+                font-weight: bold;
+            }
+
+            .sign-wrapper {
+                text-align: center;
+
+                .sign-box {
+                    padding-top: 5px;
+                    background-image: url(".././../../../../assets/greentick.png");
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    background-size: contain;
+                    color: red;
+                    font-weight: bold;
+                    line-height: 18px;
+                    width: 150px;
+                    margin: 0 auto;
+                    white-space: break-spaces;
+                    text-align: center;
+                }
+
+                .sign-btn {
+                    padding-top: 5px;
+                }
+            }
+
+
+            &-nodata{
+                height: 86.5vh!important;
+                background-color: #525659!important;
+            }
+            
+
+        }
+
+        .button-footer {
+            text-align: center;
+        }
+
+
+    }
+}
+
+
+
+.container * {
+    font-family: "Times New Roman", Times, serif !important;
+}
+
+.row *,
+.sign-wrapper * {
+    font-size: 13px !important;
+}
+
+.center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    margin-top: 60px!important;
+}

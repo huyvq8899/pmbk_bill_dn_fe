@@ -1,0 +1,17 @@
+<div style="margin-top: -0.5px;" nz-tooltip [nzTooltipTitle]="tooltipTemplate">
+  <span class="motaloi"><i nz-icon style="font-weight: 900!important;top: -4px!important" nzSize="small" nzType="info"></i>
+</span>
+  <!-- <a href="javascript:void(0)" class="motaloi">
+      <span style="font-family: Arial, Helvetica;">i</span>
+  </a> -->
+  <ng-template #tooltipTemplate let-event>
+      <div style="width: 425px;color: #fff;">
+          <span style="-webkit-text-decoration-line: underline;text-decoration-line: underline; ">Mô tả lỗi:</span><br/>
+          <nz-spin [nzSpinning]="spinning">
+              <div nz-row id="motaloi33">
+                  {{toHTML(motaloi)}}
+              </div>
+          </nz-spin>
+      </div>
+  </ng-template>
+</div>

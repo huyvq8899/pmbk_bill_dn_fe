@@ -1,0 +1,103 @@
+  <div nz-row>
+    <div nz-row class="inner-content">
+      <div class="box-border" style="margin: 5px;">
+        <span style="margin-top: 5px; margin-left: 2px; color: #1877f2; font-weight: bold; font-size: 20px;">Chữ ký số</span>
+        <div nz-row style="margin-top: 5px">
+          <div nz-col nzSpan="8">Ký bởi</div>
+          <div nz-col nzSpan="16">
+            <textarea rows="3" nzSize="small" nz-input [(ngModel)]="data.subjectName" disabled></textarea>           
+          </div>
+        </div>
+
+        <div nz-row  style="margin-top: 5px">
+          <div nz-col nzSpan="8">Cấp bởi</div>
+          <div nz-col nzSpan="16">
+            <textarea rows="2" nzSize="small" nz-input [(ngModel)]="data.issuerName" disabled></textarea>         
+          </div>
+        </div>
+
+        <div nz-row  style="margin-top: 5px">
+          <div nz-col nzSpan="8">Thời hạn</div>
+          <div nz-col nzSpan="16">
+            <input type="text" nzSize="small" nz-input [(ngModel)]="data.thoiHan" disabled/>           
+          </div>
+        </div>
+
+        
+        <div nz-row style="margin-top: 5px">
+          <div nz-col nzSpan="8">Thời gian ký</div>
+          <div nz-col nzSpan="16">
+            <input type="text" nzSize="small" nz-input [(ngModel)]="data.thoiGianKyShow" disabled/>           
+          </div>
+        </div>
+
+        <div nz-row style="margin-top: 5px; margin-bottom: 5px;">
+          <div nz-col nzSpan="8">Chữ ký số</div>
+          <div nz-col nzSpan="16">
+            <span *ngIf="data.isVerified" style="margin-top: 5px;padding: 5px 11px !important;border-radius: 5px;background-color: #15a85f !important;color: white !important;font-weight: 600;height: 24px;">
+              Đã được xác minh
+            </span>
+            <span *ngIf="!data.isVerified" style="margin-top: 5px;padding: 5px 11px !important;border-radius: 5px;background-color: red !important;color: white !important;font-weight: 600;height: 24px;">
+              Chưa được xác minh
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div nz-row>
+    <div nz-row class="inner-content">
+      <div class="box-border" style="margin: 5px;">
+        <span style="margin-top: 5px; margin-left: 2px; color: #1877f2; font-weight: bold; font-size: 20px;">Đơn vị bán</span>
+        <div nz-row style="margin-top: 5px">
+          <div nz-col nzSpan="8">Mã số thuế</div>
+          <div nz-col nzSpan="16">
+            <input type="text" nzSize="small" nz-input [(ngModel)]="data.nBan.mst" disabled/>           
+          </div>
+        </div>
+
+        <div nz-row  style="margin-top: 5px">
+          <div nz-col nzSpan="8">Tên đơn vị</div>
+          <div nz-col nzSpan="16">
+            <textarea type="text" rows="2" nzSize="small" nz-input [(ngModel)]="data.nBan.ten" disabled></textarea>          
+          </div>
+        </div>
+
+        <div nz-row  style="margin-top: 5px; margin-bottom: 5px;">
+          <div nz-col nzSpan="8">Địa chỉ</div>
+          <div nz-col nzSpan="16">
+            <textarea type="text" rows="2" nzSize="small" nz-input [(ngModel)]="data.nBan.dChi" disabled></textarea>          
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div nz-row>
+    <div nz-row class="inner-content">
+      <div class="box-border" style="margin: 5px;">
+        <span style="margin-top: 5px; margin-left: 2px; color: #1877f2; font-weight: bold; font-size: 20px;">Đơn vị mua</span>
+        <div nz-row style="margin-top: 5px">
+          <div nz-col nzSpan="8">Mã số thuế</div>
+          <div nz-col nzSpan="16">
+            <input type="text" nzSize="small" nz-input [(ngModel)]="data.nMua.mst" disabled/>           
+          </div>
+        </div>
+
+        <div nz-row  style="margin-top: 5px">
+          <div nz-col nzSpan="8">Tên đơn vị</div>
+          <div nz-col nzSpan="16">
+            <textarea type="text" rows="2" nzSize="small" nz-input [(ngModel)]="data.nMua.ten" disabled></textarea>           
+          </div>
+        </div>
+
+        <div nz-row  style="margin-top: 5px; margin-bottom: 5px;">
+          <div nz-col nzSpan="8">Địa chỉ</div>
+          <div nz-col nzSpan="16">
+            <textarea type="text" rows="2" nzSize="small" nz-input [(ngModel)]="data.nMua.dChi" disabled></textarea>        
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

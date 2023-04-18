@@ -1,0 +1,84 @@
+<nz-tabset class="tab-set" [nzTabPosition]="'left'">
+  <nz-tab nzTitle="Thông tin bảo mật">
+    <span style="font-weight: bold;font-size: 18px;">Thông tin cá nhân</span>
+    <div nz-row [class.displayReverse]="setReverse">
+      <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="10" nzXl="10" style="margin-left: 20px;">
+        <div class="inner-content">
+          <app-account-edit></app-account-edit>
+        </div>
+      </div>
+      <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="12" nzXl="12" style="text-align: center; padding-bottom: 20px;">
+        <div class="inner-content">
+          <div nz-row>
+          </div>
+          <div nz-row style="padding:100px 0px 12px 0px">
+            <nz-avatar nzIcon="user" [nzSize]="144" [nzSrc]="currentUser?.avatar"></nz-avatar>
+          </div>
+          <div nz-row>
+            <button nz-button nzType="default" (click)="fImportExcel.click()"><i nz-icon nzType="vertical-align-top"></i>Cập
+              nhật avatar</button>
+            <input id="fImportExcel" type="file" #fImportExcel (change)="importFile($event)" style="display: none;">
+          </div>
+        </div>
+      </div>
+    </div>
+  </nz-tab>
+  <nz-tab nzTitle="Đặt lại mật khẩu">
+    <app-account-change-password></app-account-change-password>
+  </nz-tab>
+</nz-tabset>
+<div style=" text-align: right;margin-top: 10px;">
+  <!-- <nz-button-group>
+    <button nz-button nzType="primary" (click)="clickBack()" *ngIf="selectedIndex>0 && selectedIndex<2"
+      [nzLoading]="isLoading"><i nz-icon nzType="left"></i>Quay lại</button>
+    <button nz-button nzType="primary" (click)="clickNext()" *ngIf="selectedIndex < 2" [nzLoading]="isLoading">
+      <ng-container *ngIf="selectedIndex === 0">
+        Tiếp theo<i nz-icon nzType="right"></i>
+      </ng-container>
+      <ng-container *ngIf="selectedIndex === 1">
+        <i nz-icon nzType="check" nzTheme="outline"></i> Thực hiện
+      </ng-container>
+    </button>
+    <button nz-button nzType="primary" (click)="clickNext()" *ngIf="selectedIndex == 2" [nzLoading]="isLoading">Nhập
+      khẩu tiếp</button>
+  </nz-button-group> -->
+</div>
+
+<!-- <div nz-row class="card">
+    <nz-card style="width:100%;">
+      <nz-tabset nzTabPosition="left">
+        <nz-tab [nzTitle]="titleTemplate">
+          <ng-template #titleTemplate>
+            Thông tin chung
+          </ng-template>
+          <h2>Thông tin cá nhân</h2>
+          <div nz-row [class.displayReverse]="setReverse">
+            <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="10" nzXl="10">
+              <app-account-edit></app-account-edit>
+            </div>
+            <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="14" nzXl="14"
+              style="text-align: center; padding-bottom: 20px;">
+              <div nz-row>
+              </div>
+              <div nz-row style="padding:12px 0px">
+                <nz-avatar nzIcon="user" [nzSize]="144" [nzSrc]="currentUser?.avatar"></nz-avatar>
+              </div>
+              <div nz-row>
+                <button nz-button nzType="default" (click)="fImportExcel.click()"><i nz-icon nzType="vertical-align-top"></i>Cập
+                  nhật avatar</button>
+                <input id="fImportExcel" type="file" #fImportExcel (change)="importFile($event)" style="display: none;">
+              </div>
+            </div>
+          </div>
+
+        </nz-tab>
+        <nz-tab [nzTitle]="titleTemplate1">
+          <ng-template #titleTemplate1>
+            Thông tin bảo mật
+          </ng-template>
+          <h2>Cập nhật mật khẩu</h2>
+          <app-account-change-password></app-account-change-password>
+        </nz-tab>
+      </nz-tabset>
+    </nz-card>
+  </div> -->

@@ -1,0 +1,41 @@
+@import "../../../../shared/scss/modal.scss";
+
+.tab-set {
+    border: 0.5px solid #e8e8e8;
+}
+
+:host ::ng-deep .ant-tabs-left-bar {
+    border-color: #e8e8e8 !important;
+}
+
+:host ::ng-deep .ant-tabs .ant-tabs-left-content {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+}
+
+:host ::ng-deep .ant-tabs-nav-container {
+    height: auto !important;
+}
+
+:host ::ng-deep .ant-tabs .ant-tabs-left-bar .ant-tabs-tab,
+.ant-tabs .ant-tabs-right-bar .ant-tabs-tab {
+    display: block !important;
+    float: none !important;
+    margin: 0 0 0 0 !important;
+    padding: 1px 24px !important;
+    cursor: default !important;
+    text-align: left !important;
+}
+
+:host ::ng-deep .ant-tabs .ant-tabs-left-content {
+    padding-left: 10px;
+    padding-right: 8px;
+}
+
+.cus-form-item {
+    margin-top: 3px;
+}
+
+.lay-du-lieu-wrapper {
+    padding-top: 18px;
+}

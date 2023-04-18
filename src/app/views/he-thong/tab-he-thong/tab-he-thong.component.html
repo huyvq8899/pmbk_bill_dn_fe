@@ -1,0 +1,45 @@
+<div class="card-container">
+  <nz-tabset nzSize="small" [nzTabPosition]="'top'" [nzType]="'card'" [(nzSelectedIndex)]="selectedTab">   
+    <nz-tab nzTitle="Thông tin người nộp thuế" *ngIf="permission != null && (permission === true || chucNangDuocSuDungs.indexOf('ThongTinNguoiNopThue') >= 0)" (nzClick)="clickTab('/he-thong/thong-tin-nguoi-nop-thue')">
+      <ng-template nz-tab>
+        <app-ho-so-hoa-don-dien-tu></app-ho-so-hoa-don-dien-tu>
+      </ng-template>
+    </nz-tab>  
+    <nz-tab nzTitle="Quản lý vai trò" *ngIf="permission === true" (nzClick)="clickTab('/he-thong/quan-ly-vai-tro')">
+      <ng-template nz-tab>
+        <app-quan-ly-nhom-tai-khoan></app-quan-ly-nhom-tai-khoan>
+      </ng-template>
+    </nz-tab>   
+    <nz-tab nzTitle="Quản lý người dùng" *ngIf="permission === true" (nzClick)="clickTab('/he-thong/quan-ly-nguoi-dung')">
+      <ng-template nz-tab>
+        <app-quan-ly-tai-khoan></app-quan-ly-tai-khoan>
+      </ng-template>
+    </nz-tab> 
+    <nz-tab nzTitle="Nhập dữ liệu từ Excel" (nzClick)="clickTab('/he-thong/nhap-khau-chung-tu')">
+      <ng-template nz-tab>
+        <app-nhap-khau-chung-tu></app-nhap-khau-chung-tu>
+      </ng-template>
+    </nz-tab>
+    <nz-tab nzTitle="Tùy chọn" *ngIf="permission != null 
+    && (permission === true || chucNangDuocSuDungs.indexOf('TuyChonChung') >= 0
+      || chucNangDuocSuDungs.indexOf('DinhDangSo') >= 0 
+      || chucNangDuocSuDungs.indexOf('ThongTinTaiNguyen') >= 0 
+      || chucNangDuocSuDungs.indexOf('ThietLapCongCuKy') >= 0
+      || chucNangDuocSuDungs.indexOf('MayChuGuiEmail') >= 0
+      || chucNangDuocSuDungs.indexOf('EmailGuiHoaDon') >= 0
+      || chucNangDuocSuDungs.indexOf('EmailGuiPhieuXuatKho') >= 0
+      || chucNangDuocSuDungs.indexOf('ThietLapSMSGuiHoaDon') >= 0
+      || chucNangDuocSuDungs.indexOf('ThietLapXacNhanCTS') >= 0 
+      || chucNangDuocSuDungs.indexOf('PheDuyetHoaDon') >= 0)" (nzClick)="clickTab('/he-thong/tuy-chon')">
+      <ng-template nz-tab>
+        <app-tab-tuy-chon></app-tab-tuy-chon>
+      </ng-template> 
+    </nz-tab>
+    <nz-tab nzTitle="Lịch sử phiên bản"
+      (nzClick)="clickTab('/he-thong/lich-su-phien-ban')">
+      <ng-template nz-tab>
+        <app-tab-lich-su-phien-ban></app-tab-lich-su-phien-ban>
+      </ng-template>
+    </nz-tab>
+  </nz-tabset>
+</div>

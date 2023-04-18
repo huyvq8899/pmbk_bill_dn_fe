@@ -1,0 +1,55 @@
+<nz-spin [nzSpinning]="spinning">
+    <div nz-row class="inner-content" style="margin-left: 8px; margin-right: 8px;">
+        <form nz-form [formGroup]="loaiTienForm">
+            <nz-form-item>
+                <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="ma">Mã (*)</nz-form-label>
+                <nz-form-control [nzSm]="18" [nzXs]="24" [nzErrorTip]="errorMa">
+                    <input nz-input nzSize="small" formControlName="ma" tooltipInput />
+                    <ng-template #errorMa let-control>
+                        <ng-container *ngIf="control.hasError('required')">
+                            <div class="tooltip-error">&lt;Mã&gt; không được để trống.</div>
+                        </ng-container>
+                        <ng-container *ngIf="control.hasError('maxlength')">
+                            <div class="tooltip-error">&lt;Mã&gt; không nhập quá 3 ký tự</div>
+                        </ng-container>
+                    </ng-template>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="ten">Tên (*)</nz-form-label>
+                <nz-form-control [nzSm]="18" [nzXs]="24" [nzErrorTip]="errorTen">
+                    <input nz-input nzSize="small" formControlName="ten" tooltipInput />
+                    <ng-template #errorTen let-control>
+                        <ng-container *ngIf="control.hasError('required')">
+                            <div class="tooltip-error">&lt;Tên&gt; không được để trống.</div>
+                        </ng-container>
+                    </ng-template>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="tyGiaQuyDoi">Tỷ giá quy đổi</nz-form-label>
+                <nz-form-control [nzSm]="18" [nzXs]="24">
+                    <input nz-input nzSize="small" formControlName="tyGiaQuyDoi" bkCurrencyMask [options]="{ precision: ddtp.getTyGia(), maxIntegerDigit: ddtp.maxIntegerTyGia }" />
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="sapXep">Sắp xếp</nz-form-label>
+                <nz-form-control [nzSm]="18" [nzXs]="24">
+                    <nz-input-number [nzDisabled]="true" formControlName="sapXep" [nzMin]="1" [nzStep]="1" nzSize="small"></nz-input-number>
+                </nz-form-control>
+            </nz-form-item>
+        </form>
+    </div>
+</nz-spin>
+
+<div *nzModalFooter>
+    <div nz-row>
+        <div nz-col nzSpan="12" style="text-align: left;">
+            <label nz-checkbox [hidden]="isAddNew" [(ngModel)]="isNgungTheoDoi">Ngừng theo dõi</label>
+        </div>
+        <div nz-col nzSpan="12" style="text-align: right;">
+            <button nzSize="small" [disabled]="permission != true && isAddNew == false && !isCopy && thaoTacs.indexOf('DM_UPDATE') < 0" nz-button nzType="default" (click)="submitForm()" [ngClass]="{'footer-save': !(permission != true && isAddNew == false && !isCopy && thaoTacs.indexOf('DM_UPDATE') < 0), 'disabled-button-state-v3': permission != true && isAddNew == false && !isCopy && thaoTacs.indexOf('DM_UPDATE') < 0}" [nzLoading]="spinning"><i nz-icon nzType="save" nzTheme="outline"></i>&nbsp;Lưu</button>
+            <button nzSize="small" nz-button nzType="default" (click)="closeModal()" class="button-cancel"><i nz-icon nzType="close" nzTheme="outline"></i>&nbsp;Hủy</button>
+        </div>
+    </div>
+</div>

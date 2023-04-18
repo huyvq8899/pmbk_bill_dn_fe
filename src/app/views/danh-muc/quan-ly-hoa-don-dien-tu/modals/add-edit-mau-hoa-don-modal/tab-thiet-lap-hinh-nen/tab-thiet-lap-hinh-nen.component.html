@@ -1,0 +1,185 @@
+<div class="config-container">
+  <div style="display: flex;flex-direction: column;flex: 1;height: 100%;">
+    <div nz-row class="config-header-container" [style.padding.px]="isSelectBackground ? 4 : 5">
+      <div nz-col nzSpan="12">Thiết lập hình nền</div>
+      <div nz-col nzSpan="12">
+        <div class="config-color" *ngIf="checkIsSVG(typeOfBackground) && isSelectBackground">
+          <div class="color-picker-header" [style.background-color]="color">
+            <input type="color" #colorPicker3 [(ngModel)]="color" (ngModelChange)="changeColorBackground($event)" />
+          </div>
+          <span (click)="colorPicker3.click()">Đổi màu</span>
+        </div>
+      </div>
+    </div>
+    <div style="flex: 1; overflow: auto; padding: 10px;">
+      <form nz-form [formGroup]="thietLapMauForm">
+        <ng-container *ngIf="!isSelectBackground">
+          <div>
+            Khung viền hóa đơn
+          </div>
+          <div class="choose-bg-bd-container">
+            <div class="check" style="width: 40px; text-align: center;" (click)="openSelectHinhNenKhungVien(1)">
+              <i [ngClass]="{ 'selected-background': !thietLapMauForm.get('khungVienMacDinh').value,
+              'selected-background-active': thietLapMauForm.get('khungVienMacDinh').value }" nz-icon
+                nzType="check-circle" nzTheme="outline"></i>
+            </div>
+            <div style="flex: 1;" (click)="openSelectHinhNenKhungVien(1)">
+              <div *ngIf="!thietLapMauForm.get('khungVienMacDinh').value">Chọn từ bộ khung viền có sẵn</div>
+              <div *ngIf="thietLapMauForm.get('khungVienMacDinh').value" style="position: relative;">
+                <img class="preview-border-image" [src]="env.apiUrl + thietLapMauForm.get('khungVienMacDinh').value" />
+              </div>
+            </div>
+            <div style="display: flex; width: 100px;">
+              <div style="display: flex;" *ngIf="thietLapMauForm.get('khungVienMacDinh').value">
+                <div>
+                  <div [style.visibility]="checkIsSVG(1) ? 'visible' : 'hidden'" class="color-picker-preview"
+                    [style.background-color]="thietLapMauForm.get('mauKhungVienMacDinh').value">
+                    <input type="color" #colorPicker formControlName="mauKhungVienMacDinh"
+                      (ngModelChange)="changeMau()" />
+                  </div>
+                </div>
+                <div>
+                  <i nz-icon nzType="delete" nzTheme="outline" (click)="deleteSelectedHinhNenKhungVien(1)"></i>
+                </div>
+              </div>
+              <div style="flex: 1;" *ngIf="!thietLapMauForm.get('khungVienMacDinh').value"
+                (click)="openSelectHinhNenKhungVien(1)">
+              </div>
+              <div style="width: 50px; text-align: right; padding-right: 5px;" (click)="openSelectHinhNenKhungVien(1)">
+                <i nz-icon nzType="right" nzTheme="outline"></i>
+              </div>
+            </div>
+          </div>
+          <div>
+            Hình nền
+          </div>
+          <div class="choose-bg-bd-container">
+            <div class="check" style="width: 40px; text-align: center;" (click)="openSelectHinhNenKhungVien(2)">
+              <i [ngClass]="{ 'selected-background': !thietLapMauForm.get('hinhNenMacDinh').value,
+              'selected-background-active': thietLapMauForm.get('hinhNenMacDinh').value }" nz-icon
+                nzType="check-circle" nzTheme="outline"></i>
+            </div>
+            <div style="flex: 1;" (click)="openSelectHinhNenKhungVien(2)">
+              {{getTenHinhNen()}}
+            </div>
+            <div style="display: flex; width: 100px;">
+              <div style="display: flex;" *ngIf="thietLapMauForm.get('hinhNenMacDinh').value">
+                <div>
+                  <div [style.visibility]="checkIsSVG(2) ? 'visible' : 'hidden'" class="color-picker-preview"
+                    [style.background-color]="thietLapMauForm.get('mauHinhNenMacDinh').value">
+                    <input type="color" #colorPicker formControlName="mauHinhNenMacDinh"
+                      (ngModelChange)="changeMau()" />
+                  </div>
+                </div>
+                <div>
+                  <i nz-icon nzType="delete" nzTheme="outline" (click)="deleteSelectedHinhNenKhungVien(2)"></i>
+                </div>
+              </div>
+              <div style="flex: 1;" *ngIf="!thietLapMauForm.get('hinhNenMacDinh').value"
+                (click)="openSelectHinhNenKhungVien(2)">
+              </div>
+              <div style="width: 50px; text-align: right; padding-right: 5px;" (click)="openSelectHinhNenKhungVien(2)">
+                <i nz-icon nzType="right" nzTheme="outline"></i>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="thietLapMauForm.get('hinhNenMacDinh').value" style="display: flex; align-items: center; margin-top: -8px;
+          margin-bottom: 10px;">
+            <span>Độ nét</span>
+            <nz-slider style="flex: 1; padding: 0 8px;" [nzTooltipVisible]="'never'"
+              formControlName="opacityHinhNenMacDinhPer"
+              (nzOnAfterChange)="afterChangeOpacity($event, 'opacityHinhNenMacDinh')">
+            </nz-slider>
+            <span>{{data.opacityHinhNenMacDinhPer}}%</span>
+          </div>
+          <div>
+            Tự thiết lập hình nền riêng (Logo chìm)
+          </div>
+          <ng-container *ngIf="!thietLapMauForm.get('hinhNenTaiLen').value">
+            <div class="custom-background-container">
+              <div class="select-background-wrapper" appImageDrag (files)="filesDropped($event)">
+                <img src="../../../../../../../assets/empty-image2.PNG" width="50px" height="50px" />
+                <div>
+                  Kéo thả tệp hình ảnh vào đây hoặc
+                </div>
+                <div class="text-cursor" (click)="bgFile.click()">
+                  Chọn từ máy tính
+                </div>
+              </div>
+              <div class="text-background" (click)="vietChuChim()">
+                <span>Viết chữ chìm trên hóa đơn</span>
+                <div class="right-config-text">
+                  <i nz-icon nzType="right" nzTheme="outline"></i>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="thietLapMauForm.get('hinhNenTaiLen').value">
+            <div class="change-custom-background-container">
+              <div nz-row class="preview-custom-background-wrapper">
+                <div nz-col nzSpan="8" class="custom-bg-wrapper">
+                  <img [src]="thietLapMauForm.get('hinhNenTaiLen').value" />
+                </div>
+                <div nz-col nzSpan="16" style="padding: 10px 0 5px 10px;">
+                  <div>Vị trí hình nền</div>
+                  <div style="margin: 5px 0 15px;">
+                    <nz-select nzSize="small" nzShowSearch formControlName="viTriHinhNen"
+                      (ngModelChange)="changeViTriHinhNen()">
+                      <nz-option nzLabel="Toàn hóa đơn" [nzValue]="1"> </nz-option>
+                      <nz-option nzLabel="Căn giữa hóa đơn" [nzValue]="2">
+                      </nz-option>
+                    </nz-select>
+                  </div>
+                  <div style="display: flex; justify-content: space-between;">
+                    <span>Độ nét</span>
+                    <span>{{thietLapMauForm.get('opacityHinhNenTaiLenPer').value}}%</span>
+                  </div>
+                  <div>
+                    <nz-slider [nzTooltipVisible]="'never'" formControlName="opacityHinhNenTaiLenPer"
+                      (nzOnAfterChange)="afterChangeOpacity($event, 'opacityHinhNenTaiLen')"></nz-slider>
+                  </div>
+                </div>
+              </div>
+              <div style="padding: 5px 0;">
+                <button *ngIf="thietLapMauForm.get('loaiHinhNenRieng').value === 1" nzSize="small" nz-button
+                  nzType="default" (click)="bgFile.click()" class="button-clear">
+                  <i nz-icon nzType="upload" nzTheme="outline"></i>Tải lên
+                </button>
+                <button *ngIf="thietLapMauForm.get('loaiHinhNenRieng').value === 2" nzSize="small" nz-button
+                  nzType="default" (click)="vietChuChim()" class="button-clear">
+                  <i nz-icon nzType="edit" nzTheme="outline"></i>Sửa
+                </button>&nbsp;&nbsp;
+                <button nzSize="small" nz-button nzType="default" class="button-default " (click)="deleteBG()">
+                  <i nz-icon nzType="delete" nzTheme="outline"></i>Xóa
+                </button>
+              </div>
+            </div>
+          </ng-container>
+          <br />
+          <div>
+            Không cần hình nền trên hóa đơn. <span class="text-cursor" (click)="clearBackground()">Bỏ qua</span>
+          </div>
+          <input #bgFile type="file" (change)="uploadBG($event.target.files, 1, $event)" style="display: none;" />
+        </ng-container>
+        <ng-container *ngIf="isSelectBackground">
+          <div nz-row class="tab-content" nzGutter="8">
+            <div *ngFor="let item of backgrounds" nz-col nzSpan="8" (click)="selectedTemplate(item)"
+              style="margin-bottom: 7px;">
+              <div class="template-card" [class.template-card-active]="item.selected">
+                <img style="width: 100%" [src]="env.apiUrl + item.background" />
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </form>
+    </div>
+    <div *ngIf="isSelectBackground && typeOfBackground === 2"
+      style="display: flex; align-items: center; border-top: 1px solid rgba(119, 119, 119, 0.6); padding: 5px 13px;">
+      <span>Độ nét</span>
+      <nz-slider style="flex: 1; padding: 0 8px;" [nzTooltipVisible]="'never'"
+        [(ngModel)]="data.opacityHinhNenMacDinhPer" (nzOnAfterChange)="afterChangeOpacityHinhNenMacDinh($event)">
+      </nz-slider>
+      <span>{{data.opacityHinhNenMacDinhPer}}%</span>
+    </div>
+  </div>
+</div>

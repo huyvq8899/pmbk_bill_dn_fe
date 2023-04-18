@@ -1,0 +1,130 @@
+<nz-spin [nzSpinning]="spinning">
+    <div style="height: 100%; padding: 13px">
+        <div
+            style="background-color: #F3F3F3; height: 100%; position: relative; display: flex; border: 1px solid #ADADAD;">
+            <div style="position: relative; width: 155px; background-color: #F3F3F3;">
+                <ul class="tab-menu">
+                    <li (click)="selectedMenuItem(0)" [class.menu-item-selected]="position === 0"
+                        [style.cursor]="(!isAddNew || isSelectBackground || isSettingTruongMoRong) ? 'not-allowed' : 'pointer'">
+                        1. Chọn mẫu hóa đơn</li>
+                    <li (click)="selectedMenuItem(1)" [class.menu-item-selected]="position === 1"
+                        [style.cursor]="((position === 0 && !passdedStep1) || isSelectBackground || isSettingTruongMoRong) ? 'not-allowed' : 'pointer'">
+                        2. Thiết lập chung</li>
+                    <li (click)="selectedMenuItem(2)" [class.menu-item-selected]="position === 2"
+                        [style.cursor]="((position === 0 && !passdedStep1) || isSelectBackground || isSettingTruongMoRong) ? 'not-allowed' : 'pointer'">
+                        3. Thiết lập hình nền</li>
+                    <li (click)="selectedMenuItem(3)" [class.menu-item-selected]="position === 3"
+                        [style.cursor]="((position === 0 && !passdedStep1) || isSelectBackground || isSettingTruongMoRong) ? 'not-allowed' : 'pointer'">
+                        4. Tùy chỉnh chi tiết</li>
+                </ul>
+                <button *ngIf="position === 0" nzSize="small" nz-button nzType="default" (click)="closeModal(false)"
+                    class="button-cancel" id="btnCancel"><i nz-icon nzType="close" nzTheme="outline"></i>Hủy</button>
+            </div>
+            <ng-container *ngIf="position === 0">
+                <div style="background-color: #ADADAD; flex: 1;">
+                    <app-tab-chon-mau-hoa-don [data]="data" (nextStepEvent)="changeStep($event)"
+                        (valueChangesEvent)="changeValues($event)">
+                    </app-tab-chon-mau-hoa-don>
+                </div>
+            </ng-container>
+            <ng-container *ngIf="position !== 0">
+                <div style="background-color: blue; width: 391px; display: flex; flex-direction: column;">
+                    <div style="flex: 1; background-color: white; overflow-y: auto;">
+                        <ng-container *ngIf="position === 1">
+                            <app-tab-thiet-lap-chung *ngIf="data.loaiHoaDon != 14" [data]="data"
+                                (valueChangesEvent)="changeValues($event)" (tabStatusEvent)="detectTabStatus($event)"
+                                (logoChangeEvent)="changeLogo($event)" #tabThietLapChung>
+                            </app-tab-thiet-lap-chung>
+                            <app-mau-ve-tab-thiet-lap-chung *ngIf="data.loaiHoaDon == 14" [data]="data"
+                                (valueChangesEvent)="changeValues($event)" (tabStatusEvent)="detectTabStatus($event)"
+                                (logoChangeEvent)="changeLogo($event)" #tabThietLapChung>
+                            </app-mau-ve-tab-thiet-lap-chung>
+                        </ng-container>
+                        <ng-container *ngIf="position === 2">
+                            <app-tab-thiet-lap-hinh-nen *ngIf="data.loaiHoaDon != 14" [data]="data"
+                                (valueChangesEvent)="changeValues($event)" (tabStatusEvent)="detectTabStatus($event)"
+                                (backgroundChangeEvent)="changeBackground($event)" #tabThietLapHinhNen>
+                            </app-tab-thiet-lap-hinh-nen>
+                            <app-mau-ve-tab-thiet-lap-hinh-nen *ngIf="data.loaiHoaDon == 14" [data]="data"
+                                (valueChangesEvent)="changeValues($event)" (tabStatusEvent)="detectTabStatus($event)"
+                                (backgroundChangeEvent)="changeBackground($event)" #tabThietLapHinhNen>
+                            </app-mau-ve-tab-thiet-lap-hinh-nen>
+                        </ng-container>
+                        <ng-container *ngIf="position === 3">
+                            <app-tab-tuy-chinh-chi-tiet *ngIf="data.loaiHoaDon != 14" [data]="data"
+                                (valueChangesEvent)="changeValues($event)" (tabStatusEvent)="detectTabStatus($event)"
+                                #tabTuyChinhChiTiet>
+                            </app-tab-tuy-chinh-chi-tiet>
+                            <app-mau-ve-tab-tuy-chinh-chi-tiet *ngIf="data.loaiHoaDon == 14" [data]="data"
+                                (valueChangesEvent)="changeValues($event)" (tabStatusEvent)="detectTabStatus($event)"
+                                #tabTuyChinhChiTiet>
+                            </app-mau-ve-tab-tuy-chinh-chi-tiet>
+                        </ng-container>
+                    </div>
+                    <div style="height: 54px;">
+                        <ng-container *ngIf="isSelectBackground || isSettingTruongMoRong">
+                            <div nz-row class="action-background-footer-container">
+                                <div nz-col nzSpan="12">
+                                    <button nz-button nzSize="small" nzType="default" (click)="cancelData()"
+                                        class="button-cancel">
+                                        <i nz-icon nzType="close" nzTheme="outline"></i>Hủy
+                                    </button>
+                                </div>
+                                <div nz-col nzSpan="12" style="text-align: right;">
+                                    <button nz-button nzSize="small" nzType="default" (click)="saveData()"
+                                        class="blueButton">
+                                        <i nz-icon nzType="select" nzTheme="outline"></i>Chọn
+                                    </button>
+                                </div>
+                            </div>
+                        </ng-container>
+                        <ng-container *ngIf="!isSelectBackground && !isSettingTruongMoRong">
+                            <div nz-row class="action-footer-container">
+                                <div nz-col nzSpan="6">
+                                    <button nzSize="small" nz-button nzType="default" (click)="export()"
+                                        [class.button-clear]="!(isAddNew || isCopy || disabledEdit)"
+                                        [class.disabled-button-state-v2]="isAddNew || isCopy || disabledEdit"
+                                        [disabled]="isAddNew || isCopy || disabledEdit">
+                                        <i nz-icon nzType="vertical-align-bottom" nzTheme="outline"></i>Xuất khẩu
+                                    </button>
+                                </div>
+                                <div nz-col nzSpan="18" style="text-align: right;">
+                                    <button nzSize="small" nz-button nzType="default" style="margin-right: 5px;"
+                                        (click)="clickSua()"
+                                        [class.button-clear]="!((permission != true && thaoTacs.indexOf('MNG_FULL') < 0 && thaoTacs.indexOf('MNG_UPDATE') < 0) || disabledEdit)"
+                                        [class.disabled-button-state-v2]="(permission != true && thaoTacs.indexOf('MNG_FULL') < 0 && thaoTacs.indexOf('MNG_UPDATE') < 0) || disabledEdit"
+                                        [disabled]="(permission != true && thaoTacs.indexOf('MNG_FULL') < 0 && thaoTacs.indexOf('MNG_UPDATE') < 0) || disabledEdit">
+                                        <i nz-icon nzType="edit" nzTheme="outline"></i>Sửa
+                                    </button>
+                                    <button nzSize="small" nz-button nzType="default" style="margin-right: 5px;"
+                                        (click)="submitForm()"
+                                        [class.footer-save]="!((permission != true && thaoTacs.indexOf('MNG_FULL') < 0 && isAddNew && thaoTacs.indexOf('MNG_CREATE') < 0) || disabledSaveChanges)"
+                                        [class.disabled-button-state-v2]="(permission != true && thaoTacs.indexOf('MNG_FULL') < 0 && isAddNew && thaoTacs.indexOf('MNG_CREATE') < 0) || disabledSaveChanges"
+                                        [nzLoading]="spinning"
+                                        [disabled]="(permission != true && thaoTacs.indexOf('MNG_FULL') < 0 && isAddNew && thaoTacs.indexOf('MNG_CREATE') < 0) || disabledSaveChanges">
+                                        <i nz-icon nzType="save" nzTheme="outline"></i>Lưu
+                                    </button>
+                                    <button nzSize="small" nz-button nzType="default" (click)="closeModal(false)"
+                                        class="button-cancel">
+                                        <i nz-icon nzType="close" nzTheme="outline"></i>Hủy
+                                    </button>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+                <div style="background-color: #ADADAD; flex: 1;" *ngIf="data.loaiHoaDon != 14">
+                    <app-mau-hoa-don-preview [data]="data" [disabledEdit]="disabledEdit">
+                    </app-mau-hoa-don-preview>
+
+
+                </div>
+                <div style="background-color: #ADADAD; flex: 1;" *ngIf="data.loaiHoaDon == 14">
+                    <app-mau-ve-preview [data]="data" [disabledEdit]="disabledEdit">
+                    </app-mau-ve-preview>
+
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</nz-spin>

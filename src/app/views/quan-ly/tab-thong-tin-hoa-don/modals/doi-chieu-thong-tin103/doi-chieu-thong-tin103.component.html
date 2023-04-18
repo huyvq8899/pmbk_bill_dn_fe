@@ -1,0 +1,43 @@
+<nz-spin [nzSpinning]="this.isDoingTaskOnOk">
+  <div style="padding: 15px">
+    <!-- <div class="LuuY" style="margin-bottom: 10px!important"><i nz-icon nzType="question-circle" nzTheme="outline"
+        class="customIcon"></i>Kiểm </div> -->
+    <div>
+      <nz-table [nzNoResult]="null" nzSize="small" #fixedTable [nzData]="data" [nzTotal]="data.length" nzPageIndex="1"
+        [nzPageSize]="data.length" nzBordered [nzFrontPagination]="false" [nzShowPagination]="false">
+        <thead>
+          <tr>
+            <th nzAlign="center" nzWidth="250px">Thông tin</th>
+            <th nzAlign="center" nzWidth="200px">Thông tin yêu cầu</th>
+            <th nzAlign="center" nzWidth="200px">Thông tin đối chiếu</th>
+            <th nzAlign="center" nzWidth="120px">Kết quả đối chiếu</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of fixedTable.data">
+            <td>
+              {{ data.ThongTin }}
+            </td>
+            <td>{{ data.ThongTinYeuCau }}</td>
+            <td>{{ data.ThongTinDoiChieu }}</td>
+            <td>
+              <span [ngClass]="{'text-error': !data.IsNotPassed}">
+                {{ data.KetQuaDoiChieu }}
+
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+  </div>
+
+  <div class="ant-modal-footer ng-star-inserted">
+    <!-- <button nz-button nzType="default" class="footer-save" nzSize="small" (click)="clickOK()">
+      <i nz-icon nzType="check" nzTheme="outline"></i>{{msOKText}}
+    </button> -->
+    <button nz-button nzType="default" class="button-cancel" nzSize="small" (click)="destroyModal()">
+      <i nz-icon nzType="close" nzTheme="outline"></i>Đóng
+    </button>
+  </div>
+</nz-spin>

@@ -1,0 +1,64 @@
+<nz-table [nzNoResult]="null" style="background: #fff">
+  <thead>
+    <tr>
+      <th>Trợ giúp</th>
+      <th>Hướng dẫn sử dụng</th>
+      <th><a (click)="clickTroGiup()"> Xem hướng dẫn sử dụng</a></th>
+
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td></td>
+      <td>Các câu hỏi thường gặp</td>
+      <td> ... </td>
+
+    </tr>
+
+    <tr>
+      <td></td>
+      <td>Thông tin về phần mềm</td>
+      <td>
+        <ul>
+          Giới thiệu thông tin về phần mềm: <br>
+          <li> Phần mềm kế toán Bách Khoa<br>
+
+
+            <p> Thông tư số 200/TT-BTC/2014 phát hành ngày 22/12/2014 </p>
+
+            <p> Phiên bản mới nhất: {{ this.newestVersionName }} </p>
+
+            <p> Ngày phát hành: {{ this.newestVersionDate }} <a [routerLink]="['/version-detail']"
+                (click)="clickDetail()">Chi tiết</a> </p>
+
+
+
+          <li> Copyright <br>
+            Công ty Cổ phần Phát triển và Ứng dụng Phần mềm Bách Khoa <br>
+            Số 561 Nguyễn Bỉnh Khiêm, Q. Hải An, TP. Hải Phòng <br>
+            Hotline: 1800 1590 | email: hotro@pmbk.vn | website:www.pmbk.vn <br> </li>
+
+        </ul>
+      </td>
+
+    </tr>
+
+    <tr>
+      <td></td>
+      <td>Liên hệ</td>
+      <td>
+
+        <ul>
+
+          <li> Gửi câu hỏi qua email </li>
+          <li> Chat với hỗ trợ viên </li>
+          <li> Tải xuống phần mềm điều khiển (ultraview, teamview) </li>
+
+        </ul>
+
+
+      </td>
+
+    </tr>
+  </tbody>
+</nz-table>

@@ -1,0 +1,18 @@
+<span class="status" [ngClass]="{
+  'status-cam': loai === -1 || loai === 17 || loai === 19,
+  'status-xanh-nhat': loai === 0,
+  'status-xanh-duong': loai === 3 || loai === 1 ,
+  'status-do': loai === 4 || loai === 2 || loai === 6 || loai == 7 || loai == 9 || loai == 10 || loai == 11 || loai == 14 || loai == 15,
+  'status-xanh-la': loai === 5 || loai == 8 || loai == 13 || loai === 16 || loai === 12 || loai == 21,
+  'status-xanh-dam': loai === 18,
+  'status-thien-thanh': loai === 22,
+  'status-do-dam': loai === 20,
+  'status-xam': loai == 25
+}">
+  {{ten}}
+  <span *ngIf="displaySoLuong == true && soLuong > 0">
+    &nbsp;
+    <span *ngIf="soLuong == 1" class="soLuong-bang1">1</span>
+    <span *ngIf="soLuong > 1" class="soLuong-lonhon1">1+</span>
+  </span>
+</span>

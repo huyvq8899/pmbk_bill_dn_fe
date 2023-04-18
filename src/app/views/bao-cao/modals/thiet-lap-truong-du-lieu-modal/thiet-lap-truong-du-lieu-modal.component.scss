@@ -1,0 +1,6 @@
+@import "../../../../shared/scss/modal.scss";
+.row-selected {
+    background: var(--row-selected-color) !important;
+    border-top: 1px dotted black !important;
+    border-bottom: 1px dotted black !important;
+  }

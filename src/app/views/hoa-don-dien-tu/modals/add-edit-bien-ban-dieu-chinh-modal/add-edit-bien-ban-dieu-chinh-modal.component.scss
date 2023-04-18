@@ -1,0 +1,45 @@
+@import "../../../../shared/scss/modal.scss";
+
+// .sign-wrapper {
+//     background-image: url('.././../../../../assets/greentick.png');
+//     background-repeat: no-repeat;
+//     background-position: center;
+//     background-size: contain;
+//     color: red;
+//     font-weight: bold;
+//     line-height: 18px;
+//     width: 280px;
+//     margin: 0 auto;
+//     white-space: break-spaces;
+//     text-align: center;
+    
+//     div {
+//         font-family: 'Times New Roman', Times, serif !important;
+//     }
+// }
+
+#layoutContent{
+    height: 90vh;
+    overflow-y: scroll;
+    margin: 4px 120px 30px 120px;
+    background-color: #fff;
+ }
+ 
+ #backgroundLayout{
+     background-color: rgba(119, 119, 119, 0.6);
+     height: 95vh;
+ }
+
+#formLayout{
+    margin-left: 60px;
+    margin-right: 60px;
+}
+
+.center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    margin-top: 60px!important;
+  }

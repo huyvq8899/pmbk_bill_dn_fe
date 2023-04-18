@@ -1,0 +1,47 @@
+@import "../../../../../../../shared/scss/modal.scss";
+
+textarea {
+    border: none;
+    resize: none;
+    max-width: 750px;
+    max-height: 400px;
+    padding: 15px;
+    font-size: 80px !important;
+    opacity: 0.35;
+
+    &:focus {
+        outline: none;
+    }
+}
+
+:host ::ng-deep .action-icon {
+    svg {
+        font-size: 16px !important;
+    }
+}
+
+.action-icon {
+    cursor: pointer;
+    padding-top: 4px;
+
+    .color-icon {
+        position: relative;
+        cursor: pointer;
+
+        input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+    }
+
+    .icon-active {
+        color: #1877f2 !important;
+        opacity: 1 !important;
+    }
+
+    .icon-unactive {
+        color: black !important;
+        opacity: 0.2 !important;
+    }
+}

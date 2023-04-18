@@ -1,0 +1,20 @@
+<div nz-row>
+  <div id="content" class="box-border" style = "margin: 5px; padding-left: 2px;">
+    <ng-container *ngFor="let tldk of listFile; let i = index">
+      <div nz-row>
+        {{i+1}}. <a style="margin: 2px;" (click)="viewFile(tldk)">{{tldk.tenGoc}}</a><i nz-icon nzSize="small" nzType="close" (click)="deleteFile(tldk)" style = "color: red; cursor: pointer" title = "Xóa tài liệu đính kèm"></i>
+      </div>
+    </ng-container>
+    <input #uploadedFile type="file" multiple (change)="uploadFile($event)" style="display: none;" />
+  </div>
+  <div nz-row *nzModalFooter>
+    <button nz-tooltip nzTooltipTitle="Bấm vào đây để chọn tài liệu đính kèm" style="float: left; margin-left: 5px;"
+      nz-button nzSize="small" nzType="default" class="blueButton" (click)="uploadedFile.click()" nz-tooltip><i nz-icon nzType="paper-clip" nzTheme="outline"></i>Đính kèm...
+    </button>
+    <button style="float: right; margin-right: 5px;"
+      nz-button nzSize="small" nzType="default" class="button-cancel" (click)="destroyModal()" nz-tooltip><i nz-icon nzType="close" nzTheme="outline"></i>Đóng
+    </button>
+  </div>
+</div>
+
+  

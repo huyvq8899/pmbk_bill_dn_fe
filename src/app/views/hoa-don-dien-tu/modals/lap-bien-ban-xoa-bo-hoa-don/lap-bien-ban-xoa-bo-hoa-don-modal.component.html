@@ -1,0 +1,182 @@
+<nz-spin [nzSpinning]="spinning">
+    <div [ngStyle]="{'height':innerHeight + 'px','background-color': 'rgba(119, 119, 119, 0.6)','overflow': 'hidden'}">
+        <form nz-form [formGroup]="mainForm" *ngIf="mainForm" class="">
+            <div style="position: relative; overflow-y: auto; margin: 0px 120px 0px 120px;">
+                <div nz-row style="margin: 4px 0;height: 24px;" class="bb_header">
+                    <div nz-col nzSpan="12" style="text-align: left;">
+                        <button *ngIf="!checkHideBtnXemHd" nz-button nzType="default" class="blueButton" nzSize="small" (click)="view()"><i nz-icon nzType="eye" nzTheme="outline"></i> Xem hóa đơn</button>
+                        <button *ngIf="isShowbtnSendEmail && this.data.trangThaiBienBanXoaBo >= 2" nz-button nzType="default" nzSize="small" class="blueButton" [style.margin-left.px]="!checkHideBtnXemHd ? 5 : 0" (click)="send()"><i nz-icon nzType="mail" nzTheme="outline"></i> Gửi biên bản hủy</button>
+                        <button *ngIf="(!data?.checkHideBtnXoa && !checkHideBtnXoa) && !checkHideBtnXemHd" nz-button nzType="default" nzSize="small" style="font-weight: 600 !important; border-color: #FF0000B2 !important;color: #FF0000B2;" [style.margin-left.px]="!checkHideBtnXemHd || (isShowbtnSendEmail && this.data.trangThaiBienBanXoaBo >= 2) ? 5 : 0" class="button-close"
+                            (click)="XoaBoHoaDon(data)"><i nz-icon
+                          nzType="close"></i>Xóa bỏ hóa đơn</button>
+                    </div>
+                    <div nz-col nzSpan="12" style="text-align: right;">
+                        <button nzSize="small" [disabled]="isEdit" style="margin-right: 5px;" nz-button nzType="default" (click)="edit()"><i nz-icon nzSize="small" nzType="edit" nzTheme="outline"></i>Sửa</button>
+                        <button nzSize="small" [disabled]="!isAddNew" style="margin-right: 5px;" nz-button nzType="default" (click)="save(1)" class="button-save"><i nz-icon nzSize="small" nzType="save" nzTheme="outline"></i>Lưu</button>
+                        <button nzSize="small" [disabled]="isDelete" nz-button nzType="default" style="margin-right: 5px;" class="button-close" (click)="delete(this.formData.id)"><i nz-icon nzSize="small" nzType="delete" nzTheme="outline"></i>Xóa</button>
+                        <button nzSize="small" style="margin-right: 5px;" nz-button nzType="default" [disabled]="this.isAddNew" (click)="onPrintClick()"><i nz-icon nzType="printer" nzTheme="outline"></i>In</button>
+                        <button nzSize="small" nz-button nzType="default" (click)="destroyModal()" class="button-close"><i nz-icon
+                          nzType="close"></i>Đóng</button>
+                    </div>
+                </div>
+                <div nz-row class="bb_content" [ngStyle]="{'height':(innerHeight-56) + 'px'}" style="background-color: white; overflow-y: auto; width: 100%;padding: 10px 60px;">
+                    <h1 style="text-align: center;text-transform: uppercase;"><strong>Cộng hòa xã hội chủ nghĩa Việt Nam</strong></h1>
+                    <h2 style="text-align: center;"><strong>Độc lập - Tự do - Hạnh phúc</strong></h2>
+                    <hr style="width: 14%;background-color: black;margin: 0 auto;color: black;">
+                    <h3 style="text-align: center;text-transform: uppercase;font-size: 15px !important;margin: 20px;font-weight: bold;">BIÊN BẢN HỦY HÓA ĐƠN</h3>
+
+                    <nz-form-item>
+                        <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="soBienBan">Số biên bản</nz-form-label>
+                        <nz-form-control [nzSm]="8" [nzXs]="24">
+                            <input nz-input nzSize="small" type="text" formControlName="soBienBan" />
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <textarea rows="7" nz-input formControlName="thongTu"></textarea>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="ngayBienBan">Hôm nay, vào ngày</nz-form-label>
+                        <nz-form-control [nzSm]="3" [nzXs]="24">
+                            <input style="width: 150px;" nz-input nzSize="small" type="date" formControlName="ngayBienBan" />
+                        </nz-form-control>
+                        <span style="margin-left: 10px;">, chúng tôi gồm có:</span>
+                        <div *ngIf="!isShowChuKyA" nz-col nzSpan="5" style="padding-left: 15px;float: right;">
+                            <button [disabled]="!isAddNew" nz-button nzSize="small" (click)="getReloadDataBenA()" class="blueButton"><i nz-icon nzType="reload" nzTheme="outline"></i>Tải lại thông tin người nộp thuế</button>
+                        </div>
+                    </nz-form-item>
+                    <nz-form-item style="text-transform: uppercase; font-weight: bold;">
+                        <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="tenCongTyBenA">Bên A</nz-form-label>
+                        <nz-form-control [nzSm]="20" [nzXs]="24">
+                            <input style="text-transform: uppercase;font-weight: bold;" nz-input nzSize="small" type="text" formControlName="tenCongTyBenA" />
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="diaChiBenA">Địa chỉ</nz-form-label>
+                        <nz-form-control [nzSm]="20" [nzXs]="24">
+                            <input nz-input nzSize="small" type="text" formControlName="diaChiBenA" />
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="maSoThueBenA">Mã số thuế</nz-form-label>
+                        <nz-form-control [nzSm]="8" [nzXs]="24">
+                            <input nz-input nzSize="small" type="text" formControlName="maSoThueBenA" />
+                        </nz-form-control>
+                        <nz-form-label [nzSm]="4" [nzXs]="24" class="pd-left-15" nzFor="soDienThoaiBenA">Số điện thoại</nz-form-label>
+                        <nz-form-control [nzSm]="8" [nzXs]="24">
+                            <input nz-input nzSize="small" type="text" formControlName="soDienThoaiBenA" />
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="daiDienBenA">Đại diện</nz-form-label>
+                        <nz-form-control [nzSm]="8" [nzXs]="24">
+                            <input nz-input nzSize="small" type="text" formControlName="daiDienBenA" />
+                        </nz-form-control>
+                        <nz-form-label [nzSm]="4" [nzXs]="24" class="pd-left-15" nzFor="chucVuBenA">Chức vụ</nz-form-label>
+                        <nz-form-control [nzSm]="8" [nzXs]="24">
+                            <input nz-input nzSize="small" type="text" formControlName="chucVuBenA" />
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item style="text-transform: uppercase; font-weight: bold;">
+                        <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="tenKhachHang">Bên B</nz-form-label>
+                        <nz-form-control [nzSm]="20" [nzXs]="24">
+                            <input style="text-transform: uppercase;font-weight: bold;" nz-input nzSize="small" type="text" formControlName="tenKhachHang" />
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="diaChi">Địa chỉ</nz-form-label>
+                        <nz-form-control [nzSm]="20" [nzXs]="24">
+                            <input nz-input nzSize="small" type="text" formControlName="diaChi" />
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="maSoThue">Mã số thuế</nz-form-label>
+                        <nz-form-control [nzSm]="8" [nzXs]="24">
+                            <input nz-input nzSize="small" type="text" formControlName="maSoThue" />
+                        </nz-form-control>
+                        <nz-form-label [nzSm]="4" [nzXs]="24" class="pd-left-15" nzFor="soDienThoai">Số điện thoại</nz-form-label>
+                        <nz-form-control [nzSm]="8" [nzXs]="24">
+                            <input nz-input nzSize="small" type="text" formControlName="soDienThoai" />
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="daiDien">Đại diện</nz-form-label>
+                        <nz-form-control [nzSm]="8" [nzXs]="24">
+                            <input nz-input nzSize="small" type="text" formControlName="daiDien" />
+                        </nz-form-control>
+                        <nz-form-label [nzSm]="4" [nzXs]="24" class="pd-left-15" nzFor="chucVu">Chức vụ</nz-form-label>
+                        <nz-form-control [nzSm]="8" [nzXs]="24">
+                            <input nz-input nzSize="small" type="text" formControlName="chucVu" />
+                        </nz-form-control>
+                    </nz-form-item>
+                    <i>Hai bên thống nhất lập biên bản này để thu hồi và xóa bỏ hóa đơn có mẫu số <strong>{{fdata.mauSo}}</strong> ký hiệu <strong>{{fdata.kyHieu}}</strong> số <strong>{{(fdata.soHoaDon == null || fdata.soHoaDon == '') ? fdata.strSoHoaDon : fdata.soHoaDon}}</strong> ngày <strong>{{fdata.ngayHoaDon | date: 'dd/MM/yyyy'}}</strong>&nbsp;
+                    <span *ngIf="fdata.maTraCuu">mã tra cứu <strong>{{fdata.maTraCuu}}</strong>&nbsp;</span>theo quy định</i>
+                    <nz-form-item>
+                        <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="lyDoXoaBo">Lý do hủy hóa đơn</nz-form-label>
+                        <nz-form-control [nzSm]="20" [nzXs]="24" [nzErrorTip]="errorLD">
+                            <textarea rows="1" nz-input formControlName="lyDoXoaBo" tooltipInput></textarea>
+                            <ng-template #errorLD let-control>
+                                <ng-container *ngIf="control.hasError('required')">
+                                    <div class="tooltip-error">&lt;Lý do hủy hóa đơn&gt;: Không được để trống.</div>
+                                </ng-container>
+                            </ng-template>
+                        </nz-form-control>
+                    </nz-form-item>
+                    <p><i>Chúng tôi xin cam kết các thông tin khai ở trên là hoàn toàn chính xác. Nếu có bất kỳ sai sót nào chúng tôi xin chịu trách nhiệm trước pháp luật.</i></p>
+                    <br>
+                    <div nz-row>
+                        <div nz-col nzSpan="12">
+                            <h3 style="text-align: center;"><strong>Đại diện bên A</strong></h3>
+                            <h4 style="text-align: center;">(Chữ ký số, chữ ký điện tử)</h4>
+                            <app-chu-ky-dien-tu *ngIf="isShowChuKyA" [tenDonVi]="tenCongTyBenA" [ngayKy]="ngayKyBenA | date:'dd/MM/yyyy hh:mm:ss'"></app-chu-ky-dien-tu>
+                            <!-- <div class="sign-box" *ngIf="isShowChuKyA">
+                                <div>Ký bởi: <span style="text-transform: uppercase;">{{tenCongTyBenA}}</span></div>
+                                <div>Ngày ký: {{ngayKyBenA}}</div>
+                            </div> -->
+                            <h3 *ngIf="((formData && formData.ngayKyBenA == null)  && !isShowChuKyA) && !isEdit" style="text-align: center;"><button nz-button nzSize="small" nzType="default" class="blueButton" (click)="kyDienTu()"><i nz-icon nzSize="small" nzType="safety-certificate"></i>Ký điện tử</button></h3>
+                        </div>
+                        <div nz-col nzSpan="12">
+                            <h3 style="text-align: center;"><strong>Đại diện bên B</strong></h3>
+                            <h4 style="text-align: center;">(Chữ ký số, chữ ký điện tử)</h4>
+                            <!-- <p *ngIf="formData && formData.ngayKyBenB != null">Ký bởi: {{formData.tenKhachHang}}&nbsp;Ngày ký: {{formData.ngayKyBenB | date: 'dd/MM/yyyy'}}</p> -->
+                            <app-chu-ky-dien-tu *ngIf="formData && formData.ngayKyBenB != null" [tenDonVi]="formData.tenKhachHang" [ngayKy]="ngayKyBenB | date:'dd/MM/yyyy hh:mm:ss'"></app-chu-ky-dien-tu>
+                            <!-- <div class="sign-box" *ngIf="formData && formData.ngayKyBenB != null">
+                                <div>Ký bởi: <span style="text-transform: uppercase;">{{formData.tenKhachHang}}</span></div>
+                                <div>Ngày ký: {{formData.ngayKyBenB | date:'dd/MM/yyyy'}}</div>
+                            </div> -->
+                        </div>
+                    </div>
+                    <!-- <div nz-row [nzGutter]="{ xs: 8, sm: 16, md: 24, lg: 32 }" style="margin-top:15px;">
+                        <div nz-col class="gutter-row" [nzSpan]="24">
+                            <nz-form-item nz-row [nzGutter]="{ xs: 8, sm: 16, md: 24, lg: 32 }">
+                                <nz-form-label nz-col class="gutter-row" [nzSpan]="4" nzFor="" title="" nzFor="taiLieuDinhKem">Đính kèm
+                                </nz-form-label>
+                                <nz-form-control *ngIf="isAddNew" nz-col class="gutter-row" [nzSpan]="3">
+                                    <button nz-button (click)="fImport.click()" nzType="default" nzSize="small">
+                                    <i nz-icon nzType="paper-clip" nzTheme="outline"></i>
+                                Đính kèm...
+                              </button>
+                                    <input id="fImport" type="file" #fImport (change)="uploadFile($event)" style="display: none;" multiple>
+                                </nz-form-control>
+                                <nz-form-control *ngIf="!isAddNew" nz-col class="gutter-row" [nzSpan]="3">
+                                    <button nz-button (click)="fImportShow.click()" nzType="default" nzSize="small">
+                                    <i nz-icon nzType="paper-clip" nzTheme="outline"></i>
+                                Đính kèm...
+                              </button>
+                                    <input id="fImport2" type="file" #fImportShow (change)="onFileInputSave($event)" style="display: none;" multiple>
+                                </nz-form-control>
+
+                                <div nz-col class="gutter-row" [nzSpan]="14">
+                                    <div class="file-list">
+                                        <div class="file-item" *ngFor="let item of listFile">
+                                            <a (click)="downloadFile(item)">{{item.tenGoc}}</a> &nbsp;&nbsp; <i style="color: red;cursor: pointer;" (click)="deleteFile(item)" nz-icon nzType="close" nzTheme="outline"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </nz-form-item>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+        </form>
+    </div>
+</nz-spin>

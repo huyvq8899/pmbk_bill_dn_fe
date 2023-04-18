@@ -1,0 +1,48 @@
+<nz-table [nzNoResult]="null" nzSize="small" nzBordered #basicTable nzShowPagination="false" [nzData]="listData"
+  [nzWidthConfig]="widthConfig" [nzScroll]="scrollConfig" [nzLoading]="isLoading">
+  <thead>
+    <tr>
+      <th nzAlign="center">Dòng số</th>
+      <th nzAlign="center">Là tổ chức/cá nhân</th>
+      <th nzAlign="center">Mã khách hàng</th>
+      <th nzAlign="center">Tên khách hàng</th>
+      <th nzAlign="center">Mã số thuế</th>
+      <th nzAlign="center">Địa chỉ</th>
+      <th nzAlign="center">Tài khoản ngân hàng</th>
+      <th nzAlign="center">Tên ngân hàng</th>
+      <th nzAlign="center">Chi nhánh</th>
+      <th nzAlign="center">Người mua hàng - Họ và tên</th>
+      <th nzAlign="center">Người mua hàng - Email</th>
+      <th nzAlign="center">Người mua hàng - Số điện thoại</th>
+      <th nzAlign="center">Người nhận hóa đơn - Họ và tên</th>
+      <th nzAlign="center">Người nhận hóa đơn - Email</th>
+      <th nzAlign="center">Người nhận hóa đơn - Số điện thoại</th>
+      <th nzAlign="center" nzRight="0px">Tình trạng</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of listData; let i = index">
+      <td>{{data?.row}}</td>
+      <td>{{data?.loaiKhachHang}} <span *ngIf="data?.loaiKhachHang==='1' || data?.loaiKhachHang===''">(Cá nhân)</span>
+        <span *ngIf="data?.loaiKhachHang==='2'">(Tổ chức)</span>
+      </td>
+      <td>{{data?.ma}}</td>
+      <td>{{data?.ten}}</td>
+      <td>{{data?.maSoThue}}</td>
+      <td>{{data?.diaChi}}</td>
+      <td>{{data?.soTaiKhoanNganHang}}</td>
+      <td>{{data?.tenNganHang}}</td>
+      <td>{{data?.chiNhanh}}</td>
+      <td>{{data?.hoTenNguoiMuaHang}}</td>
+      <td>{{data?.emailNguoiMuaHang}}</td>
+      <td>{{data?.soDienThoaiNguoiMuaHang}}</td>
+      <td>{{data?.hoTenNguoiNhanHD}}</td>
+      <td>{{data?.emailNguoiNhanHD}}</td>
+      <td>{{data?.soDienThoaiNguoiNhanHD}}</td>
+      <td nzRight="0px" title="{{ data.errorMessage }}">
+        <span *ngIf="data?.hasError" style="color:red!important">{{ data?.errorMessage }}</span>
+        <span *ngIf="!data?.hasError"> {{ data?.errorMessage }}</span>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>

@@ -1,0 +1,17 @@
+<div class="sign-box">
+  <div class="content-sign" [class.signature-background]="!!ngayKy">
+    <div>Signature Valid</div>
+    <div>
+      <span>Ký bởi</span>
+      <span class="sign-label-en" *ngIf="isSongNgu">&nbsp;(Signed By)</span>
+      <span class="two-dot">:</span>
+      <span class="esign-value">&nbsp;{{tenDonVi}}</span>
+    </div>
+    <div>
+      <span>Ký ngày</span>
+      <span class="sign-label-en" *ngIf="isSongNgu">&nbsp;(Signing Date)</span>
+      <span class="two-dot">:</span>
+      <span class="esign-value">&nbsp;{{ngayKy}}</span>
+    </div>
+  </div>
+</div>

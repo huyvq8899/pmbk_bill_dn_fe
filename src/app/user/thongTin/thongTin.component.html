@@ -1,0 +1,12 @@
+<p> Phần mềm kế toán Bách Khoa </p>
+
+<p> Thông tư số 200/TT-BTC/2014 phát hành ngày 22/12/2014 </p>
+
+<p> Phiên bản hiện tại: {{ this.value }} </p>
+
+<p> Phiên bản mới nhất: {{ this.newestVersionName }} </p>
+
+<p> Ngày phát hành: {{ this.newestVersionDate }} <a [routerLink]="['/version-detail']" (click)="clickDetail()">Chi
+    tiết</a> </p>
+
+<label nz-checkbox [(ngModel)]="checked" (ngModelChange)="onTick($event)">Không hiển thị lại</label>

@@ -1,0 +1,60 @@
+<nz-spin [nzSpinning]="spinning">
+  <div style="border: solid 1px #d1d1d1">
+    <nz-tabset [nzTabPosition]="'left'" [nzSelectedIndex]="selectedTab" (nzSelectedIndexChange)="changeTab($event)">
+      <nz-tab *ngFor="let tab of listVersionRoots; let i = index" nzClosable [nzTitle]="tab.phienBanHienTai"
+        (nzSelect)="OnSelectedRootVersion(tab)">
+        <button nz-button nzSize="small" style="margin-left: -3px;" class="expand-button-version" nzType="default"
+          (click)="clickChangeAllActiveVersionChild()">
+          <i nz-icon nzType="plus" *ngIf="textButtonMoRongThuGon == 'Mở rộng'" nzTheme="outline"></i>
+          <i nz-icon nzType="minus" *ngIf="textButtonMoRongThuGon == 'Thu gọn'" nzTheme="outline"></i>
+          {{textButtonMoRongThuGon}}
+        </button>
+
+        <div style="margin-top: 10px">
+          <nz-timeline>
+            <ng-container *ngFor="let item of listVersionChilds; let i=index">
+              <nz-timeline-item *ngIf="i % 2 == 0" [nzDot]="dotVersionChan">
+                <ng-container>
+                  <div class="header-version-chan">
+                    {{item?.phienBanHienTai}} ngày {{item?.ngayPhatHanh | date:'dd/MM/yyyy'}}</div>
+                  <div class="content-version">
+                    <div nz-row *ngIf="item.active == true">
+                      <div [innerHTML]="item.detail"></div>
+                    </div>
+                  </div>
+                </ng-container>
+              </nz-timeline-item>
+              <nz-timeline-item *ngIf="i % 2 == 1" [nzDot]="dotVersionLe">
+                <ng-container>
+                  <div class="header-version-le">
+                    {{item?.phienBanHienTai}} ngày {{item?.ngayPhatHanh | date:'dd/MM/yyyy'}}</div>
+                  <div class="content-version">
+                    <div nz-row *ngIf="item.active == true">
+                      <div [innerHTML]="item.detail"></div>
+                    </div>
+                  </div>
+                </ng-container>
+              </nz-timeline-item>
+              <ng-template #dotVersionChan>
+                <i *ngIf="item.active === false" (click)="clickOpenChild(item)" nz-icon
+                  class="dot-item-timeline-plus-le" nzType="plus-circle" nzTheme="outline" class="customIconVersion"
+                  style="color: #ed7d31 !important;"></i>
+                <i *ngIf="item.active === true" (click)="clickOpenChild(item)" nz-icon
+                  style="color: #ed7d31 !important;" nzType="minus-circle" nzTheme="outline"
+                  class="customIconVersion"></i>
+              </ng-template>
+              <ng-template #dotVersionLe>
+                <i *ngIf="item.active === false" (click)="clickOpenChild(item)" nz-icon
+                  style="color: #0070C0 !important;" nzType="plus-circle" nzTheme="outline"
+                  class="customIconVersion"></i>
+                <i *ngIf="item.active === true" (click)="clickOpenChild(item)" nz-icon
+                  style="color: #0070C0 !important;" nzType="minus-circle" nzTheme="outline"
+                  class="customIconVersion"></i>
+              </ng-template>
+            </ng-container>
+          </nz-timeline>
+        </div>
+      </nz-tab>
+    </nz-tabset>
+  </div>
+</nz-spin>

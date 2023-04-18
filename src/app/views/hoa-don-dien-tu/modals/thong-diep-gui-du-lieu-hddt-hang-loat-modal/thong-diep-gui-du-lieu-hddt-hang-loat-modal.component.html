@@ -1,0 +1,65 @@
+<div nz-row>
+  <nz-table class="table-hover" [nzNoResult]="null" nzSize="small" #expandTable [nzData]="data"
+    [nzWidthConfig]="widthConfig" [nzScroll]="scrollConfig" [nzFrontPagination]="false" [nzTotal]="total"
+    [nzPageIndex]="1" [nzPageSize]="total" nzBordered [nzHideOnSinglePage]="true">
+    <thead>
+      <tr>
+        <th nzAlign="center">Trạng thái hóa đơn</th>
+        <th nzAlign="center">Loại hóa đơn</th>
+        <th nzAlign="center">Ký hiệu mẫu số hóa đơn</th>
+        <th nzAlign="center">Ký hiệu hóa đơn</th>
+        <th nzAlign="center">Ngày hóa đơn</th>
+        <th nzAlign="center">Số hóa đơn</th>
+        <th nzAlign="center">Mã khách hàng</th>
+        <th nzAlign="center">Tên khách hàng</th>
+        <th nzAlign="center">Địa chỉ</th>
+        <th nzAlign="center">Mã số thuế</th>
+        <th nzAlign="center">Người mua hàng</th>
+        <th nzAlign="center">Loại tiền</th>
+        <th nzAlign="center">Tổng tiền thanh toán</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let data of expandTable.data">
+        <tr [class.row-selected]="data.checked" (click)="selectedRow(data)">
+          <td [class.row-selected]="data.checked">{{data.tenTrangThaiHoaDon}}</td>
+          <td [class.row-selected]="data.checked">{{data.tenLoaiHoaDon}}</td>
+          <td [class.row-selected]="data.checked">{{data.mauSo}}</td>
+          <td [class.row-selected]="data.checked">{{data.kyHieu}}</td>
+          <td [class.row-selected]="data.checked" nzAlign="center">{{data.ngayHoaDon | date:'dd/MM/yyyy'}}</td>
+          <td [class.row-selected]="data.checked">{{data.soHoaDon}}</td>
+          <td [class.row-selected]="data.checked">{{data.maKhachHang}}</td>
+          <td [class.row-selected]="data.checked">{{data.tenKhachHang}}</td>
+          <td [class.row-selected]="data.checked">{{data.diaChi}}}</td>
+          <td [class.row-selected]="data.checked">{{data.maSoThue}}</td>
+          <td [class.row-selected]="data.checked">{{data.hoTenNguoiMuaHang}}</td>
+          <td [class.row-selected]="data.checked">{{data.maLoaiTien}}</td>
+          <td [class.row-selected]="data.checked" nzAlign="right">{{data.tongTienThanhToan | formatPrice}}
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+    <tfoot *ngIf="total > 0" class="total-footer">
+      <td [attr.colspan]="isShowChecked ? 2 : 1">Số dòng = {{total}}</td>
+      <td colspan="12"></td>
+    </tfoot>
+  </nz-table>
+</div>
+
+<div *nzModalFooter>
+  <div nz-row>
+    <div nz-col nzSpan="12" style="text-align: left;">
+      <!-- <button nz-button nzType="default" class="blueButton" (click)="view()" [nzLoading]="spinning">
+        Xem hóa đơn
+      </button> -->
+    </div>
+    <div nz-col nzSpan="12">
+      <button nz-button nzType="default" (click)="submitForm()" class="button-agree" [nzLoading]="spinning">
+        Thực hiện
+      </button>
+      <button nz-button nzType="default" (click)="closeModal()" class="button-cancel" [nzLoading]="spinning">
+        Hủy
+      </button>
+    </div>
+  </div>
+</div>

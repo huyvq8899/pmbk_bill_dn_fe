@@ -1,0 +1,205 @@
+<div style="display: flex;">
+    <div style="width: 400px;" class="nhatKyEmail">
+        <form nz-form [formGroup]="timKiemForm">
+            <nz-form-item>
+                <nz-form-control [nzErrorTip]="errorTimKiemTheo">
+                    <nz-input-group style="width: 100%;" nzSize="small" [nzPrefix]="prefixTemplateUser">
+                        <input type="text" nz-input [placeholder]="placeHolderTimKiemTheo()" nz-tooltip [nzTooltipTitle]="placeHolderTimKiemTheo()" formControlName="timKiemTheo" (ngModelChange)="changeTimKiemTheo()" nzTooltipPlacement="bottomRight" (keyup.enter)="LoadData(true)"
+                        />
+                    </nz-input-group>
+
+                    <ng-template #errorTimKiemTheo let-control>
+                        <ng-container *ngIf="control.hasError('required')">
+                            <div class="tooltip-error">&lt;Từ khóa cần tìm&gt; không được để trống.</div>
+                        </ng-container>
+                    </ng-template>
+
+                    <ng-template #prefixTemplateUser>
+                        <i nz-icon nzType="setting" nzTheme="outline" nz-dropdown [nzDropdownMenu]="menuPlusMutiple" [nzClickHide]="false"></i>
+                        <nz-dropdown-menu #menuPlusMutiple="nzDropdownMenu">
+                            <ul nz-menu>
+                                <li nz-menu-item *ngFor="let item of timKiemTheos">
+                                    <label nz-checkbox [(ngModel)]="item.checked" [ngModelOptions]="{standalone: true}">{{item.name}}</label>
+                                </li>
+                            </ul>
+                        </nz-dropdown-menu>
+                    </ng-template>
+                </nz-form-control>
+            </nz-form-item>
+        </form>
+    </div>
+    <div style="margin: 0 5px;">
+        <button nzSize="small" nz-button nz-popover nzPopoverTitle="Lọc dữ liệu" [nzPopoverContent]="filterPopoverContentTemp" nzPopoverTrigger="click" [(nzVisible)]="filterGeneralVisible" nzPopoverPlacement="bottomLeft" [class.is-filtering]="isFitering" class="blueButton filterButton">
+      <i nz-icon nzType="filter" nzTheme="outline"></i> Lọc
+    </button>
+        <ng-template #filterPopoverContentTemp>
+            <div style="width: 540px;" class="padding-filter">
+                <div nz-row nzGutter="8" style="margin-bottom: 10px;">
+                    <div nz-col nzSpan="12">
+                        <div>Kỳ</div>
+                        <nz-select style="width: 100%;" nzSize="small" nzShowSearch nzPlaceHolder="Chọn kỳ" [(ngModel)]="params.Ky" (ngModelChange)="changeKy($event)">
+                            <nz-option *ngFor="let item of kys" [nzLabel]="item.value" [nzValue]="item.key"></nz-option>
+                        </nz-select>
+                    </div>
+                    <div nz-col nzSpan="6">
+                        <div>Từ ngày</div>
+                        <input style="width: 100%;" nzSize="small" type="date" max="2999-12-31" nz-input [(ngModel)]="params.fromDate" (keydown.enter)="LoadData()" (keydown.enter)="filterVisible= false" (blur)="blurDate()" />
+                    </div>
+                    <div nz-col nzSpan="6">
+                        <div>Đến ngày</div>
+                        <input style="width: 100%;" nzSize="small" type="date" max="2999-12-31" nz-input [(ngModel)]="params.toDate" (keydown.enter)="LoadData()" (keydown.enter)="filterVisible= false" (blur)="blurDate()" />
+                    </div>
+                </div>
+
+                <div class="filterFooterLine"></div>
+                <div nz-row nzGutter="8">
+                    <div nz-col [nzOffset]="12" nzSpan="12">
+                        <div nz-row nzGutter="16" style="float: right; padding-right: 9px;">
+                            <button nzSize="small" nz-button nzType="default" (click)="filterDefault()" class="filterDefaultButton">Lọc mặc định
+                </button> &nbsp;
+                            <button nzSize="small" nz-button nzType="default" (click)="filterGeneral()" class="button-clear">Lọc
+                </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+    </div>
+    <div style="flex: 1; display: flex; align-items: center;">
+        <ul class="view-filter-list">
+            <li *ngFor="let tl of viewConditionList">
+                <div>
+                    <span class="label">{{tl.label}}</span>
+                    <span class="value">{{tl.value}}</span>
+                    <i *ngIf="tl.key !== 'Ky'" (click)="removeFilter(tl)" class="remove" nz-icon nzType="close" nzTheme="outline"></i>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div nz-row style="margin-top: 5px; margin-bottom: 5px;">
+    <div nz-col nzSpan="24">
+        <nz-button-group nzSize="small">
+            <button [nzDisabled]="permission != true && thaoTacs.indexOf('TOOL_EXPORT') < 0" nzType="default" nz-button nz-dropdown [nzDropdownMenu]="menuPlusMutiple">
+        <i nz-icon nzType="vertical-align-bottom" nzTheme="outline"></i>Xuất khẩu<i nz-icon nzType="down"></i>
+        <nz-dropdown-menu #menuPlusMutiple="nzDropdownMenu">
+          <ul nz-menu  style="min-width: 110.5px !important;">
+              <li nz-menu-item (click)="exportFile(1)">
+                <img width="17" height="15" src="assets/xlsx.png"/> Excel
+              </li>
+              <li nz-menu-item (click)="exportFile(2)">
+                <img width="17" height="15" src="assets/pdf.png"/> PDF
+              </li>
+          </ul>
+      </nz-dropdown-menu>
+      </button>
+        </nz-button-group>
+    </div>
+</div>
+
+<div nz-row>
+    <nz-table [nzNoResult]="null" nzSize="small" #fixedTable [nzData]="listNhatKyTruyCap" [nzScroll]="scrollConfig" [nzWidthConfig]="widthConfig" [nzTotal]="total" [(nzPageIndex)]="params.PageNumber" [(nzPageSize)]="params.PageSize" [nzPageSizeOptions]="pageSizeOptions"
+        (nzPageIndexChange)="LoadData()" (nzPageSizeChange)="LoadData(true)" nzShowQuickJumper="true" [nzFrontPagination]="false" nzShowSizeChanger nzShowTotal nzBordered [nzLoading]="loading">
+        <thead (nzSortChange)="sort($event)" nzSingleSort>
+            <tr>
+                <th nzCustomFilter nzShowSort nzSortKey="CreatedByUserName" nzAlign="center">Người thực hiện
+                    <i nz-th-extra class="ant-table-filter-icon" nz-icon nz-dropdown #ddCreatedByUserName="nzDropdown" [nzType]="params.Filter.CreatedByUserName ? 'filter' : 'search'" [nzDropdownMenu]="menuCreatedByUserName" [class.ant-table-filter-open]="ddCreatedByUserName.nzVisible || params.Filter.CreatedByUserName"
+                        nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter></i>
+                    <nz-dropdown-menu #menuCreatedByUserName="nzDropdownMenu">
+                        <div class="search-box">
+                            <input type="search" nz-input placeholder="Tìm kiếm ..." [(ngModel)]="params.Filter.CreatedByUserName" [ngModelOptions]="{standalone: true}" (ngModelChange)="change('CreatedByUserName',$event)" (keyup.enter)="LoadData()" />
+                        </div>
+                    </nz-dropdown-menu>
+                </th>
+                <th nzCustomFilter nzShowSort nzSortKey="CreatedDateFilter" nzAlign="center">Thời gian
+                    <i nz-th-extra class="ant-table-filter-icon" nz-icon nz-dropdown #ddlCreatedDateFilter="nzDropdown" [nzType]="params.Filter.CreatedDateFilter ? 'filter' : 'search'" [nzDropdownMenu]="menuCreatedDateFilter" [class.ant-table-filter-open]="ddlCreatedDateFilter.nzVisible || params.Filter.CreatedDateFilter"
+                        nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter></i>
+                    <nz-dropdown-menu #menuCreatedDateFilter="nzDropdownMenu">
+                        <div class="search-box">
+                            <input type="search" nz-input placeholder="Tìm kiếm ..." [(ngModel)]="params.Filter.CreatedDateFilter" [ngModelOptions]="{standalone: true}" (ngModelChange)="change('CreatedDateFilter',$event)" (keyup.enter)="LoadData()" />
+                        </div>
+                    </nz-dropdown-menu>
+                </th>
+                <th nzCustomFilter nzShowSort nzSortKey="DoiTuongThaoTac" nzAlign="center">Đối tượng thao tác
+                    <i nz-th-extra class="ant-table-filter-icon" nz-icon nz-dropdown #ddlDoiTuongThaoTac="nzDropdown" [nzType]="params.Filter.DoiTuongThaoTac ? 'filter' : 'search'" [nzDropdownMenu]="menuDoiTuongThaoTac" [class.ant-table-filter-open]="ddlDoiTuongThaoTac.nzVisible || params.Filter.DoiTuongThaoTac"
+                        nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter></i>
+                    <nz-dropdown-menu #menuDoiTuongThaoTac="nzDropdownMenu">
+                        <div class="search-box">
+                            <input type="search" nz-input placeholder="Tìm kiếm ..." [(ngModel)]="params.Filter.DoiTuongThaoTac" [ngModelOptions]="{standalone: true}" (ngModelChange)="change('DoiTuongThaoTac',$event)" (keyup.enter)="LoadData()" />
+                        </div>
+                    </nz-dropdown-menu>
+                </th>
+                <th nzCustomFilter nzShowSort nzSortKey="HanhDong" nzAlign="center">Hành động
+                    <i nz-th-extra class="ant-table-filter-icon" nz-icon nz-dropdown #ddlHanhDong="nzDropdown" [nzType]="params.Filter.HanhDong ? 'filter' : 'search'" [nzDropdownMenu]="menuHanhDong" [class.ant-table-filter-open]="ddlHanhDong.nzVisible || params.Filter.HanhDong"
+                        nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter></i>
+                    <nz-dropdown-menu #menuHanhDong="nzDropdownMenu">
+                        <div class="search-box">
+                            <input type="search" nz-input placeholder="Tìm kiếm ..." [(ngModel)]="params.Filter.HanhDong" [ngModelOptions]="{standalone: true}" (ngModelChange)="change('HanhDong',$event)" (keyup.enter)="LoadData()" />
+                        </div>
+                    </nz-dropdown-menu>
+                </th>
+                <th nzCustomFilter nzShowSort nzSortKey="ThamChieu" nzAlign="center">Tham chiếu
+                    <i nz-th-extra class="ant-table-filter-icon" nz-icon nz-dropdown #ddlThamChieu="nzDropdown" [nzType]="params.Filter.ThamChieu ? 'filter' : 'search'" [nzDropdownMenu]="menuThamChieu" [class.ant-table-filter-open]="ddlThamChieu.nzVisible || params.Filter.ThamChieu"
+                        nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter></i>
+                    <nz-dropdown-menu #menuThamChieu="nzDropdownMenu">
+                        <div class="search-box">
+                            <input type="search" nz-input placeholder="Tìm kiếm ..." [(ngModel)]="params.Filter.ThamChieu" [ngModelOptions]="{standalone: true}" (ngModelChange)="change('ThamChieu',$event)" (keyup.enter)="LoadData()" />
+                        </div>
+                    </nz-dropdown-menu>
+                </th>
+                <th nzCustomFilter nzShowSort nzSortKey="MoTaChiTiet" nzAlign="center">Mô tả chi tiết
+                    <i nz-th-extra class="ant-table-filter-icon" nz-icon nz-dropdown #ddlMoTaChiTiet="nzDropdown" [nzType]="params.Filter.MoTaChiTiet ? 'filter' : 'search'" [nzDropdownMenu]="menuMoTaChiTiet" [class.ant-table-filter-open]="ddlMoTaChiTiet.nzVisible || params.Filter.MoTaChiTiet"
+                        nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter></i>
+                    <nz-dropdown-menu #menuMoTaChiTiet="nzDropdownMenu">
+                        <div class="search-box">
+                            <input type="search" nz-input placeholder="Tìm kiếm ..." [(ngModel)]="params.Filter.MoTaChiTiet" [ngModelOptions]="{standalone: true}" (ngModelChange)="change('MoTaChiTiet',$event)" (keyup.enter)="LoadData()" />
+                        </div>
+                    </nz-dropdown-menu>
+                </th>
+                <th nzCustomFilter nzShowSort nzSortKey="DiaChiIP" nzAlign="center">Địa chỉ IP
+                    <i nz-th-extra class="ant-table-filter-icon" nz-icon nz-dropdown #ddlDiaChiIP="nzDropdown" [nzType]="params.Filter.DiaChiIP ? 'filter' : 'search'" [nzDropdownMenu]="menuDiaChiIP" [class.ant-table-filter-open]="ddlDiaChiIP.nzVisible || params.Filter.DiaChiIP"
+                        nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter></i>
+                    <nz-dropdown-menu #menuDiaChiIP="nzDropdownMenu">
+                        <div class="search-box">
+                            <input type="search" nz-input placeholder="Tìm kiếm ..." [(ngModel)]="params.Filter.DiaChiIP" [ngModelOptions]="{standalone: true}" (ngModelChange)="change('DiaChiIP',$event)" (keyup.enter)="LoadData()" />
+                        </div>
+                    </nz-dropdown-menu>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of fixedTable.data" [class.row-selected]="data.selected" (click)="selectedRow(data)" (dblclick)="xemThem(data)">
+                <td title="{{ data?.createdByUserName }}">
+                    {{ data.createdByUserName }}
+                </td>
+                <td nzAlign="center" title="{{ data?.createdDate | date:'dd/MM/yyyy HH:mm:ss' }}">
+                    {{ data?.createdDate | date:'dd/MM/yyyy HH:mm:ss' }}
+                </td>
+                <td title="{{ data?.doiTuongThaoTac }}">
+                    {{ data.doiTuongThaoTac }}
+                </td>
+                <td title="{{ data?.hanhDong }}">
+                    {{ data.hanhDong }}
+                </td>
+                <td title="{{ data?.thamChieu }}" [innerText]="data.thamChieu"></td>
+                <td title="{{ data?.moTaChiTiet }}">
+                    {{data.moTaChiTiet}}
+                    <!-- <div *ngIf="data.moTaChiTiet && data.isOverLimitContent"><a href="javascript:void(0);" (click)="xemThem(data)">Xem thêm</a></div> -->
+                </td>
+                <td title="{{ data?.diaChiIP }}">
+                    {{ data.diaChiIP }}
+                </td>
+            </tr>
+            <tr *ngFor="let obj of lstBangKeEmpty">
+                <td *ngFor="let empty of numberBangKeCols; let idx = index">
+                    <span *ngIf="idx===0" class="font-while">.</span>
+                </td>
+            </tr>
+        </tbody>
+        <tfoot *ngIf="total>0" class="total-footer">
+            <td colspan="1">Số dòng = {{total}}</td>
+            <td colspan="6"></td>
+        </tfoot>
+    </nz-table>
+</div>

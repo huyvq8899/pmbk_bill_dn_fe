@@ -1,0 +1,14 @@
+<ng-container *ngIf="trangThaiGuiHoaDon != null">
+  <div class="circle-mail" [title]="tenTrangThaiGuiHoaDon" [ngClass]="{
+    'circle-mail-chua-gui': trangThaiGuiHoaDon === 0,
+    'circle-mail-dang-gui': trangThaiGuiHoaDon === 1,
+    'circle-mail-gui-loi': trangThaiGuiHoaDon === 2,
+    'circle-mail-da-gui': trangThaiGuiHoaDon === 3,
+    'circle-mail-chua-ky': trangThaiGuiHoaDon === 4,
+    'circle-mail-da-ky': trangThaiGuiHoaDon === 5
+  }">
+    <i *ngIf="trangThaiGuiHoaDon >= 0 && trangThaiGuiHoaDon <= 3" nz-icon nzType="mail" nzTheme="outline"></i>
+    <i *ngIf="trangThaiGuiHoaDon >= 4 && trangThaiGuiHoaDon <= 5" nz-icon nzType="safety-certificate"
+      nzTheme="outline"></i>
+  </div>
+</ng-container>

@@ -1,0 +1,20 @@
+.status {
+    padding: 2px 10px;
+    border-radius: 30px;
+    color: white;
+    &-chua-xac-thuc {
+        background-color: #ED7D31;
+    }
+    &-da-xac-thuc {
+        background-color: #0099FF;
+    }
+    &-dang-su-dung {
+        background-color: #00B4B3;
+    }
+    &-ngung-su-dung {
+        background-color: #FF0000B2;
+    }
+    &-het-hieu-luc {
+        background-color: #A5A5A5;
+    }
+}

@@ -1,0 +1,46 @@
+<nz-table [nzNoResult]="null" nzSize="small" nzBordered #basicTable nzShowPagination="false" [nzData]="listData"
+  [nzWidthConfig]="widthConfig" [nzScroll]="scrollConfig" [nzLoading]="isLoading">
+  <thead>
+    <tr>
+      <th [nzAlign]="'center'">Dòng số</th>
+      <th [nzAlign]="'center'">Là khách hàng</th>
+      <th [nzAlign]="'center'">Mã số thuế</th>
+      <th [nzAlign]="'center'">Mã nhân viên</th>
+      <th [nzAlign]="'center'">Tên nhân viên</th>
+      <th [nzAlign]="'center'">Chức danh</th>
+      <th [nzAlign]="'center'">Tên đơn vị</th>
+      <th [nzAlign]="'center'">Số tài khoản ngân hàng</th>
+      <th [nzAlign]="'center'">Tên ngân hàng</th>
+      <th [nzAlign]="'center'">Chi nhánh</th>
+      <th [nzAlign]="'center'">Email</th>
+      <th [nzAlign]="'center'">Số điện thoại</th>
+      <th [nzAlign]="'center'" nzRight="0px">Tình trạng</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of listData; let i = index">
+      <td>{{data?.row}}</td>
+      <td>
+        {{data?.isKhachHangText}}
+        <!--
+        {{data?.laKhachHang}} <span *ngIf="data?.laKhachHang==='0'">(Không)</span>
+        <span *ngIf="data?.laKhachHang==='1'">(Có)</span>
+        -->
+      </td>
+      <td>{{data?.maSoThue}}</td>
+      <td>{{data?.ma}}</td>
+      <td>{{data?.ten}}</td>
+      <td>{{data?.chucDanh}}</td>
+      <td>{{data?.tenDonVi}}</td>
+      <td>{{data?.soTaiKhoanNganHang}}</td>
+      <td>{{data?.tenNganHang}}</td>
+      <td>{{data?.chiNhanh}}</td>
+      <td>{{data?.emailNguoiNhanHD}}</td>
+      <td>{{data?.soDienThoaiNguoiNhanHD}}</td>
+      <td nzRight="0px" title="{{ data.errorMessage }}">
+        <span *ngIf="data?.hasError" style="color:red!important">{{ data?.errorMessage }}</span>
+        <span *ngIf="!data?.hasError"> {{ data?.errorMessage }}</span>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>

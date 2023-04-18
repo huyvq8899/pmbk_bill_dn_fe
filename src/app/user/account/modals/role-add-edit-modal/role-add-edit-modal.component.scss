@@ -1,0 +1,170 @@
+// @import "../../../../../shared/scss/modal.scss";
+
+
+  
+  /* TABLE */
+  :host ::ng-deep tbody tr:hover {
+    cursor: pointer;
+    background-color: white  !important;
+    background: white !important;
+  }
+  :host ::ng-deep tbody tr:hover td {
+    background-color: white  !important; 
+    
+    border-top: 1px dotted black !important;
+    border-bottom: 1px dotted black !important;
+  }
+  
+  :host ::ng-deep tbody tr td {
+    padding: 1px  1px 1px 1px !important;
+  }
+  
+  :host ::ng-deep tbody tr td .ant-form-item-control {
+    margin-bottom: 0px !important;
+  }
+  
+  :host ::ng-deep tbody tr:nth-child(even) {
+    background-color: white !important;  
+  }
+  
+  :host ::ng-deep tbody tr:nth-child(even) .ant-table-td-left-sticky, 
+  :host ::ng-deep tbody tr:nth-child(even) .ant-table-td-right-sticky {
+    background-color: white !important;  
+  }
+
+  nz-form-item {
+    margin-bottom: 0px;
+  }
+  
+  nz-select {
+    width: 100%;
+  }
+  
+  nz-picker {
+    width: 100%;
+  }
+  
+  /* FORM ITEM CONTROL  */
+  :host ::ng-deep .ant-form-item-control {
+    line-height: unset !important; 
+    margin-left: 0px !important;
+    margin-bottom: 5px;
+  }
+  
+  /* COLLAPSE CONTENT */
+  :host ::ng-deep .ant-collapse-header {
+    font-weight: bold;  
+    color: black !important;
+    padding: 5px 16px 5px 35px !important;
+  }
+  
+  :host ::ng-deep .ant-collapse-content-box {
+    padding-bottom: 0px !important;
+    margin-left: 10px !important;
+    margin-right: 10px !important;
+    margin-bottom: 2px !important;
+    border-bottom: 1px solid #d1d1d1;
+    border-left: 1px solid #d1d1d1;
+    border-right: 1px solid #d1d1d1;
+  }
+  
+  :host ::ng-deep .ant-collapse>.ant-collapse-item>.ant-collapse-header .ant-collapse-arrow {
+    color: var(--primary-color);
+  }
+  
+  /* BUTTON */
+  :host ::ng-deep .ant-btn-group {
+    padding-top: 2px;
+    padding-right: 25px;
+  }
+  
+  /* TAB */
+  :host ::ng-deep .ant-tabs-bar {
+    margin: 0px !important;
+  }
+  
+  :host ::ng-deep .ant-tabs-nav-scroll {
+    background: white;
+  }
+  
+  /* OTHER */
+  .box-title {
+    position: absolute;
+    top: -14px;
+    margin-left: 16px;
+    padding: 1px 8px;
+    color: #777;
+    background: #fff;
+    border-radius: 2px 2px 0 0;
+    transition: background-color 0.4s;
+  }
+  
+  .inner-content {
+    margin-top: 10px;
+  }
+  
+  
+  .total-money {
+    padding: 2px 2px !important;
+    text-align: right;
+    font-weight: bold;
+  }
+  
+  .box-border {
+    border: 1px solid #d1d1d1;
+    padding: 10px 10px 10px 10px;
+  }
+  
+  .box-search {
+    background: white;
+    padding: 5px;
+    border: 1px solid;
+    border-color: lightgray;
+    box-shadow: 1px 0 5px rgba(0, 10, 5, 0.3);
+  }
+  
+  .footer {
+    padding: 0px 15px;
+  }
+    
+  .icon-Nhap-Ma-Quy-Cach {
+    padding: 1%;
+    cursor: pointer;
+  }
+  
+  .icon-Nhap-Ma-Quy-Cach:hover {
+    color:  var(--primary-color);
+  }
+  
+  .icon-Nhap-Ma-Quy-Cach2 {
+    padding: 1%;
+    cursor: pointer;
+    color: red;
+  }
+  
+  .icon-Nhap-Ma-Quy-Cach2:hover {
+    color:  var(--primary-color);
+  }
+  
+  .icon-Nhap-Ma-Quy-Cach3 {
+    padding: 1%;
+    cursor: pointer;
+    color: #1890ff;
+  }
+  
+  .icon-Nhap-Ma-Quy-Cach3:hover {
+    color:  var(--primary-color);
+  }
+  
+  :host ::ng-deep .ant-tabs-extra-content {
+    width: 60%;
+    margin-top: -5px;
+  }
+  
+  .form-header-title{
+    margin-left: 8px;
+    font-weight: bold;
+    line-height: 40px;
+    vertical-align: middle;
+    font-size: 17px!important;
+  }

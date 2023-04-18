@@ -1,0 +1,36 @@
+<nz-spin [nzSpinning]="this.isDoingTaskOnOk">
+    <div style="padding: 15px">
+        <div class="LuuY" style="margin-bottom: 10px!important"><i nz-icon nzType="question-circle" nzTheme="outline" class="customIcon"></i>{{msTitle}}</div>
+        <div>
+            <nz-table [nzNoResult]="null" nzSize="small" #fixedTable [nzData]="resultData" [nzTotal]="resultData.length" nzPageIndex="1" [nzPageSize]="resultData.length" nzBordered 
+            [nzFrontPagination]="false" [nzShowPagination]="false">
+                <thead>
+                    <tr>
+                        <th nzAlign="center" nzWidth="100px">Thông tin</th>
+                        <th nzAlign="center" nzWidth="300px">Thông tin trên mẫu hóa đơn<br>thể hiện trên tệp XML</th>
+                        <th nzAlign="center" nzWidth="120px">Kết quả đối chiếu</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of fixedTable.data">
+                        <td>{{ data.tieuChi }}</td>
+                        <td>{{ data.thongTinTrenMauHoaDon }}</td>
+                        <td>
+                            {{data.ketQuaDoiChieuText}}
+                        </td>
+                    </tr>
+                </tbody>
+            </nz-table>
+
+            <div style = "margin-top: 10px">
+                <span>Vui lòng kiểm tra lại!</span>
+            </div>
+        </div>
+    </div>
+
+    <div class = "ant-modal-footer ng-star-inserted">
+        <button nz-button nzType="default" class="button-cancel" nzSize="small" (click)="destroyModal()">
+            <i nz-icon nzType="close" nzTheme="outline"></i>{{msCloseText}}
+        </button>
+    </div>
+</nz-spin>

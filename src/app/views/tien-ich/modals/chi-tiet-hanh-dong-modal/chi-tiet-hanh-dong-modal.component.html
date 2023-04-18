@@ -1,0 +1,16 @@
+<div>
+    {{data?.hanhDong}} {{data?.doiTuongThaoTac}} - Lúc {{data?.createdDate | date:'dd/MM/yyyy HH:mm:ss'}}
+</div>
+<div *ngIf="data?.thamChieu">
+    Tham chiếu: {{data?.thamChieu}}
+</div>
+<span>Mô tả</span>
+<div nz-row style="min-height: 200px; max-height: 200px; overflow-y: auto; border: 1px solid #d1d1d1;">
+    <div nz-col nzSpan="24" style="padding: 5px 10px;">
+        <div [innerText]="data?.moTaChiTiet"></div>
+    </div>
+</div>
+
+<div *nzModalFooter>
+    <button nz-button nzType="default" nzSize="small" (click)="closeModal()" class="button-cancel"><i nz-icon nzType="close"></i> Đóng</button>
+</div>

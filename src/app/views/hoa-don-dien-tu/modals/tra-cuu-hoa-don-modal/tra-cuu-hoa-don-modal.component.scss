@@ -1,0 +1,82 @@
+@import "../../../../shared/scss/modal.scss";
+
+.logo-tc {
+    height: 90px;
+    width: 110px;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 100%;
+  }
+
+  [nz-carousel-content] {
+    text-align: center;
+    height: 160px;
+    line-height: 160px;
+    background: #fff;
+    color: #7f00ff;
+    overflow: hidden;
+  }
+  
+.title {
+    margin-left: 10px;
+    color: #ffffff;
+    text-align: left;
+    font-weight: bolder;
+    font-size: 200%!important;
+    
+}
+
+.sider-bar {
+    height: 50%;
+}
+
+.slider-bar{
+  height: 50%;
+}
+
+.input-search {
+  margin-left: 10px;
+  margin-right: 10px;
+  background: inherit;
+}
+
+// #slide-image{
+//   height: auto;
+//   width: auto;
+//   margin: auto;
+// }
+
+.image-slider {
+  width: 100%;
+  height: 90% !important;
+  position: absolute;
+  left: 50%;
+  top: 55%;
+  transform: translate(-50%, -50%);
+}
+
+
+.content {
+    height: 100%;
+}
+
+:host ::ng-deep .ant-carousel .slick-dots li button{
+  background-color: lightgray!important;
+}
+
+:host ::ng-deep .ant-carousel .slick-dots li button:focus{
+  background-color: silver!important;
+}
+
+.sider-bar-footer {
+    text-align: center;
+    position: absolute;
+    bottom: 10px;
+    width: 100% !important;
+}
+
+.sider-bar-content {
+    padding: 80px 0 80px 0;
+    margin-bottom: 40px;
+    background: inherit;
+}

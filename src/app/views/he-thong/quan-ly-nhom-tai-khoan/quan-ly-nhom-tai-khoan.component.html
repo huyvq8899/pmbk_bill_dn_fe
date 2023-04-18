@@ -1,0 +1,182 @@
+<nz-spin [nzSpinning]="loading">
+    <div nz-row [nzGutter]="8">
+        <div nz-col class="gutter-row" nzXs="24" nzSm="8">
+            <div class="title">
+                <span>Danh sách vai trò</span>
+            </div>
+            <div class="box-border">
+                <div nz-row style="margin-bottom: 2px;">
+                    <div nz-col nzSpan="24" style="text-align: left; padding-left: 0px;padding-bottom: 3px;">
+                        <nz-button-group nzSize="default">
+                            <button nzSize="small" nz-button nz-tooltip nzTooltipTitle="F2" nzType="default" (click)="clickThem()">
+          <i nz-icon nzType="plus" nzTheme="outline"></i>Thêm
+        </button>
+                            <button [disabled]="selectedRoleId == 'new' || selectedRoleId == 'none'" nzSize="small" nz-button nz-tooltip nzTooltipTitle="F8" nzType="default" (click)="clickSua(false)">
+          <i nz-icon nzType="edit" nzTheme="outline"></i>Sửa
+        </button>
+                            <button nzSize="small" [disabled]="selectedRoleId == 'new' || selectedRoleId == 'none'" (click)="clickXoa()" nz-button nz-tooltip nzTooltipTitle="F9" class="button-close">
+          <i nz-icon nzType="delete"></i>Xóa
+        </button>
+                            <button nzSize="small" nz-button nz-tooltip nzTooltipTitle="ALT+F2" nzType="default" (click)="clickSua(true)">
+          <i nz-icon nzType="copy" nzTheme="outline"></i>Nhân bản
+        </button>
+                            <button [disabled]="selectedRoleId == 'new' || selectedRoleId == 'none'" nzSize="small" nz-button nzType="default" nz-tooltip (click)="clickChonChucNang()">
+          <i nz-icon nzType="select" nzTheme="outline"></i>Phân quyền
+        </button>
+                        </nz-button-group>
+                    </div>
+                </div>
+
+                <nz-table [nzNoResult]="null" nzSize="small" nzBordered #nhomTaiKhoanTable nzShowPagination="false" [(nzPageSize)]="pageSize" [nzData]="listRole" [nzScroll]="{x: '100%', y: '280px'}">
+                    <thead>
+                        <tr>
+                            <th nzAlign="center" nzWidth="10%">STT</th>
+                            <th nzAlign="center" nzWidth="90%">
+                                Tên vai trò
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr *ngFor="let data of nhomTaiKhoanTable.data; let i = index" (click)="selectedRow(data)">
+                            <td nzAlign="center" [class.row-selected]="data.selected">
+                                {{i + 1}}
+                            </td>
+                            <td [class.row-selected]="data.selected">
+                                {{data.roleName}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </nz-table>
+            </div>
+
+        </div>
+
+        <div nz-col nzXs="24" nzSm="16" class="gutter-row unset-border-left noneCollapsedTree">
+            <div class="title">
+                <span>{{chucNangTitle}}</span>
+            </div>
+            <div class="box-border">
+                <nz-tabset nzSize="small" [nzTabPosition]="'top'" [nzType]="'card'" (nzSelectedIndexChange)="selectedTab($event)">
+                    <nz-tab nzTitle="Chức năng">
+                        <div nz-row>
+                            <div nz-col nzXs="24" nzSm="10" nzMd="10" nzLg="10" nzXl="10">
+                                <nz-table [nzNoResult]="null" nzSize="small" nzBordered #dsChucNangTable nzShowPagination="false" [(nzPageSize)]="pageSize" [nzData]="listFunction" [nzLoading]="loadingDSChucNang" [nzScroll]="scrollConfig">
+                                    <thead>
+                                        <tr>
+                                            <th nzAlign="center">Tên phân hệ/chức năng</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <ng-container *ngFor="let data of dsChucNangTable.data">
+                                            <ng-container *ngFor="let item of mapOfExpandedData[data.key]">
+                                                <tr *ngIf="(item.parent && item.parent.expand) || !item.parent" [class.row-selected]="item.selected" [class.bold-text]="item.children != null || item.isRootTree == true" (click)="selectRow(item)">
+                                                    <td [nzIndentSize]="item.level * 20" [nzShowExpand]="!!item.children" [(nzExpand)]="item.expand" (nzExpandChange)="collapse(mapOfExpandedData[data.key], item, $event)">
+                                                        {{item?.title }}
+                                                    </td>
+                                                </tr>
+                                            </ng-container>
+                                        </ng-container>
+
+                                    </tbody>
+                                </nz-table>
+                            </div>
+                            <div nz-col nzXs="24" nzSm="14" nzMd="14" nzLg="14" nzXl="14">
+                                <nz-table [nzNoResult]="null" nzSize="small" nzBordered #dsThaoTacTable nzShowPagination="false" [(nzPageSize)]="pageSize" [nzData]="listThaoTac" [nzLoading]="loadingDSThaoTac" [nzScroll]="scrollConfig">
+                                    <thead>
+                                        <tr>
+                                            <th nzAlign="center" nzWidth="10%">
+                                            </th>
+                                            <th nzAlign="center" nzWidth="90%">Quyền sử dụng</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <tr *ngFor="let item of dsThaoTacTable.data">
+                                            <td nzAlign="center">
+                                                <nz-switch nzSize="small" [nzDisabled]="true"
+                                                    [(ngModel)]="item.active"
+                                                    [nzCheckedChildren]="checkedTemplate"
+                                                    [nzUnCheckedChildren]="unCheckedTemplate"
+                                                >
+                                                </nz-switch>                                            
+                                            </td>
+                                            <td>
+                                                {{item?.ten }}
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </nz-table>
+                            </div>
+                        </div>
+                    </nz-tab>
+                    <nz-tab nzTitle="Bộ ký hiệu hóa đơn">
+                        <nz-table [nzNoResult]="null" nzSize="small" #fixedTable [nzData]="listMauHoaDon" [nzScroll]="scrollConfigM" [nzFrontPagination]="false" [nzTotal]="totalM" [nzWidthConfig]="widthConfigM" [nzPageSize]="totalM" nzBordered [nzLoading]="loading" [nzHideOnSinglePage]="true">
+                            <thead>
+                                <tr>
+                                    <th nzAlign="center">
+                                        <nz-switch nzSize="small" [nzDisabled]="true"
+                                        [(ngModel)]="isAllDisplayDataCheckedM"
+                                        (ngModelChange)="checkAllM($event)"
+                                        [nzCheckedChildren]="checkedTemplate"
+                                        [nzUnCheckedChildren]="unCheckedTemplate"
+                                    >
+                                    </nz-switch> 
+                                    </th>
+                                    <th nzAlign="center">Trạng thái sử dụng
+                                    </th>
+                                    <th nzAlign="center">Ký hiệu
+                                    </th>
+                                    <th nzAlign="center">Ủy nhiệm lập hóa đơn
+                                    </th>
+                                    <th nzAlign="center">Tên mẫu hóa đơn
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let data of fixedTable.data">
+                                    <td nzAlign="center">
+                                        <nz-switch nzSize="small" [nzDisabled]="true"
+                                            [(ngModel)]="data.actived"
+                                            [nzCheckedChildren]="checkedTemplate"
+                                            [nzUnCheckedChildren]="unCheckedTemplate"
+                                        >
+                                        </nz-switch>                                    
+                                    </td>
+                                    <td nzAlign="left">
+                                        <app-tag-status-su-dung [loai]="data.trangThaiSuDung"></app-tag-status-su-dung>
+                                    </td>
+                                    <td>{{data.kyHieuMauSoHoaDon}}{{data.kyHieuHoaDon}}</td>
+                                    <td>{{data.tenUyNhiemLapHoaDon}}</td>
+                                    <td>                                        
+                                        <div *ngFor="let item of data.mauHoaDons">
+                                            <nz-switch nzSize="small" [nzDisabled]="true"
+                                            [(ngModel)]="item.actived"
+                                            [nzCheckedChildren]="checkedTemplate"
+                                            [nzUnCheckedChildren]="unCheckedTemplate"
+                                        >
+                                        </nz-switch>
+                                            {{item.ten}}
+                                        </div>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                            <tfoot *ngIf="totalM>0" class="total-footer">
+                                <td colspan="2">Số dòng = {{totalM}}</td>
+                                <td colspan="3"></td>
+                            </tfoot>
+                            <tfoot *ngIf="totalM==0" class="total-footer">
+                                <td colspan="5">Không có dữ liệu hiển thị</td>
+                            </tfoot>
+                        </nz-table>
+                    </nz-tab>
+                </nz-tabset>
+            </div>
+            <ng-template #checkedTemplate><i nz-icon nzType="check"></i></ng-template>
+            <ng-template #unCheckedTemplate><i nz-icon nzType="close"></i></ng-template>
+        </div>
+    </div>
+</nz-spin>

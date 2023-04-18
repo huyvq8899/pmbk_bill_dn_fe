@@ -1,0 +1,350 @@
+@import "../../../../../../../shared/scss/modal.scss";
+
+:host ::ng-deep .toolbar-action {
+    padding: 7px;
+    cursor: pointer;
+    opacity: 0.2 !important;
+
+    svg {
+        font-size: 14px !important;
+    }
+
+    &:not(.toolbar-action-disabled):hover {
+        background-color: white;
+        opacity: 1 !important;
+    }
+
+    &-active {
+        color: #1877f2 !important;
+        opacity: 1 !important;
+        background-color: white;
+    }
+
+    &-hasValue {
+        opacity: 1 !important;
+    }
+
+    &-disabled {
+        opacity: 0.2 !important;
+        cursor: default;
+
+        &:hover {
+            color: initial !important;
+            background-color: unset !important;
+        }
+    }
+}
+
+:host ::ng-deep .table-padding-cell td {
+    padding: 10px !important;
+}
+
+:host ::ng-deep .more-align {
+    padding: 2px;
+    cursor: pointer;
+    opacity: 0.2 !important;
+
+    &:not(.toolbar-action-disabled):hover {
+        background-color: white;
+        opacity: 1 !important;
+    }
+
+    svg {
+        font-size: 10px !important;
+    }
+}
+
+.disable-input {
+    background-color: #d4d4d4;
+}
+
+.config-header-container {
+    padding: 5px 10px 5px 10px;
+    background-color: #f5f5f5;
+}
+
+.custom-more-align {
+    i {
+        padding: 7px !important;
+        cursor: pointer;
+
+        &:hover {
+           background-color: #f5f5f5;   
+        }
+    }
+}
+
+.custom-more-align-active {
+    background-color: #f5f5f5 !important; 
+    border: 1px solid gray !important;
+}
+
+.config-container {
+    border-left: 1px solid rgba(119, 119, 119, 0.6);
+    border-right: 1px solid rgba(119, 119, 119, 0.6);
+    border-bottom: 1px solid rgba(119, 119, 119, 0.6);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow-y: hidden;
+}
+
+.title-custom {
+    margin: 0 auto;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.cls-title {
+    width: 355px;
+    margin: 20px 0 0 0;
+    border: 1px dashed #c1c1c1;
+    padding: 8px 12px 8px 26px;
+}
+
+.touch-in-template {
+    margin: auto;
+    width: 50px;
+    height: 40px;
+    background: url(../../../../../../../../assets/touch-in-template.png) no-repeat;
+}
+
+.cls-alignment-1 {
+    height: 29px !important;
+    background-position: 4px -558px !important;
+}
+
+.cls-alignment-2 {
+    height: 24px !important;
+    background-position: 4px -1641px !important;
+}
+
+.cls-alignment-3 {
+    height: 24px !important;
+    background-position: 4px -1601px !important;
+}
+
+.toolbar-template {
+    background: url(../../../../../../../../assets/icon-mau.svg);
+    width: 28px;
+    height: 28px;
+}
+
+.btn-mst-icon {
+    background-position: 2px -1159px;
+}
+
+.cls-reset-icon {
+    background-position: 2px -960px;
+}
+
+.down-black {
+    width: 16px;
+    background: url(../../../../../../../../assets/arrow-down.PNG) no-repeat center center;
+    height: 20px;
+    margin: auto;
+}
+
+.div-svg {
+    cursor: pointer;
+
+    &:hover {
+        background-color: white;
+    }
+
+    &-active {
+        background-color: white;
+    }
+
+    &-disabled {
+        cursor: default;
+        opacity: 0.2;
+
+        &:hover {
+            background-color: unset !important;
+        }
+    }
+}
+
+.mau-nen-color-picker {
+    position: absolute;
+    top: 5px;
+    right: 150px;
+    width: 23px;
+    opacity: 0;
+    z-index: -10;
+}
+
+.mau-chu-color-picker {
+    position: absolute;
+    top: 5px;
+    opacity: 0;
+    width: 23px;
+    right: 125px;
+    z-index: -10;
+}
+
+:host ::ng-deep .resize-table .ant-slider-rail {
+    background-color: #dedede;
+}
+
+/*-------------drop-----------------*/
+
+.dragdrop-list {
+    width: 500px;
+    max-width: 100%;
+    border: solid 1px #ccc;
+    display: block;
+    background: white;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.dragdrop-box {
+    border-bottom: solid 1px #ccc;
+    color: rgba(0, 0, 0, 0.87);
+    // display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    background: white;
+    font-size: 14px;
+
+    .divide-inner-item {
+        border: 0.5px solid white;
+        width: 100%;
+        height: 1;
+    }
+
+    .dragdrop-info {
+        padding: 5px 10px;
+    }
+}
+
+:host ::ng-deep .dragdrop-title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    padding: 10px 5px 10px 10px;
+
+    .order {
+        display: flex;
+    }
+
+    .check {
+        margin: 0 10px;
+    }
+
+    .title {
+        flex: 1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .remove {
+        color: red;
+        width: 30px;
+        text-align: center;
+    }
+
+    .setting {
+        width: 30px;
+        text-align: center;
+    }
+
+    .expand {
+        width: 30px;
+        text-align: center;
+    }
+
+    .icon-order,
+    .setting,
+    .remove {
+        svg {
+            font-size: 18px !important;
+        }
+    }
+}
+
+.custom-menu-dropdown {
+    background-color: white;
+    border-top: solid 1px #ccc;
+    border-left: solid 1px #ccc;
+    border-right: solid 1px #ccc;
+
+    .custom-menu-item {
+        padding: 5px;
+        cursor: pointer;
+        border-bottom: solid 1px #ccc;
+
+        &:hover {
+            background: #dbd2d2;
+        }
+
+        &-highlight {
+            color: #5099ef;
+            text-align: center;
+        }
+    }
+
+    .divide-menu {
+        border-right: solid 1px #ccc;
+    }
+
+    .custom-menu-horizontal {
+        display: flex;
+
+        div {
+            flex: 1;
+        }
+    }
+}
+
+.cdk-drag-preview {
+    box-sizing: border-box;
+    border-radius: 4px;
+    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14),
+        0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+.cdk-drag-placeholder {
+    opacity: 0;
+}
+
+.cdk-drag-animating {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.dragdrop-box:last-child {
+    border: none;
+}
+
+.dragdrop-list.cdk-drop-list-dragging .dragdrop-box:not(.cdk-drag-placeholder) {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.selected-item {
+    background-color: #e7f3ff;
+}
+
+.border-error{
+    border-color: red !important;
+}
+
+.error-duplicate{
+    color: white;
+    padding: 4px 20px 4px 10px;
+    background-color: rgb(74, 74, 74);
+    right: 0px;
+    top: 0px;
+    z-index: 1000;
+    border-radius: 4px;
+    box-shadow: rgb(0 0 0 / 20%) 0px 4px 8px 0px, rgb(0 0 0 / 19%) 0px 6px 20px 0px;
+    text-align: left;
+}

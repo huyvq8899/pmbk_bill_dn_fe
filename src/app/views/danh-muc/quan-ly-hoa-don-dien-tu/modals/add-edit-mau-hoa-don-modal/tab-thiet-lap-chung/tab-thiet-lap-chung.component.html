@@ -1,0 +1,168 @@
+<div class="config-container">
+  <form nz-form [formGroup]="thietLapMauForm">
+    <nz-form-item>
+      <nz-form-label [nzSm]="8" [nzXs]="24" nzFor="ten">Tên mẫu hóa đơn <span class="required">(*)</span>
+      </nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24" [nzErrorTip]="errorTen">
+        <input id="TenHoaDon" rows="1" style="min-height: 24px; max-height: 24px; height: 24px;margin-bottom: 0; resize: none;"
+          nz-input nzSize="small" [ngClass]="{'border-error': isDuplicate}" formControlName="ten" (ngModelChange)="emitValueChangesEvent()"/>
+        <ng-template #errorTen let-control>
+          <ng-container *ngIf="control.hasError('required')">
+            <div class="tooltip-error">&lt;Tên mẫu hóa đơn&gt; không được để trống.</div>
+          </ng-container>
+          <ng-container *ngIf="control.hasError('duplicate')">
+            <span class="error-duplicate">&lt;Tên mẫu hóa đơn&gt; đã tồn tại.</span>
+          </ng-container>
+
+
+        </ng-template>
+        <nz-form-item *ngIf="isDuplicate" style="margin-bottom: 5px !important;">
+          <span class="error-duplicate">&lt;Tên mẫu hóa đơn&gt; đã tồn tại.</span>
+       </nz-form-item>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item style="margin: 10px 0;">
+      <div nz-row>
+        <div nz-col nzSpan="6">Thêm LOGO:</div>
+        <div nz-col nzSpan="6">
+          <div class="logo-container"
+            [style.background-image]="thietLapMauForm.get('anhLogo').value ? 'unset' : emptyImage">
+            <img *ngIf="thietLapMauForm.get('anhLogo').value" [src]="thietLapMauForm.get('anhLogo').value" />
+          </div>
+        </div>
+        <div nz-col nzSpan="12">
+          <div>
+            <div class="logo-action">
+              <button nz-button nzType="default" class="button-default-blue btn-icon-center upload" nzShape="circle"
+                (click)="logoFile.click()">
+                <i nz-icon nzType="vertical-align-top" nzTheme="outline"></i>
+              </button>
+              <input #logoFile type="file" (change)="uploadLogo($event)" style="display: none;" />
+              <button nz-button nzType="default" class="button-default-red btn-icon-center" nzShape="circle"
+                (click)="deleteLogo()">
+                <i nz-icon nzType="delete" nzTheme="outline"></i>
+              </button>
+            </div>
+            <ng-container *ngIf="!thietLapMauForm.get('anhLogo').value">
+              <div class="logo-required">
+                <br />
+                <div>
+                  <div><i>Dung lượng ảnh tối đa:</i>&nbsp;<b>3MB</b></div>
+                  <div><i>Độ rộng tối thiếu:</i>&nbsp;<b>200px</b></div>
+                  <div><i>Định dạng ảnh hỗ trợ:</i>&nbsp;<b>*JPG, *JPEG, *PNG</b></div>
+                </div>
+              </div>
+            </ng-container>
+            <ng-container *ngIf="thietLapMauForm.get('anhLogo').value">
+              <div>
+                <div style="font-size: 10px i !important;">Vị trí:</div>
+                <div>
+                  <button nz-button nzType="default" nzShape="circle"
+                    [ngClass]="thietLapMauForm.get('viTriLogo').value === 1 ? 'btn-active' : 'btn-unactive'"
+                    (click)="changeViTriLogo(1)">
+                    <i nz-icon nzType="align-left" nzTheme="outline"></i>
+                  </button>
+                  &nbsp;&nbsp;
+                  <button nz-button nzType="default" nzShape="circle"
+                    [ngClass]="thietLapMauForm.get('viTriLogo').value === 2 ? 'btn-active' : 'btn-unactive'"
+                    (click)="changeViTriLogo(2)">
+                    <i nz-icon nzType="align-right" nzTheme="outline"></i>
+                  </button>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </nz-form-item>
+
+
+
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24">Chọn kiểu chữ</nz-form-label>
+      <nz-form-control [nzSm]="18" [nzXs]="24">
+        <nz-select class="sl-filter" nzSize="small" nzShowSearch (ngModelChange)="emitValueChangesEvent($event)" formControlName="loaiNgonNgu">
+          <nz-option *ngFor="let item of loaiNgonNgus" [nzLabel]="item?.value" [nzValue]="item?.key">
+          </nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24">Chọn kiểu chữ</nz-form-label>
+      <nz-form-control [nzSm]="18" [nzXs]="24">
+        <nz-select nzSize="small" nzShowSearch formControlName="fontChu" (ngModelChange)="emitValueChangesEvent()">
+          <nz-option *ngFor="let item of fonts" [nzLabel]="item" [nzValue]="item">
+          </nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item style="margin-top: 5px;">
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="coChu">Cỡ chữ</nz-form-label>
+      <nz-form-label [nzSm]="6" [nzXs]="24" [nzNoColon]="true">
+        <div class="adjust-font-size">
+          <div class="decrease-size" (click)="decreaseSize()">
+            <span>A</span>
+            <i nz-icon nzType="caret-down" nzTheme="outline"></i>
+          </div>
+          &nbsp;&nbsp;
+          <div class="increase-size" (click)="increaseSize()">
+            <span>A</span>
+            <i nz-icon nzType="caret-up" nzTheme="outline"></i>
+          </div>
+        </div>
+      </nz-form-label>
+    </nz-form-item>
+    <nz-form-item>
+      <div style="display: flex; justify-content: center; align-items: center;">
+        <nz-form-label [nzSm]="6" [nzXs]="24">Chọn màu chữ</nz-form-label>
+        <nz-form-control [nzSm]="4" [nzXs]="24">
+          <div class="color-preview" [style.background-color]="thietLapMauForm.get('mauChu').value">
+            <input type="color" #colorPicker formControlName="mauChu" (ngModelChange)="emitValueChangesEvent()" />
+          </div>
+        </nz-form-control>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <div nz-row>
+            <div *ngFor="let color of colors1" nz-col nzSpan="3">
+              <div class="color-picker" [style.background-color]="color" (click)="selectedColor(color)"></div>
+            </div>
+          </div>
+          <div nz-row style="margin-top: 2px;">
+            <div *ngFor="let color of colors2" nz-col nzSpan="3">
+              <div class="color-picker" [style.background-color]="color" (click)="selectedColor(color)"></div>
+            </div>
+          </div>
+        </nz-form-control>
+      </div>
+    </nz-form-item>
+    <nz-form-item style="margin: 10px 0;">
+      <nz-form-control [nzSm]="24" [nzXs]="24">
+        <label nz-checkbox formControlName="isHienThiQRCode" (ngModelChange)="emitValueChangesEvent()">Hiển thị
+          QR-code</label>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item style="margin: 10px 0;">
+      <nz-form-control [nzSm]="24" [nzXs]="24">
+        <label nz-checkbox formControlName="isLapLaiTTHDCoNhieuTrang" (ngModelChange)="emitValueChangesEvent()">Lặp lại
+          thông tin khi
+          hóa đơn có nhiều
+          trang</label>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item style="margin: 10px 0;">
+      <nz-form-control [nzSm]="24" [nzXs]="24">
+        <label nz-checkbox formControlName="isThietLapDongKyHieuCot"
+          (ngModelChange)="checkThietLapDongKyHieu($event)">Thiết lập dòng ký hiệu
+          cột</label>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item style="margin: 10px 0;">
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="soDongTrang">Số dòng trắng</nz-form-label>
+      <nz-form-control [nzSm]="18" [nzXs]="24">
+        <nz-input-number nzSize="small" formControlName="soDongTrang" [nzMin]="4" [nzMax]="20" [nzStep]="1"
+          (ngModelChange)="emitValueChangesEvent()">
+        </nz-input-number>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</div>

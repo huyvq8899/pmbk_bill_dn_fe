@@ -1,0 +1,34 @@
+<div class="card-container">
+  <nz-tabset nzSize="small" [nzTabPosition]="'top'" [nzType]="'card'" [(nzSelectedIndex)]="selectedTab">   
+    <nz-tab nzTitle="Thống kê số lượng hóa đơn đã phát hành"  (nzClick)="clickTab('/bao-cao/thong-ke-so-luong-hoa-don-da-phat-hanh');" *ngIf="globalConstants.UserPermissions != null && (globalConstants.UserPermissions === true || globalConstants.UserPermissions.indexOf('BaoCao') >= 0)">
+      <ng-template nz-tab>
+        <app-tab-thong-ke-so-luong-hoa-don-da-phat-hanh></app-tab-thong-ke-so-luong-hoa-don-da-phat-hanh>
+      </ng-template>
+    </nz-tab>   
+    <nz-tab nzTitle="Bảng kê chi tiết hóa đơn đã sử dụng" (nzClick)="clickTab('/bao-cao/bang-ke-chi-tiet-hoa-don-su-dung');" *ngIf="globalConstants.UserPermissions != null && (globalConstants.UserPermissions === true || globalConstants.UserPermissions.indexOf('BaoCao') >= 0)">
+      <ng-template nz-tab>
+        <app-tab-bang-ke-chi-tiet-hoa-don-da-su-dung></app-tab-bang-ke-chi-tiet-hoa-don-da-su-dung>
+      </ng-template>
+    </nz-tab>
+    <!-- <nz-tab nzTitle="Hóa đơn thay thế" *ngIf="globalConstants.UserPermissions != null && (globalConstants.UserPermissions === true || globalConstants.UserPermissions.indexOf('HoaDonThayThe') >= 0)">
+      <ng-template nz-tab>
+        <app-loai-chung-tu></app-loai-chung-tu>
+      </ng-template>
+    </nz-tab>
+    <nz-tab nzTitle="Hóa đơn điều chỉnh" *ngIf="globalConstants.UserPermissions != null && (globalConstants.UserPermissions === true || globalConstants.UserPermissions.indexOf('HoaDonDieuChinh') >= 0)">
+      <ng-template nz-tab>
+        <app-nhap-khau-chung-tu></app-nhap-khau-chung-tu>
+      </ng-template>
+    </nz-tab>--> 
+    <!-- <nz-tab nzTitle="Tình hình sử dụng hóa đơn"  (nzClick)="clickTab('/bao-cao/tinh-hinh-su-dung-hoa-don')" *ngIf="globalConstants.UserPermissions != null && (globalConstants.UserPermissions === true || globalConstants.UserPermissions.indexOf('BaoCao') >= 0)">
+      <ng-template nz-tab>
+        <app-tab-bao-cao-tinh-hinh-su-dung-hoa-don></app-tab-bao-cao-tinh-hinh-su-dung-hoa-don>
+      </ng-template>
+    </nz-tab>  -->
+    <nz-tab nzTitle="Tổng hợp giá trị hóa đơn đã sử dụng" (nzClick)="clickTab('/bao-cao/tong-hop-gia-tri-hoa-don-da-su-dung')" *ngIf="globalConstants.UserPermissions != null && (globalConstants.UserPermissions === true || globalConstants.UserPermissions.indexOf('BaoCao') >= 0)">
+      <ng-template nz-tab>
+        <app-tab-tong-hop-gia-tri-hoa-don-da-su-dung></app-tab-tong-hop-gia-tri-hoa-don-da-su-dung>
+      </ng-template>
+    </nz-tab>
+  </nz-tabset>
+</div>

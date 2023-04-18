@@ -1,0 +1,177 @@
+<div nz-row style="margin-bottom: 5px;">
+  <div nz-row style="margin-left: 8px !important;">
+    <nz-button-group nzSize="small">
+      <button
+        [disabled]="permission != true && thaoTacs.indexOf('BC_FULL') < 0 && thaoTacs.indexOf('BC_VIEW') < 0"
+        nz-button nzType="default" (click)="clickChonBaoCao()" class="ant-btn-cus-1">
+        <i nz-icon nzType="file-search" nzTheme="outline"></i>Chọn tham số
+      </button>
+      <button
+        [disabled]="!baoCao || permission != true && thaoTacs.indexOf('BC_FULL') < 0 && thaoTacs.indexOf('BC_VIEW') < 0"
+        nz-button nzType="default" (click)="LoadData()" class="ant-btn-cus">
+        <i nz-icon nzType="retweet" nzTheme="outline"></i>Tải lại
+      </button>
+      <button
+        [disabled]="!baoCao || (permission != true && thaoTacs.indexOf('BC_FULL') < 0 && (thaoTacs.indexOf('BC_VIEW') < 0 || thaoTacs.indexOf('BC_PRINT') < 0))"
+        nz-button nzType="default" (click)="onPrintClick()" class="ant-btn-cus">
+        <i nz-icon nzType="printer" nzTheme="outline"></i>In
+      </button>
+      <button
+        [disabled]="!baoCao || (permission != true && thaoTacs.indexOf('BC_FULL') < 0 && (thaoTacs.indexOf('BC_VIEW') < 0 || thaoTacs.indexOf('BC_EXPORT') < 0))"
+        nz-button nzType="default" (click)="onExportClick()" class="ant-btn-cus">
+        <i nz-icon nzType="vertical-align-bottom" nzTheme="outline"></i>Xuất khẩu
+      </button>
+      <!-- <button nz-button nzType="default" (click)="onHelpClick()" class="ant-btn-cus">
+        <i nz-icon nzType="question" nzTheme="outline"></i>Trợ giúp
+      </button> -->
+    </nz-button-group>
+  </div>
+
+  <div nz-row class="textCenter">
+    <h2 class="baocao-title">Tổng hợp giá trị hóa đơn đã sử dụng</h2>
+    <h3 class="baocao-subtitle">
+      {{kyBaoCao}}
+    </h3>
+    <h4>
+      {{thongTinVeLoaiTienVaTrangThai}}
+    </h4>
+  </div>
+</div>
+
+<div nz-row>
+  <nz-table [nzNoResult]="null" nzSize="small" #fixedTable [nzData]="listBaoCao" [nzWidthConfig]="widthConfig"
+    [nzScroll]="scrollConfig" [nzFrontPagination]="false" [nzTotal]="total" [nzPageIndex]="1" [nzPageSize]="total"
+    nzBordered [nzLoading]="loading" [nzHideOnSinglePage]="true">
+    <thead (nzSortChange)="sort($event)" nzSingleSort>
+      <ng-container *ngIf="baoCao?.mau === 1 || !baoCao">
+        <tr>
+          <th nzAlign="center">STT
+          </th>
+          <th nzAlign="center">Tên loại hóa đơn
+          </th>
+          <th nzAlign="center">Ký hiệu mẫu số hóa đơn
+          </th>
+          <th nzAlign="center">Ký hiệu hóa đơn
+          </th>
+          <th nzAlign="center">Tổng tiền hàng
+          </th>
+          <th nzAlign="center">Tiền chiết khấu
+          </th>
+          <th nzAlign="center">Doanh thu bán chưa thuế
+          </th>
+          <th nzAlign="center">Tiền thuế GTGT
+          </th>
+          <th nzAlign="center">Tổng tiền thanh toán
+          </th>
+        </tr>
+      </ng-container>
+      <ng-container *ngIf="baoCao?.mau === 2">
+        <tr>
+          <th rowspan="2" nzAlign="center">STT
+          </th>
+          <th rowspan="2" nzAlign="center">Tên loại hóa đơn
+          </th>
+          <th rowspan="2" nzAlign="center">Ký hiệu mẫu số hóa đơn
+          </th>
+          <th rowspan="2" nzAlign="center">Ký hiệu hóa đơn
+          </th>
+          <th colspan="2" nzAlign="center">Tổng tiền hàng
+          </th>
+          <th colspan="2" nzAlign="center">Tiền chiết khấu
+          </th>
+          <th colspan="2" nzAlign="center">Doanh số bán chưa thuế
+          </th>
+          <th colspan="2" nzAlign="center">Tiền thuế GTGT
+          </th>
+          <th colspan="2" nzAlign="center">Tổng tiền thanh toán
+          </th>
+        </tr>
+        <tr>
+          <th nzAlign="center">Ngoại tệ
+          </th>
+          <th nzAlign="center">Quy đổi
+          </th>
+          <th nzAlign="center">Ngoại tệ
+          </th>
+          <th nzAlign="center">Quy đổi
+          </th>
+          <th nzAlign="center">Ngoại tệ
+          </th>
+          <th nzAlign="center">Quy đổi
+          </th>
+          <th nzAlign="center">Ngoại tệ
+          </th>
+          <th nzAlign="center">Quy đổi
+          </th>
+          <th nzAlign="center">Ngoại tệ
+          </th>
+          <th nzAlign="center">Quy đổi
+          </th>
+        </tr>
+      </ng-container>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of fixedTable.data; let i=index" [class.row-selected]="data.selected"
+        (click)="selectedRow(data)" (dblclick)="clickSua(false, true)" [class.total-footer]="data.isTotal">
+        <ng-container *ngIf="!data.isTotal">
+          <td nzAlign="center" title="{{ i + 1 }}">
+            {{ i + 1 }}
+          </td>
+        </ng-container>
+        <ng-container *ngIf="data.isTotal">
+          <td colspan="2">
+            Số dòng = {{data.count}}
+          </td>
+        </ng-container>
+        <td *ngIf="!data.isTotal" title="{{ data?.tenLoaiHoaDon }}">
+          {{ data?.tenLoaiHoaDon }}
+        </td>
+        <td title="{{ data?.mauSo }}">
+          {{ data.mauSo }}
+        </td>
+        <td title="{{ data?.kyHieu }}">
+          {{ data.kyHieu }}
+        </td>
+        <td nzAlign="right" *ngIf="baoCao?.mau === 2" title="{{ data?.tongTienHang }}">
+          {{ data.tongTienHang | formatPrice }}
+        </td>
+        <td nzAlign="right" title="{{ data?.tongTienHangQuyDoi }}">
+          {{ data.tongTienHangQuyDoi | formatPrice }}
+        </td>
+        <td nzAlign="right" *ngIf="baoCao?.mau === 2" title="{{ data?.tienChietKhau }}">
+          {{ data.tienChietKhau | formatPrice }}
+        </td>
+        <td nzAlign="right" title="{{ data?.tienChietKhauQuyDoi }}">
+          {{ data.tienChietKhauQuyDoi | formatPrice }}
+        </td>
+        <td nzAlign="right" *ngIf="baoCao?.mau === 2" title="{{ data?.doanhThuBanChuaThue }}">
+          {{ data.doanhThuBanChuaThue | formatPrice }}
+        </td>
+        <td nzAlign="right" title="{{ data?.doanhThuBanChuaThueQuyDoi }}">
+          {{ data.doanhThuBanChuaThueQuyDoi | formatPrice }}
+        </td>
+        <td nzAlign="right" *ngIf="baoCao?.mau === 2" title="{{ data?.tienThueGTGT }}">
+          {{ data.tienThueGTGT | formatPrice }}
+        </td>
+        <td nzAlign="right" title="{{ data?.tienThueGTGTQuyDoi }}">
+          {{ data.tienThueGTGTQuyDoi | formatPrice }}
+        </td>
+        <td nzAlign="right" *ngIf="baoCao?.mau === 2" title="{{ data?.tongTienThanhToan }}">
+          {{ data.tongTienThanhToan | formatPrice }}
+        </td>
+        <td nzAlign="right" title="{{ data?.tongTienThanhToanQuyDoi }}">
+          {{ data.tongTienThanhToanQuyDoi | formatPrice }}
+        </td>
+      </tr>
+      <tr *ngFor="let obj of lstBangKeEmpty">
+        <td *ngFor="let empty of numberBangKeCols; let idx = index">
+            <span *ngIf="idx===0" class="font-while">.</span>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot *ngIf="total>0" class="total-footer">
+      <td colspan="2">Số dòng = {{total}}</td>
+      <td [attr.colspan]="baoCao?.mau === 1 ? 7 : 12"></td>
+    </tfoot>
+  </nz-table>
+</div>

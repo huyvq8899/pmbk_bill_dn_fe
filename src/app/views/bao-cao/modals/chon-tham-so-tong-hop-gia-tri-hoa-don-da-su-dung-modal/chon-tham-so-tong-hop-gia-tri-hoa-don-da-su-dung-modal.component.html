@@ -1,0 +1,85 @@
+<nz-spin [nzSpinning]="spinning">
+  <div style="margin: 5px;">
+    <form nz-form [formGroup]="baoCaoForm">
+      <nz-form-item>
+        <nz-form-label [nzSm]="2" [nzXs]="24">Kỳ</nz-form-label>
+        <nz-form-control [nzSm]="10" [nzXs]="24">
+          <nz-select style="width: 100%;" nzSize="small" nzShowSearch nzPlaceHolder="Chọn kỳ" formControlName="ky"
+            (ngModelChange)="changeKy($event)">
+            <nz-option *ngFor="let item of kys" [nzLabel]="item.value" [nzValue]="item.key"></nz-option>
+          </nz-select>
+        </nz-form-control>
+        <nz-form-label [nzSm]="2" [nzXs]="24">Từ</nz-form-label>
+        <nz-form-control [nzSm]="4" [nzXs]="24" nzErrorTip="Chọn từ ngày.">
+          <input nzSize="small" max="2999-12-31" type="date" nz-input formControlName="tuNgay" (blur)="blurDate()" />
+        </nz-form-control>
+        <nz-form-label [nzSm]="2" [nzXs]="24">Đến</nz-form-label>
+        <nz-form-control [nzSm]="4" [nzXs]="24" nzErrorTip="Chọn đến ngày.">
+          <input nzSize="small" max="2999-12-31" type="date" nz-input formControlName="denNgay" (blur)="blurDate()" />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="2" [nzXs]="24">Mẫu</nz-form-label>
+        <nz-form-control [nzSm]="10" [nzXs]="24">
+          <nz-select style="width: 100%;" nzSize="small" nzShowSearch formControlName="mau">
+            <nz-option nzLabel="Mẫu chuẩn" [nzValue]="1"></nz-option>
+            <nz-option nzLabel="Mẫu ngoại tệ" [nzValue]="2"></nz-option>
+          </nz-select>
+        </nz-form-control>
+        <nz-form-label [nzSm]="2" [nzXs]="24">Loại tiền</nz-form-label>
+        <nz-form-control [nzSm]="10" [nzXs]="24">
+          <nz-select style="width: 100%;" nzSize="small" nzShowSearch formControlName="loaiTienId" nzServerSearch
+            (nzOnSearch)="searchLoaiTien($event)">
+            <nz-option nzCustomContent nzDisabled="true">
+              <div nz-row>
+                <div nz-col nzXs="8" nzSm="8" nzMd="8" nzLg="8" nzXl="8">
+                  Mã loại tiền
+                </div>
+                <div nz-col nzXs="16" nzSm="16" nzMd="16" nzLg="16" nzXl="16">
+                  Tên loại tiền
+                </div>
+              </div>
+            </nz-option>
+            <nz-option nzCustomContent *ngFor="let item of loaiTiens" [nzValue]="item.loaiTienId" [nzLabel]="item.ma">
+              <div nz-row>
+                <div title="{{item?.ma}}" nz-col nzXs="8" nzSm="8" nzMd="8" nzLg="8" nzXl="8">
+                  <div class="text-ellipsis">{{item?.ma}}</div>
+                </div>
+                <div title="{{item?.ten}}" nz-col nzXs="16" nzSm="16" nzMd="16" nzLg="16" nzXl="16">
+                  <div class="text-ellipsis">{{item?.ten}}</div>
+                </div>
+              </div>
+            </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item style="padding-left: 10px;">
+        <nz-form-control [nzSm]="12" [nzXs]="24">
+          <label nz-checkbox formControlName="isKhongTinhGiaTriHoaDonGoc">Không tính giá trị hóa đơn gốc</label>
+        </nz-form-control>
+        <nz-form-control [nzSm]="12" [nzXs]="24">
+          <label nz-checkbox formControlName="isKhongTinhGiaTriHoaDonXoaBo">Không tính giá trị hóa đơn xóa bỏ</label>
+        </nz-form-control>
+        <nz-form-control [nzSm]="12" [nzXs]="24">
+          <label nz-checkbox formControlName="isKhongTinhGiaTriHoaDonThayThe">Không tính giá trị hóa đơn thay
+            thế</label>
+        </nz-form-control>
+        <nz-form-control [nzSm]="12" [nzXs]="24">
+          <label nz-checkbox formControlName="isKhongTinhGiaTriHoaDonDieuChinh">Không tính giá trị hóa đơn điều</label>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </div>
+</nz-spin>
+
+<div *nzModalFooter>
+  <div nz-row>
+    <div nz-col nzSpan="12" style="text-align: left;">
+      <button nz-button nzType="default" (click)="xoaDieuKien()" class="button-clear">Xóa điều kiện</button>
+    </div>
+    <div nz-col nzSpan="12" style="text-align: right;">
+      <button nz-button nzType="default" (click)="saveChanges()" class="button-agree">Xác nhận</button>
+      <button nz-button nzType="default" (click)="destroyModal()" class="button-cancel">Đóng</button>
+    </div>
+  </div>
+</div>

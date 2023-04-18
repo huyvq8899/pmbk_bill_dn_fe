@@ -1,0 +1,77 @@
+@import '../../../../shared/scss/modal.scss';
+.centerInputText {
+    text-align: center!important;
+}
+
+.selectedRow {
+    background-color: #9CB6E5!important;
+}
+
+.is-filtering {
+    color: blue;
+    font-weight: bold;
+}
+
+:host ::ng-deep .ant-table-thead>tr>th .ant-table-filter-open-ext {
+    color: #fff!important;
+    background-color: #1877f2 !important;
+}
+
+:host ::ng-deep .ant-table-thead>tr>th.ant-table-column-has-actions.ant-table-column-has-filters {
+    padding-right: 0 !important;
+}
+
+.view-filter-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: inline-block;
+    li {
+        display: inline-block;
+        margin-right: 10px;
+        .label {
+            color: gray;
+        }
+        .value {
+            font-weight: bold;
+        }
+        .remove {
+            cursor: pointer;
+            color: red;
+        }
+    }
+}
+
+.quaHan {
+    color: #fff;
+    background-color: red;
+    padding: 3px 15px;
+    border-radius: 30px;
+    text-align: center;
+    display: block;
+    margin: 1px 3px;
+}
+
+.trongHan {
+    color: #fff;
+    background-color: #00B0F0;
+    padding: 3px 15px;
+    border-radius: 30px;
+    text-align: center;
+    display: block;
+    margin: 1px 3px;
+}
+
+.blueInputBackground {
+    background-color: var(--row-hover-color) !important;
+}
+
+.highLightRow {
+    background-color: #FFEDB7!important;
+}
+
+
+.linkSoThongBao:hover {
+    text-decoration: underline!important;
+    cursor: pointer!important;
+}

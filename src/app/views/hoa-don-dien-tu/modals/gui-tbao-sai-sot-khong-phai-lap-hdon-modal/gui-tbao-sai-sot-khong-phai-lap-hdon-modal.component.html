@@ -1,0 +1,178 @@
+<form nz-form [formGroup]="mainForm" *ngIf="mainForm">
+    <div class="box-border">
+        <nz-form-item>
+            <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="kyHieuMau">Ký hiệu</nz-form-label>
+            <nz-form-control [nzSm]="4" [nzXs]="24">
+                <input nzSize="small" nz-input formControlName="kyHieuMau" id="kyHieuMau" [disabled]="true" readonly/>
+            </nz-form-control>
+
+            <nz-form-label [nzOffset]="1" [nzSm]="7" [nzXs]="24" nzFor="tongTienThanhToan">Tổng tiền thanh toán</nz-form-label>
+            <nz-form-control [nzSm]="8" [nzXs]="24">
+                <div class="tong-tien-wrapper">
+                    <input class="input-tong-tien" bkCurrencyMask [options]="{ precision: data.isVND ? ddtp.getTienQuyDoi() : ddtp.getTienNgoaiTe()}" nzSize="small" nz-input formControlName="tongTienThanhToan" id="tongTienThanhToan" [disabled]="true" readonly />
+                    <span class="text-ma-tien">{{data.maLoaiTien}}</span>
+                </div>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+            <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="soHoaDon">Số hóa đơn</nz-form-label>
+            <nz-form-control [nzSm]="4" [nzXs]="24">
+                <input nzSize="small" nz-input formControlName="soHoaDon" id="soHoaDon" [disabled]="true" readonly/>
+            </nz-form-control>
+
+            <nz-form-label [nzOffset]="1" [nzSm]="7" [nzXs]="24">Hình thức hóa đơn</nz-form-label>
+            <nz-form-control [nzSm]="8" [nzXs]="24" style="text-align: right;">
+                <span class="daGuiRoundedShape" [ngClass]="{
+                    'daGuiRoundedShape-orange': data.boKyHieuHoaDon.hinhThucHoaDon === 1,
+                    'daGuiRoundedShape-green': data.boKyHieuHoaDon.hinhThucHoaDon === 0,
+                    'daGuiRoundedShape-yellow': data.boKyHieuHoaDon.hinhThucHoaDon === 2
+                  }">
+          {{data.boKyHieuHoaDon.tenHinhThucHoaDon}}
+        </span>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+            <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="ngayHoaDonText">Ngày hóa đơn</nz-form-label>
+            <nz-form-control [nzSm]="4" [nzXs]="24">
+                <input nzSize="small" nz-input formControlName="ngayHoaDonText" id="ngayHoaDonText" [disabled]="true" readonly/>
+            </nz-form-control>
+            <ng-container *ngIf="data.loaiHoaDon !== 9 && data.loaiHoaDon !==10">
+                <nz-form-label [nzOffset]="1" [nzSm]="7" [nzXs]="24">Ủy nhiệm lập hóa đơn</nz-form-label>
+                <nz-form-control [nzSm]="8" [nzXs]="24" style="text-align: right;">
+                    <span class="status" [ngClass]="{
+              'status-orange': data.boKyHieuHoaDon.uyNhiemLapHoaDon === 1,
+              'status-green': data.boKyHieuHoaDon.uyNhiemLapHoaDon === 0
+            }">
+              {{data.boKyHieuHoaDon.tenUyNhiemLapHoaDon}}
+            </span>
+                </nz-form-control>
+            </ng-container>
+
+        </nz-form-item>
+
+        <nz-form-item>
+            <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="tenKhachHang">Tên khách hàng</nz-form-label>
+            <nz-form-control [nzSm]="20" [nzXs]="24">
+                <textarea nzSize="small" nz-input formControlName="tenKhachHang" id="tenKhachHang" rows="2" title="{{mainForm.get('tenKhachHang').value}}" [disabled]="true" readonly></textarea>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item *ngIf="isSended">
+            <nz-form-label [nzSm]="4" [nzXs]="24" [nzNoColon]="true">&nbsp;</nz-form-label>
+            <nz-form-control [nzSm]="20" [nzXs]="24">
+                <nz-form-label [nzSm]="15" [nzXs]="24">Trạng thái gửi thông báo có thông tin sai sót</nz-form-label>
+                <span class="daGuiRoundedShape">Đã gửi cho khách hàng</span>
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+
+    <div style="margin-top: 5px;">
+        <nz-form-item>
+            <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="tenNguoiNhan">Tên người nhận</nz-form-label>
+            <nz-form-control [nzSm]="20" [nzXs]="24">
+                <input nzSize="small" nz-input formControlName="tenNguoiNhan" maxlength="200" [disabled]="!isPos && !isPhieuXuatKho" />
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+            <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="emailCuaNguoiNhan">Email</nz-form-label>
+            <nz-form-control [nzSm]="18" [nzXs]="24" [nzErrorTip]="errorEmailCuaNguoiNhan">
+                <input nzSize="small" nz-input formControlName="emailCuaNguoiNhan" placeholder='Mỗi Email cách nhau bởi dấu ";"' [disabled]="!isPos && !isPhieuXuatKho" maxlength="300" />
+                <ng-template #errorEmailCuaNguoiNhan let-control>
+                    <ng-container *ngIf="control.hasError('required')">
+                        <div class="tooltip-error">Email không được để trống.</div>
+                    </ng-container>
+                    <ng-container *ngIf="control.hasError('email')">
+                        <div class="tooltip-error">Email không đúng định dạng. Vui lòng kiểm tra lại.</div>
+                    </ng-container>
+                </ng-template>
+            </nz-form-control>
+
+            <nz-form-control [nzSm]="2" [nzXs]="24">
+                <strong style="color:#1877f2; padding-left: 5px"><i nz-icon nzType="info-circle" nzTheme="fill" nz-tooltip [nzTooltipTitle]='tooltipTemplate'></i></strong>
+                <ng-template #tooltipTemplate let-event>
+                    <span>Mỗi Email cách nhau bởi dấu “;”.</span><br/>
+                    <span>Email không được sai định dang.</span><br/>
+                    <span>Email không được để trống</span>
+                </ng-template>
+                <button nzSize="small" nz-button nzType="default" class="button-default filterDefaultButton btn-bcc-cc" nz-tooltip nzTitle="CC; BCC" (click)="anHienEmailCC_BCC()">
+          <i *ngIf="!hasEmailCcBcc" nz-icon nzType="down" nzTheme="outline"></i>
+          <i *ngIf="hasEmailCcBcc" nz-icon nzType="up" nzTheme="outline"></i>
+        </button>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item *ngIf="hasEmailCcBcc">
+            <nz-form-label [nzSm]="4" [nzXs]="24" [nzNoColon]="true">&nbsp;</nz-form-label>
+            <nz-form-label [nzSm]="3" [nzXs]="24" [nzNoColon]="true"><span class="recShape">CC</span></nz-form-label>
+            <nz-form-control [nzSm]="17" [nzXs]="24" [nzErrorTip]="errorEmailCCNguoiNhan">
+                <input nzSize="small" nz-input formControlName="emailCCNguoiNhan" placeholder='Mỗi Email cách nhau bởi dấu ";"' maxlength="300" />
+                <ng-template #errorEmailCCNguoiNhan let-control>
+                    <ng-container *ngIf="control.hasError('email')">
+                        Email không đúng định dạng. Vui lòng kiểm tra lại!
+                    </ng-container>
+                </ng-template>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item *ngIf="hasEmailCcBcc">
+            <nz-form-label [nzSm]="4" [nzXs]="24" [nzNoColon]="true">&nbsp;</nz-form-label>
+            <nz-form-label [nzSm]="3" [nzXs]="24" [nzNoColon]="true"><span class="recShape">BCC</span></nz-form-label>
+            <nz-form-control [nzSm]="17" [nzXs]="24" [nzErrorTip]="errorEmailBCCNguoiNhan">
+                <input nzSize="small" nz-input formControlName="emailBCCNguoiNhan" placeholder='Mỗi Email cách nhau bởi dấu ";"' maxlength="300" />
+                <ng-template #errorEmailBCCNguoiNhan let-control>
+                    <ng-container *ngIf="control.hasError('email')">
+                        Email không đúng định dạng. Vui lòng kiểm tra lại!
+                    </ng-container>
+                </ng-template>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+            <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="soDienThoaiNguoiNhan">Số điện thoại</nz-form-label>
+            <nz-form-control [nzSm]="20" [nzXs]="24">
+                <input nzSize="small" nz-input formControlName="soDienThoaiNguoiNhan" readonly maxlength="100" />
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+
+    <div style="margin-top: 5px;">
+        <nz-form-item>
+            <nz-form-label [nzSm]="4" [nzXs]="24">Giải trình <span style="color: #FB0000">(*)</span></nz-form-label>
+            <nz-form-control [nzSm]="20" [nzXs]="24" [nzErrorTip]="errorGiaiTrinhSaiSot">
+                <input nzSize="small" nz-input formControlName="giaiTrinhSaiSot" maxlength="255" placeholder="Nội dung giải trình sai sót. Tối đa 255 ký tự. Không để trống."/>
+                <ng-template #errorGiaiTrinhSaiSot let-control>
+                    <ng-container *ngIf="control.hasError('required')">
+                        <div class="tooltip-error">Nội dung giải trình sai sót không được để trống.</div>
+                    </ng-container>
+                    <ng-container *ngIf="control.hasError('maxLength')">
+                        <div class="tooltip-error">Nội dung giải trình sai sót không được quá 255 ký tự.</div>
+                    </ng-container>
+                </ng-template>
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+</form>
+
+<div *nzModalFooter>
+    <div nz-row>
+        <div nz-col nzSpan="12" style="text-align: left;">
+            <button nzSize="small" nz-button nzType="default" class="blueButton" (click)="xemHoaDon()" [nzLoading]="loading"><i nz-icon nzSize="small" nzType="eye"></i>Xem hóa đơn</button>
+        </div>
+        <div nz-col nzSpan="12">
+            <!-- <button *ngIf="!isView && !isPhieuXuatKho && data.boKyHieuHoaDon?.hinhThucHoaDon !== 2" nzSize="small" nz-button nzType="default" (click)="thucHien()" [nzLoading]="loading"
+            [disabled]="!(mainForm.get('tichChon_HoTenNguoiMuaHang').value || mainForm.get('tichChon_TenDonVi').value ||
+            mainForm.get('tichChon_DiaChi').value || mainForm.get('tichChon_CanCuocCongDan').value || mainForm.get('tichChon_SoDienThoai').value)"
+            [ngClass]="!(mainForm.get('tichChon_HoTenNguoiMuaHang').value || mainForm.get('tichChon_TenDonVi').value ||
+            mainForm.get('tichChon_DiaChi').value || mainForm.get('tichChon_CanCuocCongDan').value || mainForm.get('tichChon_SoDienThoai').value) || ma? 'disabled-button-state-v2': 'button-agree'"><i nz-icon nzType="mail" nzTheme="outline"></i> Thực hiện</button> -->
+            <button nzSize="small" nz-button nzType="default" (click)="thucHien()" [nzLoading]="loading"
+            [disabled]="!mainForm.get('giaiTrinhSaiSot').value"
+            [ngClass]="!(mainForm.get('giaiTrinhSaiSot').value) ? 'disabled-button-state-v2': 'button-agree'"><i nz-icon nzType="mail" nzTheme="outline"></i> Thực hiện</button>
+
+            <button *ngIf="!isView" nzSize="small" nz-button nzType="default" (click)="destroyModal()" class="button-cancel" [nzLoading]="loading"><i nz-icon nzSize="small" nzType="close"></i> Hủy</button>
+            <button *ngIf="isView" nzSize="small" nz-button nzType="default" (click)="destroyModal()" class="button-cancel" [nzLoading]="loading"><i nz-icon nzSize="small" nzType="close"></i> Đóng</button>
+        </div>
+    </div>
+</div>

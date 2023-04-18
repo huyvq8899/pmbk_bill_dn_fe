@@ -1,0 +1,51 @@
+.dinh-dang-hd-container {
+    background-color: #fff;
+    padding: 5px;
+    border-bottom: 1px solid rgba(119, 119, 119, 0.6);
+    position: relative;
+
+    div {
+        text-align: center;
+    }
+
+    button {
+        position: absolute;
+        right: 10px;
+        top: 3px;
+    }
+}
+
+.preview-container {
+    background-color: rgba(119, 119, 119, 0.6);
+    padding: 10px 20px;
+    overflow-y: auto;
+    position: relative;
+    height: 100%;
+}
+
+table {
+    font-size: 14px;
+    line-height: 25px;
+    text-align: center;
+    font-family: Times New Roman;
+    color: rgb(0, 0, 0);
+}
+
+.parent-iframe {
+    height: 100%;
+    background-color: rgb(197, 197, 197);
+    text-align: center;
+    padding: 10px 0;
+    overflow-x: auto;
+    overflow-y: scroll;
+
+    iframe {
+        width: 752.55px;
+        height: 532.4765546218488px;
+       // height: 1064.9531092436976px;
+        border: none;
+        background-color: white;
+        box-shadow: 3px 6px 12px 6px #a9a0a0;
+        overflow: hidden;
+    }
+}

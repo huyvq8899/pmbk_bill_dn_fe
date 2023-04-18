@@ -1,0 +1,24 @@
+<div>
+    <nz-spin [nzSpinning]="spinning">
+        <form nz-form [formGroup]="myFormGroup" autocomplete="off">
+            <div nz-row>
+                <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="24" nzXl="24" class="" style="padding: 15px 10px 10px;">
+                    <nz-form-item>
+                        <nz-form-label [nzSm]="5" [nzXs]="24" nzFor="roleName">Tên vai trò</nz-form-label>
+                        <nz-form-control [nzSm]="19" [nzXs]="24" nzErrorTip="Phải nhập!">
+                            <input nzSize="small" type="text" nz-input formControlName="roleName" id="roleName" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+        </form>
+    </nz-spin>
+
+    <div *nzModalFooter>
+        <button nz-button nzSize="small" nzType="default" (click)="submitForm()" [nzLoading]="spinning" class="button-agree">
+      <i nz-icon nzType="save" nzTheme="outline"></i>Lưu
+    </button>
+        <button nz-button nzSize="small" nzType="default" (click)="closeModal()" class="button-cancel">
+      <i nz-icon nzType="close" nzTheme="outline"></i>Hủy
+    </button>
+    </div>

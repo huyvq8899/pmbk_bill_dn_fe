@@ -1,0 +1,43 @@
+<nz-spin [nzSpinning]="spinning">
+  <div nz-row style="margin-bottom: 2px;">
+    <div nz-col nzSpan="14" style="text-align: left; padding: 4px 0 0 4px;">
+      <nz-radio-group [(ngModel)]="templateType" (ngModelChange)="changeType($event)">
+        <label nz-radio [nzValue]="0">Hóa đơn thể hiện</label>
+        <label nz-radio [nzValue]="1">Hóa đơn chuyển đổi</label>
+        <label nz-radio [nzValue]="2">Hóa đơn chiết khấu</label>
+        <label nz-radio [nzValue]="3">Hóa đơn ngoại tệ</label>
+      </nz-radio-group>
+    </div>
+    <div nz-col nzSpan="10" style="text-align: right;">
+      <nz-button-group nzSize="small">
+        <button nz-button nzType="default" (click)="kyDienTu()" *ngIf="kySo">
+          <i nz-icon nzType="safety-certificate" nzTheme="outline"></i>{{data?.ngayKy ? 'Xóa ký điện tử' : 'Ký điện tử'}} 
+        </button>
+        <button (click)="xuatKhau()" nz-button nzSize="small" class="button-clear">
+          <i nz-icon nzType="vertical-align-bottom" nzTheme="outline"></i>Xuất khẩu
+        </button>
+        <!-- <nz-dropdown-menu #menuTemplate="nzDropdownMenu">
+          <ul nz-menu>
+            <li nz-menu-item (click)="downloadFile(0)">
+              <img src="../../../../../../assets/pdf.png" width="15" height="15" />&nbsp;<span>PDF</span>
+            </li>
+            <li nz-menu-item (click)="downloadFile(1)">
+              <img src="../../../../../../assets/doc.png" width="15" height="15" />&nbsp;<span>DOC</span>
+            </li>
+            <li nz-menu-item (click)="downloadFile(2)">
+              <img src="../../../../../../assets/docx.png" width="15" height="15" />&nbsp;<span>DOCX</span>
+            </li>
+          </ul>
+        </nz-dropdown-menu> -->
+        <button nz-button nzType="default" (click)="closeModal()" nzSize="small" class="button-cancel">
+          <i nz-icon nzType="close" nzTheme="outline"></i>Đóng
+        </button>
+      </nz-button-group>
+    </div>
+  </div>
+  
+  <ng-template [ngIf]="link">
+    <embed [src]="link | safe" style="width: 100%; height: 80vh;" />
+  </ng-template>
+</nz-spin>
+

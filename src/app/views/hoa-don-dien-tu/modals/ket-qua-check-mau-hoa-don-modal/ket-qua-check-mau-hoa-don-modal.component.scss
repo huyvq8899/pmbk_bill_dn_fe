@@ -1,0 +1,38 @@
+@import "../../../../shared/scss/modal.scss";
+
+.boldText
+{
+    font-weight: bolder!important;
+}
+
+.justifiedText
+{
+    text-align: justify!important;
+}
+
+.button-text-left {
+    float: left;
+    color: #7f7fe7;
+    font-style: italic;
+    cursor: pointer;
+}
+
+tbody tr td
+{
+    white-space: normal!important;
+}
+
+tbody tr td:last-child
+{
+    border-right: 1px solid #F0F0F0!important;
+}
+
+.rowHeader
+{
+    background-color: #FFDBC1!important;
+}
+
+.notSameValue
+{
+    color: red;
+}

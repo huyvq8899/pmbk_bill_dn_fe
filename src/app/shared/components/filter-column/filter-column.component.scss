@@ -1,0 +1,13 @@
+.condition-dropdown {
+    text-align: center;
+    border-radius: 5px;
+    cursor: pointer;
+
+    &:hover {
+        background-color: rgb(150, 176, 224);
+    }
+
+    &-active {
+        background-color: rgb(150, 176, 224);
+    }
+}

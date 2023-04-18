@@ -1,0 +1,87 @@
+
+  <div nz-row style="margin-bottom: 5px;">
+    <div nz-col nzSpan="14" style="margin-left: 8px !important;">
+      <nz-button-group nzSize="small">
+        <button [disabled]="permission != true && thaoTacs.indexOf('BC_FULL') < 0 && thaoTacs.indexOf('BC_CREATE') < 0" nz-button nzType="default" (click)="clickChonBaoCao()" class="ant-btn-cus-1">
+          <i nz-icon nzType="plus" nzTheme="outline"></i>Thêm
+        </button>
+        <button [disabled]="permission != true && thaoTacs.indexOf('BC_FULL') < 0 && thaoTacs.indexOf('BC_DELETE') < 0" nz-button nzType="default" (click)="onDeleteClick()" class="ant-btn-cus">
+          <i nz-icon nzType="delete" nzTheme="outline"></i>Xóa
+        </button>
+        <button nz-button nzType="default" (click)="onHelpClick()" class="ant-btn-cus">
+          <i nz-icon nzType="question" nzTheme="outline"></i>Trợ giúp
+        </button>
+        <button nz-button nzType="default" (click)="closeModal()" class="ant-btn-cus button-close">
+          <i nz-icon nzType="close" nzTheme="outline"></i>Đóng
+        </button>
+      </nz-button-group>
+    </div>
+    <div style="float: right; margin-right: 2px">
+      <div style="float: left; margin-right: 2px;">
+        <nz-input-group nzAddOnBefore="Kỳ: " class="input-group-label">
+          <nz-select class="with-ky" nzSize="small" nzShowSearch nzPlaceHolder="Chọn kỳ" [(ngModel)]="params.Ky"
+            (ngModelChange)="changeKy($event)">
+            <nz-option *ngFor="let item of kys" [nzLabel]="item.value" [nzValue]="item.key"></nz-option>
+          </nz-select>
+        </nz-input-group>
+      </div>
+      <div style="float: left; margin-right: 2px;">
+        <input nzSize="small" class="with-date" type="date" max="2999-12-31" nz-input [(ngModel)]="params.fromDate"
+          placeholder="Từ" (keydown.enter)="filterData()" (keydown.enter)="filterVisible= false" (blur)="blurDate()" />
+      </div>
+      <div style="float: left; margin-right: 2px;">
+        <input nzSize="small" class="with-date" type="date" max="2999-12-31" nz-input [(ngModel)]="params.toDate"
+          placeholder="Đến" (keydown.enter)="filterData()" (keydown.enter)="filterVisible= false"
+          (blur)="blurDate()" />
+      </div>
+    </div>
+  </div>
+  <div nz-row nzType="flex" nzJustify="space-around">
+    <div nz-col nzSpan="6">
+    </div>
+
+    <div nz-col nzSpan="12" class="textCenter">
+      <h2 style="text-transform: uppercase; font-weight: bolder;">Báo cáo tình hình sử dụng hóa đơn</h2>
+      <ng-container *ngIf="params.fromDate != null && params.toDate != null; else isEmptyTemplate">
+        <h3>
+            Từ ngày {{params.fromDate | date: 'dd/MM/yyyy'}} đến ngày {{params.toDate | date: 'dd/MM/yyyy'}}
+        </h3>
+      </ng-container>
+      <ng-template #isEmptyTemplate>
+        <div style="height: 20px;"></div>
+      </ng-template>
+    </div>
+
+    <div nz-col nzSpan="6" nzAlign="right">
+    </div>
+  </div>
+
+    <!-- <hr style="border: 0.5px solid #d9d9d9" /> -->
+  <div nz-row>
+    <nz-table [nzNoResult]="null" nzSize="small" #fixedTable [nzData]="listOfData" nzBordered [nzTotal]="total"
+      [(nzPageIndex)]="params.PageNumber" [(nzPageSize)]="params.PageSize" [nzShowPagination]="false"
+      [nzLoading]="loading" [nzWidthConfig]="widthConfig" [nzScroll]="scrollConfig">
+      <thead>
+        <tr>
+          <th class="textCenter">Kỳ</th>
+          <th class="textCenter">Từ ngày</th>
+          <th class="textCenter">Đến ngày</th>
+          <th class="textCenter">Ngày lập</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of fixedTable.data; let i=index" (dblclick)="xem(data)" (click)="selectedRow(data)" [class.row-selected]="data.selected">
+          <td [class.row-selected]="data.selected" nzAlign="left">{{ data?.dienGiai }} </td>
+          <td  [class.row-selected]="data.selected" nzAlign="left">{{ data?.tuNgay | date: 'dd/MM/yyyy' }} </td>
+          <td [class.row-selected]="data.selected" class="textCenter">{{ data?.denNgay | date: 'dd/MM/yyyy' }}</td>
+          <td [class.row-selected]="data.selected" class="textCenter">{{data?.ngayLap | date: 'dd/MM/yyyy'}}
+          </td>
+        </tr>
+        <tr *ngFor="let obj of lstBangKeEmpty">
+          <td *ngFor="let empty of numberBangKeCols; let idx = index">
+              <span *ngIf="idx===0" class="font-while">.</span>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>

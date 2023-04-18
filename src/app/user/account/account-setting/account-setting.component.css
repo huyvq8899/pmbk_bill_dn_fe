@@ -1,0 +1,81 @@
+/* .tab-set {
+  border: 0.5px solid #e8e8e8;
+}
+
+.box-border {
+  border: solid;
+  border-width: 1px;
+  border-color: #e0e0e0;
+}
+
+:host ::ng-deep .ant-tabs-left-bar {
+  border-color: #e8e8e8 !important;
+}
+
+.inner-content {
+  margin: -12px -20px;
+}
+:host ::ng-deep .ant-tabs .ant-tabs-left-content {
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+}
+
+:host ::ng-deep .ant-tabs-nav-container {
+  height: auto !important;
+}
+
+:host ::ng-deep .ant-tabs .ant-tabs-left-bar .ant-tabs-tab,
+.ant-tabs .ant-tabs-right-bar .ant-tabs-tab {
+  display: block !important;
+  float: none !important;
+  margin: 0 0 0 0 !important;
+  padding: 1px 24px !important;
+  color: white !important;
+  cursor: default !important;
+  text-align: left !important;
+}
+
+:host ::ng-deep .ant-tabs .ant-tabs-left-content {
+  padding-left: 10px;
+  padding-right: 8px;
+} */
+
+@import "../../../shared/scss/tab.scss";
+
+:host ::ng-deep .ant-tabs-nav-container {
+    height: auto !important;
+}
+
+:host ::ng-deep .ant-tabs .ant-tabs-left-bar .ant-tabs-tab, .ant-tabs .ant-tabs-right-bar .ant-tabs-tab {
+    display: block !important;
+    float: none !important;
+    margin: 0 0 0 0 !important;
+    padding: 1px 24px !important;
+}
+      
+:host ::ng-deep .ant-tabs .ant-tabs-left-content {
+    padding-left: 10px;
+    padding-right: 8px;
+}
+
+.inner-content {
+    margin-bottom: 15px !important;
+}
+
+:host::ng-deep .ant-tabs-tab-active:hover {
+  color: white !important;
+}
+
+:host::ng-deep .ant-tabs-tab:hover {
+  color: black;
+}
+
+:host ::ng-deep .ant-tabs .ant-tabs-left-bar .ant-tabs-tab,
+.ant-tabs .ant-tabs-right-bar .ant-tabs-tab {
+  display: block !important;
+  float: none !important;
+  margin: 0 0 0 0 !important;
+  padding: 1px 24px !important;
+  cursor: default !important;
+  text-align: left !important;
+}

@@ -1,0 +1,38 @@
+<div>
+  <p>Số {{isHopDong ? 'hợp đồng' : 'chứng từ'}} được xử lý: {{model.soChungTuDuocXuLy}}</p>
+  <p>Số {{isHopDong ? 'hợp đồng' : 'chứng từ'}} thành công: {{model.soChungTuThanhCong}}</p>
+  <p>Số {{isHopDong ? 'hợp đồng' : 'chứng từ'}} không thành công: {{model.soChungTuKhongThanhCong}}</p>
+</div>
+<nz-table [nzNoResult]="null" style="padding: 5px 0;" nzSize="small" nzBordered #basicTable nzShowPagination="false"
+  [nzData]="list" [nzScroll]="{ x: '100%', y: '480px' }" [nzTotal]="list.length" [nzPageIndex]="1"
+  [nzPageSize]="list.length">
+  <thead>
+    <tr>
+      <th nzWidth="12%" nzAlign="center">Ngày hóa đơn</th>
+      <th nzWidth="12%" nzAlign="center">Số hóa đơn</th>
+      <th nzAlign="center">Nguyên nhân</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of basicTable.data; let i = index">
+      <td nzAlign="center">
+        {{data?.ngayHoaDon | date:'dd/MM/yyyy'}}
+      </td>
+      <td>
+        {{data?.soChungTu}}
+      </td>
+      <td [title]="data?.message">
+        {{data?.message}}
+      </td>
+    </tr>
+    <tr class="total-footer">
+      <td>
+        Số dòng = {{list?.length}}
+      </td>
+    </tr>
+  </tbody>
+</nz-table>
+
+<div *nzModalFooter>
+  <button nz-button nzType="default" (click)="destroyModal()" class="button-cancel">Hủy</button>
+</div>

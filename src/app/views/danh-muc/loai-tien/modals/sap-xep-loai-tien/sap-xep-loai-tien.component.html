@@ -1,0 +1,60 @@
+<nz-spin [nzSpinning]="spinning">
+    <div class="container">
+        <div nz-row class="inner-content">
+            <div nz-col nzSm="23">
+                <nz-table [nzNoResult]="null" #fixedTable nzSize="small" nzBordered nzShowPagination="false" [nzData]="listTruongDuLieuTemp" [nzPageSize]="listTruongDuLieuTemp.length" [nzWidthConfig]="widthConfig" [nzScroll]="{x: '100%', y: '450px'}">
+                    <thead>
+                        <tr>
+                            <th nzAlign="center">STT</th>
+                            <th nzAlign="center">Mã loại tiền</th>
+                            <th nzAlign="center">Tên loại tiền</th>
+                            <!-- <th nzAlign="center">Ngừng theo dõi</th> -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr (click)="selectedRow(data)" *ngFor="let data of listTruongDuLieuTemp" [class.row-selected]="data.selected">
+                            <td [class.row-selected]="data.selected" nzAlign="center">
+                                {{data.sapXep}}
+                            </td>
+                            <td [class.row-selected]="data.selected">
+                                {{data?.ma }}
+                            </td>
+                            <td [class.row-selected]="data.selected">
+                                {{data?.ten }}
+                            </td>
+                            <!-- <td [class.row-selected]="data.selected" nzAlign="center">
+                                <label nz-checkbox [nzDisabled]="true" [(ngModel)]="!data.status"></label>
+                            </td> -->
+                        </tr>
+                    </tbody>
+                    <tfoot *ngIf="listTruongDuLieuTemp.length > 0" class="total-footer">
+                        <td colspan="3">Số dòng = {{listTruongDuLieuTemp.length}}</td>
+                    </tfoot>
+                </nz-table>
+            </div>
+            <div nz-col nzSm="1" class="sort-wrapper">
+                <button nz-button nzType="default" nzSize="small" class="button-default button-clear" (click)="first()">
+        <i nz-icon nzType="caret-up" nzTheme="outline"></i>
+      </button>
+                <button nz-button nzType="default" nzSize="small" class="button-default filterDefaultButton" (click)="prev()">
+        <i nz-icon nzType="up" nzTheme="outline"></i>
+      </button>
+                <button nz-button nzType="default" nzSize="small" class="button-default filterDefaultButton" (click)="next()">
+        <i nz-icon nzType="down" nzTheme="outline"></i>
+      </button>
+                <button nz-button nzType="default" nzSize="small" class="button-default  button-clear" (click)="last()">
+        <i nz-icon nzType="caret-down" nzTheme="outline"></i>
+      </button>
+            </div>
+        </div>
+    </div>
+</nz-spin>
+
+<div *nzModalFooter>
+    <div nz-row>
+        <div nz-col nzSpan="24" style="text-align: right;">
+            <button nz-button nzType="default" nzSize="small" (click)="saveChanges()" class="button-agree"><i nz-icon nzType="save" nzTheme="outline"></i>Lưu</button>
+            <button nz-button nzType="default" nzSize="small" (click)="destroyModal()" class="button-cancel"><i nz-icon nzType="close" nzTheme="outline"></i>Hủy</button>
+        </div>
+    </div>
+</div>

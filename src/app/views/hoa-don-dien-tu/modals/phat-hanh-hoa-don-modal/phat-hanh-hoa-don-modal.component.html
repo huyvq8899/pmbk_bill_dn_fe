@@ -1,0 +1,214 @@
+<form nz-form [formGroup]="mainForm" *ngIf="mainForm">
+  <div class="box-border">
+    <nz-form-item>
+      <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="kyHieu">Ký hiệu
+      </nz-form-label>
+      <nz-form-control [nzSm]="4" [nzXs]="24">
+        <input nzSize="small" nz-input formControlName="kyHieu" id="kyHieu" />
+      </nz-form-control>
+
+      <nz-form-label [nzOffset]="1" [nzSm]="7" [nzXs]="24" nzFor="tongTienThanhToan">Tổng tiền thanh toán
+      </nz-form-label>
+      <nz-form-control [nzSm]="8" [nzXs]="24">
+        <div class="tong-tien-wrapper">
+          <input class="input-tong-tien" bkCurrencyMask [options]="{ precision: data.isVND ? ddtp.getTienQuyDoi() : ddtp.getTienNgoaiTe()}"
+            nzSize="small" nz-input formControlName="tongTienThanhToan" id="tongTienThanhToan" />
+          <span class="text-ma-tien">{{data.maLoaiTien}}</span>
+        </div>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="soHoaDon">Số hóa đơn
+      </nz-form-label>
+      <nz-form-control [nzSm]="4" [nzXs]="24">
+        <input nzSize="small" nz-input formControlName="soHoaDon" id="soHoaDon" />
+      </nz-form-control>
+
+      <nz-form-label [nzOffset]="1" [nzSm]="7" [nzXs]="24">Hình thức hóa đơn
+      </nz-form-label>
+      <nz-form-control [nzSm]="8" [nzXs]="24" style="text-align: right;">
+        <span class="status" [ngClass]="{
+          'status-orange': data.boKyHieuHoaDon.hinhThucHoaDon === 1,
+          'status-darkblue': data.boKyHieuHoaDon.hinhThucHoaDon === 0,
+          'status-yellow': data.boKyHieuHoaDon.hinhThucHoaDon == 2
+        }">
+          {{data.boKyHieuHoaDon.tenHinhThucHoaDon}}
+        </span>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="ngayHoaDon">Ngày hóa đơn
+      </nz-form-label>
+      <nz-form-control [nzSm]="4" [nzXs]="24">
+        <input nzSize="small" nz-input formControlName="ngayHoaDon" id="ngayHoaDon" />
+      </nz-form-control>
+
+      <ng-container *ngIf="!IsPos">
+        <nz-form-label [nzOffset]="1" [nzSm]="7" [nzXs]="24">Ủy nhiệm lập hóa đơn
+        </nz-form-label>
+        <nz-form-control [nzSm]="8" [nzXs]="24" style="text-align: right;">
+          <span class="status" [ngClass]="{
+            'status-orange': data.boKyHieuHoaDon.uyNhiemLapHoaDon === 1,
+            'status-darkblue': data.boKyHieuHoaDon.uyNhiemLapHoaDon === 0
+          }">
+            {{data.boKyHieuHoaDon.tenUyNhiemLapHoaDon}}
+          </span>
+        </nz-form-control>
+      </ng-container>
+      </nz-form-item>
+
+
+
+    <!-- <nz-form-item *ngIf="data?.boKyHieuHoaDon.hinhThucHoaDon === 0">
+      <nz-form-label [nzOffset]="9" [nzSm]="7" [nzXs]="24">Phương thức chuyển dữ liệu
+      </nz-form-label>
+      <nz-form-control [nzSm]="8" [nzXs]="24" style="text-align: right;">
+        <span class="status status-green">
+          Từng hóa đơn
+        </span>
+      </nz-form-control>
+    </nz-form-item> -->
+
+    <nz-form-item>
+      <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="tenKhachHang">Tên khách hàng</nz-form-label>
+      <nz-form-control [nzSm]="20" [nzXs]="24">
+        <textarea nzSize="small" nz-input formControlName="tenKhachHang" id="tenKhachHang" rows="2"
+          title="{{mainForm.getRawValue().tenKhachHang}}"></textarea>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+
+  <!-- <div nz-row class="inner-content">
+
+    <div style="margin: 5px" class="box-border">
+      <span class="box-title"><label nz-checkbox [(ngModel)]="guiHoaDonChoKhachHang"
+          (ngModelChange)="changeGuiHoaDonChoKH($event)" [ngModelOptions]="{standalone: true}"></label> Gửi hóa đơn
+        cho khách hàng</span>
+
+      <nz-form-item nz-row>
+        <nz-form-label class="gutter-row" [nzSpan]="4" nzFor="hoTenNguoiNhanHD" title="Tên người nhận">Tên người nhận
+        </nz-form-label>
+        <nz-form-control nz-col class="gutter-row pd-left-5" [nzSpan]="20" [nzErrorTip]="errorTen">
+          <input type="text" nzSize="small" nz-input formControlName="hoTenNguoiNhanHD" />
+          <ng-template #errorTen let-control>
+            <ng-container *ngIf="control.hasError('required')">
+              Vui lòng nhập tên người nhận!
+            </ng-container>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item nz-row>
+        <nz-form-label class="gutter-row" [nzSpan]="4" nzFor="emailNguoiNhanHD" title="Email">Email
+        </nz-form-label>
+
+        <div nz-col class="gutter-row" [nzSpan]="20">
+          <div nz-row>
+            <nz-form-control nz-col class="gutter-row pd-left-5" [nzSpan]="21" [nzErrorTip]="errorEmail">
+              <input type="text" nzSize="small" nz-input formControlName="emailNguoiNhanHD"
+                placeholder='Mỗi Email cách nhau bằng dấu ";"' />
+              <ng-template #errorEmail let-control>
+                <ng-container *ngIf="control.hasError('required')">
+                  Vui lòng nhập email nhận hóa đơn!
+                </ng-container>
+                <ng-container *ngIf="!control.hasError('required') && control.hasError('email')">
+                  Nhập không đúng định dạng email, vui lòng kiểm tra lại!
+                </ng-container>
+              </ng-template>
+            </nz-form-control>
+            <div nz-col class="gutter-row" [nzSpan]="3" style="text-align: right;">
+              <span style="color:#1877f2;font-weight: bold;padding-right:5px;"
+                title='Mỗi Email cách nhau bởi dấu ";". Email không được sau định dạng. Email không được để trống'><strong><i
+                    nz-icon nzType="info-circle" nzTheme="fill"></i></strong></span>
+              <button nz-button nzSize="small" nzType="default" class="blueButton-v2" title="CC; BCC"
+                (click)="ToggleButton()">
+                <span *ngIf="!isboxEmailCcBcc"><i nz-icon nzType="caret-down" nzTheme="fill"></i></span>
+                <span *ngIf="isboxEmailCcBcc"><i nz-icon nzType="caret-up" nzTheme="fill"></i></span>
+              </button>
+            </div>
+          </div>
+          <div class="ccbcc" *ngIf="isboxEmailCcBcc">
+            <div nz-row>
+              <div nz-col class="gutter-row pd-left-5" [nzSpan]="3"
+                style="background-color: rgb(165,165,165);font-weight: bold;">
+                <nz-form-label nzFor="cC" title="CC">CC
+                </nz-form-label>
+              </div>
+              <div nz-col class="gutter-row pd-left-10" [nzSpan]="21">
+                <nz-form-control [nzErrorTip]="errorEmailCC">
+                  <input type="text" nzSize="small" nz-input formControlName="cC" id="cC" multiple
+                    placeholder='Mỗi Email cách nhau bằng dấu ";"' />
+                  <ng-template #errorEmailCC let-control>
+                    <ng-container *ngIf="control.hasError('email')">
+                      Nhập không đúng định dạng email, vui lòng kiểm tra lại!
+                    </ng-container>
+                  </ng-template>
+                </nz-form-control>
+              </div>
+            </div>
+            <div nz-row [nzGutter]="{ xs: 8, sm: 16, md: 24, lg: 32 }">
+              <nz-form-label class="gutter-row pd-left-5" [nzSpan]="3"
+                style="background-color: rgb(165,165,165);font-weight: bold;" nzFor="bCC" title="BCC">BCC
+              </nz-form-label>
+              <nz-form-control nz-col class="gutter-row pd-left-10" [nzSpan]="21" [nzErrorTip]="errorEmailBCC">
+                <input type="text" nzSize="small" nz-input formControlName="bCC" id="bCC" multiple
+                  placeholder='Mỗi Email cách nhau bằng dấu ";"' />
+                <ng-template #errorEmailBCC let-control>
+                  <ng-container *ngIf="control.hasError('email')">
+                    Nhập không đúng định dạng email, vui lòng kiểm tra lại!
+                  </ng-container>
+                </ng-template>
+              </nz-form-control>
+            </div>
+          </div>
+        </div>
+      </nz-form-item>
+
+      <nz-form-item nz-row>
+        <nz-form-label class="gutter-row" [nzSpan]="4" nzFor="soDienThoaiNguoiNhanHD" title="Số điện thoại">
+          Số điện thoại
+        </nz-form-label>
+        <nz-form-control nz-col class="gutter-row pd-left-5" [nzSpan]="20">
+          <input type="text" nzSize="small" nz-input formControlName="soDienThoaiNguoiNhanHD" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div> -->
+</form>
+
+<div *ngIf="data.boKyHieuHoaDon.hinhThucHoaDon != 2" style="text-align: justify !important; background-color: #FFF2CC; padding: 5px;">
+  <ng-container *ngIf="data.boKyHieuHoaDon.hinhThucHoaDon === 1">
+    Hệ thống sẽ tự động gửi hóa đơn cho cơ quan thuế ngay sau khi hóa đơn được phát hành.
+  </ng-container>
+  <ng-container *ngIf="data.boKyHieuHoaDon.hinhThucHoaDon === 0 && data.boKyHieuHoaDon.phuongThucChuyenDL === 0">
+    Hóa đơn thiết lập gửi dữ liệu hóa đơn không có mã đến cơ quan thuế qua phương thức <b>Chuyển đầy đủ nội dung từng hóa đơn</b> thì 
+    ngay sau khi hóa đơn được người bán gửi cho người mua, hệ thống sẽ tự động gửi hóa đơn cho cơ quan thuế.
+  </ng-container>
+  <ng-container *ngIf="data.boKyHieuHoaDon.hinhThucHoaDon === 0 && data.boKyHieuHoaDon.phuongThucChuyenDL === 1">
+    Hóa đơn thiết lập gửi dữ liệu hóa đơn không có mã đến cơ quan thuế qua phương thức <b>Chuyển theo bảng tổng hợp dữ liệu hóa đơn điện tử</b> thì 
+    người bán lập bảng tổng hợp dữ liệu hóa đơn điện tử để gửi cơ quan thuế cùng với thời gian gửi Tờ khai thuế giá trị gia tăng 
+    theo kỳ kê khai thuế GTGT mà người bán đang áp dụng (theo tháng hoặc quý).
+  </ng-container>
+</div>
+
+<div *nzModalFooter>
+  <div nz-row>
+    <div nz-col nzSpan="12" style="text-align: left;">
+      <button nzSize="small" nz-button nzType="default" class="blueButton" (click)="view()" [nzLoading]="loading">
+        <i nz-icon nzSize="small" nzType="eye"></i>Xem hóa đơn
+      </button>
+    </div>
+    <div nz-col nzSpan="12">
+      <button nzSize="small" nz-button nzType="default" [disabled]="disabled" (click)="ThucHienPhatHanh()"
+        class="button-agree" [nzLoading]="loading">
+        <span class="material-icons-outlined" style="transform: rotate(315deg);">send</span>&nbsp;Thực hiện
+      </button>
+      <button nzSize="small" nz-button nzType="default" (click)="destroyModal()" class="button-cancel"
+        [nzLoading]="loading">
+        <i nz-icon nzSize="small" nzType="close"></i>Hủy
+      </button>
+    </div>
+  </div>
+</div>

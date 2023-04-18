@@ -1,0 +1,84 @@
+<div style="display: flex;flex-direction: column;flex: 1;height: 100%;">
+  <div style="padding-top: 5px; background-color: white;">
+    <form nz-form [formGroup]="mauHoaDonForm" nz-row nzGutter="4" style="padding: 0 0 5px 5px;">
+      <div nz-col nzSpan="3" *ngIf="coPhatSinhUyNhiemLapHoaDon">
+        <div class="vertical-form-label">
+          <div>Ủy nhiệm lập hóa đơn</div>
+        </div>
+        <nz-select class="sl-filter" nzSize="small" nzShowSearch formControlName="uyNhiemLapHoaDon">
+          <nz-option *ngFor="let item of uyNhiemLapHoaDons" [nzLabel]="item?.value" [nzValue]="item?.key">
+          </nz-option>
+        </nz-select>
+      </div>
+      <div nz-col nzSpan="6">
+        <div class="vertical-form-label">
+          <div>Hình thức hóa đơn</div>
+        </div>
+        <nz-select class="sl-filter" nzSize="small" nzShowSearch formControlName="hinhThucHoaDon"
+          (ngModelChange)="changeHinhThucHoaDon($event)">
+          <nz-option *ngFor="let item of hinhThucHoaDons" [nzLabel]="item?.value" [nzValue]="item?.key">
+          </nz-option>
+        </nz-select>
+      </div>
+      <div nz-col nzSpan="5">
+        <div class="vertical-form-label">
+          <div>Loại hóa đơn</div>
+        </div>
+        <nz-select class="sl-filter" nzSize="small" nzShowSearch formControlName="loaiHoaDon"
+          [nzDropdownStyle]="overlayStyle" (ngModelChange)="changeLoaiHoaDon($event)">
+          <nz-option *ngFor="let item of loaiHoaDons" [nzLabel]="item?.value" [nzValue]="item?.key">
+          </nz-option>
+        </nz-select>
+      </div>
+      <div nz-col nzSpan="5">
+        <div class="vertical-form-label">
+          <div>Loại mẫu</div>
+        </div>
+        <nz-select class="sl-filter" nzSize="small" nzShowSearch formControlName="loaiMau">
+          <nz-option *ngFor="let item of loaiMaus" [nzLabel]="item?.value" [nzValue]="item?.key">
+          </nz-option>
+        </nz-select>
+      </div>
+      <div nz-col nzSpan="3"
+        *ngIf="mauHoaDonForm.getRawValue().loaiHoaDon === 1 || mauHoaDonForm.getRawValue().loaiHoaDon === 9 || mauHoaDonForm.getRawValue().loaiHoaDon === 12">
+        <div class="vertical-form-label">
+          <div>Thuế GTGT</div>
+        </div>
+        <nz-select class="sl-filter" nzSize="small" nzShowSearch formControlName="loaiThueGTGT"
+          (ngModelChange)="changeLoaiThueGTGT($event)">
+          <nz-option *ngFor="let item of loaiThueGTGTs" [nzLabel]="item?.value" [nzValue]="item?.key">
+          </nz-option>
+        </nz-select>
+      </div>
+     
+      <div nz-col nzSpan="2" *ngIf="mauHoaDonForm.getRawValue().loaiHoaDon != 15">
+        <div class="vertical-form-label">
+          <div>Khổ giấy</div>
+        </div>
+        <nz-select class="sl-filter" nzSize="small" nzShowSearch formControlName="loaiKhoGiay" (ngModelChange)="changeLoaiKhoGiay($event)">
+          <nz-option *ngFor="let item of loaiKhoGiays" [nzLabel]="item?.value" [nzValue]="item?.key">
+          </nz-option>
+        </nz-select>
+      </div>
+    </form>
+  </div>
+  <div style="flex: 1;">
+    <div nz-row>
+      <div nz-col nzSpan="8" *ngFor="let item of list">
+        <div class="template-card" (dblclick)="selectedMau(item)">
+          <div>
+            <img class="template-img" style="width: 84%" [src]="env.apiUrl + item.avatar"
+              (mouseover)="item.isHover = true" (mouseout)="item.isHover = false" />
+            <div class="template-footer" (mouseover)="item.isHover = true" (mouseout)="item.isHover = false">
+              <span>{{item.code}}</span>
+              <button [class.visible]="item.isHover" nzSize="small" nz-button nzType="default"
+                (click)="selectedMau(item)" class="button-clear">
+                <i nz-icon nzType="select" nzTheme="outline"></i>Chọn
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,35 @@
+@import '../../../../shared/scss/tab.scss';
+.status {
+    padding: 2px 10px;
+    border-radius: 30px;
+    text-align: center;
+    display: inline-table;
+    color: white;
+    &-cam {
+        background-color: #ed7d31;
+    }
+    &-xanh-nhat {
+        background-color: rgb(135, 182, 97);
+    }
+    &-xanh-duong {
+        background-color: rgb(0 119 255 / 67%);
+    }
+    &-xanh-la {
+        background-color: #00B4B3;
+    }
+    &-do {
+        background-color: rgba(255, 0, 0, 0.699);
+    }
+}
+
+.icon-info{
+    font-size: larger!important;
+    display: inline-table;
+    font-weight: 200%!important;
+    &-xanh{
+        color: #1877F2!important;
+    }
+    &-do{
+        color: #E82A2A!important;
+    }
+}

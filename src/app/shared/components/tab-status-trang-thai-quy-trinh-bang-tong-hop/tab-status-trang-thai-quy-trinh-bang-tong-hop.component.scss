@@ -1,0 +1,27 @@
+.status {
+    padding: 2px 10px;
+    border-radius: 30px;
+    text-align: center;
+    display: table-cell;
+    color: white;
+
+    &-cam {
+        background-color: #ed7d31;
+    }
+
+    &-xanh-nhat {
+        background-color: #00B4B3;
+    }
+
+    &-xanh-duong {
+        background-color: #0099FF;
+    }
+
+    &-xanh-la {
+        background-color: #87B661;
+    }
+
+    &-do {
+        background-color: #FF0000B2;
+    }
+}

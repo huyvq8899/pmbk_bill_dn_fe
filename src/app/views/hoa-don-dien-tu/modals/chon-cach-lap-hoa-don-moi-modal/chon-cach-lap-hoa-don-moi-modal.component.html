@@ -1,0 +1,40 @@
+<div class="customColumn">
+    <table style="margin: -2px -1px -1px -1px!important;">
+        <tr style="background-color: #00B0F0; color: #fff; font-weight: bold">
+            <td nzAlign="center" style="padding: 3px 0px; border-right: 0.8px solid #E8E8E8; width: 50%">
+                Lập hóa đơn (gốc) mới
+            </td>
+
+            <td nzAlign="center" style="padding: 5px 0px; width: 50%">
+                Lập hóa đơn (gốc) mới thay thế hóa đơn (gốc) có sai sót
+            </td>
+        </tr>
+
+        <tr>
+            <td style="padding: 5px; border-right:  0.8px solid #E8E8E8; text-align: justify!important" valign="top">
+                Hóa đơn gốc mới là hóa đơn <b>không</b> có liên kết vói hóa đơn khác. Các liên kết bao gồm:<br> 1 - Hóa đơn thay thế cho hóa đơn có sai sót.<br> 2 - Hóa đơn điều chỉnh cho hóa đơn có sai sót.<br> 3 - Hóa đơn mới thay thế hóa đơn đã được
+                cấp mã của cơ quan thuế chưa gửi cho người mua có sai sót và người bán đã thực hiện thông báo với cơ quan thuế theo <b>Mẫu số 04/SS-HĐĐT</b> về việc hủy hóa đơn điện tử có mã đã lập có sai sót.
+            </td>
+
+            <td style="padding: 5px; text-align: justify!important" valign="top">
+                <span class="colorChuYTrongThongBao">Trích: khoản 1, điều 19 của Nghị định số 123/2020/NĐ-CP</span><br> Trường hợp người bán phát hiện hóa đơn điện tử đã được cấp mã của cơ quan thuế <b>chưa gửi cho người mua</b> có sai sót thì:<br> 1
+                - Người bán thực hiện thông báo với cơ quan thuế theo <b>Mẫu số 04/SS-HĐĐT</b> về việc hủy hóa đơn điện tử có mã đã lập có sai sót.<br> 2 - <b>Lập hóa đơn điện tử mới</b>, ký số gửi cơ quan thuế để cấp mã hóa đơn mới thay thế hóa đơn đã
+                lập để gửi cho người mua.<br> 3 - Cơ quan thuế thực hiện <b>hủy hóa đơn</b> điện tử đã được cấp mã có sai sót lưu trên hệ thống của cơ quan thuế.
+            </td>
+        </tr>
+
+        <tr>
+            <td nzAlign="center" style="border-right:  0.8px solid #E8E8E8;">
+                <button nz-button nzSize="small" nzType="default" (click)="lapHoaDonCoThayThe(false)" class="buttonBlue_LapHoaDon" style="margin-bottom: 5px!important;"><i nz-icon nzSize="small" nzType="plus"></i>Lập hóa đơn</button>
+            </td>
+
+            <td nzAlign="center">
+                <button nz-button nzSize="small" nzType="default" (click)="lapHoaDonCoThayThe(true)" class="filterDefaultButton" style="margin-bottom: 5px!important;"><i nz-icon nzSize="small" nzType="plus"></i>Lập hóa đơn</button>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div *nzModalFooter style="padding: 0px 3px;">
+    <button nz-button nzSize="small" nzType="default" (click)="destroyModal()" class="button-cancel"><i nz-icon nzSize="small" nzType="close"></i>Đóng</button>
+</div>

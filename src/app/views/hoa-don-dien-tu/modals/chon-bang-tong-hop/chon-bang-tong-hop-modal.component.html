@@ -1,0 +1,97 @@
+<nz-spin [nzSpinning]="loading">
+    <div class="inner-content">
+        <div nz-row class="inner-content">
+            <nz-form-item style="margin-bottom: 5px;">
+                <nz-form-label [nzSm]="1" [nzXs]="24" title="Kỳ">Kỳ
+                </nz-form-label>
+                <nz-form-control [nzSm]="5" [nzXs]="24">
+                    <nz-select class="with-ky" nzSize="small" nzShowSearch nzPlaceHolder="Chọn kỳ" [(ngModel)]="displayData.Ky" (ngModelChange)="changeKy($event)">
+                        <nz-option *ngFor="let item of kys" [nzLabel]="item.value" [nzValue]="item.key"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+
+                <nz-form-label [nzOffset]="1" [nzSm]="2" [nzXs]="24" title="Từ ngày">Từ ngày
+                </nz-form-label>
+                <nz-form-control [nzSm]="4" [nzXs]="24">
+                    <input type="date" nzSize="small" nz-input [(ngModel)]="displayData.fromDate" id="tuNgay" max="2999-12-31" />
+                </nz-form-control>
+                <nz-form-label [nzOffset]="1" [nzSm]="2" [nzXs]="24" title="Đến ngày">Đến ngày
+                </nz-form-label>
+                <nz-form-control [nzSm]="4" [nzXs]="24">
+                    <input type="date" nzSize="small" nz-input [(ngModel)]="displayData.toDate" id="denNgay" max="2999-12-31" />
+                </nz-form-control>
+                <div nz-col nzSpan="4" style="padding-left: 5px;">
+                    <button nz-button nzSize="small" (click)="getData()"><i nz-icon nzType="sync" nzTheme="outline"></i>&nbsp;Lấy dữ liệu</button>
+                </div>
+            </nz-form-item>
+
+        </div>
+        <nz-table [nzNoResult]="null" style="margin-top: 5px;" nzSize="small" #fixedTable [nzData]="displayDatas" [nzWidthConfig]="widthConfig" [nzScroll]="scrollConfig" [nzShowPagination]="false" [nzFrontPagination]="false" [nzTotal]="total" [nzPageIndex]="1"
+            [(nzPageSize)]="total" nzBordered [nzLoading]="loading">
+            <thead>
+                <tr>
+                    <th nzLeft="0px" nzShowCheckbox [(nzChecked)]="isAllDisplayDataChecked" [nzIndeterminate]="isIndeterminate" (nzCheckedChange)="checkAll($event)">
+                    </th>
+                    <th nzAlign="center">STT</th>
+                    <th nzAlign="center">Phiên bản</th>
+                    <th nzAlign="center">Mẫu số bảng tổng hợp</th>
+                    <th nzAlign="center">Tên bảng tổng hợp</th>
+                    <th nzAlign="center">Số bảng tổng hợp dữ liệu
+                    </th>
+                    <th nzAlign="center">Loại kỳ dữ liệu
+                    </th>
+                    <th nzAlign="center">Kỳ dữ liệu
+                    </th>
+                    <th nzAlign="center">Lần đầu</th>
+                    <th nzAlign="center">Bổ sung lần thứ
+                    </th>
+                    <th nzAlign="center">Ngày lập
+                    </th>
+                    <th nzAlign="center">Tên người nộp thuế
+                    </th>
+                    <th nzAlign="center">Mã số thuế
+                    </th>
+                    <th nzAlign="center">Hóa đơn đặt in</th>
+                    <th nzAlign="center">Loại hàng hóa
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of fixedTable.data; let i=index" [class.row-selected]="data.selected" (click)="selectedRow(data)">
+                    <td nzLeft="0px" nzShowCheckbox [class.row-selected]="data.selected" [(nzChecked)]="mapOfCheckedId[data.id]" (nzCheckedChange)="refreshStatus()">
+                    </td>
+                    <td nzAlign="center">{{ i + 1 }}</td>
+                    <td nzAlign="center" title="{{ data.phienBan }}">{{ data.phienBan }}</td>
+                    <td nzAlign="center" title="{{ data.mauSo }}">{{ data.mauSo }}</td>
+                    <td nzAlign="left" title="{{ data.ten }}"><span style="white-space: pre-wrap!important; text-align: justify!important;">{{ data.ten }}</span></td>
+                    <td nzAlign="right" title="{{ data?.soBTHDLieu }}">{{ data.soBTHDLieu }}</td>
+                    <td title="{{ data?.loaiKyDuLieu }}">
+                        <span *ngIf="data.loaiKyDuLieu == 'N'">Theo ngày</span>
+                        <span *ngIf="data.loaiKyDuLieu == 'T'">Theo tháng</span>
+                        <span *ngIf="data.loaiKyDuLieu == 'Q'">Theo quý</span>
+                    </td>
+                    <td title="{{ data?.kyDuLieu }}">{{ data.kyDuLieu }}</td>
+                    <td nzAlign="center" title="{{ data?.lanDau }}">
+                        <label nz-checkbox [(ngModel)]="data.lanDau" nzDisabled></label>
+                    </td>
+                    <td nzAlign="right" title="{{ data?.boSungLanThu }}">{{ data.boSungLanThu ? data.boSungLanThu : '' }}</td>
+                    <td nzAlign="center" title="{{ data?.ngayLap }}">{{ data.ngayLap | date: 'dd/MM/yyyy' }}</td>
+                    <td title="{{ data?.tenNNT }}"><span style="white-space: pre-wrap!important; text-align: justify!important;">{{ data.tenNNT }}</span></td>
+                    <td title="{{ data?.maSoThue }}">{{ data.maSoThue }}</td>
+                    <td nzAlign="center" title="{{ data?.hDDIn }}"><label nz-checkbox [(ngModel)]="data.hDDIn" nzDisabled></label></td>
+                    <td title="{{ data?.tenLoaiHH }}">{{ data.tenLoaiHH }}</td>
+                </tr>
+                <tr class="total-footer" *ngIf="fixedTable.data.length <= 0">
+                    <td colspan="24"> Không có dữ liệu hiển thị.
+                    </td>
+                </tr>
+            </tbody>
+        </nz-table>
+    </div>
+
+</nz-spin>
+
+<div *nzModalFooter>
+    <button nzSize="small" nz-button nzType="default" (click)="next()" [nzLoading]="signing" class="button-agree"><i nz-icon nzSize="small" nzType="mail" nzTheme="outline"></i>Gửi thông điệp</button>
+    <button nzSize="small" nz-button nzType="default" (click)="cancel()" class="button-cancel"><i nz-icon nzSize="small" nzType="close"></i>Đóng</button>
+</div>

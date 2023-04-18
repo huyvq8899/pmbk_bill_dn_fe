@@ -1,0 +1,166 @@
+<div nz-row style="margin-bottom: 2px;">
+    <div nz-col nzSpan="12" style="text-align: left;">
+        <nz-button-group nzSize="small">
+            <button nz-button nz-tooltip nzTooltipTitle="F2" nzType="default" (click)="clickThem()" class="ant-btn-cus">
+              <i nz-icon nzType="user-add" nzTheme="outline"></i>Thêm người dùng
+            </button>
+            <button [disabled]="selectedUserId===null  || (selectedUser.isAdmin && selectedUser.userId != currentUser?.userId)" nz-button nzType="default" (click)="phanQuyen()" class="ant-btn-cus">
+                <i nz-icon nzType="apartment" nzTheme="outline"></i>Phân quyền người dùng
+            </button>
+            <button [disabled]="selectedUserId===null  || (selectedUser.isAdmin && selectedUser.userId != currentUser?.userId)" nz-button nzType="default" (click)="changePass()" class="ant-btn-cus">
+                <i nz-icon nzType="unlock" nzTheme="outline"></i>Đặt lại mật khẩu
+            </button>
+            <button nz-tooltip nzTooltipTitle="F8" [disabled]="selectedUserId===null" nz-button nzType="default" (click)="clickSua()" class="ant-btn-cus">
+                <i nz-icon nzType="form" nzTheme="outline"></i>Sửa thông tin người dùng
+            </button>
+        </nz-button-group>
+    </div>
+    <div nz-col nzSpan="12" style="text-align: left;">
+    </div>
+</div>
+
+<nz-table [nzNoResult]="null" #basicTable [nzData]="userListView" nzSize="small" [nzScroll]="scrollConfig" [nzWidthConfig]="widthConfig" [nzFrontPagination]="false" [nzShowPagination]="false" [nzLoading]="loadingTable" nzBordered>
+    <thead (nzSortChange)="sort($event)" nzSingleSort>
+        <tr>
+            <th nzCustomFilter nzShowSort nzSortKey="FullName" nzAlign="center">Họ và tên
+                <i nz-th-extra class="ant-table-filter-icon" nz-icon nz-dropdown #ddHoVaTen="nzDropdown" nzType="filter" [nzDropdownMenu]="menuHoVaTen" [(nzVisible)]="mapOfVisbleFilterCol['FullName']" [class.ant-table-filter-open]="mapOfHightlightFilter['FullName']"
+                    (nzVisibleChange)="onVisibleFilterCol($event, 'FullName', filterColHoVaTen)" nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter></i>
+                <nz-dropdown-menu #menuHoVaTen="nzDropdownMenu">
+                    <app-filter-column #filterColHoVaTen title="Họ và tên" [dataType]="1" (submitFilterCol)="onFilterCol($event)">
+                    </app-filter-column>
+                </nz-dropdown-menu>
+            </th>
+            <th nzCustomFilter nzShowSort nzSortKey="UserName" nzAlign="center">Tên đăng nhập
+                <i nz-th-extra class="ant-table-filter-icon" nz-icon nz-dropdown #ddUserName="nzDropdown" nzType="filter" [nzDropdownMenu]="menuUserName" [(nzVisible)]="mapOfVisbleFilterCol['UserName']" [class.ant-table-filter-open]="mapOfHightlightFilter['UserName']"
+                    (nzVisibleChange)="onVisibleFilterCol($event, 'UserName', filterColUserName)" nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter></i>
+                <nz-dropdown-menu #menuUserName="nzDropdownMenu">
+                    <app-filter-column #filterColUserName title="Tên đăng nhập" [dataType]="1" (submitFilterCol)="onFilterCol($event)">
+                    </app-filter-column>
+                </nz-dropdown-menu>
+            </th>
+            <th nzCustomFilter nzShowSort nzSortKey="Email" nzAlign="center">E-mail
+                <i nz-th-extra class="ant-table-filter-icon" nz-icon nz-dropdown #ddEmail="nzDropdown" nzType="filter" [nzDropdownMenu]="menuEmail" [(nzVisible)]="mapOfVisbleFilterCol['Email']" [class.ant-table-filter-open]="mapOfHightlightFilter['Email']" (nzVisibleChange)="onVisibleFilterCol($event, 'Email', filterColEmail)"
+                    nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter></i>
+                <nz-dropdown-menu #menuEmail="nzDropdownMenu">
+                    <app-filter-column #filterColEmail title="Email" [dataType]="1" (submitFilterCol)="onFilterCol($event)">
+                    </app-filter-column>
+                </nz-dropdown-menu>
+            </th>
+            <th nzCustomFilter nzShowSort nzSortKey="Title" nzAlign="center">Chức danh
+                <i nz-th-extra class="ant-table-filter-icon" nz-icon nz-dropdown #ddTitle="nzDropdown" nzType="filter" [nzDropdownMenu]="menuTitle" [(nzVisible)]="mapOfVisbleFilterCol['Title']" [class.ant-table-filter-open]="mapOfHightlightFilter['Title']" (nzVisibleChange)="onVisibleFilterCol($event, 'Title', filterColTitle)"
+                    nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter></i>
+                <nz-dropdown-menu #menuTitle="nzDropdownMenu">
+                    <app-filter-column #filterColTitle title="Chức danh" [dataType]="1" (submitFilterCol)="onFilterCol($event)">
+                    </app-filter-column>
+                </nz-dropdown-menu>
+            </th>
+            <th nzCustomFilter nzShowSort nzSortKey="DateOfBirth" nzAlign="center">Ngày sinh
+                <i nz-th-extra class="ant-table-filter-icon" nz-icon nz-dropdown #ddDateOfBirth="nzDropdown" nzType="filter" [nzDropdownMenu]="menuDateOfBirth" [(nzVisible)]="mapOfVisbleFilterCol['DateOfBirth']" [class.ant-table-filter-open]="mapOfHightlightFilter['DateOfBirth']"
+                    (nzVisibleChange)="onVisibleFilterCol($event, 'DateOfBirth', filterColDateOfBirth)" nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter></i>
+                <nz-dropdown-menu #menuDateOfBirth="nzDropdownMenu">
+                    <app-filter-column #filterColDateOfBirth title="Ngày sinh" [dataType]="1" (submitFilterCol)="onFilterCol($event)">
+                    </app-filter-column>
+                </nz-dropdown-menu>
+            </th>
+            <th nzCustomFilter nzShowSort nzSortKey="Phone" nzAlign="center">Điện thoại
+                <i nz-th-extra class="ant-table-filter-icon" nz-icon nz-dropdown #ddPhone="nzDropdown" nzType="filter" [nzDropdownMenu]="menuPhone" [(nzVisible)]="mapOfVisbleFilterCol['Phone']" [class.ant-table-filter-open]="mapOfHightlightFilter['Phone']" (nzVisibleChange)="onVisibleFilterCol($event, 'Phone', filterColPhone)"
+                    nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter></i>
+                <nz-dropdown-menu #menuPhone="nzDropdownMenu">
+                    <app-filter-column #filterColPhone title="Điện thoại" [dataType]="1" (submitFilterCol)="onFilterCol($event)">
+                    </app-filter-column>
+                </nz-dropdown-menu>
+            </th>
+            <th nzCustomFilter nzShowSort nzSortKey="Address" nzAlign="center">Địa chỉ
+                <i nz-th-extra class="ant-table-filter-icon" nz-icon nz-dropdown #ddAddress="nzDropdown" nzType="filter" [nzDropdownMenu]="menuAddress" [(nzVisible)]="mapOfVisbleFilterCol['Address']" [class.ant-table-filter-open]="mapOfHightlightFilter['Address']" (nzVisibleChange)="onVisibleFilterCol($event, 'Address', filterColAddress)"
+                    nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter></i>
+                <nz-dropdown-menu #menuAddress="nzDropdownMenu">
+                    <app-filter-column #filterColAddress title="Địa chỉ" [dataType]="1" (submitFilterCol)="onFilterCol($event)">
+                    </app-filter-column>
+                </nz-dropdown-menu>
+            </th>
+            <th nzAlign="center" title="Trạng thái tài khoản">Trạng thái</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let data of basicTable.data" (click)="selectedRow(data)">
+            <td [class.row-selected]="data.selected">
+                <div style="display: flex; align-items: center;">
+                    <div>
+                        <nz-badge [nzDot]="data.isOnline">
+                            <nz-avatar class="avauser" [nzSize]="48" nzIcon="user"></nz-avatar>
+                            <!-- <nz-avatar class="avauser" [nzSize]="48" nzIcon="user" nz-popover
+                            [nzPopoverContent]="templateUser" nzPopoverPlacement="rightBottom" nzPopoverTrigger="click"
+                            [nzSrc]="data.avatar"></nz-avatar> -->
+                            <ng-template #templateUser>
+                                <div>
+                                    <div style=" border-bottom: solid;
+                                    border-bottom-width: 1px;
+                                    border-color: #e0e0e0;
+                                    margin-bottom: 5px" style="display: flex;">
+                                        <div>
+                                            <nz-avatar [nzShape]="'square'" [nzSize]="'large'" [nzIcon]="'user'" [nzSrc]="data.avatar">
+                                            </nz-avatar>
+                                        </div>
+                                        <div>
+                                            <div><span style="font-weight: bold; margin-left: 5px;">{{data.fullName}}</span></div>
+                                            <div><span style="font-weight: bold;margin-left: 5px;">@{{data.userName}}</span>-{{data.title}}</div>
+                                            <div><span style="font-weight: bold;margin-left: 5px;">{{data.phone}}</span></div>
+                                        </div>
+                                    </div>
+                                    <div nz-row>
+                                        <ul style="background: transparent; border:unset" nz-menu nzMode="inline">
+                                            <li nz-menu-item nz-tooltip class="menupop">
+                                                <a [routerLink]="['/account/center']" [queryParams]="{ userId: data.userId}">
+                                                    <i nz-icon nzType="issues-close" nzTheme="outline"></i>
+                                                    <span>Xem profile</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </nz-badge>
+                    </div>
+                    <div>
+                        <span style="margin-left: 5px;">{{data.fullName}}</span>
+                    </div>
+                </div>
+
+            </td>
+
+            <td [class.row-selected]="data.selected">
+                <span><span *ngIf="data.isNodeAdmin == true"><i nz-icon nzType="star" nzTheme="fill" style="color: #1877f2"></i><br></span>{{data.userName}}</span>
+            </td>
+
+            <td [class.row-selected]="data.selected">
+                <span>{{data.email}}</span>
+            </td>
+
+            <td [class.row-selected]="data.selected">
+                <span>{{data.title}}</span>
+            </td>
+
+            <td [class.row-selected]="data.selected" nzAlign="center">
+                <span>{{data.dateOfBirth | date:'dd/MM/yyyy'}}</span>
+            </td>
+
+            <td [class.row-selected]="data.selected">
+                <span>{{data.phone}}</span>
+            </td>
+
+            <td [class.row-selected]="data.selected">
+                <span>{{data.address}}</span>
+            </td>
+
+            <td [class.row-selected]="data.selected" nzAlign="center">
+                <nz-switch *ngIf="data.userId !== currentUser?.userId" [(ngModel)]="data.status" [nzCheckedChildren]="checkedTemplate" [nzUnCheckedChildren]="unCheckedTemplate" (ngModelChange)="changeStatus(data.userId)" nzSize="small"></nz-switch>
+                <ng-template #checkedTemplate><i nz-icon nzType="check"></i></ng-template>
+                <ng-template #unCheckedTemplate><i nz-icon nzType="close"></i></ng-template>
+            </td>
+        </tr>
+    </tbody>
+    <tfoot *ngIf="total>0" class="total-footer">
+        <td colspan="1">Số dòng = {{total}}</td>
+        <td colspan="7"></td>
+    </tfoot>
+</nz-table>

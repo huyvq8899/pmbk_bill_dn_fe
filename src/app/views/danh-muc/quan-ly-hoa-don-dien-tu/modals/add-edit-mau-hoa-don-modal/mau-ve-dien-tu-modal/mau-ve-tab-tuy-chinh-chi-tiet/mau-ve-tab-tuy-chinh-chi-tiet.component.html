@@ -1,0 +1,948 @@
+<div class="config-container">
+  <div style="display: flex;flex-direction: column;flex: 1;height: 100%;">
+    <ng-container *ngIf="!isSettingTruongMoRong">
+      <div class="config-header-container" *ngIf="selectedTCCT">
+        <div style="display: flex; align-items: center; justify-content: space-around; position: relative;">
+          <nz-select style="width: 60px;" nzSize="small" [(ngModel)]="selectedTCCT.tuyChonChiTiet.coChu" nzShowSearch
+            (ngModelChange)="changeCoChu($event)">
+            <nz-option *ngFor="let item of coChus" [nzLabel]="item" [nzValue]="item"> </nz-option>
+          </nz-select>
+          <div class="div-svg" [class.div-svg-disabled]="!selectedTCCT.tuyChonChiTiet.canTieuDe"
+            style="display: flex; align-items: center;" [nzDisabled]="!selectedTCCT.tuyChonChiTiet.canTieuDe"
+            nz-dropdown nzTrigger="click" [nzDropdownMenu]="menuCanTieuDe">
+            <div class="toolbar-template " [ngClass]="{
+              'cls-alignment-1': selectedTCCT.tuyChonChiTiet.canTieuDe === 1 || !selectedTCCT.tuyChonChiTiet.canTieuDe,            
+              'cls-alignment-2': selectedTCCT.tuyChonChiTiet.canTieuDe === 2,            
+              'cls-alignment-3': selectedTCCT.tuyChonChiTiet.canTieuDe === 3           
+            }"></div>
+            <div class="down-black"></div>
+          </div>
+          <nz-dropdown-menu #menuCanTieuDe="nzDropdownMenu">
+            <ul nz-menu>
+              <li (click)="canTieuDe(1)" nz-menu-item style="display: flex; align-items: center;">
+                <div class="toolbar-template cls-alignment-1"></div>
+                <div style="margin-left: 4px">Căn theo tiêu đề</div>
+              </li>
+              <li (click)="canTieuDe(2)" nz-menu-item style="display: flex; align-items: center;">
+                <div class="toolbar-template cls-alignment-2"></div>
+                <div style="margin-left: 4px">Căn theo tiêu đề dài nhất</div>
+              </li>
+              <li (click)="canTieuDe(3)" nz-menu-item style="display: flex; align-items: center;">
+                <div class="toolbar-template cls-alignment-3"></div>
+                <div style="margin-left: 4px">Căn theo tiêu đề dài nhất bao gồm ":"</div>
+              </li>
+            </ul>
+          </nz-dropdown-menu>
+          <i title="In đậm" class="toolbar-action" [class.toolbar-action-active]="selectedTCCT.tuyChonChiTiet.chuDam"
+            [class.toolbar-action-disabled]="selectedTCCT.tuyChonChiTiet.chuDam == null" nz-icon nzType="bold"
+            nzTheme="outline" (click)="clickInDam()"></i>
+          <i title="In nghiêng" class="toolbar-action"
+            [class.toolbar-action-active]="selectedTCCT.tuyChonChiTiet.chuNghieng"
+            [class.toolbar-action-disabled]="selectedTCCT.tuyChonChiTiet.chuNghieng == null" nz-icon nzType="italic"
+            nzTheme="outline" (click)="clickInNghieng()"></i>
+          <div title="Hiển thị mã số thuế tách thành từng ô" class="div-svg"
+            [class.div-svg-disabled]="selectedTCCT.tuyChonChiTiet.maSoThue == null"
+            [class.div-svg-active]="selectedTCCT.tuyChonChiTiet.maSoThue" (click)="clickMaSoThue()">
+            <div class="toolbar-template btn-mst-icon"></div>
+          </div>
+          <div>
+            <span>|</span>
+          </div>
+          <i (click)="clickMauNen(colorMauNen)" title="Đổ màu nền tiêu đề bảng" class="toolbar-action"
+            [class.toolbar-action-hasValue]="selectedTCCT.tuyChonChiTiet.mauNenTieuDeBang"
+            [class.toolbar-action-disabled]="selectedTCCT.tuyChonChiTiet.mauNenTieuDeBang == null"
+            [style.color]="selectedTCCT.tuyChonChiTiet.mauNenTieuDeBang === '#ffffff' ? '#000000' : selectedTCCT.tuyChonChiTiet.mauNenTieuDeBang"
+            nz-icon nzType="bg-colors" nzTheme="outline">
+          </i>
+          <input class="mau-nen-color-picker" #colorMauNen type="color"
+            [(ngModel)]="selectedTCCT.tuyChonChiTiet.mauNenTieuDeBang" (ngModelChange)="changeMauNen($event)" />
+          <i (click)="colorMauChu.click()" title="Thay đổi màu chữ" class="toolbar-action"
+            [class.toolbar-action-hasValue]="selectedTCCT.tuyChonChiTiet.mauChu"
+            [class.toolbar-action-disabled]="selectedTCCT.tuyChonChiTiet.mauChu == null"
+            [style.color]="selectedTCCT.tuyChonChiTiet.mauChu || '#000000'" nz-icon nzType="font-colors"
+            nzTheme="outline"></i>
+          <input class="mau-chu-color-picker" #colorMauChu type="color" [(ngModel)]="selectedTCCT.tuyChonChiTiet.mauChu"
+            (ngModelChange)="changeMauChu($event)" />
+          <div>
+            <span>|</span>
+          </div>
+          <i title="Căn trái" class="toolbar-action"
+            [class.toolbar-action-active]="selectedTCCT.tuyChonChiTiet.canChu === 1"
+            [class.toolbar-action-disabled]="selectedTCCT.tuyChonChiTiet.canChu == null" nz-icon nzType="align-left"
+            nzTheme="outline" (click)="clickCanChu(1)"></i>
+          <i title="Căn giữa" class="toolbar-action"
+            [class.toolbar-action-active]="selectedTCCT.tuyChonChiTiet.canChu === 2"
+            [class.toolbar-action-disabled]="selectedTCCT.tuyChonChiTiet.canChu == null" nz-icon nzType="align-center"
+            nzTheme="outline" (click)="clickCanChu(2)"></i>
+          <i title="Căn phải" class="toolbar-action"
+            [class.toolbar-action-active]="selectedTCCT.tuyChonChiTiet.canChu === 3"
+            [class.toolbar-action-disabled]="selectedTCCT.tuyChonChiTiet.canChu == null" nz-icon nzType="align-right"
+            nzTheme="outline" (click)="clickCanChu(3)"></i>
+          <!-- <i *ngIf="!selectedTCCT.tuyChonChiTiet.canChu" title="Căn chỉnh" class="more-align toolbar-action-disabled"
+            nz-icon nzType="down" nzTheme="outline"></i>
+          <i *ngIf="selectedTCCT.tuyChonChiTiet.canChu" title="Căn chỉnh" class="more-align toolbar-action-active"
+            nz-icon nzType="down" nzTheme="outline" nz-popover [nzPopoverTitle]="null"
+            [nzPopoverContent]="moreAlignTemplate" nzPopoverPlacement="bottomRight" [nzPopoverTrigger]="'click'"></i>
+          <ng-template #moreAlignTemplate>
+            <div class="custom-more-align">
+              <i title="Căn trên" nz-icon nzType="vertical-align-top" nzTheme="outline" (click)="clickCanChuDoc(1)"
+                [class.custom-more-align-active]="selectedTCCT.tuyChonChiTiet.canChuDoc === 1 || !selectedTCCT.tuyChonChiTiet.canChuDoc"></i>
+              <i title="Căn giữa" nz-icon nzType="vertical-align-middle" nzTheme="outline" (click)="clickCanChuDoc(2)"
+                [class.custom-more-align-active]="selectedTCCT.tuyChonChiTiet.canChuDoc === 2"></i>
+              <i title="Căn dưới" nz-icon nzType="vertical-align-bottom" nzTheme="outline" (click)="clickCanChuDoc(3)"
+                [class.custom-more-align-active]="selectedTCCT.tuyChonChiTiet.canChuDoc === 3"></i>
+            </div>
+          </ng-template> -->
+          <div>
+            <span>|</span>
+          </div>
+          <div (click)="datLaiGiaTriMacDinh()" title="Đặt lại giá trị mặc định" class="div-svg">
+            <div class="toolbar-template cls-reset-icon"></div>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; margin-top: 1px;">
+          <span>Độ rộng</span>
+          <nz-slider class="resize-table" style="flex: 1; padding: 0 8px;" [(ngModel)]="doRongCot"
+            [nzTooltipVisible]="'never'" (nzOnAfterChange)="afterChangeColWidthSize($event)"
+            [nzDisabled]="doRongCot == null">
+          </nz-slider>
+          <span>{{doRongCot || 0}}%</span>
+        </div>
+        <div nz-row>
+          <div nz-col nzSpan="10">
+            <label style="margin-top: 3px;" nz-checkbox
+              [nzDisabled]="selectedTCCT.tuyChonChiTiet.isTuyChinhGiaTri == null"
+              [(ngModel)]="selectedTCCT.tuyChonChiTiet.isTuyChinhGiaTri"
+              (ngModelChange)="changeTuyChinhGiaTriNoiDung($event)">Tùy chỉnh nội dung</label>
+          </div>
+          <div nz-col nzSpan="14">
+            <button
+              [disabled]="selectedTCCT.tuyChonChiTiet.isTuyChinhGiaTri || selectedTCCT.loai !== loai.ThongTinNguoiBan"
+              [ngClass]="{'disabled-button-state-v3': selectedTCCT.tuyChonChiTiet.isTuyChinhGiaTri || selectedTCCT.loai !== loai.ThongTinNguoiBan}"
+              nzSize="small" nz-button nzType="default" (click)="taiLaiThongTinNguoiNopThue()"
+              [class.button-clear]="!selectedTCCT.tuyChonChiTiet.isTuyChinhGiaTri && selectedTCCT.loai === loai.ThongTinNguoiBan"
+              [class.ant-btn-cus]="selectedTCCT.tuyChonChiTiet.isTuyChinhGiaTri || selectedTCCT.loai !== loai.ThongTinNguoiBan"
+              style="padding: 0 5px !important" [nzLoading]="loadingTaiLaiThongTinNguoiNopThue">
+              <i nz-icon nzType="reload" nzTheme="outline"></i>Tải lại thông tin người nộp thuế
+            </button>
+          </div>
+        </div>
+      </div>
+      <div style="flex: 1; overflow-y: scroll; padding: 10px;">
+        <div *ngIf="listTenVaMaSoThueNguoiBan.length > 0" cdkDropList class="dragdrop-list"
+          style="margin-bottom: 5px;"
+          (cdkDropListDropped)="drop($event, listTenVaMaSoThueNguoiBan)">
+          <div class="dragdrop-box" *ngFor="let item of listTenVaMaSoThueNguoiBan" cdkDrag
+            [cdkDragDisabled]="dragDisabled || item.disabledDrag" [class.selected-item]="item.selected">
+            <div class="dragdrop-title" [class.selected-item]="item.selected" (click)="expandRow(item)">
+              <div class="order" [style.cursor]="item.disabledDrag ? 'default' : 'move'">
+                <i class="icon-order" [style.visibility]="item.disabledDrag ? 'hidden' : 'visible'" nz-icon
+                  nzType="ordered-list" nzTheme="outline"></i>
+              </div>
+              <div class="check" (mouseover)="dragDisabled = true" (mouseout)="dragDisabled = false">
+                <label nz-checkbox [(ngModel)]="item.checked" [nzDisabled]="item.disabled"
+                  (ngModelChange)="checkedData(item)"></label>
+              </div>
+              <div class="title" [title]="item.giaTri" (mouseover)="dragDisabled = true"
+                (mouseout)="dragDisabled = false">
+                {{ item.giaTri }}
+              </div>
+              <div class="expand" (mouseover)="dragDisabled = true" (mouseout)="dragDisabled = false">
+                <i *ngIf="item.expand" nz-icon nzType="up" nzTheme="outline"></i>
+                <i *ngIf="!item.expand" nz-icon nzType="down" nzTheme="outline"></i>
+              </div>
+            </div>
+            <div class="divide-inner-item"></div>
+            <div class="dragdrop-info" *ngIf="item.expand" (mouseover)="dragDisabled = true"
+              (mouseout)="dragDisabled = false">
+              <div nz-row *ngIf="mapOfTieuDe[item.dataFieldName]" style="margin-bottom: 5px;"
+                [class]="getClassName(item)">
+                <div style="padding-top: 3px;" nz-col nzSpan="4">Tiêu đề</div>
+                <div nz-col nzSpan="20">
+                  <input class="custom-detail-input no-border" [class.disable-input]="mapOfTieuDe[item.dataFieldName].disabled"
+                    [readOnly]="mapOfTieuDe[item.dataFieldName].disabled" nzSize="small" nz-input
+                    [placeholder]="mapOfTieuDe[item.dataFieldName].placeholder"
+                    [(ngModel)]="mapOfTieuDe[item.dataFieldName].giaTri"
+                    (focus)="focusInput(item, mapOfTieuDe[item.dataFieldName])"
+                    (keyup)="inputChange(item, mapOfTieuDe[item.dataFieldName])" />
+                </div>
+              </div>
+              <div nz-row *ngIf="mapOfTieuDeSongNgu[item.dataFieldName]" style="margin-bottom: 5px;"
+                [class]="getClassName(item)">
+                <div style="padding-top: 3px;" nz-col nzSpan="4">Song ngữ</div>
+                <div nz-col nzSpan="20">
+                  <input class="custom-detail-input no-border"
+                    [class.disable-input]="mapOfTieuDeSongNgu[item.dataFieldName].disabled"
+                    [readOnly]="mapOfTieuDeSongNgu[item.dataFieldName].disabled" nzSize="small" nz-input
+                    [placeholder]="mapOfTieuDeSongNgu[item.dataFieldName].placeholder"
+                    [(ngModel)]="mapOfTieuDeSongNgu[item.dataFieldName].giaTri"
+                    (focus)="focusInput(item, mapOfTieuDeSongNgu[item.dataFieldName])"
+                    (keyup)="inputChange(item, mapOfTieuDeSongNgu[item.dataFieldName])" />
+                </div>
+              </div>
+              <div nz-row *ngIf="mapOfNoiDung[item.dataFieldName]" style="margin-bottom: 5px;"
+                [class]="getClassName(item)">
+                <div style="padding-top: 3px;" nz-col nzSpan="4">Nội dung</div>
+                <div nz-col nzSpan="20">
+                  <input class="custom-detail-input no-border" [class.disable-input]="mapOfNoiDung[item.dataFieldName].disabled"
+                    [readOnly]="mapOfNoiDung[item.dataFieldName].disabled" nzSize="small" nz-input
+                    [placeholder]="mapOfNoiDung[item.dataFieldName].placeholder"
+                    [(ngModel)]="mapOfNoiDung[item.dataFieldName].giaTri"
+                    (focus)="focusInput(item, mapOfNoiDung[item.dataFieldName])"
+                    (keyup)="inputChange(item, mapOfNoiDung[item.dataFieldName])" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="listCanCuSoVaNgayCanCu.length > 0" cdkDropList class="dragdrop-list"
+          (cdkDropListDropped)="drop($event, listCanCuSoVaNgayCanCu)">
+          <div class="dragdrop-box" *ngFor="let item of listCanCuSoVaNgayCanCu" cdkDrag
+            [cdkDragDisabled]="dragDisabled || item.disabledDrag" [class.selected-item]="item.selected">
+            <div class="dragdrop-title" [class.selected-item]="item.selected" (click)="expandRow(item)">
+              <div class="order" [style.cursor]="item.disabledDrag ? 'default' : 'move'">
+                <i class="icon-order" [style.visibility]="item.disabledDrag ? 'hidden' : 'visible'" nz-icon
+                  nzType="ordered-list" nzTheme="outline"></i>
+              </div>
+              <div class="check" (mouseover)="dragDisabled = true" (mouseout)="dragDisabled = false">
+                <label nz-checkbox [(ngModel)]="item.checked" [nzDisabled]="item.disabled"
+                  (ngModelChange)="checkedData(item)"></label>
+              </div>
+              <div class="title" [title]="item.giaTri" (mouseover)="dragDisabled = true"
+                (mouseout)="dragDisabled = false">
+                {{ item.giaTri }}
+              </div>
+              <div class="expand" (mouseover)="dragDisabled = true" (mouseout)="dragDisabled = false">
+                <i *ngIf="item.expand" nz-icon nzType="up" nzTheme="outline"></i>
+                <i *ngIf="!item.expand" nz-icon nzType="down" nzTheme="outline"></i>
+              </div>
+            </div>
+            <div class="divide-inner-item"></div>
+            <div class="dragdrop-info" *ngIf="item.expand" (mouseover)="dragDisabled = true"
+              (mouseout)="dragDisabled = false">
+              <div nz-row *ngIf="mapOfTieuDe[item.dataFieldName]" style="margin-bottom: 5px;"
+                [class]="getClassName(item)">
+                <div style="padding-top: 3px;" nz-col nzSpan="4">Tiêu đề</div>
+                <div nz-col nzSpan="20">
+                  <input class="custom-detail-input no-border" [class.disable-input]="mapOfTieuDe[item.dataFieldName].disabled"
+                    [readOnly]="mapOfTieuDe[item.dataFieldName].disabled" nzSize="small" nz-input
+                    [placeholder]="mapOfTieuDe[item.dataFieldName].placeholder"
+                    [(ngModel)]="mapOfTieuDe[item.dataFieldName].giaTri"
+                    (focus)="focusInput(item, mapOfTieuDe[item.dataFieldName])"
+                    (keyup)="inputChange(item, mapOfTieuDe[item.dataFieldName])" />
+                </div>
+              </div>
+              <div nz-row *ngIf="mapOfTieuDeSongNgu[item.dataFieldName]" style="margin-bottom: 5px;"
+                [class]="getClassName(item)">
+                <div style="padding-top: 3px;" nz-col nzSpan="4">Song ngữ</div>
+                <div nz-col nzSpan="20">
+                  <input class="custom-detail-input no-border"
+                    [class.disable-input]="mapOfTieuDeSongNgu[item.dataFieldName].disabled"
+                    [readOnly]="mapOfTieuDeSongNgu[item.dataFieldName].disabled" nzSize="small" nz-input
+                    [placeholder]="mapOfTieuDeSongNgu[item.dataFieldName].placeholder"
+                    [(ngModel)]="mapOfTieuDeSongNgu[item.dataFieldName].giaTri"
+                    (focus)="focusInput(item, mapOfTieuDeSongNgu[item.dataFieldName])"
+                    (keyup)="inputChange(item, mapOfTieuDeSongNgu[item.dataFieldName])" />
+                </div>
+              </div>
+              <div nz-row *ngIf="mapOfNoiDung[item.dataFieldName]" style="margin-bottom: 5px;"
+                [class]="getClassName(item)">
+                <div style="padding-top: 3px;" nz-col nzSpan="4">Nội dung</div>
+                <div nz-col nzSpan="20">
+                  <input class="custom-detail-input no-border" [class.disable-input]="mapOfNoiDung[item.dataFieldName].disabled"
+                    [readOnly]="mapOfNoiDung[item.dataFieldName].disabled" nzSize="small" nz-input
+                    [placeholder]="mapOfNoiDung[item.dataFieldName].placeholder"
+                    [(ngModel)]="mapOfNoiDung[item.dataFieldName].giaTri"
+                    (focus)="focusInput(item, mapOfNoiDung[item.dataFieldName])"
+                    (keyup)="inputChange(item, mapOfNoiDung[item.dataFieldName])" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="listCuaVeViec.length > 0" cdkDropList class="dragdrop-list" style="margin-top: 5px;"
+          (cdkDropListDropped)="drop($event, listCuaVeViec)">
+          <div class="dragdrop-box" *ngFor="let item of listCuaVeViec" cdkDrag
+            [cdkDragDisabled]="dragDisabled || item.disabledDrag" [class.selected-item]="item.selected">
+            <div class="dragdrop-title" [class.selected-item]="item.selected" (click)="expandRow(item)">
+              <div class="order" [style.cursor]="item.disabledDrag ? 'default' : 'move'">
+                <i class="icon-order" [style.visibility]="item.disabledDrag ? 'hidden' : 'visible'" nz-icon
+                  nzType="ordered-list" nzTheme="outline"></i>
+              </div>
+              <div class="check" (mouseover)="dragDisabled = true" (mouseout)="dragDisabled = false">
+                <label nz-checkbox [(ngModel)]="item.checked" [nzDisabled]="item.disabled"
+                  (ngModelChange)="checkedData(item)"></label>
+              </div>
+              <div class="title" [title]="item.giaTri" (mouseover)="dragDisabled = true"
+                (mouseout)="dragDisabled = false">
+                {{ item.giaTri }}
+              </div>
+              <div class="expand" (mouseover)="dragDisabled = true" (mouseout)="dragDisabled = false">
+                <i *ngIf="item.expand" nz-icon nzType="up" nzTheme="outline"></i>
+                <i *ngIf="!item.expand" nz-icon nzType="down" nzTheme="outline"></i>
+              </div>
+            </div>
+            <div class="divide-inner-item"></div>
+            <div class="dragdrop-info" *ngIf="item.expand" (mouseover)="dragDisabled = true"
+              (mouseout)="dragDisabled = false">
+              <div nz-row *ngIf="mapOfTieuDe[item.dataFieldName]" style="margin-bottom: 5px;"
+                [class]="getClassName(item)">
+                <div style="padding-top: 3px;" nz-col nzSpan="4">Tiêu đề</div>
+                <div nz-col nzSpan="20">
+                  <input class="custom-detail-input no-border" [class.disable-input]="mapOfTieuDe[item.dataFieldName].disabled"
+                    [readOnly]="mapOfTieuDe[item.dataFieldName].disabled" nzSize="small" nz-input
+                    [placeholder]="mapOfTieuDe[item.dataFieldName].placeholder"
+                    [(ngModel)]="mapOfTieuDe[item.dataFieldName].giaTri"
+                    (focus)="focusInput(item, mapOfTieuDe[item.dataFieldName])"
+                    (keyup)="inputChange(item, mapOfTieuDe[item.dataFieldName])" />
+                </div>
+              </div>
+              <div nz-row *ngIf="mapOfTieuDeSongNgu[item.dataFieldName]" style="margin-bottom: 5px;"
+                [class]="getClassName(item)">
+                <div style="padding-top: 3px;" nz-col nzSpan="4">Song ngữ</div>
+                <div nz-col nzSpan="20">
+                  <input class="custom-detail-input no-border"
+                    [class.disable-input]="mapOfTieuDeSongNgu[item.dataFieldName].disabled"
+                    [readOnly]="mapOfTieuDeSongNgu[item.dataFieldName].disabled" nzSize="small" nz-input
+                    [placeholder]="mapOfTieuDeSongNgu[item.dataFieldName].placeholder"
+                    [(ngModel)]="mapOfTieuDeSongNgu[item.dataFieldName].giaTri"
+                    (focus)="focusInput(item, mapOfTieuDeSongNgu[item.dataFieldName])"
+                    (keyup)="inputChange(item, mapOfTieuDeSongNgu[item.dataFieldName])" />
+                </div>
+              </div>
+              <div nz-row *ngIf="mapOfNoiDung[item.dataFieldName]" style="margin-bottom: 5px;"
+                [class]="getClassName(item)">
+                <div style="padding-top: 3px;" nz-col nzSpan="4">Nội dung</div>
+                <div nz-col nzSpan="20">
+                  <input class="custom-detail-input no-border" [class.disable-input]="mapOfNoiDung[item.dataFieldName].disabled"
+                    [readOnly]="mapOfNoiDung[item.dataFieldName].disabled" nzSize="small" nz-input
+                    [placeholder]="mapOfNoiDung[item.dataFieldName].placeholder"
+                    [(ngModel)]="mapOfNoiDung[item.dataFieldName].giaTri"
+                    (focus)="focusInput(item, mapOfNoiDung[item.dataFieldName])"
+                    (keyup)="inputChange(item, mapOfNoiDung[item.dataFieldName])" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="listDiaChiVaTenNguoiXuatHangBan.length > 0" cdkDropList class="dragdrop-list"
+          style="margin-top: 5px"
+          (cdkDropListDropped)="drop($event, listDiaChiVaTenNguoiXuatHangBan)">
+          <div class="dragdrop-box" *ngFor="let item of listDiaChiVaTenNguoiXuatHangBan" cdkDrag
+            [cdkDragDisabled]="dragDisabled || item.disabledDrag" [class.selected-item]="item.selected">
+            <div class="dragdrop-title" [class.selected-item]="item.selected" (click)="expandRow(item)">
+              <div class="order" [style.cursor]="item.disabledDrag ? 'default' : 'move'">
+                <i class="icon-order" [style.visibility]="item.disabledDrag ? 'hidden' : 'visible'" nz-icon
+                  nzType="ordered-list" nzTheme="outline"></i>
+              </div>
+              <div class="check" (mouseover)="dragDisabled = true" (mouseout)="dragDisabled = false">
+                <label nz-checkbox [(ngModel)]="item.checked" [nzDisabled]="item.disabled"
+                  (ngModelChange)="checkedData(item)"></label>
+              </div>
+              <div class="title" [title]="item.giaTri" (mouseover)="dragDisabled = true"
+                (mouseout)="dragDisabled = false">
+                {{ item.giaTri }}
+              </div>
+              <div class="expand" (mouseover)="dragDisabled = true" (mouseout)="dragDisabled = false">
+                <i *ngIf="item.expand" nz-icon nzType="up" nzTheme="outline"></i>
+                <i *ngIf="!item.expand" nz-icon nzType="down" nzTheme="outline"></i>
+              </div>
+            </div>
+            <div class="divide-inner-item"></div>
+            <div class="dragdrop-info" *ngIf="item.expand" (mouseover)="dragDisabled = true"
+              (mouseout)="dragDisabled = false">
+              <div nz-row *ngIf="mapOfTieuDe[item.dataFieldName]" style="margin-bottom: 5px;"
+                [class]="getClassName(item)">
+                <div style="padding-top: 3px;" nz-col nzSpan="4">Tiêu đề</div>
+                <div nz-col nzSpan="20">
+                  <input class="custom-detail-input no-border" [class.disable-input]="mapOfTieuDe[item.dataFieldName].disabled"
+                    [readOnly]="mapOfTieuDe[item.dataFieldName].disabled" nzSize="small" nz-input
+                    [placeholder]="mapOfTieuDe[item.dataFieldName].placeholder"
+                    [(ngModel)]="mapOfTieuDe[item.dataFieldName].giaTri"
+                    (focus)="focusInput(item, mapOfTieuDe[item.dataFieldName])"
+                    (keyup)="inputChange(item, mapOfTieuDe[item.dataFieldName])" />
+                </div>
+              </div>
+              <div nz-row *ngIf="mapOfTieuDeSongNgu[item.dataFieldName]" style="margin-bottom: 5px;"
+                [class]="getClassName(item)">
+                <div style="padding-top: 3px;" nz-col nzSpan="4">Song ngữ</div>
+                <div nz-col nzSpan="20">
+                  <input class="custom-detail-input no-border"
+                    [class.disable-input]="mapOfTieuDeSongNgu[item.dataFieldName].disabled"
+                    [readOnly]="mapOfTieuDeSongNgu[item.dataFieldName].disabled" nzSize="small" nz-input
+                    [placeholder]="mapOfTieuDeSongNgu[item.dataFieldName].placeholder"
+                    [(ngModel)]="mapOfTieuDeSongNgu[item.dataFieldName].giaTri"
+                    (focus)="focusInput(item, mapOfTieuDeSongNgu[item.dataFieldName])"
+                    (keyup)="inputChange(item, mapOfTieuDeSongNgu[item.dataFieldName])" />
+                </div>
+              </div>
+              <div nz-row *ngIf="mapOfNoiDung[item.dataFieldName]" style="margin-bottom: 5px;"
+                [class]="getClassName(item)">
+                <div style="padding-top: 3px;" nz-col nzSpan="4">Nội dung</div>
+                <div nz-col nzSpan="20">
+                  <input class="custom-detail-input no-border" [class.disable-input]="mapOfNoiDung[item.dataFieldName].disabled"
+                    [readOnly]="mapOfNoiDung[item.dataFieldName].disabled" nzSize="small" nz-input
+                    [placeholder]="mapOfNoiDung[item.dataFieldName].placeholder"
+                    [(ngModel)]="mapOfNoiDung[item.dataFieldName].giaTri"
+                    (focus)="focusInput(item, mapOfNoiDung[item.dataFieldName])"
+                    (keyup)="inputChange(item, mapOfNoiDung[item.dataFieldName])" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="listTenNguoiVanChuyenVaHopDongSo.length > 0" cdkDropList class="dragdrop-list"
+          style="margin-top: 5px; margin-bottom: 5px;"
+          (cdkDropListDropped)="drop($event, listTenNguoiVanChuyenVaHopDongSo)">
+          <div class="dragdrop-box" *ngFor="let item of listTenNguoiVanChuyenVaHopDongSo" cdkDrag
+            [cdkDragDisabled]="dragDisabled || item.disabledDrag" [class.selected-item]="item.selected">
+            <div class="dragdrop-title" [class.selected-item]="item.selected" (click)="expandRow(item)">
+              <div class="order" [style.cursor]="item.disabledDrag ? 'default' : 'move'">
+                <i class="icon-order" [style.visibility]="item.disabledDrag ? 'hidden' : 'visible'" nz-icon
+                  nzType="ordered-list" nzTheme="outline"></i>
+              </div>
+              <div class="check" (mouseover)="dragDisabled = true" (mouseout)="dragDisabled = false">
+                <label nz-checkbox [(ngModel)]="item.checked" [nzDisabled]="item.disabled"
+                  (ngModelChange)="checkedData(item)"></label>
+              </div>
+              <div class="title" [title]="item.giaTri" (mouseover)="dragDisabled = true"
+                (mouseout)="dragDisabled = false">
+                {{ item.giaTri }}
+              </div>
+              <div class="expand" (mouseover)="dragDisabled = true" (mouseout)="dragDisabled = false">
+                <i *ngIf="item.expand" nz-icon nzType="up" nzTheme="outline"></i>
+                <i *ngIf="!item.expand" nz-icon nzType="down" nzTheme="outline"></i>
+              </div>
+            </div>
+            <div class="divide-inner-item"></div>
+            <div class="dragdrop-info" *ngIf="item.expand" (mouseover)="dragDisabled = true"
+              (mouseout)="dragDisabled = false">
+              <div nz-row *ngIf="mapOfTieuDe[item.dataFieldName]" style="margin-bottom: 5px;"
+                [class]="getClassName(item)">
+                <div style="padding-top: 3px;" nz-col nzSpan="4">Tiêu đề</div>
+                <div nz-col nzSpan="20">
+                  <input class="custom-detail-input no-border" [class.disable-input]="mapOfTieuDe[item.dataFieldName].disabled"
+                    [readOnly]="mapOfTieuDe[item.dataFieldName].disabled" nzSize="small" nz-input
+                    [placeholder]="mapOfTieuDe[item.dataFieldName].placeholder"
+                    [(ngModel)]="mapOfTieuDe[item.dataFieldName].giaTri"
+                    (focus)="focusInput(item, mapOfTieuDe[item.dataFieldName])"
+                    (keyup)="inputChange(item, mapOfTieuDe[item.dataFieldName])" />
+                </div>
+              </div>
+              <div nz-row *ngIf="mapOfTieuDeSongNgu[item.dataFieldName]" style="margin-bottom: 5px;"
+                [class]="getClassName(item)">
+                <div style="padding-top: 3px;" nz-col nzSpan="4">Song ngữ</div>
+                <div nz-col nzSpan="20">
+                  <input class="custom-detail-input no-border"
+                    [class.disable-input]="mapOfTieuDeSongNgu[item.dataFieldName].disabled"
+                    [readOnly]="mapOfTieuDeSongNgu[item.dataFieldName].disabled" nzSize="small" nz-input
+                    [placeholder]="mapOfTieuDeSongNgu[item.dataFieldName].placeholder"
+                    [(ngModel)]="mapOfTieuDeSongNgu[item.dataFieldName].giaTri"
+                    (focus)="focusInput(item, mapOfTieuDeSongNgu[item.dataFieldName])"
+                    (keyup)="inputChange(item, mapOfTieuDeSongNgu[item.dataFieldName])" />
+                </div>
+              </div>
+              <div nz-row *ngIf="mapOfNoiDung[item.dataFieldName]" style="margin-bottom: 5px;"
+                [class]="getClassName(item)">
+                <div style="padding-top: 3px;" nz-col nzSpan="4">Nội dung</div>
+                <div nz-col nzSpan="20">
+                  <input class="custom-detail-input no-border" [class.disable-input]="mapOfNoiDung[item.dataFieldName].disabled"
+                    [readOnly]="mapOfNoiDung[item.dataFieldName].disabled" nzSize="small" nz-input
+                    [placeholder]="mapOfNoiDung[item.dataFieldName].placeholder"
+                    [(ngModel)]="mapOfNoiDung[item.dataFieldName].giaTri"
+                    (focus)="focusInput(item, mapOfNoiDung[item.dataFieldName])"
+                    (keyup)="inputChange(item, mapOfNoiDung[item.dataFieldName])" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="listPhuongThucVanChuyen.length > 0" cdkDropList class="dragdrop-list"
+          style="margin-top: 5px; margin-bottom: 5px;" (cdkDropListDropped)="drop($event, listPhuongThucVanChuyen)">
+          <div class="dragdrop-box" *ngFor="let item of listPhuongThucVanChuyen" cdkDrag
+            [cdkDragDisabled]="dragDisabled || item.disabledDrag" [class.selected-item]="item.selected">
+            <div class="dragdrop-title" [class.selected-item]="item.selected" (click)="expandRow(item)">
+              <div class="order" [style.cursor]="item.disabledDrag ? 'default' : 'move'">
+                <i class="icon-order" [style.visibility]="item.disabledDrag ? 'hidden' : 'visible'" nz-icon
+                  nzType="ordered-list" nzTheme="outline"></i>
+              </div>
+              <div class="check" (mouseover)="dragDisabled = true" (mouseout)="dragDisabled = false">
+                <label nz-checkbox [(ngModel)]="item.checked" [nzDisabled]="item.disabled"
+                  (ngModelChange)="checkedData(item)"></label>
+              </div>
+              <div class="title" [title]="item.giaTri" (mouseover)="dragDisabled = true"
+                (mouseout)="dragDisabled = false">
+                {{ item.giaTri }}
+              </div>
+              <div class="expand" (mouseover)="dragDisabled = true" (mouseout)="dragDisabled = false">
+                <i *ngIf="item.expand" nz-icon nzType="up" nzTheme="outline"></i>
+                <i *ngIf="!item.expand" nz-icon nzType="down" nzTheme="outline"></i>
+              </div>
+            </div>
+            <div class="divide-inner-item"></div>
+            <div class="dragdrop-info" *ngIf="item.expand" (mouseover)="dragDisabled = true"
+              (mouseout)="dragDisabled = false">
+              <div nz-row *ngIf="mapOfTieuDe[item.dataFieldName]" style="margin-bottom: 5px;"
+                [class]="getClassName(item)">
+                <div style="padding-top: 3px;" nz-col nzSpan="4">Tiêu đề</div>
+                <div nz-col nzSpan="20">
+                  <input class="custom-detail-input no-border" [class.disable-input]="mapOfTieuDe[item.dataFieldName].disabled"
+                    [readOnly]="mapOfTieuDe[item.dataFieldName].disabled" nzSize="small" nz-input
+                    [placeholder]="mapOfTieuDe[item.dataFieldName].placeholder"
+                    [(ngModel)]="mapOfTieuDe[item.dataFieldName].giaTri"
+                    (focus)="focusInput(item, mapOfTieuDe[item.dataFieldName])"
+                    (keyup)="inputChange(item, mapOfTieuDe[item.dataFieldName])" />
+                </div>
+              </div>
+              <div nz-row *ngIf="mapOfTieuDeSongNgu[item.dataFieldName]" style="margin-bottom: 5px;"
+                [class]="getClassName(item)">
+                <div style="padding-top: 3px;" nz-col nzSpan="4">Song ngữ</div>
+                <div nz-col nzSpan="20">
+                  <input class="custom-detail-input no-border"
+                    [class.disable-input]="mapOfTieuDeSongNgu[item.dataFieldName].disabled"
+                    [readOnly]="mapOfTieuDeSongNgu[item.dataFieldName].disabled" nzSize="small" nz-input
+                    [placeholder]="mapOfTieuDeSongNgu[item.dataFieldName].placeholder"
+                    [(ngModel)]="mapOfTieuDeSongNgu[item.dataFieldName].giaTri"
+                    (focus)="focusInput(item, mapOfTieuDeSongNgu[item.dataFieldName])"
+                    (keyup)="inputChange(item, mapOfTieuDeSongNgu[item.dataFieldName])" />
+                </div>
+              </div>
+              <div nz-row *ngIf="mapOfNoiDung[item.dataFieldName]" style="margin-bottom: 5px;"
+                [class]="getClassName(item)">
+                <div style="padding-top: 3px;" nz-col nzSpan="4">Nội dung</div>
+                <div nz-col nzSpan="20">
+                  <input class="custom-detail-input no-border" [class.disable-input]="mapOfNoiDung[item.dataFieldName].disabled"
+                    [readOnly]="mapOfNoiDung[item.dataFieldName].disabled" nzSize="small" nz-input
+                    [placeholder]="mapOfNoiDung[item.dataFieldName].placeholder"
+                    [(ngModel)]="mapOfNoiDung[item.dataFieldName].giaTri"
+                    (focus)="focusInput(item, mapOfNoiDung[item.dataFieldName])"
+                    (keyup)="inputChange(item, mapOfNoiDung[item.dataFieldName])" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="listXuatKho.length > 0" cdkDropList class="dragdrop-list"
+          (cdkDropListDropped)="drop($event, listXuatKho)">
+          <div class="dragdrop-box" *ngFor="let item of listXuatKho" cdkDrag
+            [cdkDragDisabled]="dragDisabled || item.disabledDrag" [class.selected-item]="item.selected">
+            <div class="dragdrop-title" [class.selected-item]="item.selected" (click)="expandRow(item)">
+              <div class="order" [style.cursor]="item.disabledDrag ? 'default' : 'move'">
+                <i class="icon-order" [style.visibility]="item.disabledDrag ? 'hidden' : 'visible'" nz-icon
+                  nzType="ordered-list" nzTheme="outline"></i>
+              </div>
+              <div class="check" (mouseover)="dragDisabled = true" (mouseout)="dragDisabled = false">
+                <label nz-checkbox [(ngModel)]="item.checked" [nzDisabled]="item.disabled"
+                  (ngModelChange)="checkedData(item)"></label>
+              </div>
+              <div class="title" [title]="item.giaTri" (mouseover)="dragDisabled = true"
+                (mouseout)="dragDisabled = false">
+                {{ item.giaTri }}
+              </div>
+              <div class="expand" (mouseover)="dragDisabled = true" (mouseout)="dragDisabled = false">
+                <i *ngIf="item.expand" nz-icon nzType="up" nzTheme="outline"></i>
+                <i *ngIf="!item.expand" nz-icon nzType="down" nzTheme="outline"></i>
+              </div>
+            </div>
+            <div class="divide-inner-item"></div>
+            <div class="dragdrop-info" *ngIf="item.expand" (mouseover)="dragDisabled = true"
+              (mouseout)="dragDisabled = false">
+              <div nz-row *ngIf="mapOfTieuDe[item.dataFieldName]" style="margin-bottom: 5px;"
+                [class]="getClassName(item)">
+                <div style="padding-top: 3px;" nz-col nzSpan="4">Tiêu đề</div>
+                <div nz-col nzSpan="20">
+                  <input class="custom-detail-input no-border" [class.disable-input]="mapOfTieuDe[item.dataFieldName].disabled"
+                    [readOnly]="mapOfTieuDe[item.dataFieldName].disabled" nzSize="small" nz-input
+                    [placeholder]="mapOfTieuDe[item.dataFieldName].placeholder"
+                    [(ngModel)]="mapOfTieuDe[item.dataFieldName].giaTri"
+                    (focus)="focusInput(item, mapOfTieuDe[item.dataFieldName])"
+                    (keyup)="inputChange(item, mapOfTieuDe[item.dataFieldName])" />
+                </div>
+              </div>
+              <div nz-row *ngIf="mapOfTieuDeSongNgu[item.dataFieldName]" style="margin-bottom: 5px;"
+                [class]="getClassName(item)">
+                <div style="padding-top: 3px;" nz-col nzSpan="4">Song ngữ</div>
+                <div nz-col nzSpan="20">
+                  <input class="custom-detail-input no-border"
+                    [class.disable-input]="mapOfTieuDeSongNgu[item.dataFieldName].disabled"
+                    [readOnly]="mapOfTieuDeSongNgu[item.dataFieldName].disabled" nzSize="small" nz-input
+                    [placeholder]="mapOfTieuDeSongNgu[item.dataFieldName].placeholder"
+                    [(ngModel)]="mapOfTieuDeSongNgu[item.dataFieldName].giaTri"
+                    (focus)="focusInput(item, mapOfTieuDeSongNgu[item.dataFieldName])"
+                    (keyup)="inputChange(item, mapOfTieuDeSongNgu[item.dataFieldName])" />
+                </div>
+              </div>
+              <div nz-row *ngIf="mapOfNoiDung[item.dataFieldName]" style="margin-bottom: 5px;"
+                [class]="getClassName(item)">
+                <div style="padding-top: 3px;" nz-col nzSpan="4">Nội dung</div>
+                <div nz-col nzSpan="20">
+                  <input class="custom-detail-input no-border" [class.disable-input]="mapOfNoiDung[item.dataFieldName].disabled"
+                    [readOnly]="mapOfNoiDung[item.dataFieldName].disabled" nzSize="small" nz-input
+                    [placeholder]="mapOfNoiDung[item.dataFieldName].placeholder"
+                    [(ngModel)]="mapOfNoiDung[item.dataFieldName].giaTri"
+                    (focus)="focusInput(item, mapOfNoiDung[item.dataFieldName])"
+                    (keyup)="inputChange(item, mapOfNoiDung[item.dataFieldName])" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="listNhapKho.length > 0" cdkDropList class="dragdrop-list"
+          style="margin-top: 5px; margin-bottom: 5px;" (cdkDropListDropped)="drop($event, listNhapKho)">
+          <div class="dragdrop-box" *ngFor="let item of listNhapKho" cdkDrag
+            [cdkDragDisabled]="dragDisabled || item.disabledDrag" [class.selected-item]="item.selected">
+            <div class="dragdrop-title" [class.selected-item]="item.selected" (click)="expandRow(item)">
+              <div class="order" [style.cursor]="item.disabledDrag ? 'default' : 'move'">
+                <i class="icon-order" [style.visibility]="item.disabledDrag ? 'hidden' : 'visible'" nz-icon
+                  nzType="ordered-list" nzTheme="outline"></i>
+              </div>
+              <div class="check" (mouseover)="dragDisabled = true" (mouseout)="dragDisabled = false">
+                <label nz-checkbox [(ngModel)]="item.checked" [nzDisabled]="item.disabled"
+                  (ngModelChange)="checkedData(item)"></label>
+              </div>
+              <div class="title" [title]="item.giaTri" (mouseover)="dragDisabled = true"
+                (mouseout)="dragDisabled = false">
+                {{ item.giaTri }}
+              </div>
+              <div class="expand" (mouseover)="dragDisabled = true" (mouseout)="dragDisabled = false">
+                <i *ngIf="item.expand" nz-icon nzType="up" nzTheme="outline"></i>
+                <i *ngIf="!item.expand" nz-icon nzType="down" nzTheme="outline"></i>
+              </div>
+            </div>
+            <div class="divide-inner-item"></div>
+            <div class="dragdrop-info" *ngIf="item.expand" (mouseover)="dragDisabled = true"
+              (mouseout)="dragDisabled = false">
+              <div nz-row *ngIf="mapOfTieuDe[item.dataFieldName]" style="margin-bottom: 5px;"
+                [class]="getClassName(item)">
+                <div style="padding-top: 3px;" nz-col nzSpan="4">Tiêu đề</div>
+                <div nz-col nzSpan="20">
+                  <input class="custom-detail-input no-border" [class.disable-input]="mapOfTieuDe[item.dataFieldName].disabled"
+                    [readOnly]="mapOfTieuDe[item.dataFieldName].disabled" nzSize="small" nz-input
+                    [placeholder]="mapOfTieuDe[item.dataFieldName].placeholder"
+                    [(ngModel)]="mapOfTieuDe[item.dataFieldName].giaTri"
+                    (focus)="focusInput(item, mapOfTieuDe[item.dataFieldName])"
+                    (keyup)="inputChange(item, mapOfTieuDe[item.dataFieldName])" />
+                </div>
+              </div>
+              <div nz-row *ngIf="mapOfTieuDeSongNgu[item.dataFieldName]" style="margin-bottom: 5px;"
+                [class]="getClassName(item)">
+                <div style="padding-top: 3px;" nz-col nzSpan="4">Song ngữ</div>
+                <div nz-col nzSpan="20">
+                  <input class="custom-detail-input no-border"
+                    [class.disable-input]="mapOfTieuDeSongNgu[item.dataFieldName].disabled"
+                    [readOnly]="mapOfTieuDeSongNgu[item.dataFieldName].disabled" nzSize="small" nz-input
+                    [placeholder]="mapOfTieuDeSongNgu[item.dataFieldName].placeholder"
+                    [(ngModel)]="mapOfTieuDeSongNgu[item.dataFieldName].giaTri"
+                    (focus)="focusInput(item, mapOfTieuDeSongNgu[item.dataFieldName])"
+                    (keyup)="inputChange(item, mapOfTieuDeSongNgu[item.dataFieldName])" />
+                </div>
+              </div>
+              <div nz-row *ngIf="mapOfNoiDung[item.dataFieldName]" style="margin-bottom: 5px;"
+                [class]="getClassName(item)">
+                <div style="padding-top: 3px;" nz-col nzSpan="4">Nội dung</div>
+                <div nz-col nzSpan="20">
+                  <input class="custom-detail-input no-border" [class.disable-input]="mapOfNoiDung[item.dataFieldName].disabled"
+                    [readOnly]="mapOfNoiDung[item.dataFieldName].disabled" nzSize="small" nz-input
+                    [placeholder]="mapOfNoiDung[item.dataFieldName].placeholder"
+                    [(ngModel)]="mapOfNoiDung[item.dataFieldName].giaTri"
+                    (focus)="focusInput(item, mapOfNoiDung[item.dataFieldName])"
+                    (keyup)="inputChange(item, mapOfNoiDung[item.dataFieldName])" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="listOfData.length > 0" cdkDropList class="dragdrop-list"
+          (cdkDropListDropped)="drop($event, listOfData)">
+          <div *ngFor="let item of listOfData" class="dragdrop-box" cdkDrag
+            [cdkDragDisabled]="dragDisabled || item.disabledDrag" [class.selected-item]="item.selected">
+            <div class="dragdrop-title" [class.selected-item]="item.selected" (click)="expandRow(item)">
+              <div class="order" [style.cursor]="item.disabledDrag ? 'default' : 'move'">
+                <i class="icon-order" [style.visibility]="item.disabledDrag ? 'hidden' : 'visible'" nz-icon
+                  nzType="ordered-list" nzTheme="outline"></i>
+              </div>
+              <div class="check" (mouseover)="dragDisabled = true" (mouseout)="dragDisabled = false">
+                <label nz-checkbox [(ngModel)]="item.checked" [nzDisabled]="item.disabled"
+                  (ngModelChange)="checkedData(item)"></label>
+              </div>
+              <div class="title" [title]="item.giaTri" (mouseover)="dragDisabled = true"
+                (mouseout)="dragDisabled = false" [ngSwitch]="item.loaiChiTiet">
+                <span *ngSwitchCase="loaiChiTiet.TenKhacLoaiHoaDon">
+                  {{ item.giaTri || 'Tên khác (VD: phiếu bảo hành, ...)' }}
+                </span>
+                <span *ngSwitchCase="loaiChiTiet.GhiChuTongTien">
+                  {{ item.giaTri || 'Ghi chú' }}
+                </span>
+                <span *ngSwitchDefault>
+                  {{ item.giaTri }}
+                </span>
+              </div>
+              <div
+                *ngIf="item.loaiChiTiet >= loaiChiTiet.TruongMoRongChiTiet1 && item.loaiChiTiet <= loaiChiTiet.TruongMoRongChiTiet10"
+                class="setting" (mouseover)="dragDisabled = true" (mouseout)="dragDisabled = false"
+                (click)="settingData(item)">
+                <i nz-icon nzType="setting" nzTheme="outline"></i>
+              </div>
+              <div class="remove" (mouseover)="dragDisabled = true" (mouseout)="dragDisabled = false"
+                (click)="removeData(item)" *ngIf="item.loaiChiTiet < 0">
+                <i nz-icon nzType="delete" nzTheme="outline"></i>
+              </div>
+              <div class="expand" (mouseover)="dragDisabled = true" (mouseout)="dragDisabled = false">
+                <i *ngIf="item.expand" nz-icon nzType="up" nzTheme="outline"></i>
+                <i *ngIf="!item.expand" nz-icon nzType="down" nzTheme="outline"></i>
+              </div>
+            </div>
+            <div class="divide-inner-item"></div>
+            <div class="dragdrop-info" *ngIf="item.expand" (mouseover)="dragDisabled = true"
+              (mouseout)="dragDisabled = false">
+              <div nz-row *ngIf="mapOfTieuDe[item.dataFieldName]" style="margin-bottom: 5px;"
+                [class]="getClassName(item)">
+                <div style="padding-top: 3px;" nz-col nzSpan="4">Tiêu đề</div>
+                <div nz-col nzSpan="20">
+                  <nz-input-group nzCompact nzSize="small">
+                    <input
+                      [style.width.%]="(mapOfKyHieuCot[item.dataFieldName] && data.isThietLapDongKyHieuCot) ? 82 : 100"
+                      class="custom-detail-input no-border" [class.disable-input]="mapOfTieuDe[item.dataFieldName].disabled"
+                      [readOnly]="mapOfTieuDe[item.dataFieldName].disabled" nzSize="small" nz-input
+                      [placeholder]="mapOfTieuDe[item.dataFieldName].placeholder"
+                      [(ngModel)]="mapOfTieuDe[item.dataFieldName].giaTri"
+                      (focus)="focusInput(item, mapOfTieuDe[item.dataFieldName])"
+                      (keyup)="inputChange(item, mapOfTieuDe[item.dataFieldName])" />
+                    <input *ngIf="mapOfKyHieuCot[item.dataFieldName] && data.isThietLapDongKyHieuCot"
+                      style="width: 18%;" class="custom-detail-input no-border"
+                      [class.disable-input]="mapOfKyHieuCot[item.dataFieldName].disabled"
+                      [readOnly]="mapOfKyHieuCot[item.dataFieldName].disabled" nzSize="small" nz-input
+                      [placeholder]="mapOfKyHieuCot[item.dataFieldName].placeholder"
+                      [(ngModel)]="mapOfKyHieuCot[item.dataFieldName].giaTri"
+                      (focus)="focusInput(item, mapOfKyHieuCot[item.dataFieldName])" />
+                  </nz-input-group>
+                </div>
+              </div>
+              <div nz-row *ngIf="mapOfTieuDeSongNgu[item.dataFieldName]" style="margin-bottom: 5px;"
+                [class]="getClassName(item)">
+                <div style="padding-top: 3px;" nz-col nzSpan="4">Song ngữ</div>
+                <div nz-col nzSpan="20">
+                  <input class="custom-detail-input no-border"
+                    [class.disable-input]="mapOfTieuDeSongNgu[item.dataFieldName].disabled"
+                    [readOnly]="mapOfTieuDeSongNgu[item.dataFieldName].disabled" nzSize="small" nz-input
+                    [placeholder]="mapOfTieuDeSongNgu[item.dataFieldName].placeholder"
+                    [(ngModel)]="mapOfTieuDeSongNgu[item.dataFieldName].giaTri"
+                    (focus)="focusInput(item, mapOfTieuDeSongNgu[item.dataFieldName])"
+                    (keyup)="inputChange(item, mapOfTieuDeSongNgu[item.dataFieldName])"
+                    (input)="inputNoiDung(mapOfTieuDeSongNgu[item.dataFieldName])" />
+                </div>
+              </div>
+              <div nz-row *ngIf="mapOfNoiDung[item.dataFieldName]" style="margin-bottom: 5px;"
+                [class]="getClassName(item)">
+                <div style="padding-top: 3px;" nz-col nzSpan="4">Nội dung</div>
+                <div nz-col nzSpan="20">
+                  <input class="custom-detail-input no-border" attr.id="noidung {{mapOfNoiDung[item.dataFieldName].dataFieldName}}" [class.disable-input]="mapOfNoiDung[item.dataFieldName].disabled || mapOfNoiDung[item.dataFieldName].dataFieldName == 'SoTaiKhoanNguoiBan'"
+                    [readOnly]="mapOfNoiDung[item.dataFieldName].disabled || mapOfNoiDung[item.dataFieldName].dataFieldName == 'SoTaiKhoanNguoiBan'" nzSize="small" nz-input
+                    [placeholder]="mapOfNoiDung[item.dataFieldName].placeholder"
+                    [(ngModel)]="mapOfNoiDung[item.dataFieldName].giaTri"
+                    (focus)="focusInput(item, mapOfNoiDung[item.dataFieldName])"
+                    (keyup)="inputChange(item, mapOfNoiDung[item.dataFieldName])"
+                    (ngModelChange)="CheckChangeValue(item ,mapOfNoiDung[item.dataFieldName],mapOfNoiDung[item.dataFieldName].giaTri)"
+                    (input)="inputNoiDung(mapOfNoiDung[item.dataFieldName])"
+                    [maxlength] = "item?.Maxlength"
+                    [ngClass]="{'border-error': item?.isErorrMaxlengt || item?.isErorrEmpty || item?.isErorrMST}" />
+                    <nz-form-item *ngIf="item?.isErorrMaxlengt || item?.isErorrEmpty || item?.isErorrMST" style="margin-bottom: 5px !important;">
+                      <span class="error-duplicate">{{item?.StringErorr}}</span>
+                   </nz-form-item>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="listHinhThucTTSoTaiKhoan.length > 0" cdkDropList class="dragdrop-list" style="margin-top: 5px;"
+          (cdkDropListDropped)="drop($event, listHinhThucTTSoTaiKhoan)">
+          <div class="dragdrop-box" *ngFor="let item of listHinhThucTTSoTaiKhoan" cdkDrag
+            [cdkDragDisabled]="dragDisabled || item.disabledDrag" [class.selected-item]="item.selected">
+            <div class="dragdrop-title" [class.selected-item]="item.selected" (click)="expandRow(item)">
+              <div class="order" [style.cursor]="item.disabledDrag ? 'default' : 'move'">
+                <i class="icon-order" [style.visibility]="item.disabledDrag ? 'hidden' : 'visible'" nz-icon
+                  nzType="ordered-list" nzTheme="outline"></i>
+              </div>
+              <div class="check" (mouseover)="dragDisabled = true" (mouseout)="dragDisabled = false">
+                <label nz-checkbox [(ngModel)]="item.checked" [nzDisabled]="item.disabled"
+                  (ngModelChange)="checkedData(item)"></label>
+              </div>
+              <div class="title" [title]="item.giaTri" (mouseover)="dragDisabled = true"
+                (mouseout)="dragDisabled = false">
+                {{ item.giaTri }}
+              </div>
+              <div class="expand" (mouseover)="dragDisabled = true" (mouseout)="dragDisabled = false">
+                <i *ngIf="item.expand" nz-icon nzType="up" nzTheme="outline"></i>
+                <i *ngIf="!item.expand" nz-icon nzType="down" nzTheme="outline"></i>
+              </div>
+            </div>
+            <div class="divide-inner-item"></div>
+            <div class="dragdrop-info" *ngIf="item.expand" (mouseover)="dragDisabled = true"
+              (mouseout)="dragDisabled = false">
+              <div nz-row *ngIf="mapOfTieuDe[item.dataFieldName]" style="margin-bottom: 5px;"
+                [class]="getClassName(item)">
+                <div style="padding-top: 3px;" nz-col nzSpan="4">Tiêu đề</div>
+                <div nz-col nzSpan="20">
+                  <input class="custom-detail-input no-border" [class.disable-input]="mapOfTieuDe[item.dataFieldName].disabled"
+                    [readOnly]="mapOfTieuDe[item.dataFieldName].disabled" nzSize="small" nz-input
+                    [placeholder]="mapOfTieuDe[item.dataFieldName].placeholder"
+                    [(ngModel)]="mapOfTieuDe[item.dataFieldName].giaTri"
+                    (focus)="focusInput(item, mapOfTieuDe[item.dataFieldName])"
+                    (keyup)="inputChange(item, mapOfTieuDe[item.dataFieldName])" />
+                </div>
+              </div>
+              <div nz-row *ngIf="mapOfTieuDeSongNgu[item.dataFieldName]" style="margin-bottom: 5px;"
+                [class]="getClassName(item)">
+                <div style="padding-top: 3px;" nz-col nzSpan="4">Song ngữ</div>
+                <div nz-col nzSpan="20">
+                  <input class="custom-detail-input no-border"
+                    [class.disable-input]="mapOfTieuDeSongNgu[item.dataFieldName].disabled"
+                    [readOnly]="mapOfTieuDeSongNgu[item.dataFieldName].disabled" nzSize="small" nz-input
+                    [placeholder]="mapOfTieuDeSongNgu[item.dataFieldName].placeholder"
+                    [(ngModel)]="mapOfTieuDeSongNgu[item.dataFieldName].giaTri"
+                    (focus)="focusInput(item, mapOfTieuDeSongNgu[item.dataFieldName])"
+                    (keyup)="inputChange(item, mapOfTieuDeSongNgu[item.dataFieldName])" />
+                </div>
+              </div>
+              <div nz-row *ngIf="mapOfNoiDung[item.dataFieldName]" style="margin-bottom: 5px;"
+                [class]="getClassName(item)">
+                <div style="padding-top: 3px;" nz-col nzSpan="4">Nội dung</div>
+                <div nz-col nzSpan="20">
+                  <input class="custom-detail-input no-border" [class.disable-input]="mapOfNoiDung[item.dataFieldName].disabled"
+                    [readOnly]="mapOfNoiDung[item.dataFieldName].disabled" nzSize="small" nz-input
+                    [placeholder]="mapOfNoiDung[item.dataFieldName].placeholder"
+                    [(ngModel)]="mapOfNoiDung[item.dataFieldName].giaTri"
+                    (focus)="focusInput(item, mapOfNoiDung[item.dataFieldName])"
+                    (keyup)="inputChange(item, mapOfNoiDung[item.dataFieldName])" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="listBoSung.length > 0" cdkDropList class="dragdrop-list" style="margin-top: 5px;"
+          (cdkDropListDropped)="drop($event, listBoSung)">
+          <div class="dragdrop-box" *ngFor="let item of listBoSung" [class.selected-item]="item.selected">
+            <div class="dragdrop-title" [class.selected-item]="item.selected" (click)="expandRow(item)">
+              <div class="order">
+                <i class="icon-order" style="visibility: hidden;" nz-icon nzType="ordered-list" nzTheme="outline"></i>
+              </div>
+              <div class="check" (mouseover)="dragDisabled = true" (mouseout)="dragDisabled = false">
+                <label nz-checkbox [(ngModel)]="item.checked" [nzDisabled]="item.disabled"
+                  (ngModelChange)="checkedData(item)"></label>
+              </div>
+              <div class="title" [title]="item.giaTri" (mouseover)="dragDisabled = true"
+                (mouseout)="dragDisabled = false">
+                {{ item.giaTri }}
+              </div>
+              <div
+                *ngIf="item.loaiChiTiet >= loaiChiTiet.TruongThongTinBoSung1 && item.loaiChiTiet <= loaiChiTiet.TruongThongTinBoSung10"
+                class="setting" (mouseover)="dragDisabled = true" (mouseout)="dragDisabled = false"
+                (click)="settingData(item)">
+                <i nz-icon nzType="setting" nzTheme="outline"></i>
+              </div>
+              <div class="remove" (mouseover)="dragDisabled = true" (mouseout)="dragDisabled = false"
+                (click)="removeData(item)" *ngIf="item.loaiChiTiet === loaiChiTiet.GhiChuBenMua">
+                <i nz-icon nzType="delete" nzTheme="outline"></i>
+              </div>
+              <div class="expand" (mouseover)="dragDisabled = true" (mouseout)="dragDisabled = false">
+                <i *ngIf="item.expand" nz-icon nzType="up" nzTheme="outline"></i>
+                <i *ngIf="!item.expand" nz-icon nzType="down" nzTheme="outline"></i>
+              </div>
+            </div>
+            <div class="divide-inner-item"></div>
+            <div class="dragdrop-info" *ngIf="item.expand" (mouseover)="dragDisabled = true"
+              (mouseout)="dragDisabled = false">
+              <div nz-row *ngIf="mapOfTieuDe[item.dataFieldName]" style="margin-bottom: 5px;"
+                [class]="getClassName(item)">
+                <div style="padding-top: 3px;" nz-col nzSpan="4">Tiêu đề</div>
+                <div nz-col nzSpan="20">
+                  <input class="custom-detail-input no-border" [class.disable-input]="mapOfTieuDe[item.dataFieldName].disabled"
+                    [readOnly]="mapOfTieuDe[item.dataFieldName].disabled" nzSize="small" nz-input
+                    [placeholder]="mapOfTieuDe[item.dataFieldName].placeholder"
+                    [(ngModel)]="mapOfTieuDe[item.dataFieldName].giaTri"
+                    (focus)="focusInput(item, mapOfTieuDe[item.dataFieldName])"
+                    (keyup)="inputChange(item, mapOfTieuDe[item.dataFieldName])" />
+                </div>
+              </div>
+              <div nz-row *ngIf="mapOfTieuDeSongNgu[item.dataFieldName]" style="margin-bottom: 5px;"
+                [class]="getClassName(item)">
+                <div style="padding-top: 3px;" nz-col nzSpan="4">Song ngữ</div>
+                <div nz-col nzSpan="20">
+                  <input class="custom-detail-input no-border"
+                    [class.disable-input]="mapOfTieuDeSongNgu[item.dataFieldName].disabled"
+                    [readOnly]="mapOfTieuDeSongNgu[item.dataFieldName].disabled" nzSize="small" nz-input
+                    [placeholder]="mapOfTieuDeSongNgu[item.dataFieldName].placeholder"
+                    [(ngModel)]="mapOfTieuDeSongNgu[item.dataFieldName].giaTri"
+                    (focus)="focusInput(item, mapOfTieuDeSongNgu[item.dataFieldName])"
+                    (keyup)="inputChange(item, mapOfTieuDeSongNgu[item.dataFieldName])" />
+                </div>
+              </div>
+              <div nz-row *ngIf="mapOfNoiDung[item.dataFieldName]" style="margin-bottom: 5px;"
+                [class]="getClassName(item)">
+                <div style="padding-top: 3px;" nz-col nzSpan="4">Nội dung</div>
+                <div nz-col nzSpan="20">
+                  <input class="custom-detail-input no-border" [class.disable-input]="mapOfNoiDung[item.dataFieldName].disabled"
+                    [readOnly]="mapOfNoiDung[item.dataFieldName].disabled" nzSize="small" nz-input
+                    [placeholder]="mapOfNoiDung[item.dataFieldName].placeholder"
+                    [(ngModel)]="mapOfNoiDung[item.dataFieldName].giaTri"
+                    (focus)="focusInput(item, mapOfNoiDung[item.dataFieldName])"
+                    (keyup)="inputChange(item, mapOfNoiDung[item.dataFieldName])" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top: 5px;" *ngIf="data.loaiTuyChonChiTiet === type.ThongTinNguoiBan ||
+                                            data.loaiTuyChonChiTiet === type.ThongTinHoaDon || 
+                                            data.loaiTuyChonChiTiet === type.ThongTinNguoiMua ||
+                                            data.loaiTuyChonChiTiet === type.ThongTinVeHangHoaDichVu">
+          <ng-container
+            *ngIf="data.loaiTuyChonChiTiet === type.ThongTinNguoiMua || data.loaiTuyChonChiTiet === type.ThongTinVeHangHoaDichVu; else notAddNewRowThongTinNguoiMua">
+            <!-- <button nz-button nzType="link" nzBlock nz-dropdown nzTrigger="click" [nzDropdownMenu]="menuAddRow"
+              [(nzVisible)]="visibleAddRowMenu">
+              <i nz-icon nzType="plus" nzTheme="outline"></i>Thêm dòng
+            </button>
+            <nz-dropdown-menu #menuAddRow="nzDropdownMenu">
+              <div class="custom-menu-dropdown">
+                <div *ngIf="!mapOfHiddenAddNewRow[loaiChiTiet[loaiChiTiet?.ThoiHanThanhToan]]" class="custom-menu-item"
+                  (click)="addTHTT_DCGH(loaiChiTiet.ThoiHanThanhToan)">
+                  Thời hạn thanh toán
+                </div>
+                <div *ngIf="!mapOfHiddenAddNewRow[loaiChiTiet[loaiChiTiet?.DiaChiGiaoHang]]" class="custom-menu-item"
+                  (click)="addTHTT_DCGH(loaiChiTiet.DiaChiGiaoHang)">
+                  Địa chỉ giao hàng
+                </div>
+                <div class="custom-menu-horizontal">
+                  <div class="custom-menu-item divide-menu custom-menu-item-highlight"
+                    (click)="addGhiChuThongTinNguoiMua()">Dòng ghi chú</div>
+                  <div class="custom-menu-item custom-menu-item-highlight" (click)="addNewRow()">Trường nhập liệu</div>
+                </div>
+              </div>
+            </nz-dropdown-menu> -->
+          </ng-container>
+          <ng-template #notAddNewRowThongTinNguoiMua>
+            <button nz-button nzType="link" nzBlock class="button-clear" nzSize="small" (click)="addNewRow()">
+              <i nz-icon nzType="plus" nzTheme="outline"></i>Thêm dòng
+            </button>
+          </ng-template>
+        </div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="isSettingTruongMoRong">
+      <app-setting-truong-mo-rong #appSettingTruongMoRong [data]="settingTruongMoRongData"
+        (confirmSettingTruongMoRong)="onConfirmSettingData($event)">
+      </app-setting-truong-mo-rong>
+    </ng-container>
+  </div>
+</div>

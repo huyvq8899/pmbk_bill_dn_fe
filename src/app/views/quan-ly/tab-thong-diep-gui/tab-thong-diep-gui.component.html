@@ -1,0 +1,243 @@
+<div style="display: flex;">
+    <div style="width: 400px;">
+        <nz-input-group style="width: 100%;" nzSize="small" [nzPrefix]="prefixTemplateUser" class="input-group-label">
+            <input type="text" nz-input [placeholder]="placeHolderTimKiemTheo()" nz-tooltip [nzTooltipTitle]="placeHolderTimKiemTheo()" [(ngModel)]="params.GiaTri" nzTooltipPlacement="bottomRight" (keyup.enter)="getData()" />
+        </nz-input-group>
+        <ng-template #prefixTemplateUser>
+            <i nz-icon nzType="setting" nzTheme="outline" nz-dropdown [nzDropdownMenu]="menuPlusMutiple" [nzClickHide]="false"></i>
+            <nz-dropdown-menu #menuPlusMutiple="nzDropdownMenu">
+                <ul nz-menu>
+                    <li nz-menu-item *ngFor="let item of timKiemTheos">
+                        <label nz-checkbox [(ngModel)]="item.checked">{{item.name}}</label>
+                    </li>
+                </ul>
+            </nz-dropdown-menu>
+        </ng-template>
+    </div>
+    <div style="margin: 0 5px;">
+        <button nzSize="small" nz-button nz-popover nzPopoverTitle="Lọc thông điệp gửi" [nzPopoverContent]="filterPopoverContentTemp" nzPopoverTrigger="click" [(nzVisible)]="filterGeneralVisible" nzPopoverPlacement="bottomLeft" [class.is-filtering]="isFitering"
+            class="blueButton filterButton">
+            <i nz-icon nzType="filter" nzTheme="outline"></i> Lọc
+        </button>
+        <ng-template #titleLoc>
+            <div>
+                <h1 class="vertical-center"><strong>Lọc thông điệp gửi</strong></h1>
+            </div>
+        </ng-template>
+        <ng-template #filterPopoverContentTemp>
+            <div style="width: 620px;" class="padding-filter">
+                <div nz-row nzGutter="8" style="margin-bottom: 10px;">
+                    <div nz-col nzSpan="12">
+                        <div>Kỳ</div>
+                        <nz-select style="width: 100%;" nzSize="small" nzShowSearch nzPlaceHolder="Chọn kỳ" [(ngModel)]="params.Ky" (ngModelChange)="changeKy($event)">
+                            <nz-option *ngFor="let item of kys" [nzLabel]="item.value" [nzValue]="item.key"></nz-option>
+                        </nz-select>
+                    </div>
+                    <div nz-col nzSpan="6">
+                        <div>Từ ngày</div>
+                        <input style="width: 100%;" nzSize="small" type="date" max="2999-12-31" nz-input [(ngModel)]="params.fromDate" (keydown.enter)="getData()" (keydown.enter)="filterVisible= false" (blur)="blurDate()" />
+                    </div>
+                    <div nz-col nzSpan="6">
+                        <div>Đến ngày</div>
+                        <input style="width: 100%;" nzSize="small" type="date" max="2999-12-31" nz-input [(ngModel)]="params.toDate" (keydown.enter)="getData()" (keydown.enter)="filterVisible= false" (blur)="blurDate()" />
+                    </div>
+                </div>
+                <div nz-row nzGutter="8" style="margin-bottom: 10px;">
+                    <div nz-col nzSpan="24">
+                        <div>Loại thông điệp</div>
+                        <nz-select style="width: 100%;" nzShowSearch [(ngModel)]="params.LoaiThongDiep" [nzSize]="'small'" (ngModelChange)="changeLoaiThongDiepGui($event)">
+                            <nz-option nzCustomContent *ngFor="let item of loaiThongDiepGuis" [nzLabel]="item.ten" [nzDisabled]="item.maLoaiThongDiep==null" [nzValue]="item.maLoaiThongDiep">
+
+                                <div style="white-space: pre-wrap!important;
+                text-align: justify!important;" [style.padding-left.px]="item.level * 20" [style.font-weight]="item.isParent == true  ? 'bold' : 'normal'" nz-row>
+                                    <div title="{{item.ten}}">{{item.ten}}</div>
+                                </div>
+                            </nz-option>
+                        </nz-select>
+                    </div>
+                </div>
+                <div nz-row nzGutter="8" style="margin-bottom: 10px;">
+                    <div nz-col nzSpan="24">
+                        <div>Trạng thái gửi và phản hồi từ TCTN và CQT</div>
+                        <nz-select style="width: 100%;" nzShowSearch [disabled]="params.LoaiThongDiep == -99" [(ngModel)]="params.TrangThaiGui" [nzSize]="'small'" (ngModelChange)="changeTrangThaiGui($event)">
+                            <nz-option nzCustomContent *ngFor="let item of loaiTrangThais" [nzLabel]="item.name" [nzValue]="item.value">{{item.name}}
+                            </nz-option>
+                        </nz-select>
+                    </div>
+                </div>
+                <div class="filterFooterLine"></div>
+                <div nz-row nzGutter="8">
+                    <div nz-col [nzOffset]="12" nzSpan="12">
+                        <div nz-row nzGutter="16" style="float: right; padding-right: 9px;">
+                            <button nzSize="small" nz-button nzType="default" (click)="filterDefault()" class="filterDefaultButton">Lọc mặc định
+                            </button> &nbsp;
+                            <button nzSize="small" nz-button nzType="default" (click)="filterGeneral()" class="button-clear">Lọc
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+    </div>
+    <div style="flex: 1; display: flex; align-items: center;">
+        <ul class="view-filter-list">
+            <li *ngFor="let tl of viewConditionList">
+                <div>
+                    <span class="label">{{tl.label}}</span>
+                    <span class="value">{{tl.value}}</span>
+                    <i *ngIf="tl.key !== 'Ky'" (click)="removeFilter(tl)" class="remove" nz-icon nzType="close" nzTheme="outline"></i>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+<div nz-row class="row-button-group">
+    <div nz-col nzSpan="10" style="text-align: left;">
+        <nz-button-group nzSize="small">
+            <button [nzDisabled]="(permission != true  && thaoTacs.indexOf('MNG_FULL') < 0 && thaoTacs.indexOf('MNG_CREATE') < 0)" nzSize="small" nz-button nz-tooltip nzTooltipTitle="F8" nz-dropdown (click)="clickThem()">
+                <i nz-icon nzType="plus" nzTheme="outline"></i>Thêm
+            </button>
+            <button [disabled]="(permission != true  && thaoTacs.indexOf('MNG_FULL') < 0 && thaoTacs.indexOf('MNG_UPDATE') < 0) || total == 0 || isDisabled" (click)="clickSua(false)" nz-button nz-tooltip nzTooltipTitle="F8" nzType="default" class="btnsua"><i
+                    nz-icon nzType="edit"></i>Sửa</button>
+            <button [disabled]="(permission != true  && thaoTacs.indexOf('MNG_FULL') < 0 && thaoTacs.indexOf('MNG_DELETE') < 0) || total == 0 || isDisabled" (click)="clickXoa()" nz-button nz-tooltip nzTooltipTitle="F9" class="button-close"><i nz-icon
+                    nzType="delete"></i>Xóa</button>
+            <button [disabled]="(permission != true  && thaoTacs.indexOf('MNG_FULL') < 0 && thaoTacs.indexOf('MNG_CREATE') < 0) || total == 0 || isDisabled || disabledBtnNhanBan" (click)="clickSua(true)" nz-button nz-tooltip nzTooltipTitle="ALT+F2"><i nz-icon nzType="copy"></i>Nhân
+                bản</button>
+            <!-- <button [disabled]="(permission != true  && thaoTacs.indexOf('MNG_FULL') < 0 && thaoTacs.indexOf('MNG_EXPORT') < 0) || total == 0" (click)="export()" nz-button><i nz-icon nzType="vertical-align-bottom"></i>Xuất khẩu</button> -->
+            <button [disabled]="(permission != true  && thaoTacs.indexOf('MNG_FULL') < 0 && thaoTacs.indexOf('MNG_SEND') < 0) || total == 0 || isDisabled" (click)="eSign()" nz-button nz-tooltip nzTooltipTitle="F9" class="button-close">
+                <span class="material-icons-outlined" style="transform: rotate(315deg);">send</span>&nbsp;Ký và Gửi
+            </button>
+            <!-- <button [disabled]="(permission != true  && thaoTacs.indexOf('MNG_FULL') < 0 && thaoTacs.indexOf('MNG_EXPORT') < 0) || total == 0" nz-button nzType="default" (click)="print()" nz-tooltip>
+                <i nz-icon nzType="printer" nzTheme="outline"></i>In
+            </button> -->
+            <button nzSize="small" nz-button nz-dropdown [nzDropdownMenu]="menuPrint">
+              <i nz-icon nzType="more" nzTheme="outline"></i>Tiện ích<i nz-icon nzType="caret-down" nzTheme="outline"></i>
+                <nz-dropdown-menu #menuPrint="nzDropdownMenu">
+                    <ul nz-menu>
+                        <li nz-menu-item [nzDisabled]="(permission != true  && thaoTacs.indexOf('MNG_FULL') < 0 && thaoTacs.indexOf('MNG_EXPORT') < 0)" (click)="chonThamSoBangKeHoaDonSaiSot()">Bảng kê hóa đơn xử lý sai sót</li>
+                        <li nz-menu-item [nzDisabled]="!dataSelected || dataSelected.maLoaiThongDiep != 100 || dataSelected.trangThaiGui != -1" (click)="xacNhanToKhai01()">Xác nhận tờ khai đã được CQT chấp nhận</li>
+                    </ul>
+                </nz-dropdown-menu>
+            </button>
+            <button [nzDisabled]="permission != true && thaoTacs.indexOf('MNG_EXPORT') < 0" nzType="default" nz-button nz-dropdown [nzDropdownMenu]="menuPlusMutiple">
+              <i nz-icon nzType="vertical-align-bottom" nzTheme="outline"></i>Xuất khẩu<i nz-icon nzType="down"></i>
+              <nz-dropdown-menu #menuPlusMutiple="nzDropdownMenu">
+                <ul nz-menu  style="min-width: 110.5px !important;">
+                    <li nz-menu-item (click)="exportFile(1)">
+                      <img width="17" height="15" src="assets/xlsx.png"/> Excel
+                    </li>
+                    <li nz-menu-item (click)="exportFile(2)">
+                      <img width="17" height="15" src="assets/pdf.png"/> PDF
+                    </li>
+                </ul>
+            </nz-dropdown-menu>
+            </button>
+            <button nz-button nzType="default" (click)="LoadData()" nz-tooltip>
+                <i nz-icon nzType="reload" nzTheme="outline"></i>Tải lại
+            </button>
+
+            <span style="font-weight: bold;" *ngIf="thongKeSoLuongChuaGui > 0">
+                Số lượng:
+                <button nz-button nzType="default" class="soLuongThongDiep" nz-tooltip nzTooltipTitle="Xem chi tiết"
+                    (click)="thongKeSoLuongThongDiepChuaGui(1, 'click')">
+                    <i nz-icon nzType="loading" nzTheme="outline" *ngIf="loadingThongKeSoLuong"></i>
+                    <span *ngIf="loadingThongKeSoLuong" style="display: inline-block;">&nbsp;</span> Thông điệp chưa gửi: <span style="color: red;">{{thongKeSoLuongChuaGui}}</span>
+            </button>
+            </span>
+        </nz-button-group>
+    </div>
+</div>
+<div nz-row style="background: #fff;">
+    <nz-table [nzNoResult]="null" nzSize="small" #fixedTable [nzData]="listThongDiepChung" [nzScroll]="scrollConfig" [nzWidthConfig]="widthConfig" [nzTotal]="total" [(nzPageIndex)]="params.PageNumber" [(nzPageSize)]="params.PageSize" [nzPageSizeOptions]="pageSizeOptions"
+        (nzPageIndexChange)="LoadData()" (nzPageSizeChange)="LoadData()" nzShowQuickJumper="true" [nzFrontPagination]="false" [nzShowSizeChanger]="true" nzShowTotal nzBordered [nzLoading]="loading">
+        <thead (nzSortChange)="sort($event)" nzSingleSort>
+            <tr>
+                <th nzAlign="center" nzShowSort nzSortKey="PhienBan" nzCustomFilter>
+                    STT/ <br/>Phiên bản
+                    <!-- <i nz-th-extra class="ant-table-filter-icon" nz-icon nz-dropdown #ddPhienBan="nzDropdown" nzType="filter" [nzDropdownMenu]="menuPhienBan" [(nzVisible)]="mapOfVisbleFilterCol['PhienBan']" [class.ant-table-filter-open]="mapOfHightlightFilter['PhienBan']"
+                        (nzVisibleChange)="onVisibleFilterCol($event, 'PhienBan', filterColPhienBan)" nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter></i>
+                    <nz-dropdown-menu #menuPhienBan="nzDropdownMenu">
+                        <app-filter-column #filterColPhienBan title="Phiên bản" [dataType]="1" (submitFilterCol)="onFilterCol($event)">
+                        </app-filter-column>
+                    </nz-dropdown-menu> -->
+                </th>
+                <th nzAlign="center" nzShowSort nzSortKey="MaNoiGui" nzCustomFilter>
+                    Mã nơi gửi/<br/>Mã nơi nhận
+                    <i nz-th-extra class="ant-table-filter-icon" nz-icon nz-dropdown #ddMaNoiGui="nzDropdown" nzType="filter" [nzDropdownMenu]="menuMaNoiGui" [(nzVisible)]="mapOfVisbleFilterCol['MaNoiGui'] || mapOfVisbleFilterCol['MaNoiNhan']" [class.ant-table-filter-open]="mapOfHightlightFilter['MaNoiGui'] || mapOfHightlightFilter['MaNoiNhan']"
+                        (nzVisibleChange)="onVisibleFilterCol($event, 'MaNoiGui:Mã nơi gửi|MaNoiNhan:Mã nơi nhận', filterColMaNoiGui)" nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter></i>
+                    <nz-dropdown-menu #menuMaNoiGui="nzDropdownMenu">
+                        <app-filter-column #filterColMaNoiGui title="Mã nơi gửi" [dataType]="1" (submitFilterCol)="onFilterCol($event)">
+                        </app-filter-column>
+                    </nz-dropdown-menu>
+                </th>
+                <th nzAlign="center" nzShowSort nzSortKey="MaLoaiThongDiep" nzCustomFilter>
+                    Loại thông điệp/ <br/>Trạng thái gửi và phản hồi từ TCTN và CQT
+                    <i nz-th-extra class="ant-table-filter-icon" nz-icon nz-dropdown #ddMaLoaiThongDiep="nzDropdown" nzType="filter" [nzDropdownMenu]="menuMaLoaiThongDiep" [(nzVisible)]="mapOfVisbleFilterCol['MaLoaiThongDiep']" [class.ant-table-filter-open]="mapOfHightlightFilter['MaLoaiThongDiep']"
+                        (nzVisibleChange)="onVisibleFilterCol($event, 'MaLoaiThongDiep', filterColMaLoaiThongDiep)" nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter></i>
+                    <nz-dropdown-menu #menuMaLoaiThongDiep="nzDropdownMenu">
+                        <app-filter-column #filterColMaLoaiThongDiep title="Mã loại thông điệp" [dataType]="1" (submitFilterCol)="onFilterCol($event)">
+                        </app-filter-column>
+                    </nz-dropdown-menu>
+                </th>
+                <th nzAlign="center" nzShowSort nzSortKey="MaThongDiep" nzCustomFilter>
+                    Mã thông điệp/ <br>Mã thông điệp tham chiếu
+                    <i nz-th-extra class="ant-table-filter-icon" nz-icon nz-dropdown #ddMaThongDiep="nzDropdown" nzType="filter" [nzDropdownMenu]="menuMaThongDiep" [(nzVisible)]="mapOfVisbleFilterCol['MaThongDiep']" [class.ant-table-filter-open]="mapOfHightlightFilter['MaThongDiep']"
+                        (nzVisibleChange)="onVisibleFilterCol($event, 'MaThongDiep', filterColMaThongDiep)" nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter></i>
+                    <nz-dropdown-menu #menuMaThongDiep="nzDropdownMenu">
+                        <app-filter-column #filterColMaThongDiep title="Mã thông điệp" [dataType]="1" (submitFilterCol)="onFilterCol($event)">
+                        </app-filter-column>
+                    </nz-dropdown-menu>
+                </th>
+                <th nzAlign="center" nzShowSort nzSortKey="MaSoThue" nzCustomFilter>
+                    Mã số thuế/ <br/>Số lượng
+                    <i nz-th-extra class="ant-table-filter-icon" nz-icon nz-dropdown #ddMaSoThue="nzDropdown" nzType="filter" [nzDropdownMenu]="menuMaSoThue" [(nzVisible)]="mapOfVisbleFilterCol['MaSoThue']" [class.ant-table-filter-open]="mapOfHightlightFilter['MaSoThue']"
+                        (nzVisibleChange)="onVisibleFilterCol($event, 'MaSoThue', filterColMaSoThue)" nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter></i>
+                    <nz-dropdown-menu #menuMaSoThue="nzDropdownMenu">
+                        <app-filter-column #filterColMaSoThue title="Mã số thuế" [dataType]="1" (submitFilterCol)="onFilterCol($event)">
+                        </app-filter-column>
+                    </nz-dropdown-menu>
+                </th>
+                <th nzAlign="center" nzShowSort nzSortKey="NgayGui" nzCustomFilter>
+                    Thời gian
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of fixedTable.data; let i=index" (click)="selectedRow(data)" [class.row-selected]="data.selected" (dblclick)="clickSua(false, true)">
+                <td nzAlign="center">{{i+1}} <br/> {{ data?.phienBan }}</td>
+                <td nzAlign="center" title="{{ data?.maNoiGui }}">{{data?.maNoiGui}}<br/>{{data?.maNoiNhan}}</td>
+                <td nzAlign="left" title="{{this.getLoaiThongDiep(data?.maLoaiThongDiep)}} | {{data.tenTrangThaiGui}}">
+                    {{ this.getLoaiThongDiep(data?.maLoaiThongDiep) }} <br/>
+                    <a href="javascript:void(0)" (click)="displayLichSuTruyenNhan(data)">
+                        <app-tag-status-gui-xml [loai]="data?.trangThaiGui" [ten]="data?.tenTrangThaiGui" [displaySoLuong]="data.maLoaiThongDiep == 206" [soLuong]="data.soLuong">
+                        </app-tag-status-gui-xml>
+                    </a>
+                    <span *ngIf="data.trangThaiGui == 2 || data.trangThaiGui  == 4 || data.trangThaiGui == 6 || data.trangThaiGui == 7 || data.trangThaiGui == 9  || data.trangThaiGui == 10  || data.trangThaiGui == 11 || data.trangThaiGui == 14" class="circleViewLoi">
+                        <app-mo-ta-loi [maThongDiep]="data.thongDiepGuiDi ? data.maThongDiep : null" [thongDiepChungId]="data.thongDiepGuiDi ? null : data.thongDiepChungId"></app-mo-ta-loi>
+    </span>
+                </td>
+                <td nzAlign="center" title="{{data?.maThongDiep}}">
+                    <span style="color: #ed7d31;" *ngIf="data.trangThaiGui == -1">Thời điểm tạo {{ data?.createdDate | date:"dd/MM/yyyy HH:mm:ss"}}</span>
+                    <!--để lai trường hợp này <span style="color: #ed7d31;" *ngIf="data.trangThaiGui == 5">Thời điểm NNT xác nhận {{ data?.ngayThongBao | date:"dd/MM/yyyy HH:mm:ss"}}</span> -->
+
+                    <span *ngIf="data.trangThaiGui != -1">
+                    {{data?.maThongDiep}} <br><i>{{ (data?.maThongDiepThamChieu ==null || data?.maThongDiepThamChieu =="") ? '(Không có thông điệp tham chiếu)': data?.maThongDiepThamChieu}}</i>
+                  </span>
+                </td>
+                <td nzAlign="center" title="{{data?.maSoThue}}"><span *ngIf="data.trangThaiGui != -1">{{data?.maSoThue}}<br/>{{data?.soLuong}}</span></td>
+                <td nzAlign="center" title="{{data?.ngayGui}}"><span *ngIf="data.trangThaiGui != -1">{{ data?.ngayGui | date:"dd/MM/yyyy"}} <br/> {{ data?.ngayGui | date:"HH:mm:ss"}}</span></td>
+                <!-- <td nzAlign="center">
+                    <button nz-button nzType="default" nzPrimary (click)="viewAllThongDiepLienQuan(data)" [nzSize]="'small'">Chi tiết</button>
+                </td> -->
+            </tr>
+            <tr class="total-footer" *ngIf="fixedTable.data.length <= 0">
+                <td colspan="6"> Không có dữ liệu hiển thị.
+                </td>
+            </tr>
+        </tbody>
+        <tfoot *ngIf="total > 0" class="total-footer">
+            <td colspan="2">Số dòng = {{total}}</td>
+            <td colspan="5"></td>
+        </tfoot>
+    </nz-table>
+</div>

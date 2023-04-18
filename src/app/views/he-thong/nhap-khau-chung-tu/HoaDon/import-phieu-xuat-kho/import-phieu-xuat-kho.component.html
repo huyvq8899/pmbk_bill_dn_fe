@@ -1,0 +1,109 @@
+<nz-table [nzNoResult]="null" nzSize="small" nzBordered #basicTable nzShowPagination="false" [nzData]="listData"
+  [nzScroll]="scrollConfig" [nzWidthConfig]="widthConfig" [nzLoading]="isLoading">
+  <thead>
+    <tr>
+      <th nzAlign="center">Dòng số</th>
+      <th nzAlign="center">Tính chất</th>
+      <th nzAlign="center">Số thứ tự hóa đơn</th>
+      <th nzAlign="center" *ngFor="let item of listTruongDuLieu">
+        {{item.tenTruongExcel}}
+      </th>
+      <th nzAlign="center" nzRight="0px">Tình trạng</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of listData; let i = index">
+      <td nzAlign="center">{{data?.row}}</td>
+      <td title="{{ data?.hoaDonChiTiet?.tinhChat }}">
+        {{data?.hoaDonChiTiet?.tinhChat }}
+      </td>
+      <td title="{{ data?.stt }}">
+        {{ data?.stt }}
+      </td>
+      <ng-container *ngFor="let item of listTruongDuLieu">
+        <ng-container [ngSwitch]="item.tenTruong">
+          <td *ngSwitchCase="'NgayHoaDon'">
+            {{ data?.ngayHoaDon | date:'dd/MM/yyyy' }}
+          </td>
+          <td *ngSwitchCase="'CanCuSo'">
+            {{ data?.canCuSo }}
+          </td>
+          <td *ngSwitchCase="'NgayCanCu'">
+            {{ data?.ngayCanCu | date:'dd/MM/yyyy' }}
+          </td>
+          <td *ngSwitchCase="'Cua'">
+            {{ data?.cua }}
+          </td>
+          <td *ngSwitchCase="'DienGiai'">
+            {{ data?.dienGiai }}
+          </td>
+          <td *ngSwitchCase="'DiaChiKhoXuatHang'">
+            {{ data?.diaChiKhoXuatHang }}
+          </td>
+          <td *ngSwitchCase="'HoTenNguoiXuatHang'">
+            {{ data?.hoTenNguoiXuatHang }}
+          </td>
+          <td *ngSwitchCase="'HopDongVanChuyenSo'">
+            {{ data?.hopDongVanChuyenSo }}
+          </td>
+          <td *ngSwitchCase="'TenNguoiVanChuyen'">
+            {{ data?.tenNguoiVanChuyen }}
+          </td>
+          <td *ngSwitchCase="'PhuongThucVanChuyen'">
+            {{ data?.phuongThucVanChuyen }}
+          </td>
+          <td *ngSwitchCase="'MaKhachHang'">
+            {{ data?.maKhachHang }}
+          </td>
+          <td *ngSwitchCase="'TenKhachHang'">
+            {{ data?.tenKhachHang }}
+          </td>
+          <td *ngSwitchCase="'MaSoThue'">
+            {{ data?.maSoThue }}
+          </td>
+          <td *ngSwitchCase="'DiaChiKhoNhanHang'">
+            {{ data?.diaChiKhoNhanHang }}
+          </td>
+          <td *ngSwitchCase="'HoTenNguoiNhanHang'">
+            {{ data?.hoTenNguoiNhanHang }}
+          </td>
+          <td *ngSwitchCase="'LoaiTienId'">
+            {{ data?.maLoaiTien }}
+          </td>
+          <td *ngSwitchCase="'TyGia'">
+            {{ data?.tyGia }}
+          </td>
+          <td *ngSwitchCase="'MaHang'">
+            {{data?.hoaDonChiTiet?.maHang }}
+          </td>
+          <td *ngSwitchCase="'TenHang'">
+            {{data?.hoaDonChiTiet?.tenHang }}
+          </td>
+          <td *ngSwitchCase="'DonViTinhId'">
+            {{data?.hoaDonChiTiet?.tenDonViTinh }}
+          </td>
+          <td *ngSwitchCase="'SoLuong'">
+            {{data?.hoaDonChiTiet?.soLuong }}
+          </td>
+          <td *ngSwitchCase="'SoLuongNhap'">
+            {{data?.hoaDonChiTiet?.soLuongNhap }}
+          </td>
+          <td *ngSwitchCase="'DonGia'">
+            {{data?.hoaDonChiTiet?.donGia }}
+          </td>
+          <td *ngSwitchCase="'ThanhTien'">
+            {{data?.hoaDonChiTiet?.thanhTien }}
+          </td>
+          <td *ngSwitchCase="'ThanhTienQuyDoi'">
+            {{data?.hoaDonChiTiet?.thanhTienQuyDoi }}
+          </td>
+          <td *ngSwitchDefault></td>
+        </ng-container>
+      </ng-container>
+      <td nzRight="0px" nz-tooltip [nzTooltipTitle]="data?.errorMessage">
+        <span *ngIf="data?.hasError" style="color: red !important;">{{data?.errorMessage}}</span>
+        <span *ngIf="!data?.hasError">{{data?.errorMessage}}</span>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>

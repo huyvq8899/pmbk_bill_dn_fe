@@ -1,0 +1,57 @@
+<nz-spin [nzSpinning]="spinning">
+    <div class="container">
+        <div nz-row class="inner-content">
+            <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="24" nzXl="24" class="box-border" style="padding-bottom: 5px">
+                <span class="box-title"><b>Tham số</b></span>
+                <nz-table [nzNoResult]="null" nzSize="small" nzBordered #dsThaoTacTable nzShowPagination="false" [nzData]="listTruongDLs" [nzLoading]="loading" [nzPageSize]="pageSize" [nzScroll]="{x: '100%', y: '450px'}">
+                    <thead>
+                        <th nzAlign="center" nzWidth="10%" style="border-top: #BBBBBB solid 1px;border-bottom: #BBBBBB solid 1px; padding-top: 5px; padding-bottom: 5px;font-weight: normal">Thứ tự
+                        </th>
+                        <th nzAlign="center" nzWidth="20%" style="border: #BBBBBB solid 1px; padding-top: 5px; padding-bottom: 5px; font-weight: normal">Tên trường dữ liệu</th>
+                        <th nzAlign="center" nzWidth="30%" style="border: #BBBBBB solid 1px; padding-top: 5px; padding-bottom: 5px; font-weight: normal">Tên hiển thị trường dữ liệu</th>
+                        <th nzAlign="center" nzWidth="20%" style="border: #BBBBBB solid 1px; padding-top: 5px; padding-bottom: 5px; font-weight: normal">Hiển thị</th>
+                        <th nzAlign="center" nzWidth="20%" style="border: #BBBBBB solid 1px; padding-top: 5px; padding-bottom: 5px; font-weight: normal">Di chuyển</th>
+                    </thead>
+
+                    <tbody>
+                        <tr *ngFor="let item of dsThaoTacTable.data" [class.row-selected]="item.selected" (click)="selectedRow(item)">
+                            <td nzAlign="center" nzWidth="10%">
+                                {{item.stt}}
+                            </td>
+                            <td nzWidth="20%">
+                                {{item?.tenTruong }}
+                            </td>
+                            <td nzWidth="30%">
+                                {{item?.tenHienThi }}
+                            </td>
+                            <td nzWidth="20%" nzAlign="center">
+                                <label nz-checkbox [(ngModel)]="item.status"></label>
+                            </td>
+                            <td nzWidth="20%">
+                                <button nz-button nzSize="small" (click)="next(item)"><i nz-icon nzSize="small" nzType="down"></i></button>
+                                <button nz-button nzSize="small" (click)="prev(item)"><i nz-icon nzSize="small" nzType="up"></i></button>
+                            </td>
+                        </tr>
+                        <tr *ngFor="let obj of lstBangKeEmpty">
+                            <td *ngFor="let empty of numberBangKeCols; let idx = index">
+                                <span *ngIf="idx===0" class="font-while">.</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </nz-table>
+            </div>
+        </div>
+    </div>
+</nz-spin>
+
+<div *nzModalFooter>
+    <div nz-row>
+        <div nz-col nzSpan="12" style="text-align: left;">
+            <button nz-button nzType="default" nzSize="small" (click)="layLaiThietLapMacDinh()" class="button-clear"><i nz-icon nzType="rollback" nzTheme="outline"></i>&nbsp;Lấy lại thiết lập mặc định</button>
+        </div>
+        <div nz-col nzSpan="12" style="text-align: right;">
+            <button nz-button nzType="default" nzSize="small" (click)="saveChanges()" class="button-agree"><i nz-icon nzType="check" nzTheme="outline"></i>&nbsp;Xác nhận</button>
+            <button nz-button nzType="default" nzSize="small" (click)="destroyModal()" class="button-cancel"><i nz-icon nzType="close" nzTheme="outline"></i>&nbsp;Đóng</button>
+        </div>
+    </div>
+</div>

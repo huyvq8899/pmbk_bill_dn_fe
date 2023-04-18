@@ -1,0 +1,77 @@
+@import "../../../../shared/scss/modal.scss";
+:host ::ng-deep .ant-tabs-nav-container {
+    height: auto !important;
+}
+
+:host ::ng-deep .ant-tabs .ant-tabs-left-bar .ant-tabs-tab,
+.ant-tabs .ant-tabs-right-bar .ant-tabs-tab {
+    display: block !important;
+    float: none !important;
+    margin: 0 0 0 0 !important;
+    padding: 1px 24px !important;
+}
+
+:host ::ng-deep .ant-tabs .ant-tabs-left-content {
+    padding-left: 10px;
+    padding-right: 8px;
+}
+
+.inner-content {
+    margin-bottom: 15px !important;
+}
+
+:host::ng-deep .ant-tabs-tab-active:hover {
+    color: white !important;
+}
+
+:host::ng-deep .ant-tabs-tab:hover {
+    color: black;
+}
+
+:host ::ng-deep .ant-tabs .ant-tabs-left-bar .ant-tabs-tab,
+.ant-tabs .ant-tabs-right-bar .ant-tabs-tab {
+    display: block !important;
+    float: none !important;
+    margin: 0 0 0 0 !important;
+    padding: 1px 24px !important;
+    cursor: default !important;
+    text-align: left !important;
+}
+
+.thiet-lap-gio-nx {
+    width: 100%;
+    position: relative;
+    .thoi-gian-nx {
+        position: absolute;
+        right: 0;
+        bottom: 4px;
+    }
+    [nz-radio] {
+        display: block;
+    }
+}
+
+// .sign-box {
+//     padding-top: 5px;
+//     background-image: url(".././../../../../assets/greentick.png");
+//     background-repeat: no-repeat;
+//     background-position: center;
+//     background-size: contain;
+//     color: red;
+//     font-weight: bold;
+//     line-height: 18px;
+//     width: 290px;
+//     margin: 0 auto;
+//     white-space: break-spaces;
+//     text-align: center;
+// }
+
+.blueButton[disabled] {
+    border: none !important;
+    color: rgba(0, 0, 0, 0.25) !important;
+    background-color: #dedede !important;
+}
+
+.blueButton[disabled]:hover {
+    border: none !important;
+}

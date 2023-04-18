@@ -1,0 +1,12 @@
+<span class="status" [ngClass]="{
+  'status-gray': loai === 0 || loai == 13,
+  'status-brown': loai === 1,
+  'status-red': loai === 2 || loai === 4 || loai === 6 || loai === 8 || loai === 10,
+  'status-lightgreen': loai === 5,
+  'status-darkblue': loai === 3,
+  'status-aqua': loai === 7,
+  'status-green': loai === 9 || loai === 11,
+  'status-orange': loai === 12
+}">
+  {{ten}}
+</span>

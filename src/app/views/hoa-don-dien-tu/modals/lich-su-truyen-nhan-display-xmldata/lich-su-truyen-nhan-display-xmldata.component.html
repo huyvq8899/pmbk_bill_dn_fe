@@ -1,0 +1,17 @@
+<nz-spin [nzSpinning]="spinning">
+
+    <div ng-controller="myCtrl" style="padding: 1.25rem;">
+        <pre lang="xml" class="xml-view" style="max-height: 550px!important;white-space:pre-wrap;overflow-y:scroll">{{formattedXml}}</pre>
+    </div>
+
+
+</nz-spin>
+
+<div *nzModalFooter style="padding-right: 4px!important; ">
+    <div nz-row>
+
+        <div nz-col nzSpan="24" style="text-align: right;">
+            <button nz-button nzType="default" nzSize="small" (click)="destroyModal()" class="button-cancel"><i nz-icon nzSize="small" nzType="close"></i>Đóng</button>
+        </div>
+    </div>
+</div>

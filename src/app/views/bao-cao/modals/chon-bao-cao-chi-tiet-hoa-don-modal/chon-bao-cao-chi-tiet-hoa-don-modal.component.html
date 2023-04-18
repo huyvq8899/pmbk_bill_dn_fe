@@ -1,0 +1,72 @@
+<nz-spin [nzSpinning]="spinning">
+  <div class="container">
+    <div nz-row class="inner-content">
+      <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="24" nzXl="24" class="box-border" style="padding-bottom: 5px">
+        <span class="box-title"><b>Tham số</b></span>
+        <form nz-form [formGroup]="baoCaoForm">
+          <nz-form-item>
+            <nz-form-label nzFor="kyBaoCao" [nzSm]="3" [nzXs]="24">Kỳ báo cáo</nz-form-label>
+            <nz-form-control [nzSm]="21" [nzXs]="24">
+              <nz-select nzSize="small" nzShowSearch [ngModelOptions]="{standalone: true}" (ngModelChange)="changeKyBaoCao($event)"
+                [(ngModel)]="kyBaoCao" [nzDropdownStyle]="searchCustomerOverlayStyle">
+                <nz-option nzCustomContent *ngFor="let item of kyBaoCaos" [nzValue]="item.ma" [nzLabel]="item.ten">
+                  {{item.ten}}
+                </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-label [nzSm]="3" [nzXs]="24" nzFor="tuNgay">Từ</nz-form-label>
+            <nz-form-control [nzSm]="9" [nzXs]="24" >
+              <input type="date" nz-input nzSize="small" formControlName="tuNgay" min="1900-01-01"  max="2999-12-31" 
+                (ngModelChange)="setDate($event, 1)" (blur)="blurDate()" />
+            </nz-form-control>
+            <nz-form-label [nzSm]="3" [nzXs]="24" nzFor="denNgay">Đến</nz-form-label>
+            <nz-form-control [nzSm]="9" [nzXs]="24">
+              <input type="date" nz-input nzSize="small" formControlName="denNgay" min="1900-01-01"  max="2999-12-31" s
+                (ngModelChange)="setDate($event, 2)" (blur)="blurDate()"/>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-input-group [nzAddOnBefore]="beforeMenu" class="menuLoaiKey">
+              <input nz-input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="keyword" placeholder="Nhập từ khóa để tìm kiếm ..." >
+            </nz-input-group>
+            <ng-template #beforeMenu>
+              <div nz-dropdown [nzDropdownMenu]="menuLoaiKey" nz-tooltip
+                nzTooltipTitle="Bấm vào đây để chọn loại tìm kiếm">
+                <i nz-icon nzType="setting" nzTheme="outline"></i>&nbsp;<i nz-icon nzType="down"></i>&nbsp;
+              </div>
+              <nz-dropdown-menu #menuLoaiKey="nzDropdownMenu">
+                <ul nz-menu>
+                  <nz-radio-group [ngModelOptions]="{standalone: true}" [(ngModel)]="loaiKey" (ngModelChange)="changeLoaiKey($event)">
+                    <li nz-menu-item><label nz-radio nzValue="1">Số hóa đơn</label></li>
+                    <li nz-menu-item><label nz-radio nzValue="2">Mã số thuế khách hàng</label></li>
+                    <li nz-menu-item><label nz-radio nzValue="3">Tên khách hàng</label></li>
+                    <li nz-menu-item><label nz-radio nzValue="4">Người mua hàng</label></li>
+                  </nz-radio-group>
+                </ul>
+              </nz-dropdown-menu>
+            </ng-template>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-control [nzSm]="24" [nzXs]="24" >
+              <label nz-checkbox formControlName="congGopTheoHoaDon">Cộng gộp theo hóa đơn</label>
+            </nz-form-control>
+          </nz-form-item>
+        </form>
+      </div>
+    </div>
+  </div>
+</nz-spin>
+
+<div *nzModalFooter>
+  <div nz-row>
+    <div nz-col nzSpan="12" style="text-align: left;">
+      <button nz-button nzType="default" (click)="xoaDieuKien()" class="button-clear">Xóa điều kiện</button>
+    </div>
+    <div nz-col nzSpan="12" style="text-align: right;">
+      <button nz-button nzType="default" (click)="saveChanges()" class="button-agree">Xác nhận</button>
+      <button nz-button nzType="default" (click)="destroyModal()" class="button-cancel">Đóng</button>
+    </div>
+  </div>
+</div>

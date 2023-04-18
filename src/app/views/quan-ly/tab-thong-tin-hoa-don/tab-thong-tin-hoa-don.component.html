@@ -1,0 +1,382 @@
+<div nzSpan="12">
+    <div nz-row>
+        <div nz-col>
+            <nz-radio-group nzSize="small" nzButtonStyle="solid" [(ngModel)]="tab" class="switchSelect" switchSelect
+                [blockButton]="true" style="margin-bottom: 0;width: 34%;float: right;margin-top: 0px;">
+                <div style="display: flex; width: 50% !important;">
+                    <div style="width: 70% !important;">
+                        <label nz-radio-button [nzValue]="1" data-value="1" class="btn-nvhd btn-hddt tabHoaDonActive"
+                            (click)="changeNVHD(1)">Hình
+                            thức hóa
+                            đơn</label>
+                    </div>
+                    <div style="width: 70% !important;">
+
+                        <label nz-radio-button [nzValue]="2" data-value="2" class="btn-nvhd btn-pxk"
+                            (click)="changeNVHD(2)">Loại hóa
+                            đơn</label>
+                    </div>
+
+                </div>
+
+                <div style="width: 50% !important;"><label style="padding: 0px 4px !important;" nz-radio-button
+                        [nzValue]="3" data-value="3" class="btn-nvhd" (click)="changeNVHD(3)">Mã của CQT
+                        khởi tạo từ máy
+                        tính tiền</label></div>
+
+
+            </nz-radio-group>
+        </div>
+    </div>
+</div>
+
+<div style="margin-top: 5px;">
+    <div class="card-container" *ngIf="tab == 1">
+
+        <div nz-row>
+            <div nz-row>
+                <nz-table #basicTable1 [nzData]="listHinhThucThanhToan" [nzScroll]="scrollConfig"
+                    [nzWidthConfig]="widthConfig" [nzTotal]="listHinhThucThanhToan.length" [nzPageIndex]="1"
+                    [nzPageSize]="listHinhThucThanhToan.length" [nzFrontPagination]="false" [nzShowPagination]="false"
+                    [nzBordered]="true">
+                    <thead>
+                        <tr>
+                            <th rowspan="2" nzAlign="center">STT</th>
+                            <th rowspan="2" nzAlign="center">Hình thức hóa đơn</th>
+                            <th rowspan="2" nzAlign="center">Trạng thái sử dụng</th>
+                            <th rowspan="2" nzAlign="center">Ngày bắt đầu sử dụng</th>
+                            <th colspan="2" nzAlign="center">Tạm ngừng sử dụng</th>
+                            <th rowspan="2" nzAlign="center">Ngày ngừng sử dụng</th>
+                        </tr>
+                        <tr>
+                            <th nzAlign="center" style="border-left: 1px solid #F0F0F0 !important;">Từ ngày</th>
+                            <th nzAlign="center" style="border-right: 0px solid #F0F0F0 !important;">Đến ngày</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let data of basicTable1.data">
+                            <td nzAlign="center">{{ data.stt }}</td>
+                            <td>{{ data.tenLoaiThongTinChiTiet }}
+                                <div *ngIf="data.stt == 2" style="display: contents;">
+                                    <ng-container *ngIf="data.loaiThongTinChiTiet === 9 && !maCCQT; else elseTemplate">
+                                        <span style="color: #ED7D31;">
+                                            (MCCQT: Chưa được cấp)
+                                        </span>
+                                    </ng-container>
+                                    <ng-template #elseTemplate style="color: #ED7D31;">
+                                        <span style="color: #ED7D31;">
+                                            (MCCQT: {{maCCQT}})
+                                        </span>
+                                    </ng-template>
+                                </div>
+
+                            </td>
+                            <td nzAlign="center" [class.disable-cell]="data.trangThaiSuDung === 0"
+                                [ngClass]="{'pd-left-10': data.trangThaiSuDung===0 }">
+                                <app-tag-status-thong-tin-hoa-don [loai]="data.trangThaiSuDung"
+                                    [ten]="data.tenTrangThaiSuDung">
+                                </app-tag-status-thong-tin-hoa-don>
+                            </td>
+                            <td nzAlign="center" [class.disable-cell]="!data.ngayBatDauSuDung">
+                                {{ data.ngayBatDauSuDung | date:'dd/MM/yyyy HH:mm:ss' }}
+                            </td>
+                            <td nzAlign="center" [class.disable-cell]="!data.tuNgayTamNgungSuDung">
+                                {{ data.tuNgayTamNgungSuDung | date:'dd/MM/yyyy HH:mm:ss' }}
+                            </td>
+                            <td nzAlign="center" [class.disable-cell]="!data.denNgayTamNgungSuDung">
+                                {{ data.denNgayTamNgungSuDung | date:'dd/MM/yyyy HH:mm:ss' }}
+                            </td>
+                            <td nzAlign="center"
+                                [class.disable-cell]="!data.ngayNgungSuDung && data.trangThaiSuDung !=2">
+                                {{ data.ngayNgungSuDung | date:'dd/MM/yyyy HH:mm:ss' }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </nz-table>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-container" *ngIf="tab == 2">
+        <div nz-row>
+            <div nz-row class="border-bottom">
+                <nz-table #basicTable2 [nzData]="listLoaiHoaDon" [nzScroll]="scrollConfigLoaihd"
+                    [nzWidthConfig]="widthConfig" [nzTotal]="listLoaiHoaDon.length" [nzPageIndex]="1"
+                    [nzPageSize]="listLoaiHoaDon.length" [nzFrontPagination]="false" [nzShowPagination]="false"
+                    [nzBordered]="true">
+                    <thead>
+                        <tr>
+                            <th rowspan="2" nzAlign="center">STT</th>
+                            <th rowspan="2" nzAlign="center">Loại hóa đơn</th>
+                            <th rowspan="2" nzAlign="center">Trạng thái sử dụng</th>
+                            <th rowspan="2" nzAlign="center">Ngày bắt đầu sử dụng</th>
+                            <th colspan="2" nzAlign="center">Tạm ngừng sử dụng</th>
+                            <th rowspan="2" nzAlign="center">Ngày ngừng sử dụng</th>
+                        </tr>
+                        <tr>
+                            <th nzAlign="center" style="border-left: 1px solid #F0F0F0 !important;">Từ ngày</th>
+                            <th nzAlign="center" style="border-right: 0px solid #F0F0F0 !important;">Đến ngày</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let data of basicTable2.data">
+                            <td nzAlign="center">{{ data.stt }}</td>
+                            <td><span class="{{data.trangThaiSuDung==0 ? 'pd-left-10':''}}">{{
+                                    data.tenLoaiThongTinChiTiet
+                                    }}</span>
+                                <div *ngIf="data.loaiThongTinChiTiet === 7 && data.trangThaiSuDung == 2"
+                                    style="background-color: #FFF2CC; padding: 5px; box-shadow: 2px 3px 6px 0px rgb(0 0 0 / 55%) !important;">
+                                    Gồm: <br>
+                                    - Tem, vé, thẻ; <br>
+                                    - Phiếu thu tiền cước vận chuyển hàng không; <br>
+                                    - Chứng từ thu cước phí vận tải quốc tế; <br>
+                                    - Chứng từ thu phí dịch vụ ngân hàng trừ trường hợp: tem, vé, thẻ có hình thức và
+                                    nội
+                                    dung được lập theo thông lệ quốc tế và các quy định của pháp luật có liên quan
+
+                                </div>
+                                <div *ngIf="data.loaiThongTinChiTiet === 8 && data.trangThaiSuDung == 2"
+                                    style="background-color: #FFF2CC; padding: 5px; box-shadow: 2px 3px 6px 0px rgb(0 0 0 / 55%) !important;">
+                                    Gồm:<br>
+                                    - Phiếu xuất kho kiểm vận chuyển nội bộ;<br>
+                                    - Phiếu xuất kho hàng gửi bán đại lý.
+                                </div>
+                            </td>
+                            <td nzAlign="center" [class.disable-cell]="data.trangThaiSuDung === 0">
+                                <app-tag-status-thong-tin-hoa-don [loai]="data.trangThaiSuDung"
+                                    [ten]="data.tenTrangThaiSuDung">
+                                </app-tag-status-thong-tin-hoa-don>
+                            </td>
+                            <td nzAlign="center" [class.disable-cell]="!data.ngayBatDauSuDung">
+                                {{ data.ngayBatDauSuDung | date:'dd/MM/yyyy HH:mm:ss' }}
+                            </td>
+                            <td nzAlign="center" [class.disable-cell]="!data.tuNgayTamNgungSuDung">
+                                {{ data.tuNgayTamNgungSuDung | date:'dd/MM/yyyy HH:mm:ss' }}
+                            </td>
+                            <td nzAlign="center" [class.disable-cell]="!data.denNgayTamNgungSuDung">
+                                {{ data.denNgayTamNgungSuDung | date:'dd/MM/yyyy HH:mm:ss' }}
+                            </td>
+                            <td nzAlign="center"
+                                [class.disable-cell]="!data.ngayNgungSuDung && data.trangThaiSuDung !=2">
+                                {{ data.ngayNgungSuDung | date:'dd/MM/yyyy HH:mm:ss' }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </nz-table>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-container" *ngIf="tab == 3">
+        <div nz-row style="background-color: #FFF2CC; padding: 5px;">
+            <div nz-row>
+                Mã của cơ quan thuế trên hóa đơn điện tử khởi tạo từ máy tính tiền là dải ký tự bao gồm 23 ký tự có cấu
+                trúc
+                như sau: <br>
+                <div nz-col nzSpan=8>
+
+                </div>
+                <div nz-col nzSpan=8 style="padding: 0 4vw;">
+                    <span style="    padding: 2px 10px 2px 10px;
+                        color: white;
+                        background-color: #00B4B3;
+                        display: flex;
+                        justify-content: center;
+                        font-weight: 600;
+                        letter-spacing: 0.2px; box-shadow: 2px 3px 6px 0px rgb(0 0 0 / 55%) !important;">
+                        C
+                        <span class="text-stt-mcqt">1</span>
+                        C
+                        <span class="text-stt-mcqt">2</span>
+                        -C
+                        <span class="text-stt-mcqt">3</span>
+                        C
+                        <span class="text-stt-mcqt">4</span>
+                        <ng-container *ngFor="let item of [5,6,7,8,9];">
+                            C
+                            <span class="text-stt-mcqt">{{item}}</span>
+                        </ng-container>
+                        -C
+                        <span class="text-stt-mcqt">10</span>
+                        <ng-container *ngFor="let item of [11,12,13,14,15,16,17,18,19,20];">
+                            C
+                            <span class="text-stt-mcqt">{{item}}</span>
+                        </ng-container>
+                    </span>
+                </div>
+            </div>
+            <div nz-row style="display: inline-table;">
+                <ng-container *ngIf="!isOpenDetailMCQT; else DetailMCQT">
+                    Trong đó: <a (click)="isOpenDetailMCQT = !isOpenDetailMCQT">
+                        <span style="font-style: italic;">...xem thêm
+                        </span>
+                    </a>
+                </ng-container>
+                <ng-template #DetailMCQT>
+                    Trong đó: <br>
+                    + Một ký tự đầu C1: là chữ cái M cố định để thể hiện dấu hiệu nhận biết hóa đơn điện tử được khởi
+                    tạo từ
+                    máy tính tiền theo quy định tại điểm b khoản 1 Điều 4 Thông tư số 78/2021/TT-BTC.<br>
+                    + Một ký tự C2: là ký hiệu được gắn cố định để thể hiện loại hóa đơn điện tử từ 1 đến 6 theo quy
+                    định
+                    tại điểm a khoản 1 Điều 4 Thông tư số 78/2021/TT-BTC.<br>
+                    + Hai ký tự C3C4: là 02 số cuối của năm phát hành hóa đơn được sinh tự động từ phần mềm bán hàng của
+                    NNT.<br>
+                    + Năm ký tự C5C6C7C8C9: là một chuỗi 05 ký tự do CQT cấp theo hình thức tự sinh từ hệ thống HĐĐT của
+                    CQT
+                    đảm bảo tính duy nhất.<br>
+                    + Mười một ký tự C10C11C12C13C14C15C16C17C18C19C20: là chuỗi 11 số tăng liên tục được tự sinh từ
+                    phần
+                    mềm bán hàng.<br>
+                    + Dấu gạch ngang (-): là ký tự để phân tách các nhóm ký tự thể hiện loại hóa đơn, năm phát hành hóa
+                    đơn
+                    tự sinh từ phần mềm bán hàng, ký tự do CQT cấp, chuỗi số tăng liên tục tự sinh từ phần mềm bán hàng.
+                    <a (click)="isOpenDetailMCQT = !isOpenDetailMCQT">
+                        <span style="font-style: italic;">...thu gọn
+                        </span></a>
+                </ng-template>
+            </div>
+
+        </div>
+        <div style="margin-top: 10px" nz-row class="title">Chuỗi 05 ký tự do CQT cấp
+            <span> (<ng-container *ngFor="let item of [5,6,7,8,9];">C<span class="text-stt-mcqt">{{item}}</span>
+                </ng-container>)</span>
+        </div>
+        <div nz-row nzSpan="8">
+            <input #fImportExcel type="file" multiple (change)="ImportFile($event)" style="display: none;" />
+            <input disabled nz-input nzSize="small" style="width: 8vw; margin-right: 5px;" placeholder="Chưa được cấp"
+                [(ngModel)]="maCCQT" />
+
+
+            <span #taiTep>
+                <button *ngIf="!maCCQT" nzSize="small" nz-button nzType="default" (click)="fImportExcel.click()"
+                    class="button-clear" [nzLoading]="spinning" nz-dropdown [nzOverlayStyle]="{width: '100%'}"
+                    [nzDropdownMenu]="fileTypeMenu"
+                    [disabled]="(permission != true && thaoTacs.indexOf('MNG_FULL') < 0 && thaoTacs.indexOf('MNG_UPDATE') < 0)"
+                    [class.button-clear]="!btnLayDuLieuDisabled" [class.ant-btn-cus]="btnLayDuLieuDisabled"
+                    [ngClass]="{'disabled-button-state': btnLayDuLieuDisabled}">
+                    <i nz-icon nzType="vertical-align-top" nzTheme="outline"></i>Nhập khẩu
+                </button>
+            </span>
+            <nz-dropdown-menu #fileTypeMenu="nzDropdownMenu" style="width: 100% !important">
+                <ul nz-menu [style.min-width.px]="taiTep.offsetWidth">
+                    <li nz-menu-item (click)="fImportExcel.click()" style="width: 100% !important;">
+                        <img [style.visibility]="'visible'" width="17" height="15" src="assets/xml.png" />XML
+                    </li>
+                </ul>
+            </nz-dropdown-menu>
+
+            <button *ngIf="maCCQT && !isImportMaCQT" nzSize="small" nz-button nzType="default"
+                (click)="displayLichSuTruyenNhan()" class="button-clear" [nzLoading]="spinning"
+                [disabled]="(permission != true && thaoTacs.indexOf('MNG_FULL') < 0 && thaoTacs.indexOf('MNG_VIEW') < 0)"
+                [class.button-clear]="!btnLayDuLieuDisabled" [class.ant-btn-cus]="btnLayDuLieuDisabled"
+                [ngClass]="{'disabled-button-state': btnLayDuLieuDisabled}">
+                <i nz-icon nzType="history" nzTheme="outline"></i>Xem lịch sử đăng ký
+            </button>
+
+            <span #taiTepVe>
+                <button *ngIf="maCCQT && isImportMaCQT" nzSize="small" nz-button nzType="default"
+                    (click)="dowLoadFileXML103Imported()" class="button-clear" [nzLoading]="spinning" nz-dropdown
+                    [nzOverlayStyle]="{width: '100%'}" [nzDropdownMenu]="fileTypeMenuTaiVe"
+                    [disabled]="(permission != true && thaoTacs.indexOf('MNG_FULL') < 0 && thaoTacs.indexOf('MNG_VIEW') < 0)"
+                    [class.button-clear]="!btnLayDuLieuDisabled" [class.ant-btn-cus]="btnLayDuLieuDisabled"
+                    [ngClass]="{'disabled-button-state': btnLayDuLieuDisabled}">
+                    <i nz-icon nzType="download" nzTheme="outline"></i> Tải về
+                </button>
+            </span>
+            <nz-dropdown-menu #fileTypeMenuTaiVe="nzDropdownMenu" style="width: 100% !important">
+                <ul nz-menu [style.min-width.px]="taiTepVe.offsetWidth">
+                    <li nz-menu-item (click)="dowLoadFileXML103Imported()" style="width: 100% !important;">
+                        <img [style.visibility]="'visible'" width="17" height="15" src="assets/xml.png" /> XML
+                    </li>
+                </ul>
+            </nz-dropdown-menu>
+
+
+
+
+            <span *ngIf="stringThongBaoOfMCQT != '' " class="stringThongBaoOfMCQT">
+                {{stringThongBaoOfMCQT}}
+            </span>
+        </div>
+        <div *ngIf="!maCCQT" nz-row style="margin-top: 10px; background-color: #FFF2CC; padding: 5px;">
+            Trong trường hợp người dùng đã được CQT cấp 05 ký tự này thì vui lòng thực hiện nhập khẩu thông báo về việc
+            chấp
+            nhận thay đổi thông tin sử dụng hóa đơn điện tử để cập nhật thông tin này trên hệ thống. Tệp nguồn là tệp
+            XML
+            được tải về từ phần mềm giải pháp khác hoặc truy cập theo đường dẫn <a
+                href="https://hoadondientu.gdt.gov.vn">https://hoadondientu.gdt.gov.vn</a> để tải về.
+        </div>
+
+        <div style="margin-top: 10px" nz-row class="title">Chuỗi 11 số tăng liên tục được tự sinh từ phần mềm bán hàng
+            <span> (<ng-container *ngFor="let item of [10,11,12,13,14,15,16,17,18,19,20];">C<span
+                        class="text-stt-mcqt">{{item}}</span>
+                </ng-container>)</span>
+        </div>
+        <div nz-row>
+            <div nz-col nzSpan="12">
+                <nz-form-label [nzSpan]="3">Số bắt đầu từ</nz-form-label>
+
+                <input [disabled]="!isEditSoBatDau" id="inPutSoBatDau"
+                    style="width: 8vw; margin-right: 5px; text-align: right;" placeholder="Chưa được cấp" nz-input
+                    type="number" (ngModelChange)="ChangeValueSoBatDau($event)"
+                    onKeyPress="if(this.value >= 99999999999) return false;" min="0" max="99999999999" class="no-spin"
+                     nzSize="small" (focus)="FoCusSoBatDau()" (blur)="BlurSoBatDau()"
+                    [(ngModel)]="soBatDauView" [ngClass]="{'border-error': isPassCondition}" />
+
+
+                <button *ngIf="!isEditSoBatDau && soKetThuc == '00000000000' " nzSize="small" nz-button nzType="default"
+                    (click)="EditSoBatDau()" class="button-clear" [nzLoading]="spinning"
+                    [disabled]="(permission != true && thaoTacs.indexOf('MNG_FULL') < 0 && thaoTacs.indexOf('MNG_UPDATE') < 0)"
+                    [class.button-clear]="!btnSuaSoBatDauDisabled" [class.ant-btn-cus]="btnSuaSoBatDauDisabled"
+                    [ngClass]="{'disabled-button-state': btnSuaSoBatDauDisabled}">
+                    <i nz-icon nzType="edit" nzTheme="outline"></i>Sửa
+                </button>
+
+                <button *ngIf="isEditSoBatDau" nzSize="small" nz-button nzType="default"
+                    (click)="SaveSoBatDauToTbSinhSo()" class="footer-save" [nzLoading]="spinning"
+                    [disabled]="(permission != true && thaoTacs.indexOf('MNG_FULL') < 0 && thaoTacs.indexOf('MNG_UPDATE') < 0) || btnSuaSoBatDauDisabled"
+                    [ngClass]="{
+                        'disabled-button-state-v2': btnSuaSoBatDauDisabled,
+                        'footer-save': !btnSuaSoBatDauDisabled
+                      }" [class.ant-btn-cus]=" btnSuaSoBatDauDisabled">
+                    <i nz-icon nzType="save" nzTheme="outline"></i>Lưu
+                </button>
+
+
+
+            </div>
+            <div nz-col nzSpan="12">
+                <nz-form-label [nzSpan]="7">Số lớn nhất đã tự sinh đến hiện tại</nz-form-label>
+                <input *ngIf="soKetThuc > 0" disabled nz-input nzSize="small"
+                    style="width: 8vw; margin-right: 5px; text-align: right;" maxlength="11" placeholder="Chưa được cấp"
+                    [(ngModel)]="soKetThuc" />
+
+                <input *ngIf="soKetThuc == 0" disabled nz-input nzSize="small"
+                    style="width: 8vw; margin-right: 5px; text-align: right;" maxlength="11" />
+
+                <button *ngIf="maCCQT" nzSize="small" nz-button nzType="default" style="margin-right: 5px;"
+                    (click)="ViewHistorySinhSoHoaDon()" class="button-clear" [nzLoading]="spinning"
+                    [disabled]="(permission != true && thaoTacs.indexOf('MNG_FULL') < 0 && thaoTacs.indexOf('MNG_VIEW') < 0)"
+                    [class.button-clear]="!btnLayDuLieuDisabled" [class.ant-btn-cus]="btnLayDuLieuDisabled"
+                    [ngClass]="{'disabled-button-state': btnLayDuLieuDisabled}">
+                    <i nz-icon nzType="history" nzTheme="outline"></i>Xem nhật ký
+                </button>
+
+                <button *ngIf="soKetThuc > 0" nzSize="small" nz-button nzType="default" (click)="UpdateSoKetThuc()"
+                    class="blueButton" [nzLoading]="spinning"
+                    [disabled]="(permission != true && thaoTacs.indexOf('MNG_FULL') < 0 && thaoTacs.indexOf('MNG_UPDATE') < 0)">
+                    <i nz-icon nzType="edit" nzTheme="outline"></i>Cập nhật
+                </button>
+
+
+
+            </div>
+        </div>
+        <div nz-row style="margin-top: 10px; background-color: #FFF2CC; padding: 5px;">
+            Dãy số tự sinh sẽ được hệ thống tự động lấy lại số bắt đầu từ 00000000001 khi sang năm mới. Người dùng không
+            được phép sửa số bắt đầu khi đã có số tự sinh được sử dụng.
+        </div>
+
+    </div>
+</div>

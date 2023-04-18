@@ -1,0 +1,57 @@
+<div nz-row style="margin-bottom: 2px;">
+  <div nz-col nzSpan="11" style="text-align: left;">
+    <nz-button-group nzSize="small">
+      <button nz-button nz-tooltip nzTooltipTitle="F2" nzType="default" (click)="clickThem()"><i nz-icon nzType="plus"
+          nzTheme="outline"></i>Thêm</button>
+      <button (click)="clickSua()" nz-button nz-tooltip nzTooltipTitle="F8" nzType="default" class="btnsua"><i nz-icon
+          nzType="edit"></i>Sửa</button>
+      <button class="button-close" (click)="clickXoa()" nz-button nz-tooltip nzTooltipTitle="F9"><i nz-icon
+          nzType="delete"></i>Xóa</button>
+      <!-- <button (click)="clickSua(true)" nz-button nz-tooltip nzTooltipTitle="ALT+F2"><i nz-icon
+          nzType="copy"></i>Nhân bản</button> -->
+      <button nz-button nzType="default" (click)="export()" [nzLoading]="loadingExport"><i nz-icon
+          nzType="vertical-align-bottom" nzTheme="outline"></i>Xuất khẩu</button>
+      <button nz-button nzType="default" (click)="sendThongDiep()" [nzLoading]="loadingSend">
+        <i nz-icon nzType="arrow-right" nzTheme="outline"></i>Gửi thông điệp
+      </button>
+    </nz-button-group>
+  </div>
+</div>
+<nz-table [nzNoResult]="null" nzSize="small" #table [nzData]="listData" nzBordered [nzShowPagination]="false"
+  [nzLoading]="loading" [nzWidthConfig]="widthConfig" [nzScroll]="scrollConfig" class="table-chi-tiet-height">
+  <thead>
+    <tr>
+      <!-- <th nzAlign="center">Phiên bản</th> -->
+      <!-- <th nzAlign="center">Mã nơi gửi</th>
+      <th nzAlign="center">Mã nơi nhận</th> -->
+      <th nzAlign="center">Ngày tạo</th>
+      <th nzAlign="center">Mã loại thông điệp</th>
+      <th nzAlign="center">Mã thông điệp</th>
+      <!-- <th nzAlign="center">Mã thông điệp tham chiếu</th> -->
+      <!-- <th nzAlign="center">Mã số thuế</th> -->
+      <th nzAlign="center">Số lượng</th>
+      <th nzAlign="center">Trạng thái gửi</th>
+      <th nzAlign="center">Trạng thái tiếp nhận của CQT</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of table.data, let i=index" [class.row-selected]="data.selected" (click)="selectedRow(data)"
+      (dblclick)="clickSua(false, true)">
+      <!-- <td [class.row-selected]="data.selected">{{data.phienBan}}</td>
+      <td [class.row-selected]="data.selected">{{data.maNoiGui}}</td>
+      <td [class.row-selected]="data.selected">{{data.maNoiNhan}}</td> -->
+      <td [class.row-selected]="data.selected">{{data.createdDate | date:'dd/MM/yyyy'}}</td>
+      <td [class.row-selected]="data.selected">{{data.maLoaiThongDiep}}</td>
+      <td [class.row-selected]="data.selected" [title]="data.maThongDiep">{{data.maThongDiep}}</td>
+      <!-- <td [class.row-selected]="data.selected" [title]="data.maThongDiepThamChieu">{{data.maThongDiepThamChieu}}</td>
+      <td [class.row-selected]="data.selected">{{data.maSoThue}}</td> -->
+      <td [class.row-selected]="data.selected">{{data.soLuong}}</td>
+      <td [class.row-selected]="data.selected">{{data.tenTrangThaiGui}}</td>
+      <td [class.row-selected]="data.selected">
+        {{data.tenTrangThaiTiepNhan}}&nbsp;
+        <i *ngIf="data.trangThaiTiepNhan === 2" (click)="viewKetQua(data)" class="info" nz-icon nzType="info-circle"
+          nzTheme="outline" nz-tooltip nzTooltipTitle="Xem kết quả"></i>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>

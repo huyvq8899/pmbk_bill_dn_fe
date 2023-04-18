@@ -1,0 +1,46 @@
+@import '../../../../shared/scss/modal.scss';
+.optionItem
+{
+    white-space: pre-wrap!important;
+    text-align: justify!important;
+}
+
+.centerAlignInCell
+{
+    text-align: center!important;
+}
+
+.space
+{
+    width: 7px!important;
+} 
+
+.space2
+{
+    width: 58px!important;
+} 
+
+.space3
+{
+    width: 9px!important;
+} 
+
+.noBorder
+{
+    border: unset!important;
+}
+
+.paddingLeft2px
+{
+    padding-left: 2px!important;
+}
+
+.paddingLeft8px
+{
+    padding-left: 8px!important;
+}
+
+.tooltip-width
+{
+    width: 150px;
+}

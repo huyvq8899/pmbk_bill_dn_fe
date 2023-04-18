@@ -1,0 +1,41 @@
+<div class="container-login" id="container-animation">
+  <div class="content">
+    <div class="content-header">
+      <img src="assets/pmbk.png">
+    </div>
+    <div id="login-form">
+      <div class="title">Đăng Nhập</div>
+      <form nz-form [formGroup]="loginForm" class="login-form" (ngSubmit)="submitForm()">
+        <nz-form-item>
+          <nz-form-control nzErrorTip="Vui lòng nhập mã số thuế!">
+            <nz-input-group nzPrefixIcon="search">
+              <input type="text" nz-input formControlName="taxCode" placeholder="Mã số thuế" autofocus  autocomplete="new-text" />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-control nzErrorTip="Vui lòng nhập tài khoản!">
+            <nz-input-group nzPrefixIcon="user">
+              <input type="text" nz-input formControlName="userName" placeholder="Tài khoản" autofocus autocomplete="new-text"/>
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-control nzErrorTip="Vui lòng nhập mật khẩu!">
+            <nz-input-group nzPrefixIcon="lock">
+              <input type="password" nz-input formControlName="password" placeholder="Mật khẩu" autocomplete="new-password"/>
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item style="margin-bottom: 0;text-align: center;">
+          <nz-form-control>
+            <button id="button-login" nz-button nzBlock [nzType]="'primary'" [nzLoading]="isLoadingLogin">Đăng nhập</button>
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+    </div>
+  </div>
+  <img src="assets/backgroud_login/2.png" id="background">
+  <!-- <app-snowflake></app-snowflake> -->
+</div>
+<!-- <button nz-button [nzType]="'primary'" (click)="updateDB()">Update Database</button> -->

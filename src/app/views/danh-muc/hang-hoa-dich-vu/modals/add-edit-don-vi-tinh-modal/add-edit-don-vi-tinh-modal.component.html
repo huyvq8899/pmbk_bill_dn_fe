@@ -1,0 +1,36 @@
+<nz-spin [nzSpinning]="spinning">
+    <div nz-row class="inner-content" style="margin-left: 8px; margin-right: 8px;">
+        <form nz-form [formGroup]="donViTinhForm">
+            <nz-form-item>
+                <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="ten">Tên đơn vị tính (*)</nz-form-label>
+                <nz-form-control [nzSm]="18" [nzXs]="24" [nzErrorTip]="errorTen">
+                    <input nz-input nzSize="small" formControlName="ten" tooltipInput />
+                    <ng-template #errorTen let-control>
+                        <ng-container *ngIf="control.hasError('required')">
+                            <div class="tooltip-error">&lt;Tên đơn vị tính&gt; không được để trống.</div>
+                        </ng-container>
+                        <ng-container *ngIf="control.hasError('maxlength')">
+                            <div class="tooltip-error">&lt;Tên đơn vị tính&gt; không nhập quá 50 ký tự</div>
+                        </ng-container>
+                    </ng-template>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="moTa">Mô tả</nz-form-label>
+                <nz-form-control [nzSm]="18" [nzXs]="24">
+                    <textarea rows="2" nz-input formControlName="moTa" nzSize="small"></textarea>
+                </nz-form-control>
+            </nz-form-item>
+        </form>
+    </div>
+</nz-spin>
+
+<div *nzModalFooter nz-row>
+    <div nz-col nzSpan="12" style="text-align: left;">
+        <label nz-checkbox [hidden]="isAddNew" [(ngModel)]="isNgungTheoDoi">Ngừng theo dõi</label>
+    </div>
+    <div nz-col nzSpan="12" style="text-align: right;">
+        <button nzSize="small" [disabled]="permission != true && isAddNew == false && !isCopy && thaoTacs.indexOf('DM_UPDATE') < 0" nz-button nzType="default" (click)="submitForm()" [ngClass]="{'footer-save': !(permission != true && isAddNew == false && !isCopy && thaoTacs.indexOf('DM_UPDATE') < 0), 'disabled-button-state-v3': permission != true && isAddNew == false && !isCopy && thaoTacs.indexOf('DM_UPDATE') < 0}" [nzLoading]="spinning"><i nz-icon nzType="save" nzTheme="outline"></i>&nbsp;Lưu</button>
+        <button nzSize="small" nz-button nzType="default" (click)="closeModal()" class="button-cancel"><i nz-icon nzType="close" nzTheme="outline"></i>&nbsp;Hủy</button>
+    </div>
+</div>

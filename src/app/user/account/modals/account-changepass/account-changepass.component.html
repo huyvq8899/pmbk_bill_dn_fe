@@ -1,0 +1,45 @@
+<div>
+  <form nz-form [formGroup]="changePasswordForm">
+    <nz-form-item *ngIf="!forgotPassword">
+      <nz-form-label [nzSm]="8" [nzXs]="24" nzFor="currentPassword" style="text-align: left">Mật khẩu hiện tại</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24" [nzErrorTip]="errorMatKhauHienTai">
+        <input nz-input nzSize="small" type="password" formControlName="currentPassword" [readonly]="forgotPassword">
+        <ng-template #errorMatKhauHienTai let-control>
+          <ng-container *ngIf="control.hasError('required')">
+            <div class="tooltip-error">&lt;Mật khẩu hiện tại&gt; không được để trống.</div>
+          </ng-container>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="8" [nzXs]="24" nzFor="password" style="text-align: left">Mật khẩu mới</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24" [nzErrorTip]="errorMatKhauMoi">
+        <input nz-input nzSize="small" type="password" formControlName="password" id="password">
+        <ng-template #errorMatKhauMoi let-control>
+          <ng-container *ngIf="control.hasError('required')">
+            <div class="tooltip-error">&lt;Mật khẩu mới &gt; không được để trống.</div>
+          </ng-container>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="8" [nzXs]="24" nzFor="confirmPassword" style="text-align: left">Nhập lại mật khẩu mới</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24" [nzErrorTip]="errorPass">
+        <input nz-input nzSize="small" type="password" formControlName="confirmPassword" id="confirmPassword">
+        <ng-template #errorPass let-control>
+          <ng-container *ngIf="control.hasError('required')">
+            <div class="tooltip-error">&lt;Xác nhận mật khẩu mới&gt; không được để trống.</div>
+          </ng-container>
+          <ng-container *ngIf="control.hasError('notSame') && !control.hasError('required')">
+            <div class="tooltip-error">Mật khẩu mới không khớp, vùi lòng xác nhận lại!</div>
+          </ng-container>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</div>
+
+<div *nzModalFooter style="padding-right: 5px ">
+  <button nz-button nzSize="small" nzType="default" (click)="saveChanges()" class="footer-save"><i nz-icon nzType="save" nzTheme="outline"></i>Lưu</button>
+  <button nz-button nzSize="small" nzType="default" (click)="closeModal()" class="button-cancel"><i nz-icon nzType="close" nzTheme="outline"></i>Hủy</button>
+</div>

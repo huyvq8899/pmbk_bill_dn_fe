@@ -1,0 +1,8 @@
+<h2 style="text-align: center;">Phiên bản cập nhật của phần mềm kế toán</h2>
+
+<nz-collapse>
+  <nz-collapse-panel *ngFor="let panel of listVersion" [nzHeader]="panel.header">
+    <p [innerHTML]="panel?.detail">
+
+  </nz-collapse-panel>
+</nz-collapse>

@@ -1,0 +1,50 @@
+.card-title {
+    border-bottom: 1px solid #d1d1d1;
+    background-color: #dedede;
+    padding: 5px;
+    font-weight: bold;
+}
+
+.card-body {
+    margin-top: 5px;
+}
+
+.card-content-padding-hor {
+    padding: 0 5px;
+}
+.ant-form-item {
+    margin-bottom: 0px !important;
+}
+.error-duplicate{
+    color: white;
+    padding: 4px 20px 4px 10px;
+    background-color: rgb(74, 74, 74);
+    right: 0px;
+    top: 27px;
+    z-index: 1000;
+    border-radius: 4px;
+    box-shadow: rgb(0 0 0 / 20%) 0px 4px 8px 0px, rgb(0 0 0 / 19%) 0px 6px 20px 0px;
+    text-align: left;
+}
+.border-error{
+    border-color: red !important;
+}
+@layer base {
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  }
+
+  .no-spin::-webkit-inner-spin-button, .no-spin::-webkit-outer-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0 !important;
+}
+
+.no-spin {
+    -moz-appearance:textfield !important;
+}
+.centerLable {
+    margin-top: 6px;
+}

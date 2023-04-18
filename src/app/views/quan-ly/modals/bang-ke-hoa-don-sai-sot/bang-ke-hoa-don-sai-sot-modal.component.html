@@ -1,0 +1,415 @@
+<nz-spin [nzSpinning]="loading">
+    <div style="height: 100%; padding: 9px">
+        <div nz-row style="text-align: center">
+            <span style="font-weight: bold; font-size: 16px;">BẢNG KÊ HÓA ĐƠN ĐIỆN TỬ XỬ LÝ SAI SÓT</span><br>
+            <span *ngIf="this.params.loaiThongke == 1" style="font-style: italic;">Thống kê theo: Hóa đơn; Từ ngày
+                {{this.params.fromDate | date:'dd/MM/yyyy'}} đến ngày {{this.params.toDate | date:'dd/MM/yyyy'}}</span>
+            <span *ngIf="this.params.loaiThongke == 2" style="font-style: italic;">Thống kê theo: Thông báo hóa đơn điện
+                tử có sai sót; Từ ngày {{this.params.fromDate | date:'dd/MM/yyyy'}} đến ngày {{this.params.toDate |
+                date:'dd/MM/yyyy'}}</span>
+        </div>
+
+        <div nz-row *ngIf="this.params.loaiThongke == 1">
+            <!--thống kê theo hóa đơn-->
+            <nz-table [nzNoResult]="null" nzSize="small" #expandTable [nzData]="listData" [nzWidthConfig]="widthConfig_TheoHoaDon" [nzScroll]="scrollConfig" [nzFrontPagination]="false" [nzTotal]="listData.length" [nzPageIndex]="1" [nzPageSize]="listData.length" nzBordered
+                [nzHideOnSinglePage]="true">
+                <thead (nzSortChange)="sort($event)" nzSingleSort>
+                    <tr>
+                        <th nzAlign="center" nzShowSort nzSortKey="KyHieuHoaDon" nzCustomFilter>Ký hiệu mẫu hóa đơn<br>và ký hiệu hóa đơn
+                            <i nz-th-extra class="ant-table-filter-icon" nz-icon nz-dropdown #ddKyHieu="nzDropdown" nzType="filter" [nzDropdownMenu]="menuKyHieu" [(nzVisible)]="mapOfVisbleFilterCol['KyHieu']" [class.ant-table-filter-open]="mapOfHightlightFilter['KyHieu']" (nzVisibleChange)="onVisibleFilterCol($event, 'MauHoaDon:Mẫu số|KyHieuHoaDon:Ký hiệu', filterColKyHieu)"
+                                nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter></i>
+                            <nz-dropdown-menu #menuKyHieu="nzDropdownMenu">
+                                <app-filter-column #filterColKyHieu title='Ký hiệu mẫu hóa đơn và ký hiệu hóa đơn' [dataType]="1" (submitFilterCol)="onFilterCol($event)">
+                                </app-filter-column>
+                            </nz-dropdown-menu>
+                        </th>
+                        <th nzAlign="center" nzShowSort nzSortKey="SoNgay" nzCustomFilter>Số hóa đơn/<br>Ngày hóa đơn
+                            <i nz-th-extra class="ant-table-filter-icon" nz-icon nz-dropdown #ddSoHoaDon="nzDropdown" nzType="filter" [nzDropdownMenu]="menuSoHoaDon" [(nzVisible)]="mapOfVisbleFilterCol['SoHoaDon'] && mapOfVisbleFilterCol['NgayHoaDon']" [class.ant-table-filter-open]="mapOfHightlightFilter['SoHoaDon'] == true || mapOfHightlightFilter['NgayHoaDon'] == true "
+                                (nzVisibleChange)="onVisibleFilterCol($event, 'SoHoaDon:Số ' + (isPhieuXuatKho ? 'PXK' : 'hóa đơn') + '|NgayHoaDon:Ngày ' + (isPhieuXuatKho ? 'PXK' : 'hóa đơn'), filterColSoHoaDon)" nzTrigger="click" nzPlacement="bottomRight"
+                                [nzClickHide]="false" nzTableFilter></i>
+                            <nz-dropdown-menu #menuSoHoaDon="nzDropdownMenu">
+                                <app-filter-column #filterColSoHoaDon title="Số hóa đơn và ngày hóa đơn" [dataType]="1" (submitFilterCol)="onFilterCol($event)">
+                                </app-filter-column>
+                            </nz-dropdown-menu>
+                        </th>
+                        <th nzAlign="center" nzShowSort nzSortKey="MaCQTCap" nzCustomFilter>Mã CQT cấp
+                            <i nz-th-extra class="ant-table-filter-icon" nz-icon nz-dropdown #ddMaCQTCap="nzDropdown" nzType="filter" [nzDropdownMenu]="menuMaCQTCap" [(nzVisible)]="mapOfVisbleFilterCol['MaCQTCap']" [class.ant-table-filter-open]="mapOfHightlightFilter['MaCQTCap']"
+                                (nzVisibleChange)="onVisibleFilterCol($event, 'maCQTCap', filterColMaCQTCap)" nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter></i>
+                            <nz-dropdown-menu #menuMaCQTCap="nzDropdownMenu">
+                                <app-filter-column #filterColMaCQTCap title="Mã CQT cấp" [dataType]="1" (submitFilterCol)="onFilterCol($event)">
+                                </app-filter-column>
+                            </nz-dropdown-menu>
+                        </th>
+                        <th nzAlign="center" nzShowSort nzSortKey="TongTienThanhToan" nzCustomFilter>Tổng tiền thanh toán
+                            <i nz-th-extra class="ant-table-filter-icon" nz-icon nz-dropdown #ddTongTienThanhToan="nzDropdown" nzType="filter" [nzDropdownMenu]="menuTongTienThanhToan" [(nzVisible)]="mapOfVisbleFilterCol['TongTienThanhToan']  || mapOfVisbleFilterCol['MaLoaiTien']"
+                                [class.ant-table-filter-open]="mapOfHightlightFilter['TongTienThanhToan']==true || mapOfHightlightFilter['MaLoaiTien']==true" (nzVisibleChange)="onVisibleFilterCol($event, 'TongTienThanhToan:Tổng tiền thanh toán|MaLoaiTien:Loại tiền', filterColTongTienThanhToan)"
+                                nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter></i>
+                            <nz-dropdown-menu #menuTongTienThanhToan="nzDropdownMenu">
+                                <app-filter-column #filterColTongTienThanhToan title="Tổng tiền thanh toán" [dataType]="2" (submitFilterCol)="onFilterCol($event)">
+                                </app-filter-column>
+                            </nz-dropdown-menu>
+                        </th>
+                        <th nzAlign="center">Loại áp dụng<br>hóa đơn điện tử</th>
+                        <th nzAlign="center">Loại hóa đơn</th>
+                        <th nzAlign="center">Trạng thái hóa đơn</th>
+                        <th nzAlign="center">Chứng từ/Hóa đơn liên quan</th>
+                        <th nzAlign="center">Hình thức <br>thông báo sai sót</th>
+                        <th nzAlign="center">Lý do</th>
+                        <th nzAlign="center">Ngày thông báo</th>
+                        <th nzAlign="center">Loại thông báo sai sót</th>
+                        <th nzAlign="center">Thông báo rà soát của CQT<br>(Mẫu số/Số/Ngày)</th>
+                        <th nzAlign="center">Mã thông điệp gửi</th>
+                        <th nzAlign="center">Thông báo phản hồi từ CQT<br>(Mẫu số/Số/Ngày)</th>
+                        <th nzAlign="center">Trạng thái phản hồi từ CQT</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let data of expandTable.data">
+                        <tr (dblclick)="xemthongdiep300(data)">
+                            <td nzAlign="center" [ngClass]="{'grayCell': data.hoaDonDienTuId == null}">
+                                {{data.mauHoaDon}}<br>{{data.kyHieuHoaDon}}
+                            </td>
+
+                            <td nzAlign="center" [ngClass]="{'grayCell': data.hoaDonDienTuId == null}">
+                                <span *ngIf="data.laHoaDonNgoaiHeThong != true"><a
+                                        (click)="xemHoaDon(data.hoaDonDienTuId)">{{ data.soHoaDon
+                                        }}</a><br>{{data.ngayLapHoaDon | date:'dd/MM/yyyy'}}</span>
+                                <span *ngIf="data.laHoaDonNgoaiHeThong == true">{{ data.soHoaDon
+                                    }}<br>{{data.ngayLapHoaDon
+                                    | date:'dd/MM/yyyy'}}</span>
+                            </td>
+
+                            <td [ngClass]="{'grayCell': data.hoaDonDienTuId == null}" title="{{data.maCQTCap}}">
+                                {{data.maCQTCap}}</td>
+
+                            <td [ngClass]="{'grayCell': data.hoaDonDienTuId == null}" nzAlign="right">
+                                {{data?.tongTienThanhToan | formatPrice:true:(data.maLoaiTien == 'VND' ? ddtp.getTienQuyDoi() : ddtp.getTienNgoaiTe())}}
+                                <br><span *ngIf="data?.tongTienThanhToan != null">&nbsp;{{data.maLoaiTien}}</span>
+                            </td>
+                            <td [ngClass]="{'grayCell': data.hoaDonDienTuId == null}" nzAlign="center" [title]="this.getTitleLoaiHoaDon(data.loaiApDungHoaDon)">
+                                <span *ngIf="data.loaiApDungHoaDon > 0">{{data.loaiApDungHoaDon}}</span>
+                            </td>
+                            <td [ngClass]="{'grayCell': data.hoaDonDienTuId == null}" title="{{data.loaiHoaDon}}">
+                                {{data.loaiHoaDon}}</td>
+
+                            <td [ngClass]="{'grayCell': data.hoaDonDienTuId == null}">
+                                <ng-container *ngIf="data?.trangThaiHoaDon != null">
+                                    <ng-container *ngIf="data?.laHoaDonNgoaiHeThong != true">
+                                        <span *ngIf="data?.trangThaiHoaDon?.trangThai == 1" class="lightBlueRoundedShape">Hóa đơn gốc</span>
+                                        <span *ngIf="data?.trangThaiHoaDon?.trangThai == 2" class="grayRoundedShape">Hóa
+                                            đơn
+                                            hủy</span>
+                                        <span *ngIf="data?.trangThaiHoaDon?.trangThai == 3" class="hoaDonThayTheRoundedShape">Hoá đơn thay thế</span>
+                                        <span *ngIf="data?.trangThaiHoaDon?.trangThai == 4 && data?.trangThaiHoaDon?.loaiDieuChinh == 1">
+                                            <span class="hoaDonDieuChinhRoundedShape" title="Hóa đơn điều chỉnh tăng">
+                                                Hóa đơn điều
+                                                chỉnh
+                                                <span class="circleHoaDonDieuChinhTang"><i nz-icon nzType="arrow-up"
+                                                        nzTheme="outline"></i>
+                                                </span>
+                                        </span>
+                                        </span>
+
+                                        <span *ngIf="data?.trangThaiHoaDon?.trangThai == 4 && data?.trangThaiHoaDon?.loaiDieuChinh == 2">
+                                            <span class="hoaDonDieuChinhRoundedShape" title="Hóa đơn điều chỉnh giảm">
+                                                Hóa đơn điều
+                                                chỉnh
+                                                <span class="circleHoaDonDieuChinhGiam">
+                                                    <i nz-icon nzType="arrow-down" nzTheme="outline"></i>
+                                                </span>
+                                        </span>
+                                        <span *ngIf="data.daBiDieuChinh == true" style="color: #ed7d31;"> | Bị điều
+                                                chỉnh</span>
+                                        </span>
+
+                                        <span *ngIf="data?.trangThaiHoaDon?.trangThai == 4 && data?.trangThaiHoaDon?.loaiDieuChinh == 3">
+                                            <span class="hoaDonDieuChinhRoundedShape"
+                                                title="Hóa đơn điều chỉnh thông tin">
+                                                Hóa đơn điều
+                                                chỉnh
+                                                <span class="circleHoaDonDieuChinhThongTin">
+                                                    <i nz-icon nzType="info" nzTheme="outline"></i>
+                                                </span>
+                                        </span>
+                                        <span *ngIf="data.daBiDieuChinh == true" style="color: #ed7d31;"> | Bị điều
+                                                chỉnh</span>
+                                        </span>
+                                    </ng-container>
+                                    <ng-container *ngIf="data?.laHoaDonNgoaiHeThong == true">
+                                        <span *ngIf="data?.trangThaiHoaDon?.trangThai == 1" class="hoaDonNgoaiHeThongRoundedShape">Hóa đơn gốc</span>
+                                        <span *ngIf="data?.trangThaiHoaDon?.trangThai == 3" class="hoaDonNgoaiHeThongRoundedShape">Thay thế</span>
+                                        <span *ngIf="data?.trangThaiHoaDon?.trangThai == 4" class="hoaDonNgoaiHeThongRoundedShape">Điều chỉnh</span>
+                                    </ng-container>
+                                    <span class="colorDienGiai" [innerHTML]="data?.trangThaiHoaDon?.dienGiaiTrangThai"></span>
+                                </ng-container>
+                            </td>
+
+                            <td [ngClass]="{'grayCell': (data.hoaDonDienTuId == null && data.chungTuLienQuan==null)}">
+                                <a (click)="xemHoaDonChungTuLienQuan(data)">{{getChungTuLienQuan(data.chungTuLienQuan)}}</a>
+                            </td>
+                            <td [ngClass]="{'grayCell': data.hoaDonDienTuId == null && data.loaiSaiSot==null}" title="{{data.loaiSaiSot}}">
+                                {{data.loaiSaiSot}}</td>
+                            <td style="white-space: pre-wrap !important;" [ngClass]="{'grayCell': data.hoaDonDienTuId == null && data.lyDo==null}">{{data.lyDo}}</td>
+                            <td nzAlign="center" [ngStyle]="{'background-color': data.colorHex}">
+                                {{data.ngayThongBao | date:'dd/MM/yyyy'}}
+                            </td>
+
+                            <td [ngStyle]="{'background-color': data.colorHex}" style="white-space: pre-wrap !important;" title="{{data.tenLoaiThongBaoSaiSot}}">
+                                {{data.tenLoaiThongBaoSaiSot}}
+                            </td>
+
+                            <td nzAlign="center" [ngStyle]="{'background-color': data.colorHex}">
+                                {{data.mauSoTBaoCuaCQT}}<br>{{data.soTBaoCuaCQT}}<br>{{data.ngayTBaoCuaCQT | date:'dd/MM/yyyy'}}
+                            </td>
+
+                            <td [ngStyle]="{'background-color': data.colorHex}">
+                                <a (click)="xemthongdiep300(data)">{{data.maThongDiepGui}}</a>
+                            </td>
+
+                            <td nzAlign="center" [ngStyle]="{'background-color': data.colorHex}">
+                                <a (click)="xemFileXML(data.idTDiepTBaoPhanHoiCuaCQT)">
+                                    {{data.mauSoTBaoPhanHoiTuCQT}}<br>{{data.soTBaoPhanHoiTuCQT}}<br>{{data?.ngayTBaoPhanHoiTuCQT | date:'dd/MM/yyyy'}}
+                                </a>
+                            </td>
+
+                            <td [ngStyle]="{'background-color': data.colorHex}">
+
+                                <app-tag-status-gui-xml (click)="viewLichSuTruyenNhan(data)" [loai]="data?.trangThaiGui" [ten]="data?.tenTrangThaiGui">
+                                </app-tag-status-gui-xml>
+                                <span *ngIf="data.trangThaiGui == 2 || data.trangThaiGui  == 4 || data.trangThaiGui == 6 || data.trangThaiGui == 7 || data.trangThaiGui == 9  || data.trangThaiGui == 10  || data.trangThaiGui == 11 || data.trangThaiGui == 14" class="circleViewLoi">
+                                <app-mo-ta-loi [maThongDiep]="data.maThongDiepGui ? data.maThongDiepGui : null" [thongDiepChungId]="data.maThongDiepGui ? null : data.thongDiepChungId"></app-mo-ta-loi>
+                                  <!-- <a href="javascript:void(0)" (click)="viewLoi(data.maThongDiepGui)"
+                                        class="linkTaiLieuDinhKem" nz-tooltip nzTooltipTitle="Xem chi tiết">
+                                        <i nz-icon nzType="tags"></i>
+                                    </a> -->
+                                </span>
+                            </td>
+                        </tr>
+                    </ng-container>
+                    <tr class="total-footer" *ngIf="listData.length == 0">
+                        <td colspan="16">Không có dữ liệu hiển thị.</td>
+                    </tr>
+                </tbody>
+                <tfoot *ngIf="listData.length > 0" class="total-footer">
+                    <td colspan="1">Số dòng = {{listData.length}}</td>
+                    <td colspan="15"></td>
+                </tfoot>
+            </nz-table>
+        </div>
+
+        <div nz-row *ngIf="this.params.loaiThongke == 2">
+            <!--thống kê theo thông báo-->
+            <nz-table [nzNoResult]="null" nzSize="small" #expandTable [nzData]="listData" [nzWidthConfig]="widthConfig_TheoThongBao" [nzScroll]="scrollConfig" [nzFrontPagination]="false" [nzTotal]="listData.length" [nzPageIndex]="1" [nzPageSize]="listData.length"
+                nzBordered [nzHideOnSinglePage]="true">
+                <thead>
+                    <tr>
+                        <th nzAlign="center" nzShowSort nzSortKey="NgayThongBao" nzCustomFilter>Ngày thông báo
+                            <i nz-th-extra class="ant-table-filter-icon" nz-icon nz-dropdown #ddNgayThongBao="nzDropdown" nzType="filter" [nzDropdownMenu]="menuNgayThongBao" [(nzVisible)]="mapOfVisbleFilterCol['NgayThongBao']" [class.ant-table-filter-open]="mapOfHightlightFilter['NgayThongBao']"
+                                (nzVisibleChange)="onVisibleFilterCol($event, 'ngayThongBao', filterColNgayThongBao)" nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter></i>
+                            <nz-dropdown-menu #menuNgayThongBao="nzDropdownMenu">
+                                <app-filter-column #filterColNgayThongBao title="Ngày thông báo" [dataType]="3" (submitFilterCol)="onFilterCol($event)">
+                                </app-filter-column>
+                            </nz-dropdown-menu>
+                        </th>
+                        <th nzAlign="center">Loại thông báo sai sót</th>
+                        <th nzAlign="center">Thông báo rà soát của CQT<br>(Mẫu số/Số/Ngày)</th>
+                        <th nzAlign="center" nzShowSort nzSortKey="MaThongDiepGui" nzCustomFilter>Mã thông điệp gửi
+                            <i nz-th-extra class="ant-table-filter-icon" nz-icon nz-dropdown #ddMaThongDiepGui="nzDropdown" nzType="filter" [nzDropdownMenu]="menuMaThongDiepGui" [(nzVisible)]="mapOfVisbleFilterCol['MaThongDiepGui']" [class.ant-table-filter-open]="mapOfHightlightFilter['MaThongDiepGui']"
+                                (nzVisibleChange)="onVisibleFilterCol($event, 'MaThongDiepGui', filterColMaThongDiepGui)" nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter></i>
+                            <nz-dropdown-menu #menuMaThongDiepGui="nzDropdownMenu">
+                                <app-filter-column #filterColMaThongDiepGui title="Mã thông điệp gửi" [dataType]="1" (submitFilterCol)="onFilterCol($event)">
+                                </app-filter-column>
+                            </nz-dropdown-menu>
+                        </th>
+                        <th nzAlign="center">Thông báo phản hồi từ CQT<br>(Mẫu số/Số/Ngày)</th>
+                        <th nzAlign="center">Trạng thái phản hồi từ CQT</th>
+
+                        <th nzAlign="center" nzShowSort nzSortKey="KyHieuHoaDon" nzCustomFilter>Ký hiệu mẫu hóa đơn<br>và ký hiệu hóa đơn
+                            <i nz-th-extra class="ant-table-filter-icon" nz-icon nz-dropdown #ddKyHieu="nzDropdown" nzType="filter" [nzDropdownMenu]="menuKyHieu" [(nzVisible)]="mapOfVisbleFilterCol['KyHieu']" [class.ant-table-filter-open]="mapOfHightlightFilter['KyHieu']" (nzVisibleChange)="onVisibleFilterCol($event, 'MauHoaDon:Mẫu số|KyHieuHoaDon:Ký hiệu', filterColKyHieu)"
+                                nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter></i>
+                            <nz-dropdown-menu #menuKyHieu="nzDropdownMenu">
+                                <app-filter-column #filterColKyHieu title='Ký hiệu mẫu hóa đơn và ký hiệu hóa đơn' [dataType]="1" (submitFilterCol)="onFilterCol($event)">
+                                </app-filter-column>
+                            </nz-dropdown-menu>
+                        </th>
+                        <th nzAlign="center" nzShowSort nzSortKey="SoNgay" nzCustomFilter>Số hóa đơn/<br>Ngày hóa đơn
+                            <i nz-th-extra class="ant-table-filter-icon" nz-icon nz-dropdown #ddSoHoaDon="nzDropdown" nzType="filter" [nzDropdownMenu]="menuSoHoaDon" [(nzVisible)]="mapOfVisbleFilterCol['SoHoaDon'] && mapOfVisbleFilterCol['NgayHoaDon']" [class.ant-table-filter-open]="mapOfHightlightFilter['SoHoaDon'] == true || mapOfHightlightFilter['NgayHoaDon'] == true "
+                                (nzVisibleChange)="onVisibleFilterCol($event, 'SoHoaDon:Số ' + (isPhieuXuatKho ? 'PXK' : 'hóa đơn') + '|NgayHoaDon:Ngày ' + (isPhieuXuatKho ? 'PXK' : 'hóa đơn'), filterColSoHoaDon)" nzTrigger="click" nzPlacement="bottomRight"
+                                [nzClickHide]="false" nzTableFilter></i>
+                            <nz-dropdown-menu #menuSoHoaDon="nzDropdownMenu">
+                                <app-filter-column #filterColSoHoaDon title="Số hóa đơn và ngày hóa đơn" [dataType]="1" (submitFilterCol)="onFilterCol($event)">
+                                </app-filter-column>
+                            </nz-dropdown-menu>
+                        </th>
+                        <th nzAlign="center" nzShowSort nzSortKey="MaCQTCap" nzCustomFilter>Mã CQT cấp
+                            <i nz-th-extra class="ant-table-filter-icon" nz-icon nz-dropdown #ddMaCQTCap="nzDropdown" nzType="filter" [nzDropdownMenu]="menuMaCQTCap" [(nzVisible)]="mapOfVisbleFilterCol['MaCQTCap']" [class.ant-table-filter-open]="mapOfHightlightFilter['MaCQTCap']"
+                                (nzVisibleChange)="onVisibleFilterCol($event, 'maCQTCap', filterColMaCQTCap)" nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter></i>
+                            <nz-dropdown-menu #menuMaCQTCap="nzDropdownMenu">
+                                <app-filter-column #filterColMaCQTCap title="Mã CQT cấp" [dataType]="1" (submitFilterCol)="onFilterCol($event)">
+                                </app-filter-column>
+                            </nz-dropdown-menu>
+                        </th>
+                        <th nzAlign="center" nzShowSort nzSortKey="TongTienThanhToan" nzCustomFilter>Tổng tiền thanh toán
+                            <i nz-th-extra class="ant-table-filter-icon" nz-icon nz-dropdown #ddTongTienThanhToan="nzDropdown" nzType="filter" [nzDropdownMenu]="menuTongTienThanhToan" [(nzVisible)]="mapOfVisbleFilterCol['TongTienThanhToan']  || mapOfVisbleFilterCol['MaLoaiTien']"
+                                [class.ant-table-filter-open]="mapOfHightlightFilter['TongTienThanhToan']==true || mapOfHightlightFilter['MaLoaiTien']==true" (nzVisibleChange)="onVisibleFilterCol($event, 'TongTienThanhToan:Tổng tiền thanh toán|MaLoaiTien:Loại tiền', filterColTongTienThanhToan)"
+                                nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter></i>
+                            <nz-dropdown-menu #menuTongTienThanhToan="nzDropdownMenu">
+                                <app-filter-column #filterColTongTienThanhToan title="Tổng tiền thanh toán" [dataType]="2" (submitFilterCol)="onFilterCol($event)">
+                                </app-filter-column>
+                            </nz-dropdown-menu>
+                        </th>
+                        <th nzAlign="center">Loại áp dụng<br>hóa đơn điện tử</th>
+                        <th nzAlign="center">Loại hóa đơn</th>
+                        <th nzAlign="center">Trạng thái hóa đơn</th>
+                        <th nzAlign="center">Chứng từ/Hóa đơn liên quan</th>
+                        <th nzAlign="center">Hình thức <br>thông báo sai sót</th>
+                        <th nzAlign="center">Lý do</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let data of expandTable.data">
+                        <tr (dblclick)="xemthongdiep300(data)">
+                            <td nzAlign="center" [ngClass]="{'grayCell': data.thongDiepChungId == null}">
+                                {{data.ngayThongBao | date:'dd/MM/yyyy'}}
+                            </td>
+
+                            <td [ngClass]="{'grayCell': data.thongDiepChungId == null}" title="{{data.tenLoaiThongBaoSaiSot}}" style="white-space: pre-wrap !important;">
+                                {{data.tenLoaiThongBaoSaiSot}}
+                            </td>
+
+                            <td nzAlign="center" [ngClass]="{'grayCell': data.thongDiepChungId == null}">
+                                {{data.mauSoTBaoCuaCQT}}<br>{{data.soTBaoCuaCQT}}<br>{{data.ngayTBaoCuaCQT | date:'dd/MM/yyyy'}}
+                            </td>
+
+                            <td [ngClass]="{'grayCell': data.thongDiepChungId == null}">
+                                <a (click)="xemthongdiep300(data)">{{data.maThongDiepGui}}</a>
+                            </td>
+
+                            <td nzAlign="center" [ngClass]="{'grayCell': data.thongDiepChungId == null}">
+                                <a (click)="xemFileXML(data.idTDiepTBaoPhanHoiCuaCQT)">
+                                  {{data.mauSoTBaoPhanHoiTuCQT}}<br>{{data.soTBaoPhanHoiTuCQT}}<br>{{data?.ngayTBaoPhanHoiTuCQT | date:'dd/MM/yyyy'}}
+                                </a>
+                            </td>
+
+                            <td [ngClass]="{'grayCell': data.thongDiepChungId == null}">
+                                <app-tag-status-gui-xml (click)="viewLichSuTruyenNhan(data)" [loai]="data?.trangThaiGui" [ten]="data?.tenTrangThaiGui">
+                                </app-tag-status-gui-xml>
+                                <span *ngIf="data.trangThaiGui == 2 || data.trangThaiGui  == 4 || data.trangThaiGui == 6 || data.trangThaiGui == 7 || data.trangThaiGui == 9  || data.trangThaiGui == 10  || data.trangThaiGui == 11 || data.trangThaiGui == 14" class="circleViewLoi">
+                                <app-mo-ta-loi [maThongDiep]="data.maThongDiepGui ? data.maThongDiepGui : null" [thongDiepChungId]="data.maThongDiepGui ? null : data.thongDiepChungId"></app-mo-ta-loi>
+
+                                  <!-- <a href="javascript:void(0)" (click)="viewLoi(data.maThongDiepGui)"
+                                        class="linkTaiLieuDinhKem" nz-tooltip nzTooltipTitle="Xem chi tiết">
+                                        <i nz-icon nzType="tags"></i>
+                                    </a> -->
+                                </span>
+                            </td>
+
+                            <td nzAlign="center" [ngStyle]="{'background-color': data.colorHex}">
+                                {{data.mauHoaDon}}<br>{{data.kyHieuHoaDon}}
+                            </td>
+
+                            <td nzAlign="center" [ngStyle]="{'background-color': data.colorHex}">
+                                <span *ngIf="data.laHoaDonNgoaiHeThong != true"><a
+                                        (click)="xemHoaDon(data.hoaDonDienTuId)">{{ data.soHoaDon
+                                        }}</a><br>{{data.ngayLapHoaDon | date:'dd/MM/yyyy'}}</span>
+                                <span *ngIf="data.laHoaDonNgoaiHeThong == true">{{ data.soHoaDon
+                                    }}<br>{{data.ngayLapHoaDon | date:'dd/MM/yyyy'}}</span>
+                            </td>
+
+                            <td [ngStyle]="{'background-color': data.colorHex}" title="{{data.maCQTCap}}">
+                                {{data.maCQTCap}}</td>
+
+                            <td [ngStyle]="{'background-color': data.colorHex}" nzAlign="right">
+                                {{data?.tongTienThanhToan | formatPrice:true:(data.maLoaiTien == 'VND' ? ddtp.getTienQuyDoi() : ddtp.getTienNgoaiTe())}}
+                                <br><span *ngIf="data?.tongTienThanhToan != null">&nbsp;{{data.maLoaiTien}}</span>
+                            </td>
+                            <td [ngStyle]="{'background-color': data.colorHex}" nzAlign="center" [title]="this.getTitleLoaiHoaDon(data.loaiApDungHoaDon)">
+                                <span *ngIf="data.loaiApDungHoaDon > 0">{{data.loaiApDungHoaDon}}</span>
+                            </td>
+                            <td [ngStyle]="{'background-color': data.colorHex}" title="{{data.loaiHoaDon}}">
+                                {{data.loaiHoaDon}}</td>
+                            <td [ngStyle]="{'background-color': data.colorHex}">
+                                <ng-container *ngIf="data?.trangThaiHoaDon != null">
+                                    <ng-container *ngIf="data?.laHoaDonNgoaiHeThong != true">
+                                        <span *ngIf="data?.trangThaiHoaDon?.trangThai == 1" class="lightBlueRoundedShape">{{txtHD_PXK_UPPER}} gốc</span>
+                                        <span *ngIf="data?.trangThaiHoaDon?.trangThai == 2" class="grayRoundedShape">{{txtHD_PXK_UPPER}} hủy</span>
+                                        <span *ngIf="data?.trangThaiHoaDon?.trangThai == 3" class="hoaDonThayTheRoundedShape">{{txtHD_PXK_UPPER}} thay thế</span>
+                                        <span *ngIf="data?.trangThaiHoaDon?.trangThai == 4 && data?.trangThaiHoaDon?.loaiDieuChinh == 1">
+                                            <span class="hoaDonDieuChinhRoundedShape" title="{{txtHD_PXK_UPPER}} điều chỉnh tăng">
+                                                {{txtHD_PXK_UPPER}} điều
+                                                chỉnh
+                                                <span class="circleHoaDonDieuChinhTang"><i nz-icon nzType="arrow-up"
+                                                        nzTheme="outline"></i>
+                                                </span>
+                                        </span>
+                                        </span>
+
+                                        <span *ngIf="data?.trangThaiHoaDon?.trangThai == 4 && data?.trangThaiHoaDon?.loaiDieuChinh == 2">
+                                            <span class="hoaDonDieuChinhRoundedShape" title="{{txtHD_PXK_UPPER}} điều chỉnh giảm">
+                                                {{txtHD_PXK_UPPER}} điều
+                                                chỉnh
+                                                <span class="circleHoaDonDieuChinhGiam">
+                                                    <i nz-icon nzType="arrow-down" nzTheme="outline"></i>
+                                                </span>
+                                        </span>
+                                        <span *ngIf="data.daBiDieuChinh == true" style="color: #ed7d31;"> | Bị điều
+                                                chỉnh</span>
+                                        </span>
+
+                                        <span *ngIf="data?.trangThaiHoaDon?.trangThai == 4 && data?.trangThaiHoaDon?.loaiDieuChinh == 3">
+                                            <span class="hoaDonDieuChinhRoundedShape"
+                                                title="{{txtHD_PXK_UPPER}} điều chỉnh thông tin">
+                                                {{txtHD_PXK_UPPER}} điều
+                                                chỉnh
+                                                <span class="circleHoaDonDieuChinhThongTin">
+                                                    <i nz-icon nzType="info" nzTheme="outline"></i>
+                                                </span>
+                                        </span>
+                                        <span *ngIf="data.daBiDieuChinh == true" style="color: #ed7d31;"> | Bị điều
+                                                chỉnh</span>
+                                        </span>
+                                    </ng-container>
+                                    <ng-container *ngIf="data?.laHoaDonNgoaiHeThong == true">
+                                        <span *ngIf="data?.trangThaiHoaDon?.trangThai == 1" class="hoaDonNgoaiHeThongRoundedShape">Hóa đơn gốc</span>
+                                        <span *ngIf="data?.trangThaiHoaDon?.trangThai == 3" class="hoaDonNgoaiHeThongRoundedShape">Thay thế</span>
+                                        <span *ngIf="data?.trangThaiHoaDon?.trangThai == 4" class="hoaDonNgoaiHeThongRoundedShape">Điều chỉnh</span>
+                                    </ng-container>
+                                    <span class="colorDienGiai" [innerHTML]="data?.trangThaiHoaDon?.dienGiaiTrangThai"></span>
+                                </ng-container>
+                            </td>
+
+                            <td [ngStyle]="{'background-color': data.colorHex}">
+                                <a (click)="xemHoaDonChungTuLienQuan(data)">{{getChungTuLienQuan(data.chungTuLienQuan)}}</a>
+                            </td>
+                            <td [ngStyle]="{'background-color': data.colorHex}" title="{{data.loaiSaiSot}}">
+                                {{data.loaiSaiSot}}</td>
+                            <td style="white-space: pre-wrap !important;" [ngStyle]="{'background-color': data.colorHex}" title="{{data.lyDo}}">{{data.lyDo}}</td>
+                        </tr>
+                    </ng-container>
+                    <tr class="total-footer" *ngIf="listData.length == 0">
+                        <td colspan="16">Không có dữ liệu hiển thị.</td>
+                    </tr>
+                </tbody>
+                <tfoot *ngIf="listData.length > 0" class="total-footer">
+                    <td colspan="1">Số dòng = {{listData.length}}</td>
+                    <td colspan="15"></td>
+                </tfoot>
+            </nz-table>
+        </div>
+    </div>
+
+    <div *nzModalFooter style="padding: 0px 3px;">
+        <div style="float: left">
+            <button nz-button nzType="default" (click)="chonThamSoBangKeHoaDonSaiSot()" class="filterDefaultButton" nzSize="small"><i nz-icon nzSize="small" nzType="select"></i>Chọn lại</button>
+            <button nz-button nzType="default" (click)="exportExcel()" class="blueButton" nzSize="small"><i nz-icon
+                    nzSize="small" nzType="vertical-align-bottom"></i>Xuất khẩu</button>
+            <button nz-button nzType="default" (click)="loadData()" class="yellowReloadButton" nzSize="small"><i nz-icon
+                    nzSize="small" nzType="reload"></i>Tải lại</button> &nbsp;
+            <label nz-checkbox [(ngModel)]="this.params.khongHienThiThongTinGiongNhau">Không hiển thị thông tin giống
+                nhau</label>
+        </div>
+
+        <button nz-button nzType="default" (click)="closeModal()" class="button-cancel" nzSize="small"><i nz-icon
+                nzSize="small" nzType="close"></i>Đóng</button>
+    </div>
+</nz-spin>

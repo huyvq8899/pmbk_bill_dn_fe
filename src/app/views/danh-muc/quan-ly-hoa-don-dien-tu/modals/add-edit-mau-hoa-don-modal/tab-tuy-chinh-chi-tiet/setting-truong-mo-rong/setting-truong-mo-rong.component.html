@@ -1,0 +1,49 @@
+<div class="config-truong-du-lieu-container" *ngIf="formData">
+  <div class="config-title">
+    Thiết lập trường dữ liệu
+  </div>
+  <div class="config-row">
+    <div>Tên trường dữ liệu (*)</div>
+    <div>
+      <input type="text" nz-input [(ngModel)]="formData.tenTruongDuLieu" disabled />
+    </div>
+  </div>
+  <div class="config-row">
+    <div>Tên tiêu đề (*)</div>
+    <div>
+      <input type="text" nz-input [(ngModel)]="formData.tieuDeCot" placeholder="Tên trường" />
+    </div>
+  </div>
+  <div class="config-row">
+    <div>Tên tiêu đề tiếng anh</div>
+    <div>
+      <input type="text" nz-input [(ngModel)]="formData.tieuDeCotTiengAnh" placeholder="Tên trường tiếng anh" />
+    </div>
+  </div>
+  <div class="config-row">
+    <div>Kiểu dữ liệu (*) {{formData.kieuDuLieu}}</div>
+    <div>
+      <nz-select style="width: 100%;" [(ngModel)]="formData.kieuDuLieu" nzShowSearch
+        (ngModelChange)="changeKieuDuLieu($event)">
+        <nz-option *ngFor="let item of kieuDuLieus" [nzLabel]="item.text" [nzValue]="item.value"> </nz-option>
+      </nz-select>
+    </div>
+  </div>
+  <div class="config-row">
+    <div>Giá trị mặc định</div>
+    <div>
+      <input [type]="formData.kieuDuLieu === 4 ? 'date' : 'text'"
+        [style.text-align]="(formData.kieuDuLieu === 2 || formData.kieuDuLieu === 3 || formData.kieuDuLieu === 5) ? 'right' : 'left'"
+        nz-input [(ngModel)]="formData.giaTriMacDinh"
+        [placeholder]="formData.kieuDuLieu === 1 ? 'Giá trị mặc định' : ''" />
+    </div>
+  </div>
+  <!-- <div nz-row class="config-row">
+    <div nz-col nzSpan="12">
+      <button nz-button nzType="default" (click)="cancelSetting()" class="button-cancel">Hủy</button>
+    </div>
+    <div nz-col nzSpan="12" style="text-align: right;">
+      <button nz-button nzType="default" (click)="acceptSetting()" class="blueButton">Chọn</button>
+    </div>
+  </div> -->
+</div>

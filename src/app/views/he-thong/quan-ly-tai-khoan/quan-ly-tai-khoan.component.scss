@@ -1,0 +1,60 @@
+:host ::ng-deep .ant-badge-dot {
+    background: #7abd1a;
+  }
+  :host ::ng-deep .ant-table-tbody > tr:hover:not(.ant-table-expanded-row) > td {
+    background: var(--row-hover-color)!important;
+  }
+  :host ::ng-deep .ant-table-small>.ant-table-content>.ant-table-scroll>.ant-table-body>table {
+    // background: #f0f2f5;
+  }
+  .listmanagers {
+    margin-left: -20px; 
+    // background: #7abd1a;
+    cursor: pointer;
+    // color: white;
+    transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+    &:hover {
+        box-shadow: 0 14px 40px #023a7752, 0 6px 10px #0031675c;
+        // background: lightblue;
+    }
+  }
+  .avauser {
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+    &:hover {
+        box-shadow: 0 14px 40px #023a7752, 0 6px 10px #0031675c;
+        // background: lightblue;
+    }
+  }
+  .setStar {
+    color: red;
+  }
+  .menupop {
+    padding-left: 5px !important;
+    margin: 0px !important;
+    height: auto;
+    line-height: 30px;
+  }
+  ::ng-deep .cdk-drag-preview {
+    display: table;
+  }
+
+  .row-selected {
+    background: var(--row-selected-color) !important;
+    // border-top: 1px dotted black !important;
+    // border-bottom: 1px dotted black !important;
+  }
+  
+  ::ng-deep .cdk-drag-placeholder {
+    opacity: 0;
+  }
+  .viewFullScreen {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: white;
+    z-index: 1001;
+  }
+  

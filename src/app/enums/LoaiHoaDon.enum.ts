@@ -1,0 +1,18 @@
+export enum LoaiHoaDon {
+    TatCa = -1,
+    None,
+    HoaDonGTGT = 1,
+    HoaDonBanHang = 2,
+    HoaDonBanTaiSanCong = 3,
+    HoaDonBanHangDuTruQuocGia = 4,
+    CacLoaiHoaDonKhac = 5,
+    CacCTDuocInPhatHanhSuDungVaQuanLyNhuHD = 6,
+    PXKKiemVanChuyenNoiBo = 7,
+    PXKHangGuiBanDaiLy = 8,
+    HoaDonGTGTCMTMTT = 9,
+    HoaDonBanHangCMTMTT = 10,
+    HoaDonKhacCMTMTT = 13,
+    TemVeGTGT = 14,
+    TemVeBanHang = 15,
+    TemVeDuLich = 16,
+}

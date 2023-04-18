@@ -1,0 +1,90 @@
+@import "../../../../../../shared/scss/modal.scss";
+
+.slick-slider {
+    width: 100%;
+    margin: auto;
+    background: rgba(119, 119, 119, 0.6);
+    padding: 20px 0;
+}
+
+// img {
+//     transform: translate(0, 0) scale(0.6);
+//     transition: all 0.4s ease;
+//     // opacity: 0.5;
+// }
+
+.footer-info {
+    display: none;
+}
+
+.selected-item {
+    border: 2px solid #047be8;
+    padding: 3px;
+    border-radius: 4px;
+    transition: all 0.4s ease;
+
+    .footer-info {
+        background-color: #b9b7b7;
+        display: block;
+        text-align: center;
+        padding: 5px 5px 0 5px;
+    }
+}
+
+// .slide img {
+//     box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.15);
+// }
+
+// .slick-slide .lt2 {
+//     transform: translate(10%, 0) scale(0.6);
+// }
+// .slick-slide .lt1 {
+//     // opacity: 0.7;
+//     transform: translate(-4%, 0) scale(0.8);
+// }
+// .slick-slide .gt1 {
+//     // opacity: 0.7;
+//     transform: translate(4%, 0) scale(0.8);
+// }
+// .slick-slide .gt2 {
+//     transform: translate(-10%, 0) scale(0.6);
+// }
+// .slick-slide .slick-center {
+//     z-index: 1;
+//     transform: scale(1);
+//     opacity: 1;
+// }
+
+.template-card {
+    padding: 15px;
+    width: 100%;
+    // transition: transform .2s;
+
+    .template-footer {
+        position: relative;
+        width: 84%;
+        background-color: #c4d3ef;
+        text-align: center;
+        padding: 5px;
+        font-weight: bold;
+
+        button {
+            visibility: hidden;
+            position: absolute;
+            top: 3px;
+            right: 3px;
+        }
+    }
+
+    .template-img {
+        cursor: pointer;
+    }
+}
+
+.visible {
+    visibility: visible !important;
+}
+
+.footer-info {
+    background: rgba(19, 19, 20, 0.6);
+}

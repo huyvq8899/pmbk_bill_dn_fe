@@ -1,0 +1,477 @@
+<nz-spin [nzSpinning]="spinning">
+  <form nz-form [formGroup]="hoSoHDDTForm" *ngIf="hoSoHDDTForm" style="border: solid 1px #d1d1d1">
+    <div style="overflow-y: scroll; max-height: calc(100vh - 170px)!important;">
+      <div nz-row class="inner-content">
+        <div nz-col nzSpan="24">
+          <div nz-row class="title">Thông tin đơn vị</div>
+          <nz-form-item nz-row>
+            <nz-form-label [nzSm]="3" [nzXs]="24">Mã số thuế (*)</nz-form-label>
+            <nz-form-control [nzOffset]="1" [nzSm]="2" [nzXs]="24">
+              <input nz-input nzSize="small" formControlName="maSoThue" tooltipInput />
+            </nz-form-control>
+            <nz-form-label [nzOffset]="1" [nzSm]="2" [nzXs]="24">Tên đơn vị (*)</nz-form-label>
+            <nz-form-control [nzSm]="15" [nzXs]="24" [nzErrorTip]="errorTenDonVi">
+              <input placeholder="Nhập tên đơn vị. Bắt buộc"
+                [disabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0" nz-input nzSize="small"
+                formControlName="tenDonVi" tooltipInput />
+              <ng-template #errorTenDonVi let-control>
+                <ng-container *ngIf="control.hasError('required')">
+                  <div class="tooltip-error">&lt;Tên đơn vị&gt; không được để trống.</div>
+                </ng-container>
+                <ng-container *ngIf="control.hasError('maxlength')">
+                  <div class="tooltip-error">&lt;Tên đơn vị&gt; không nhập quá 400 ký tự.</div>
+                </ng-container>
+              </ng-template>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item nz-row>
+            <nz-form-label [nzSm]="3" [nzXs]="24">Địa chỉ (*)</nz-form-label>
+            <nz-form-control [nzOffset]="1" [nzSm]="20" [nzXs]="24" [nzErrorTip]="errorDiaChi">
+              <input placeholder="Nhập địa chỉ. Bắt buộc"
+                [disabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0" nz-input nzSize="small"
+                formControlName="diaChi" tooltipInput />
+              <ng-template #errorDiaChi let-control>
+                <ng-container *ngIf="control.hasError('required')">
+                  <div class="tooltip-error">&lt;Địa chỉ&gt; không được để trống.</div>
+                </ng-container>
+                <ng-container *ngIf="control.hasError('maxlength')">
+                  <div class="tooltip-error">&lt;Địa chỉ&gt; không nhập quá 400 ký tự.</div>
+                </ng-container>
+              </ng-template>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item nz-row>
+            <nz-form-label [nzSm]="3" [nzXs]="24">Danh mục ngành nghề (*)</nz-form-label>
+            <nz-form-control [nzOffset]="1" [nzSm]="20" [nzXs]="24" [nzErrorTip]="errorDanhMucNganhNghe">
+              <nz-select nzPlaceHolder="Chọn trong danh mục. Bắt buộc"
+                [disabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0" nzSize="small" nzShowSearch
+                formControlName="nganhNghe" tooltipInput>
+                <nz-option *ngFor="let item of nganhNgheKinhDoanhChinhs" [nzLabel]="item" [nzValue]="item">
+                </nz-option>
+              </nz-select>
+              <ng-template #errorDanhMucNganhNghe let-control>
+                <ng-container *ngIf="control.hasError('required')">
+                  <div class="tooltip-error">&lt;Danh mục ngành nghề&gt; không được để trống.</div>
+                </ng-container>
+              </ng-template>
+            </nz-form-control>
+          </nz-form-item>
+          <!-- <nz-form-item nz-row>
+            <nz-form-label [nzSm]="3" [nzXs]="24">Ngành nghề kinh doanh chính (*)</nz-form-label>
+            <nz-form-control [nzOffset]="1" [nzSm]="20" [nzXs]="24"  [nzErrorTip]="errorNganhNgheKinhDoanhChinh">
+              <input placeholder="Nhập ngành nghề kinh doanh chính. Bắt buộc" [disabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0" nz-input nzSize="small" formControlName="nganhNgheKinhDoanhChinh"/>
+              <ng-template #errorNganhNgheKinhDoanhChinh let-control>
+                <ng-container *ngIf="control.hasError('required')">
+                  <div class="tooltip-error">&lt;Ngành nghề kinh doanh chính&gt; không được để trống.</div>
+                </ng-container>
+              </ng-template>
+            </nz-form-control>
+          </nz-form-item> -->
+        </div>
+      </div>
+
+      <div nz-row class="inner-content">
+        <div nz-row class="title">Thông tin quản lý thuế</div>
+        <div nz-row nzGutter="16">
+          <nz-form-item nz-col nzSpan="12">
+            <nz-form-label [nzSm]="6" [nzXs]="24" [nzNoColon]="true">Kỳ kê khai thuế GTGT
+              <i nz-icon class="info-circle" [nzTheme]="'fill'" nzType="info-circle"
+                nzTooltipTitle='Tiêu chí khai thuế theo quý đối với thuế giá trị gia tăng và thuế thu nhập cá nhân quy định tại Điều 9 của Nghị định số 126/2020/NĐ-CP.'
+                nzTooltipPlacement="rightTop" nz-tooltip></i>
+              <span>:</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="18" [nzXs]="24" style="padding-top: 4px;">
+              <nz-radio-group formControlName="kyTinhThue" (ngModelChange)="changeKyKeKhai()">
+                <label nz-radio [nzValue]="0">Tháng</label>
+                <label nz-radio [nzValue]="1">Quý</label>
+              </nz-radio-group>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item nz-col nzSpan="12">
+            <nz-form-label [nzSm]="7" [nzXs]="24">Phương pháp tính thuế GTGT (*)</nz-form-label>
+            <nz-form-control [nzSm]="17" [nzXs]="24" [nzErrorTip]="errorPPT">
+              <nz-select nzPlaceHolder="Chọn trong danh mục. Bắt buộc"
+                [disabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0" nzSize="small" nzShowSearch
+                formControlName="phuongPhapTinhThueGTGT" tooltipInput>
+                <nz-option *ngFor="let item of phuongPhapTinhs" [nzLabel]="item" [nzValue]="item">
+                </nz-option>
+              </nz-select>
+              <ng-template #errorPPT let-control>
+                <ng-container *ngIf="control.hasError('required')">
+                  <div class="tooltip-error">&lt;Phương pháp tính thuế GTGT&gt; không được để trống.</div>
+                </ng-container>
+              </ng-template>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-row nzGutter="16">
+          <nz-form-item nz-col nzSpan="12">
+            <nz-form-label [nzSm]="24" [nzXs]="24">Cơ quan thuế cấp cục | Mã cơ quan thuế (*)</nz-form-label>
+            <nz-form-control [nzSm]="24" [nzXs]="24" [nzErrorTip]="errorCoQuanThueCapCuc">
+              <nz-select nzPlaceHolder="Chọn trong danh mục. Bắt buộc"
+                [disabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0" nzSize="small" nzShowSearch
+                formControlName="coQuanThueCapCuc" (ngModelChange)="changeCoQuanThueCapCuc($event)" tooltipInput>
+                <nz-option *ngFor="let item of coQuanThueCapCucs" nzCustomContent [nzLabel]="item?.displayName"
+                  [nzValue]="item?.code">
+                  {{item.displayName}}
+                </nz-option>
+              </nz-select>
+              <ng-template #errorCoQuanThueCapCuc let-control>
+                <ng-container *ngIf="control.hasError('required')">
+                  <div class="tooltip-error">&lt;Cơ quan thuế cấp cục&gt; không được để trống.</div>
+                </ng-container>
+              </ng-template>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item nz-col nzSpan="12">
+            <nz-form-label [nzSm]="24" [nzXs]="24">Cơ quan thuế quản lý | Mã cơ quan thuế (*)</nz-form-label>
+            <nz-form-control [nzSm]="24" [nzXs]="24" [nzErrorTip]="errorCoQuanThueQuanLy">
+              <nz-select nzPlaceHolder="Chọn trong danh mục. Bắt buộc"
+                [disabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0" nzSize="small" nzShowSearch
+                formControlName="coQuanThueQuanLy" (ngModelChange)="changeCoQuanThueQuanLy($event)" tooltipInput>
+                <nz-option *ngFor="let item of coQuanThueQuanLysByCapCuc" nzCustomContent [nzLabel]="item?.displayName"
+                  [nzValue]="item?.code">
+                  {{item.displayName}}
+                </nz-option>
+              </nz-select>
+              <ng-template #errorCoQuanThueQuanLy let-control>
+                <ng-container *ngIf="control.hasError('required')">
+                  <div class="tooltip-error">&lt;Cơ quan thuế quản lý&gt; không được để trống.</div>
+                </ng-container>
+              </ng-template>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <div nz-row class="inner-content">
+        <div nz-row class="title">Người đại diện pháp luật</div>
+        <div nz-row nzGutter="16">
+          <nz-form-item nz-col nzSpan="6">
+            <nz-form-label [nzSm]="24" [nzXs]="24">Họ và tên (*)</nz-form-label>
+            <nz-form-control [nzSm]="24" [nzXs]="24" [nzErrorTip]="errorHoTenNguoiDaiDienPhapLuat">
+              <input placeholder="Nhập họ tên người đại diện pháp luật. Bắt buộc"
+                [disabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0" nz-input nzSize="small"
+                formControlName="hoTenNguoiDaiDienPhapLuat" tooltipInput />
+              <ng-template #errorHoTenNguoiDaiDienPhapLuat let-control>
+                <ng-container *ngIf="control.hasError('required')">
+                  <div class="tooltip-error">&lt;Họ và tên&gt; không được để trống.</div>
+                </ng-container>
+              </ng-template>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item nz-col nzSpan="6">
+            <nz-form-label [nzSm]="24" [nzXs]="24">Email (*)</nz-form-label>
+            <nz-form-control [nzSm]="24" [nzXs]="24" [nzErrorTip]="errorEmailNguoiDaiDienPhapLuat">
+              <input placeholder="Nhập email người đại diện pháp luật. Bắt buộc"
+                [disabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0" nz-input nzSize="small"
+                formControlName="emailNguoiDaiDienPhapLuat" tooltipInput />
+              <ng-template #errorEmailNguoiDaiDienPhapLuat let-control>
+                <ng-container *ngIf="control.hasError('required')">
+                  <div class="tooltip-error">&lt;Email&gt; không được để trống.</div>
+                </ng-container>
+                <ng-container *ngIf="control.hasError('invalid')">
+                  <div class="tooltip-error">Địa chỉ email &lt;{{control.getError('email')}}&gt; không đúng định dạng.
+                  </div>
+                </ng-container>
+                <ng-container *ngIf="control.hasError('maxlength')">
+                  <div class="tooltip-error">&lt;Email&gt; không nhập quá 50 ký tự.</div>
+                </ng-container>
+              </ng-template>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item nz-col nzSpan="6">
+            <nz-form-label [nzSm]="24" [nzXs]="24">Số điện thoại (*)</nz-form-label>
+            <nz-form-control [nzSm]="24" [nzXs]="24" [nzErrorTip]="errorSoDienThoaiNguoiDaiDienPhapLuat">
+              <input placeholder="Nhập số điện thoại người đại diện pháp luật. Bắt buộc"
+                [disabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0" nz-input nzSize="small"
+                formControlName="soDienThoaiNguoiDaiDienPhapLuat" tooltipInput />
+              <ng-template #errorSoDienThoaiNguoiDaiDienPhapLuat let-control>
+                <ng-container *ngIf="control.hasError('required')">
+                  <div class="tooltip-error">&lt;Số điện thoại&gt; không được để trống.</div>
+                </ng-container>
+                <ng-container *ngIf="control.hasError('invalid')">
+                  <div class="tooltip-error">Số điện thoại &lt;{{control.getError('phone')}}&gt; không đúng định dạng.
+                  </div>
+                </ng-container>
+                <ng-container *ngIf="control.hasError('maxlength')">
+                  <div class="tooltip-error">&lt;Số điện thoại&gt; không nhập quá 20 ký tự.</div>
+                </ng-container>
+              </ng-template>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <div nz-row class="inner-content">
+        <div nz-row class="title">Thông tin liên hệ</div>
+        <div nz-row nzGutter="16">
+          <nz-form-item nz-col nzSpan="6">
+            <nz-form-label [nzSm]="24" [nzXs]="24">Email (*)</nz-form-label>
+            <nz-form-control [nzSm]="24" [nzXs]="24" [nzErrorTip]="errorEmailLienHe">
+              <input placeholder="Nhập email liên hệ. Bắt buộc"
+                [disabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0" nz-input nzSize="small"
+                formControlName="emailLienHe" tooltipInput />
+              <ng-template #errorEmailLienHe let-control>
+                <ng-container *ngIf="control.hasError('required')">
+                  <div class="tooltip-error">&lt;Email&gt; không được để trống.</div>
+                </ng-container>
+                <ng-container *ngIf="control.hasError('invalid')">
+                  <div class="tooltip-error">Địa chỉ email &lt;{{control.getError('email')}}&gt; không đúng định dạng.
+                  </div>
+                </ng-container>
+                <ng-container *ngIf="control.hasError('maxlength')">
+                  <div class="tooltip-error">&lt;Email&gt; không nhập quá 50 ký tự.</div>
+                </ng-container>
+              </ng-template>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item nz-col nzSpan="6">
+            <nz-form-label [nzSm]="24" [nzXs]="24">Số điện thoại (*)</nz-form-label>
+            <nz-form-control [nzSm]="24" [nzXs]="24" [nzErrorTip]="errorSoDienThoaiLienHe">
+              <input placeholder="Nhập số điện thoại liên hệ. Bắt buộc"
+                [disabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0" nz-input nzSize="small"
+                formControlName="soDienThoaiLienHe" tooltipInput />
+              <ng-template #errorSoDienThoaiLienHe let-control>
+                <ng-container *ngIf="control.hasError('required')">
+                  <div class="tooltip-error">&lt;Số điện thoại&gt; không được để trống.</div>
+                </ng-container>
+                <ng-container *ngIf="control.hasError('invalid')">
+                  <div class="tooltip-error">Số điện thoại &lt;{{control.getError('phone')}}&gt; không đúng định dạng.
+                  </div>
+                </ng-container>
+                <ng-container *ngIf="control.hasError('maxlength')">
+                  <div class="tooltip-error">&lt;Số điện thoại&gt; không nhập quá 20 ký tự.</div>
+                </ng-container>
+              </ng-template>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item nz-col nzSpan="6">
+            <nz-form-label [nzSm]="24" [nzXs]="24">Fax</nz-form-label>
+            <nz-form-control [nzSm]="24" [nzXs]="24"  [nzErrorTip]="errorFaxNguoiBan">
+              <input placeholder="Nhập fax" [disabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0"
+                nz-input nzSize="small" formControlName="fax" tooltipInput/>
+                <ng-template #errorFaxNguoiBan let-control>
+                  <ng-container *ngIf="control.hasError('maxlength')">
+                    <div class="tooltip-error">&lt;Fax&gt; không nhập quá 20 ký tự.</div>
+                  </ng-container>
+                </ng-template>
+
+            </nz-form-control>
+
+          </nz-form-item>
+          <nz-form-item nz-col nzSpan="6">
+            <nz-form-label [nzSm]="24" [nzXs]="24">Website</nz-form-label>
+            <nz-form-control [nzSm]="24" [nzXs]="24" [nzErrorTip]="errorWebSiteNguoiBan">
+              <input placeholder="Nhập website" [disabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0"
+                nz-input nzSize="small" formControlName="website" tooltipInput/>
+                <ng-template #errorWebSiteNguoiBan let-control>
+                  <ng-container *ngIf="control.hasError('maxlength')">
+                    <div class="tooltip-error">&lt;Website&gt; không nhập quá 100 ký tự.</div>
+                  </ng-container>
+                </ng-template>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <div nz-row class="inner-content">
+        <div nz-row class="title">Thông tin thanh toán</div>
+        <div nz-row nzGutter="16">
+          <nz-form-item nz-col nzSpan="6">
+            <nz-form-label [nzSm]="24" [nzXs]="24">Số tài khoản ngân hàng</nz-form-label>
+            <nz-form-control [nzSm]="24" [nzXs]="24" [nzErrorTip]="errorSoTaiKhoanNganHang">
+              <input placeholder="Nhập số tài khoản ngân hàng"
+                [disabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0" nz-input nzSize="small"
+                formControlName="soTaiKhoanNganHang" tooltipInput />
+              <ng-template #errorSoTaiKhoanNganHang let-control>
+                <ng-container *ngIf="control.hasError('required')">
+                  <div class="tooltip-error">&lt;Số tài khoản ngân hàng&gt; không được để trống.</div>
+                </ng-container>
+                <ng-container *ngIf="control.hasError('maxlength')">
+                  <div class="tooltip-error">&lt;Số tài khoản ngân hàng&gt; không nhập quá 30 ký tự.</div>
+                </ng-container>
+              </ng-template>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item nz-col nzSpan="12">
+            <nz-form-label [nzSm]="24" [nzXs]="24">Tên ngân hàng</nz-form-label>
+            <nz-form-control [nzSm]="24" [nzXs]="24" [nzErrorTip]="errorTenNganHang">
+              <input placeholder="Nhập tên ngân hàng"
+                [disabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0" nz-input nzSize="small"
+                formControlName="tenNganHang" tooltipInput />
+              <ng-template #errorTenNganHang let-control>
+                <ng-container *ngIf="control.hasError('required')">
+                  <div class="tooltip-error">&lt;Tên ngân hàng&gt; không được để trống.</div>
+                </ng-container>
+                <ng-container *ngIf="control.hasError('maxlength')">
+                  <div class="tooltip-error">&lt;Số tài khoản ngân hàng&gt; không nhập quá 400 ký tự.</div>
+                </ng-container>
+              </ng-template>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item nz-col nzSpan="6">
+            <nz-form-label [nzSm]="24" [nzXs]="24">Chi nhánh</nz-form-label>
+            <nz-form-control [nzSm]="24" [nzXs]="24" [nzErrorTip]="errorChiNhanh">
+              <input placeholder="Nhập chi nhánh ngân hàng"
+                [disabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0" nz-input nzSize="small"
+                formControlName="chiNhanh" tooltipInput />
+              <ng-template #errorChiNhanh let-control>
+                <ng-container *ngIf="control.hasError('required')">
+                  <div class="tooltip-error">&lt;Chi nhánh&gt; không được để trống.</div>
+                </ng-container>
+              </ng-template>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <div nz-row class="inner-content">
+        <div nz-row class="title">Danh sách chứng thư số sử dụng</div>
+        <div nz-row>
+          <div nz-col nzSpan="22"></div>
+          <div nz-col nzSpan="2">
+            <button nz-button nzType="default" nzSize="small" [disabled]="disabledCTS" (click)="chonCTS()"
+              [nzLoading]="isAddCTS" [ngClass]="{'disabled-button-state': disabledCTS, 'blueButton': !disabledCTS}"
+              nz-tooltip [nzTooltipTitle]="this.isKymem != true ? 'Kết nối USB Token với thiết bị trước khi thao tác' : ''" style="float:right">
+
+              <i nz-icon nzType="usb" nzTheme="outline"></i>Chọn CTS
+            </button>
+          </div>
+        </div>
+        <nz-table style="margin-top: 2px!important" [nzNoResult]="null" nzSize="small" nzBordered #basicTable
+          nzShowPagination="false" [nzData]="this.hoSoHDDTForm.get('cTS').value" [nzWidthConfig]="widthConfigTabCTS"
+          [nzLoading]="loading" [nzScroll]="scrollConfigTabCTS">
+          <thead>
+            <tr>
+              <th rowspan="2" nzAlign="center" nzLeft="0px">
+                <button [disabled]="permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0" nz-button nzType="default"
+                  type="button" nzSize="small" (click)="addItem()"
+                  [ngClass]="{'disabled-button-state-circle': (permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0), 'circleButton': !((permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0))}"><i
+                    nz-icon nzType="plus" nzTheme="outline"></i></button>
+              </th>
+              <th rowspan="2" nzAlign="center" nzLeft="50px">STT</th>
+              <th rowspan="2" nzAlign="center">
+                Tên tổ chức/cơ quan chứng thực/cấp/công nhận chữ ký số, chữ ký điện tử
+              </th>
+              <th rowspan="2" nzAlign="center">
+                Số seri chứng thư
+              </th>
+              <th colspan="2" nzAlign="center">
+                Thời hạn sử dụng chứng thư số
+              </th>
+              <th rowspan="2" nzAlign="center">
+                Hình thức đăng ký (Thêm mới, gia hạn, ngừng sử dụng)
+              </th>
+            </tr>
+            <tr>
+              <th nzAlign="center">Từ ngày</th>
+              <th nzAlign="center">Đến ngày</th>
+            </tr>
+          </thead>
+          <tbody formArrayName="cTS">
+            <tr *ngFor="let data of hoSoHDDTForm.get('cTS')['controls']; let i = index" [formGroupName]="i"
+              (click)="selectCTS(data)" [class.row-selected]="data.selected">
+              <td nzAlign="center" nzLeft="0px">
+                <button [disabled]="(permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0)" nzSize="small"
+                  type="button" nz-button nzType="default" (click)="removeRowIdx(i)"
+                  [ngClass]="{'disabled-button-state-circle': (permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0), 'circleButtonRed': !((permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0))}">
+                  <i nz-icon nzType="minus" nzTheme="outline"></i></button>
+              </td>
+              <td nzAlign="center" nzLeft="50px">{{i+1}}</td>
+              <td nzAlign="center">
+                <nz-form-item>
+                  <nz-form-control [nzSm]="24" [nzXs]="24" [nzErrorTip]="errorTTC">
+                    <input nz-input nzSize="small" formControlName="tTChuc" style="width: 100%;"
+                      (ngModelChange)="checkTrung(i)">
+                    <ng-template #errorTTC let-control>
+                      <ng-container *ngIf="control.hasError('required')">
+                        <div class="tooltip-error">&lt;Tên tổ chức&gt; không được để trống.</div>
+                      </ng-container>
+                    </ng-template>
+                  </nz-form-control>
+                </nz-form-item>
+              </td>
+              <td nzAlign="center">
+                <nz-form-item>
+                  <nz-form-control [nzSm]="24" [nzXs]="24" [nzErrorTip]="errorSeri">
+                    <input nz-input nzSize="small" formControlName="seri" style="width: 100%;"
+                      (ngModelChange)="checkTrung(i)">
+                    <ng-template #errorSeri let-control>
+                      <ng-container *ngIf="control.hasError('required')">
+                        <div class="tooltip-error">&lt;Seri&gt; không được để trống.</div>
+                      </ng-container>
+                    </ng-template>
+                  </nz-form-control>
+                </nz-form-item>
+              </td>
+              <td nzAlign="center">
+                <nz-form-item>
+                  <nz-form-control [nzSm]="24" [nzXs]="24" [nzErrorTip]="errorTN">
+                    <input type="date" nz-input nzSize="small" formControlName="tNgay"
+                      style="width: 100%;text-align: center;" (ngModelChange)="checkTrung(i)">
+                    <ng-template #errorTN let-control>
+                      <ng-container *ngIf="control.hasError('required')">
+                        <div class="tooltip-error">&lt;Từ ngày&gt; không được để trống.</div>
+                      </ng-container>
+                    </ng-template>
+                  </nz-form-control>
+                </nz-form-item>
+              </td>
+              <td nzAlign="center">
+                <nz-form-item>
+                  <nz-form-control [nzSm]="24" [nzXs]="24" [nzErrorTip]="errorDN">
+                    <input type="date" nz-input nzSize="small" formControlName="dNgay"
+                      style="width: 100%;text-align: center;" (ngModelChange)="checkTrung(i)">
+                    <ng-template #errorDN let-control>
+                      <ng-container *ngIf="control.hasError('required')">
+                        <div class="tooltip-error">&lt;Đến ngày&gt; không được để trống.</div>
+                      </ng-container>
+                    </ng-template>
+                  </nz-form-control>
+                </nz-form-item>
+              </td>
+              <td nzAlign="center">
+                <nz-form-item>
+                  <nz-form-control [nzSm]="24" [nzXs]="24" [nzErrorTip]="errorHThuc">
+                    <nz-select nzSize="small" nzShowSearch formControlName="hThuc" tooltipInput
+                      (ngModelChange)="checkTrung(i)">
+                      <nz-option *ngFor="let item of hinhThucDangKys" [nzLabel]="item?.name" [nzValue]="item?.id">
+                      </nz-option>
+                    </nz-select>
+                    <ng-template #errorHThuc let-control>
+                      <ng-container *ngIf="control.hasError('required')">
+                        <div class="tooltip-error">&lt;Hình thức đăng ký&gt; không được để trống.</div>
+                      </ng-container>
+                    </ng-template>
+                  </nz-form-control>
+                </nz-form-item>
+              </td>
+            </tr>
+            <tr class="total-footer" *ngIf="hoSoHDDTForm.get('cTS').value.length <= 0">
+              <td colspan="24"> Không có dữ liệu hiển thị.
+              </td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </div>
+    </div>
+    <div nz-row style="border-top: solid 1px #d1d1d1; padding-top: 5px; padding-bottom: 5px;">
+      <div nz-col nzSpan="18" class="inner-content1">
+        <span *ngIf="note && note != ''" style="padding: 2px!important; background: #ec7d31!important;display: flex; justify-content: flex-start; align-items: center!important;box-shadow: 2px 2px #d1d1d1;">
+          <i nz-icon nzType="exclamation-circle" nzTheme="twotone" nzTwotoneColor="#ec7d31" style="font-weight: bold;"></i>&nbsp;
+          <span style="color: #fff!important;" [innerHtml]="note"></span>
+        </span>
+      </div>
+      <div nz-col nzSpan="3"></div>
+      <div nz-col nzSpan="3">
+        <button style="float:right;margin-right: 5px;" nzSize="small"
+          [disabled]="(!isAddNew && permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0) || !hoSoHDDTForm.dirty"
+          nz-button nzType="default" (click)="submitForm()"
+          [ngClass]="{'disabled-button-state-v2': (!isAddNew && permission != true && thaoTacs.indexOf('DM_FULL') < 0 && thaoTacs.indexOf('DM_UPDATE') < 0) || !hoSoHDDTForm.dirty,
+          'blueButton': !((!isAddNew && permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0) || !hoSoHDDTForm.dirty)}" [nzLoading]="spinning"><i nz-icon
+            nzType="check" nzTheme="outline"></i>Xác nhận</button>
+      </div>
+    </div>
+  </form>
+</nz-spin>

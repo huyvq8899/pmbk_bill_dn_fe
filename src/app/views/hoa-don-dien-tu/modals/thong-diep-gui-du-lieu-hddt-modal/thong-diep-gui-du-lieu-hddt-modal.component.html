@@ -1,0 +1,164 @@
+<nz-spin [nzSpinning]="spinning">
+  <form nz-form [formGroup]="mainForm" *ngIf="mainForm">
+    <div class="box-border">
+      <nz-form-item>
+        <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="kyHieu">Ký hiệu
+        </nz-form-label>
+        <nz-form-control [nzSm]="4" [nzXs]="24">
+          <input nzSize="small" nz-input formControlName="kyHieu" id="kyHieu" />
+        </nz-form-control>
+
+        <nz-form-label [nzOffset]="1" [nzSm]="7" [nzXs]="24" nzFor="tongTienThanhToan">Tổng tiền thanh toán
+        </nz-form-label>
+        <nz-form-control [nzSm]="8" [nzXs]="24">
+          <div class="tong-tien-wrapper">
+            <input class="input-tong-tien" bkCurrencyMask
+              [options]="{ precision: data.isVND ? ddtp.getTienQuyDoi() : ddtp.getTienNgoaiTe()}" nzSize="small"
+              nz-input formControlName="tongTienThanhToan" id="tongTienThanhToan" />
+            <span class="text-ma-tien">{{data.maLoaiTien}}</span>
+          </div>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="soHoaDon">Số hóa đơn
+        </nz-form-label>
+        <nz-form-control [nzSm]="4" [nzXs]="24">
+          <input nzSize="small" nz-input formControlName="soHoaDon" id="soHoaDon" />
+        </nz-form-control>
+
+        <nz-form-label [nzOffset]="1" [nzSm]="7" [nzXs]="24">Hình thức hóa đơn
+        </nz-form-label>
+        <nz-form-control [nzSm]="8" [nzXs]="24" style="text-align: right;">
+          <span class="status" [ngClass]="{
+            'status-orange': data.boKyHieuHoaDon.hinhThucHoaDon === 1,
+            'status-green': data.boKyHieuHoaDon.hinhThucHoaDon === 0
+          }">
+            {{data.boKyHieuHoaDon.tenHinhThucHoaDon}}
+          </span>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="ngayHoaDon">Ngày hóa đơn
+        </nz-form-label>
+        <nz-form-control [nzSm]="4" [nzXs]="24">
+          <input nzSize="small" nz-input formControlName="ngayHoaDon" id="ngayHoaDon" />
+        </nz-form-control>
+
+        <nz-form-label [nzOffset]="1" [nzSm]="7" [nzXs]="24">Ủy nhiệm lập hóa đơn
+        </nz-form-label>
+        <nz-form-control [nzSm]="8" [nzXs]="24" style="text-align: right;">
+          <span class="status" [ngClass]="{
+            'status-orange': data.boKyHieuHoaDon.uyNhiemLapHoaDon === 1,
+            'status-green': data.boKyHieuHoaDon.uyNhiemLapHoaDon === 0
+          }">
+            {{data.boKyHieuHoaDon.tenUyNhiemLapHoaDon}}
+          </span>
+        </nz-form-control>
+      </nz-form-item>
+
+      <!-- <nz-form-item *ngIf="data?.boKyHieuHoaDon.hinhThucHoaDon === 0">
+        <nz-form-label [nzOffset]="9" [nzSm]="7" [nzXs]="24">Phương thức chuyển dữ liệu
+        </nz-form-label>
+        <nz-form-control [nzSm]="8" [nzXs]="24" style="text-align: right;">
+          <span class="status status-green">
+            Từng hóa đơn
+          </span>
+        </nz-form-control>
+      </nz-form-item> -->
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="tenKhachHang">Tên khách hàng</nz-form-label>
+        <nz-form-control [nzSm]="20" [nzXs]="24">
+          <textarea nzSize="small" nz-input formControlName="tenKhachHang" id="tenKhachHang" rows="2"
+            title="{{mainForm.getRawValue().tenKhachHang}}"></textarea>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzOffset]="4" [nzSm]="6" [nzXs]="24">Trạng thái gửi hóa đơn</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" style="text-align: right;">
+          <span class="status" [ngClass]="{
+            'status-chua-gui-cho-kh': !isDaGuiEmailHoaDon,
+            'status-da-gui-cho-kh': isDaGuiEmailHoaDon
+          }">{{isDaGuiEmailHoaDon ? 'Đã' : 'Chưa' }} gửi cho khách hàng
+          </span>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <!-- <nz-form-item style="margin-bottom: 5px;">
+      <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="kyHieu" title="Ký hiệu hóa đơn">Ký hiệu HĐ
+      </nz-form-label>
+      <nz-form-control [nzSm]="8" [nzXs]="24">
+        <input nzSize="small" nz-input formControlName="kyHieu" id="kyHieu" />
+      </nz-form-control>
+  
+      <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="soHoaDon">Số hóa đơn</nz-form-label>
+      <nz-form-control [nzSm]="8" [nzXs]="24" nzErrorTip="Vui lòng nhập số phiếu!">
+        <input nzSize="small" nz-input formControlName="soHoaDon" id="soHoaDon" />
+      </nz-form-control>
+    </nz-form-item>
+    <div class="inner-content" nz-row>
+      <label style="float: right; margin-right: 5px;" nz-checkbox [(ngModel)]="chonLaiChungThuChuKySo"
+        [ngModelOptions]="{standalone: true}"> Chọn lại chứng thực chữ ký số</label>
+    </div>
+    <div nz-row class="inner-content">
+  
+      <div style="margin: 5px" class="box-border">
+        <span class="box-title"><label nz-checkbox [(ngModel)]="guiHoaDonChoKhachHang"
+            (ngModelChange)="changeGuiHoaDonChoKH($event)" [ngModelOptions]="{standalone: true}"></label> Gửi hóa đơn
+          cho khách hàng</span>
+        <nz-form-item>
+          <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="hoTenNguoiNhanHD" title="Tên khách hàng">Tên khách hàng
+          </nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <input type="text" nzSize="small" nz-input formControlName="hoTenNguoiNhanHD" />
+          </nz-form-control>
+        </nz-form-item>
+  
+        <nz-form-item>
+          <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="emailNguoiNhanHD" title="Email">Email
+          </nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <input nzSize="small" nz-input formControlName="emailNguoiNhanHD" />
+          </nz-form-control>
+        </nz-form-item>
+  
+        <nz-form-item style="margin-bottom: 5px;">
+          <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="soDienThoaiNguoiNhanHD" title="Số điện thoại">Số điện thoại
+          </nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <input nzSize="small" nz-input formControlName="soDienThoaiNguoiNhanHD" />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div> -->
+  </form>
+
+  <div *ngIf="!isDaGuiEmailHoaDon" style="text-align: justify !important; background-color: #FFF2CC; padding: 5px;">
+    Hệ thống ghi nhận người bán chưa gửi hóa đơn cho người mua. Khuyến nghị người bán thực hiện chức năng
+    <b>Gửi hóa đơn</b> để gửi hóa đơn cho người mua và đồng thời gửi hóa đơn cho cơ quan thuế
+  </div>
+</nz-spin>
+
+<div *nzModalFooter>
+  <div nz-row>
+    <div nz-col nzSpan="12" style="text-align: left;">
+      <button nzSize="small" nz-button nzType="default" class="blueButton" (click)="view()" [nzLoading]="spinning">
+        <i nz-icon nzSize="small" nzType="eye"></i>Xem hóa đơn
+      </button>
+    </div>
+    <div nz-col nzSpan="12">
+      <button nzSize="small" nz-button nzType="default" (click)="submitForm()" class="button-agree"
+        [nzLoading]="spinning">
+        <i nz-icon nzType="cloud-upload" nzTheme="outline"></i>Thực hiện
+      </button>
+      <button nzSize="small" nz-button nzType="default" (click)="closeModal()" class="button-cancel"
+        [nzLoading]="spinning">
+        <i nz-icon nzSize="small" nzType="close"></i>Hủy
+      </button>
+    </div>
+  </div>
+</div>

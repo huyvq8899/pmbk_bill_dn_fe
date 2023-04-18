@@ -1,0 +1,172 @@
+<div style="padding: 15px" id="ModalCanhBao">
+    <ng-container *ngIf="msMessageType == messageType.ConfirmBeforeClosing && !msTitle && !msContent">
+        <div class="LuuY" style="margin-bottom: 10px!important"><i nz-icon nzType="exclamation-circle" nzTheme="outline" class="customIcon"></i>Dữ liệu đã thay đổi</div>
+        <div>Bạn có thể chọn <span class="DongY boldText">Đồng ý</span> để lưu, chọn <span class="khong boldText">Không</span> để đóng hoặc <span class="QuayLai boldText">Quay lại</span> để tiếp tục!</div>
+    </ng-container>
+
+    <ng-container *ngIf="msMessageType == messageType.ConfirmBeforeClosing && msTitle && msContent">
+        <div class="LuuY" style="margin-bottom: 10px!important"><i nz-icon [nzType]="msQuestion ? 'question-circle' : 'exclamation-circle'" nzTheme="outline" class="customIcon"></i>{{msTitle}}</div>
+        <div [innerHTML]="msContent"></div>
+    </ng-container>
+
+    <ng-container *ngIf="msMessageType == messageType.Info && !msHasThongBaoSaiSot">
+        <div class="LuuY" style="margin-bottom: 10px!important; color: #0070C0!important"><i nz-icon nzType="info-circle" nzTheme="outline" class="customIcon"></i>{{msTitle}}</div>
+        <div [innerHTML]="msContent" class="justifiedText"></div>
+    </ng-container>
+
+    <ng-container *ngIf="msMessageType == messageType.InfoWithoutButton">
+        <div class="LuuY" style="margin-bottom: 10px!important; color: #0070C0!important"><i nz-icon nzType="info-circle" nzTheme="outline" class="customIcon"></i>{{msTitle}}</div>
+        <div [innerHTML]="msContent" class="justifiedText"></div>
+    </ng-container>
+
+    <ng-container *ngIf="msMessageType == messageType.Warning && !msHasThongBaoSaiSot">
+        <div class="LuuY" style="margin-bottom: 10px!important"><i nz-icon nzType="exclamation-circle" nzTheme="outline" class="customIcon"></i>{{msTitle}}</div>
+        <div [innerHTML]="msContent" class="justifiedText"></div>
+        
+        <ng-container *ngIf="msListHoaDonChuaCapSo && msListHoaDonChuaCapSo.length > 0">
+            <ul style="padding: 0 0 0 25px;">
+                <li *ngFor="let item of msListHoaDonChuaCapSo">
+                    <div class="flex-row">
+                        <div class="flex1">{{item.tenTrangThaiQuyTrinh}}</div>
+                        <div class="flex2"><b>{{item.count}}</b></div>
+                        <div class="flex3">
+                            <span nz-dropdown [nzDropdownMenu]="menuXemChiTiet">(Xem chi tiết)</span>
+                            <nz-dropdown-menu #menuXemChiTiet="nzDropdownMenu">
+                                <ul nz-menu>
+                                  <li nz-menu-item (click)="ngungChucNangVaXemChiTiet(item)">Ngừng chức năng và xem chi tiết</li>
+                                  <li nz-menu-item (click)="xemChiTietTrongTabMoi(item)">Xem chi tiết trong tab mới</li>
+                                </ul>
+                            </nz-dropdown-menu>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+
+            <div class="mg-bottom-10">
+                Vui lòng kiểm tra lại! Hoặc chọn <span class="blueText">Tiếp tục</span> thực hiện phát hành hóa đơn hoặc chọn <span class="blueText">Cập nhật</span> để cập nhật ngày hóa đơn cho hóa đơn chưa cấp số có trạng thái quy trình là <b>Chưa ký điện tử</b> và <b>Ký điện tử lỗi</b>
+            </div>
+
+            <div style="text-align: justify !important; background-color: #FFF2CC; padding: 10px 16px; margin: 10px -16px -16px -16px;">
+                Hóa đơn có trạng thái quy trình <b>Đang ký điện tử</b>, <b>Gửi TCTN lỗi</b> người dùng sử dụng chức năng <b>Phát hành hóa đơn</b> để tiếp tục phát hành theo nguyên tắc: <i>Ngày hóa đơn không được nhỏ hơn ngày hóa đơn của hóa đơn có số hóa đơn lớn nhất có cùng ký hiệu.</i>
+            </div>
+        </ng-container>
+    </ng-container>
+
+    <ng-container *ngIf="msMessageType == messageType.WarningAndInstall && !msHasThongBaoSaiSot">
+        <div class="LuuY" style="margin-bottom: 10px!important"><i nz-icon nzType="exclamation-circle" nzTheme="outline" class="customIcon"></i>{{msTitle}}</div>
+        <div [innerHTML]="msContent" class="justifiedText"></div>
+    </ng-container>
+
+    <ng-container *ngIf="msMessageType == messageType.Error && !msHasThongBaoSaiSot">
+        <div class="Loi" style="margin-bottom: 10px!important"><i nz-icon nzType="close-circle" nzTheme="outline" class="customIcon"></i>{{msTitle}}</div>
+        <div [innerHTML]="msContent" class="justifiedText"></div>
+    </ng-container>
+
+    <ng-container *ngIf="msHasThongBaoSaiSot">
+        <ng-container *ngIf="msMessageType == messageType.Info">
+            <div class="LuuY" style="margin-bottom: 10px!important; color: #0070C0!important"><i nz-icon nzType="info-circle" nzTheme="outline" class="customIcon"></i>{{msTitle}}</div>
+            <div [innerHTML]="msContent" class="justifiedText"></div>
+        </ng-container>
+
+        <ng-container *ngIf="msMessageType == messageType.Warning">
+            <div class="LuuY" style="margin-bottom: 10px!important"><i nz-icon nzType="exclamation-circle" nzTheme="outline" class="customIcon"></i>{{msTitle}}</div>
+            <div [innerHTML]="msContent" class="justifiedText"></div>
+        </ng-container>
+    </ng-container>
+
+    <ng-container *ngIf="msMessageType == messageType.Confirm">
+        <div class="LuuY" style="margin-bottom: 10px!important"><i nz-icon nzType="question-circle" nzTheme="outline" class="customIcon"></i>{{msTitle}}</div>
+        <div [innerHTML]="msContent" class="justifiedText"></div>
+        <div *ngIf="msHasCheckedCopy" style="display: inline-block">
+            <br>
+            <label nz-checkbox [(ngModel)]="checkChonNhanBanThongTin" style="color: #1877F2!important">Nhân bản thông tin hóa đơn xóa bỏ để lập hóa đơn thay thế</label>
+        </div>
+        <div *ngIf="msCapNhatNgayHoaDon" style="text-align: justify !important; background-color: #FFF2CC; padding: 10px 16px; margin: 10px -16px -16px -16px;">
+            Hệ thống cập nhật ngày hóa đơn cho hóa đơn có trạng thái quy trình <b>Chưa ký điện tử</b> và <b>Ký điện tử lỗi</b>
+        </div>
+    </ng-container>
+
+    <ng-container *ngIf="msMessageType == messageType.ConfirmBeforeSubmit">
+        <div class="LuuY" style="margin-bottom: 10px!important"><i nz-icon nzType="question-circle" nzTheme="outline" class="customIcon"></i>{{msTitle}}</div>
+        <div [innerHTML]="msContent" class="justifiedText"></div>
+    </ng-container>
+</div>
+<div *ngIf="msMessageType != messageType.InfoWithoutButton">
+    <div *nzModalFooter >
+        <ng-container *ngIf="msMessageType == messageType.Warning && msCapNhatNgayHoaDon">
+            <!-- <span (click)="clickOK()" style="float: left; margin-left: 10px;padding-top: 3px; font-style: italic; color: #1877f2; cursor: pointer">
+                <i nz-icon class="info-circle" nzTheme="fill" nzType="info-circle"></i>&nbsp;Cập nhật ngày hóa đơn tại đây
+            </span> -->
+            <button style="float: left;" nz-button nzType="default" class="blueButton" nzSize="small" (click)="clickCapNhatNgayHD()">
+                <i nz-icon nzType="sync" nzTheme="outline"></i>Cập nhật
+            </button>
+        </ng-container>
+
+        <ng-container *ngIf="msMessageType == messageType.Warning && msXemDanhMucBoKyHieuHoaDon">
+            <span (click)="clickOK()" style="float: left; margin-left: 10px;padding-top: 3px; font-style: italic; color: #1877f2; cursor: pointer">
+                <i nz-icon class="info-circle" nzTheme="fill" nzType="info-circle"></i>&nbsp;Xem danh mục bộ ký hiệu hóa đơn tại đây
+            </span>
+        </ng-container>
+
+        <ng-container *ngIf="msMessageType == messageType.ConfirmBeforeClosing">
+            <button nz-button nzType="default" class="blueButton" nzSize="small" (click)="clickCancel()"><i nz-icon nzType="rollback" nzTheme="outline"></i>Quay lại</button>
+            <button nz-button nzType="default" class="footer-save" nzSize="small" (click)="clickOK()"><i nz-icon nzType="check" nzTheme="outline"></i>Đồng ý</button>
+            <button nz-button nzType="default" class="button-cancel" nzSize="small" (click)="destroyModal()"><i nz-icon nzSize="small" nzType="close"></i>Không</button>
+        </ng-container>
+
+        <ng-container *ngIf="msMessageType == messageType.Warning && msCapNhatNgayHoaDon">
+            <button nz-button nzType="default" class="blueButton" nzSize="small"  (click)="clickOK()">{{msOKText}}<i nz-icon nzType="arrow-right" nzTheme="outline"></i></button>
+        </ng-container>
+
+        <ng-container *ngIf="msMessageType == messageType.Warning && !msHasThongBaoSaiSot">
+            <button nz-button nzType="default" class="button-cancel" nzSize="small" (click)="destroyModal()"><i nz-icon nzType="close" nzTheme="outline"></i>{{msCloseText}}</button>
+        </ng-container>
+
+        <ng-container *ngIf="msMessageType == messageType.Error && !msHasThongBaoSaiSot">
+            <button nz-button nzType="default" class="button-cancel" nzSize="small" (click)="destroyModal()"><i nz-icon nzType="close" nzTheme="outline"></i>{{msCloseText}}</button>
+        </ng-container>
+
+        <ng-container *ngIf="msMessageType == messageType.Info && !msHasThongBaoSaiSot">
+            <button nz-button nzType="default" class="button-cancel" nzSize="small" (click)="destroyModal()"><i nz-icon nzType="close" nzTheme="outline"></i>{{msCloseText}}</button>
+        </ng-container>
+
+        <ng-container *ngIf="msMessageType == messageType.Confirm">
+            <button nz-button nzType="default" class="footer-save" nzSize="small" (click)="clickOK()" *ngIf="msOkButtonInBlueColor != true"><i nz-icon nzType="check" nzTheme="outline"></i>{{msOKText}}</button>
+            <button nz-button nzType="default" class="blueButton" nzSize="small" (click)="clickOK()" *ngIf="msOkButtonInBlueColor == true && msOkButtonContinueIcon == false"><i nz-icon nzType="check" nzTheme="outline"></i>{{msOKText}}</button>
+            <button nz-button nzType="default" class="blueButton" nzSize="small" (click)="clickOK()" *ngIf="msOkButtonInBlueColor == true && msOkButtonContinueIcon == true">{{msOKText}}<i nz-icon nzType="arrow-right" nzTheme="outline"></i></button>
+            <button nz-button nzType="default" [ngClass]="{ 'blueButton': msCloseButtonBlueColor, 'button-cancel': !msCloseButtonBlueColor }" nzSize="small" (click)="destroyModal()">
+                <i nz-icon nzType="close" nzTheme="outline" *ngIf="!msCloseButtonBackIcon"></i><i nz-icon nzType="arrow-left" nzTheme="outline" *ngIf="msCloseButtonBackIcon"></i>{{msCloseText}}
+            </button>
+        </ng-container>
+
+        <ng-container *ngIf="msMessageType == messageType.WarningAndInstall">
+            <span style="float: left;" class="xemvideo" (click)="clickWatch()"><span class="material-icons-outlined">
+                play_circle_filled
+                </span> Xem video
+            </span>
+            <button nz-button nzType="default" class="blueButton" nzSize="small" (click)="clickOK()"><i nz-icon nzType="vertical-align-bottom" nzTheme="outline"></i>{{msOKText}}</button>
+            <button nz-button nzType="default" class="button-cancel" nzSize="small" (click)="destroyModal()"><i nz-icon nzType="close" nzTheme="outline"></i>{{msCloseText}}</button>
+        </ng-container>
+
+        <ng-container *ngIf="msMessageType == messageType.ConfirmBeforeSubmit">
+            <button nz-button nzType="default" class="blueButton" nzSize="small" (click)="clickOK()" *ngIf="msOkButtonInBlueColor == true && msOkButtonContinueIcon == false"><i nz-icon nzType="check" nzTheme="outline"></i>{{msOKText}}</button>
+            <button nz-button nzType="default" class="blueButton" nzSize="small" (click)="clickOK()" *ngIf="msOkButtonInBlueColor == true && msOkButtonContinueIcon == true">{{msOKText}}<i nz-icon nzType="arrow-right" nzTheme="outline"></i></button>
+            <button nz-button nzType="default" class="button-agree" nzSize="small" (click)="clickOK()" *ngIf="msOkButtonInBlueColor == false && msOkButtonContinueIcon == false"><i nz-icon nzType="check" nzTheme="outline"></i>{{msOKText}}</button>
+            <button nz-button nzType="default" class="button-agree" nzSize="small" (click)="clickOK()" *ngIf="msOkButtonInBlueColor == false && msOkButtonContinueIcon == true">{{msOKText}}<i nz-icon nzType="arrow-right" nzTheme="outline"></i></button>
+            <button nz-button nzType="default" class="button-cancel" nzSize="small" (click)="destroyModal()"><i nz-icon nzType="close" nzTheme="outline"></i>{{msCloseText}}</button>
+        </ng-container>
+
+        <ng-container *ngIf="msHasThongBaoSaiSot">
+            <span (click)="clickLapThongBaoSaiSot()" style="float: left; margin-left: 10px;padding-top: 3px; font-style: italic; color: #1877f2; cursor: pointer"><i nz-icon class="info-circle" nzTheme="fill" nzType="info-circle"></i>&nbsp;{{msButtonLabelThongBaoSaiSot}}</span>
+            <button nz-button nzType="default" class="button-cancel" nzSize="small" (click)="destroyModal()"><i nz-icon nzType="close" nzTheme="outline"></i>{{msCloseText}}</button>
+        </ng-container>
+
+        <ng-container *ngIf="msHasGuiHoaDon">
+            <span (click)="clickGuiHoaDon()" style="float: left; margin-left: 10px; font-style: italic; color: #1877f2; cursor: pointer"><i nz-icon class="info-circle" nzTheme="fill" nzType="info-circle"></i>&nbsp;{{msButtonLabelGuiHoaDon}}</span>
+        </ng-container>
+
+        <ng-container *ngIf="msHasThongTinNNT">
+            <span (click)="clickXemThongTinNNT()" style="float: left; margin-left: 10px;padding-top: 3px; font-style: italic; color: #1877f2; cursor: pointer"><i nz-icon class="info-circle" nzTheme="fill" nzType="info-circle"></i>&nbsp;{{msButtonLabelThongTinNNT}}</span>
+        </ng-container>
+    </div>
+</div>

@@ -1,0 +1,29 @@
+<nz-spin [nzSpinning]="spinning">
+  <div>
+    <p style="font-weight: bold;">Chọn hình thức mẫu hóa đơn</p>
+    <div style="padding-left: 10px;">
+      <nz-checkbox-group [(ngModel)]="hinhThucMauHoaDons" (ngModelChange)="onChecked(hinhThucMauHoaDons)">
+      </nz-checkbox-group>
+    </div>
+  </div>
+  <div style="margin-top: 10px;">
+    <p style="font-weight: bold;">Chọn định dạng tệp mẫu</p>
+    <div style="display: flex; flex-direction: row; padding-left: 10px;">
+      <ng-container *ngFor="let item of dinhDangTepMaus">
+        <div class="format-file" [class.format-file-selected]="item.selected" (click)="onSelected(item)">
+          <img [src]="item.label" width="35" height="35" />
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</nz-spin>
+
+<div *nzModalFooter>
+  <button nz-button nzType="default" (click)="submitForm()" nzSize="small" class="blueButton" [nzLoading]="spinning"
+    [disabled]="disabledAccept">
+    <i nz-icon nzType="check" nzTheme="outline"></i>Đồng ý
+  </button>
+  <button nz-button nzType="default" (click)="closeModal()" nzSize="small" class="button-cancel">
+    <i nz-icon nzType="close" nzTheme="outline"></i>Hủy
+  </button>
+</div>

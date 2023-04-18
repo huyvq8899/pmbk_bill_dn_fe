@@ -1,0 +1,19 @@
+<nz-spin [nzSpinning]="spinning">
+  <div nz-row class="inner-content">
+    <div class="box-border">
+      <nz-radio-group [(ngModel)]="isUyNhiemLapHoaDon">
+        <label nz-radio [nzValue]="false">Không đăng ký</label>
+        <label nz-radio [nzValue]="true">Đăng ký</label>
+      </nz-radio-group>
+    </div>
+  </div>
+</nz-spin>
+
+<div *nzModalFooter style="padding-right: 4px!important;">
+  <button nzSize="small" nz-button nzType="default" (click)="continue()" class="blueButton">
+    Tiếp tục<i nz-icon nzType="arrow-right" nzTheme="outline"></i>
+  </button>
+  <button nzSize="small" nz-button nzType="default" (click)="destroyModal()" class="button-cancel">
+    <i nz-icon nzSize="small" nzType="close"></i>Đóng
+  </button>
+</div>

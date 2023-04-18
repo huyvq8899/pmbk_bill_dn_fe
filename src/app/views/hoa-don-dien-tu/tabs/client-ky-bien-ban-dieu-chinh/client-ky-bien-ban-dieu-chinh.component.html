@@ -1,0 +1,147 @@
+<nz-spin [nzSpinning]="spinning">
+<div class="container">
+  <div class="header">
+    <div nz-row class="header-row">
+      <div nz-col nzSpan="12">
+        <img src="../../../../../assets/logo.png" width="200" />
+      </div>
+    </div>
+  </div>
+  <div class="body">
+    <div *ngIf="data" nz-row style="margin-left:auto; margin-right: auto; width: 900px; margin-top: 5px; margin-bottom: 5px;">
+      <div nz-col nzSpan="12">
+        <button style="float: left" (click)="taiXuong()" nz-button nzSize="small" class="blueButton">
+          <i nz-icon nzType="download" nzTheme="outline"></i>&nbsp;Tải biên bản (PDF)
+        </button>
+        <button style="float: left; margin-left: 4px;" (click)="taiBoCai()" nz-button nzSize="small" class="button-agree">
+          <i nz-icon nzType="download" nzTheme="outline"></i>&nbsp;Tải BKSOFT-KYSO
+        </button>
+      </div>
+      <div nz-col nzSpan="12">
+        <button style="float: right" (click)="xemCTS(1)" nz-button nzSize="small" class="yellowButton">
+          <i nz-icon nzType="eye" nzTheme="outline"></i>&nbsp;Xem chứng thư số người bán
+        </button>
+        <button style="float: right; margin-right: 4px;" (click)="traCuuThongTinNguoiBan()" nz-button nzSize="small" class="yellowButton">
+          <i nz-icon nzType="search" nzTheme="outline"></i>&nbsp;Tra cứu thông tin người bán
+        </button>
+      </div>
+    </div>
+    <div  [ngClass]="{'content': data, 'content-nodata': !data}">
+      <div *ngIf="data">
+        <div class="title-1">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</div>
+        <div class="title-2">Độc lập - Tự do - Hạnh phúc</div>
+        <div class="title-3">----------***----------</div>
+        <br />
+        <div class="title-1">BIÊN BẢN ĐIỀU CHỈNH HÓA ĐƠN</div>
+        <br />
+        <div class="row" *ngFor="let item of noiDungThongTus">
+          {{item}}
+        </div>
+        <div class="row font-italic">
+          Hôm nay, ngày {{ngay}} tháng {{thang}} năm {{nam}} chúng tôi gồm có:
+        </div>
+        <div class="row font-bold">
+          BÊN A (BÊN BÁN): {{data?.tenDonViBenA | uppercase }}
+        </div>
+        <div class="row margin-vertical-5">
+          <div class="label">Địa chỉ:</div>
+          <div class="value">{{data?.diaChiBenA}}</div>
+        </div>
+        <div class="row margin-vertical-5">
+          <div class="col-1">
+            <div class="label">Mã số thuế:</div>
+            <div class="value">{{data?.maSoThueBenA}}</div>
+          </div>
+          <div class="col-1">
+            <div class="label">Số điện thoại:</div>
+            <div class="value">{{data?.soDienThoaiBenA}}</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-1">
+            <div class="label">Đại diện:</div>
+            <div class="value">{{data?.daiDienBenA}}</div>
+          </div>
+          <div class="col-1">
+            <div class="label">Chức vụ:</div>
+            <div class="value">{{data?.chucVuBenA}}</div>
+          </div>
+        </div>
+        <div class="row font-bold">
+          BÊN B (BÊN MUA): {{data?.tenDonViBenB | uppercase}}
+        </div>
+        <div class="row margin-vertical-5">
+          <div class="label">Địa chỉ:</div>
+          <div class="value">{{data?.diaChiBenB}}</div>
+        </div>
+        <div class="row margin-vertical-5">
+          <div class="col-1">
+            <div class="label">Mã số thuế:</div>
+            <div class="value">{{data?.maSoThueBenB}}</div>
+          </div>
+          <div class="col-1">
+            <div class="label">Số điện thoại:</div>
+            <div class="value">{{data?.soDienThoaiBenB}}</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-1">
+            <div class="label">Đại diện:</div>
+            <div class="value">{{data?.daiDienBenB}}</div>
+          </div>
+          <div class="col-1">
+            <div class="label">Chức vụ:</div>
+            <div class="value">{{data?.chucVuBenB}}</div>
+          </div>
+        </div>
+        <div class="row">
+          <p [innerHTML]="moTa | safeHtml"></p>
+        </div>
+        <div class="row">
+          <strong>Lý do điều chỉnh:</strong>&nbsp;<span>{{data?.lyDoDieuChinh}}</span>
+        </div>
+        <!-- <div class="row" *ngIf="hoaDonLienQuan && hoaDonLienQuan.length > 0">
+          <div class="row" >
+            <p [innerHTML]="titleHoaDonLienQuan"></p>
+          </div>
+          <div class="row">
+            <p [innerHTML]="noiDungHoaDonLienQuan"></p>
+          </div>
+        </div> -->
+        <div class="row">
+          Chúng tôi cam kết và hoàn toàn chịu trách nhiệm về việc điều chỉnh hóa đơn này.
+        </div>
+        <br />
+        <br />
+        <div nz-row>
+          <div nz-col nzSpan="12" class="sign-wrapper">
+            <div class="font-bold">
+              ĐẠI DIỆN BÊN A
+            </div>
+            <div class="font-italic">
+              (Chữ ký số, chữ ký điện tử)
+            </div>
+            <app-chu-ky-dien-tu (click)="xemCTS(1)" *ngIf="data && data.ngayKyBenA" [tenDonVi]="data.tenDonViBenA"
+              [ngayKy]="data.ngayKyBenA | date:'yyyy-MM-dd HH:mm:ss'"></app-chu-ky-dien-tu>
+          </div>
+          <div nz-col nzSpan="12" class="sign-wrapper">
+            <div class="font-bold">
+              ĐẠI DIỆN BÊN B
+            </div>
+            <div class="font-italic">
+              (Chữ ký số, chữ ký điện tử)
+            </div>
+            <div class="sign-btn" *ngIf="!data?.ngayKyBenB">
+              <button class="blueButton" nz-button nzSize="small" (click)="kyDienTu()" *ngIf="data" [nzLoading]="spinning">
+                <i nz-icon nzType="form" nzTheme="outline"></i>Ký điện tử
+              </button>
+            </div>
+            <app-chu-ky-dien-tu (click)="xemCTS(2)" *ngIf="data && data.ngayKyBenB" [tenDonVi]="data.tenDonViBenB"
+              [ngayKy]="data.ngayKyBenB | date:'yyyy-MM-dd HH:mm:ss'"></app-chu-ky-dien-tu>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</nz-spin>

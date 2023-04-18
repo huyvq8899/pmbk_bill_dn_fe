@@ -1,0 +1,190 @@
+<div nz-row>
+  <!-- <div class="inner-content">
+    <div nz-row class="inner-content">
+      <div class="box-border" style="margin: 5px;">
+        <span class="box-title">Tham số</span>
+        <div nz-row style="margin-bottom: 10px;" nzGutter="8">
+          <div nz-col nzSpan="5">
+            <div>Kỳ</div>
+            <nz-select style="width: 100%;" nzSize="small" nzShowSearch nzPlaceHolder="Chọn kỳ"
+              [(ngModel)]="displayData.Ky" (ngModelChange)="changeKy($event)">
+              <nz-option *ngFor="let item of kys" [nzLabel]="item.value" [nzValue]="item.key"></nz-option>
+            </nz-select>
+          </div>
+          <div nz-col nzSpan="4">
+            <div>Từ ngày</div>
+            <input style="width: 100%;" nzSize="small" type="date" max="2999-12-31" nz-input
+              [(ngModel)]="displayData.fromDate" placeholder="Từ" (keydown.enter)="filterTable()"
+              (keydown.enter)="filterVisible= false" (blur)="blurDate()" />
+          </div>
+          <div nz-col nzSpan="4">
+            <div>Đến ngày</div>
+            <input style="width: 100%;" nzSize="small" type="date" max="2999-12-31" nz-input
+              [(ngModel)]="displayData.toDate" placeholder="Đến" (keydown.enter)="filterTable()"
+              (keydown.enter)="filterVisible= false" (blur)="blurDate()" />
+          </div>
+          <div nz-col nzSpan="8">
+            <div style="color: white">Lấy dữ liệu</div>
+            <nz-input-group nzSize="small" [nzPrefix]="prefixTemplateUser" class="input-group-label">
+              <input type="text" nz-input [placeholder]="placeHolderTimKiemTheo()" nz-tooltip
+                [nzTooltipTitle]="placeHolderTimKiemTheo()" [(ngModel)]="displayData.GiaTri"
+                nzTooltipPlacement="bottomRight" (keyup.enter)="getData()" />
+            </nz-input-group>
+            <ng-template #prefixTemplateUser>
+              <i nz-icon nzType="setting" nzTheme="outline" nz-dropdown [nzDropdownMenu]="menuPlusMutiple"
+                [nzClickHide]="false"></i>
+              <nz-dropdown-menu #menuPlusMutiple="nzDropdownMenu">
+                <ul nz-menu>
+                  <li nz-menu-item *ngFor="let item of timKiemTheos">
+                    <label nz-checkbox [(ngModel)]="item.checked">{{item.name}}</label>
+                  </li>
+                </ul>
+              </nz-dropdown-menu>
+            </ng-template>
+          </div>
+          <div nz-col nzSpan="3">
+            <div style="color: white">Lấy dữ liệu</div>
+            <button nzSize="small" nzBlock nz-button nzType="default" (click)="getData()" class="button-default">
+              Lấy dữ liệu
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> -->
+  <div nz-row>
+    <div>
+      <!-- <span class="box-title">Thông tin chuyển đổi</span> -->
+      <div nz-row style="margin-bottom: 5px;">
+        <div nz-col nzSpan="7" style="margin-top:5px">Người chuyển đổi :
+        </div>
+        <div nz-col nzSpan="17" nzErrorTip="Vui lòng chọn người chuyển đổi">
+          <input nzSize="small" nz-input [(ngModel)]="nguoiChuyenDoi" id="nguoiChuyenDoi" />
+        </div>
+      </div>
+      <div nz-row style="margin-bottom: 5px;">
+        <div nz-col nzSpan="7"  style="margin-top:5px">Ngày chuyển đổi :
+        </div>
+        <div nz-col nzSpan="17">
+          <input type="date" nzSize="small" nz-input [(ngModel)]="ngayChuyenDoi" id="ngayChuyenDoi" />
+        </div>
+      </div>
+      <nz-row>
+        <label style="margin-bottom:5px" [(ngModel)]="isNgayChuyenDoiLaNgayCQTCapMa" (ngModelChange)="changeCheckNgayCDCQTCapMa($event)" nz-checkbox>
+          <span style="text-align: center;">Ngày chuyển đổi là ngày CQT cấp mã (Theo từng hóa dơn)</span><br>
+           <span style="margin-left:20px"><i>(Nếu là hóa đơn Không có mã của CQT là ngày ký điện tử)</i></span>
+        </label>
+      </nz-row>
+      <nz-row>
+        <label style="margin-bottom:5px" [(ngModel)]="isNgayChuyenDoiLaNgayKy" (ngModelChange)="changeCheckNgayCD($event)" nz-checkbox>
+          <span>Ngày chuyển đổi là ngày ký điện tử (Theo từng hóa đơn)</span>
+        </label>
+      </nz-row>
+    </div>
+  </div>
+
+  <!-- <nz-table [nzNoResult]="null" style="margin-top: 5px;" nzSize="small" #fixedTablePH [nzData]="listOfPhatHanh"
+    [nzWidthConfig]="widthConfigB" [nzScroll]="scrollConfigB" [nzShowPagination]="false" [nzFrontPagination]="false"
+    [nzTotal]="totalPH" [nzPageIndex]="1" [(nzPageSize)]="totalPH" nzBordered [nzLoading]="loading">
+    <thead>
+      <tr>
+        <th nzLeft="0px" nzShowCheckbox [(nzChecked)]="isAllDisplayDatasPHChecked" [nzIndeterminate]="isIndeterminatePH"
+          (nzCheckedChange)="checkAllPH($event)">
+        </th>
+        <th nzAlign="center">Trạng thái hóa đơn</th>
+        <th nzAlign="center">Trạng thái quy trình</th>
+        <th nzAlign="center">Hình thức hóa đơn</th>
+        <th nzAlign="center">Ký hiệu mẫu số hóa đơn</th>
+        <th nzAlign="center">Ký hiệu hóa đơn</th>
+        <th nzAlign="center">Ngày hóa đơn</th>
+        <th nzAlign="center">Số hóa đơn</th>
+        <th nzAlign="center">Mã khách hàng</th>
+        <th nzAlign="center">Tên khách hàng</th>
+        <th nzAlign="center">Mã số thuế</th>
+        <th nzAlign="center">Người mua hàng</th>
+        <th nzAlign="center">Loại tiền</th>
+        <th nzAlign="center">Tổng tiền thanh toán</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of fixedTablePH.data; let i=index" (click)="selectedRow(data)">
+        <td nzLeft="0px" nzShowCheckbox [class.row-selected]="data.selected"
+          [(nzChecked)]="mapOfCheckedIdPH[data.hoaDonDienTuId]" (nzCheckedChange)="refreshStatusPH()">
+        </td>
+        <td [class.row-selected]="data.selected">
+          {{ data?.tenTrangThaiHoaDon }}
+        </td>
+        <td [class.row-selected]="data.selected">
+          {{ data?.tenTrangThaiQuyTrinh }}
+        </td>
+        <td [class.row-selected]="data.selected">
+          {{ data?.boKyHieuHoaDon?.tenHinhThucHoaDon }}
+        </td>
+        <td [class.row-selected]="data.selected">
+          {{ data?.mauSo }}
+        </td>
+        <td [class.row-selected]="data.selected">
+          {{ data?.kyHieu }}
+        </td>
+        <td [class.row-selected]="data.selected">
+          {{ data?.ngayHoaDon | date: 'dd/MM/yyyy' }}
+        </td>
+        <td [class.row-selected]="data.selected">
+          <a (click)="xemHoaDon(data)">{{ data?.soHoaDon }}</a>
+        </td>
+        <td [class.row-selected]="data.selected">
+          {{ data?.maKhachHang }}
+        </td>
+        <td [class.row-selected]="data.selected">
+          {{ data?.tenKhachHang }}
+        </td>
+        <td [class.row-selected]="data.selected">
+          {{ data?.maSoThue }}
+        </td>
+        <td [class.row-selected]="data.selected">
+          {{ data?.hoTenNguoiMuaHang }}
+        </td>
+        <td [class.row-selected]="data.selected">
+          {{ data?.loaiTien.ma }}
+        </td>
+        <td class="money" [class.row-selected]="data.selected">
+          {{ data?.tongTienThanhToan | formatPrice:true:ddtp.getTienQuyDoi() }}
+        </td>
+      </tr>
+      <tr *ngFor="let obj of lstBangKeBEmpty">
+        <td *ngFor="let empty of numberBangKeBCols; let idx = index">
+          <span *ngIf="idx===0" class="font-while">.</span>
+        </td>
+      </tr>
+      <tr class="total-footer" *ngIf="listOfPhatHanh.length > 0">
+        <td nzLeft="0px">
+        </td>
+        <td colspan="2">Số dòng = {{listOfPhatHanh.length}}</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>{{ listOfPhatHanh | sum: 'tongTienThanhToan' | formatPrice:true:ddtp.getTienQuyDoi() }}</td>
+      </tr>
+    </tbody>
+  </nz-table> -->
+
+  <div nz-row *nzModalFooter>
+    <div style="float: left;" nz-col nzSpan="6">
+      <button nz-button nzSize="small" class="blueButton"  nzType="default" (click)="view()"><i nz-icon nzSize="small"
+          nzType="eye" nzTheme="outline"></i>Xem hóa đơn đồng loạt</button>
+    </div>
+    <div style="float: right;" nz-col nzSpan="12">
+      <button nz-button nzSize="small" nzType="default" style="float: right;" (click)="cancel()"
+        class="button-cancel"><i nz-icon nzSize="small" nzType="close"></i>Hủy</button>
+      <button nz-button nzSize="small" nzType="default" style="float: right; margin-right: 5px;" (click)="convert()"
+        class="button-agree"> <i nz-icon nzSize="small" nzType="scan"></i>Thực hiện</button>
+    </div>
+  </div>
+</div>

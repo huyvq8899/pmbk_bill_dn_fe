@@ -1,0 +1,9 @@
+<span class="status" [ngClass]="{
+  'status-cam': loai === 0,
+  'status-do': loai === 1 || loai == 3 || loai == 5 || loai == 7,
+  'status-xanh-la': loai === 2,
+  'status-xanh-duong': loai === 4,
+  'status-xanh-nhat': loai === 6
+}">
+  {{ten}}
+</span>

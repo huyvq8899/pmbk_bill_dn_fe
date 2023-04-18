@@ -1,0 +1,374 @@
+<nz-spin [nzSpinning]="spinning">
+  <div nz-row id="backgroundLayout">
+    <div nz-row style="margin-left: 118px !important; margin-right: 120px!important; float:inline-start">
+      <div nz-row>
+        <div nz-col nzSpan="16">
+          <button style="margin: 2px;" nz-button nzSize = "small" (click)="onExportClick()" class="ant-btn-cus" 
+          [disabled] = "(permission != true  && thaoTacs.indexOf('MNG_FULL') < 0 && thaoTacs.indexOf('MNG_EXPORT') < 0) || isSigned === false || data == null" [ngClass]="{'disabled-button-state-v3': isSigned === false || data == null}">
+            <i nz-icon nzType="vertical-align-bottom" nzTheme="outline"></i>Xuất khẩu<i nz-icon nzType="down"></i>
+          </button>
+          <!-- <nz-dropdown-menu #menuXuatKhau="nzDropdownMenu">
+            <ul nz-menu>
+              <li nz-menu-item (click) = "downloadFile('pdf')">
+                <img src="../../../../../../assets/pdf.png" width="15" height="15" />&nbsp;<span>PDF</span>
+              </li>
+              <li nz-menu-item (click) = "downloadFile('docx')">
+                <img src="../../../../../../assets/docx.png" width="15" height="15" />&nbsp;<span>DOCX</span>
+              </li>
+              <li nz-menu-item (click) = "downloadFile('xml')">
+                <img src="../../../../../../assets/xml.png" width="15" height="15" />&nbsp;<span>XML (chưa ký)</span>
+              </li>
+              <li nz-menu-item (click) = "downloadFile('xml', true)" *ngIf = "dTKhai && this.dTKhai.fileXMLDaKy != null">
+                <img src="../../../../../../assets/xml.png" width="15" height="15" />&nbsp;<span>XML (đã ký)</span>
+              </li>
+            </ul>
+          </nz-dropdown-menu> -->
+          <button style="margin: 2px;" nzSize="small" *ngIf="(!isSigned && autoSign == false) || isAddNew"
+          [disabled]="(permission != true  && thaoTacs.indexOf('MNG_FULL') < 0 && thaoTacs.indexOf('MNG_SEND') < 0) || isSaved == false"
+          nz-button nzType="default" (click)="eSign()"  class="button-close" 
+          [ngClass]="{'disabled-button-state-v3': isSigned == true || fbEnableEdit || isAddNew}">
+            <i nz-icon nzType="cloud-upload" nzTheme="outline"></i>Ký và Gửi
+          </button>
+        </div>
+        <div nz-col nzSpan="8" style="text-align: right;">
+          <button style="margin: 2px;" nzSize="small" nz-button nz-tooltip nzTooltipTitle="F8" nzType="default" (click)="onEditClick()" *ngIf="(isSigned == false && autoSign == false) || isAddNew"
+            [disabled]="(permission != true  && thaoTacs.indexOf('MNG_FULL') < 0 && thaoTacs.indexOf('MNG_UPDATE') < 0) || fbEnableEdit || isAddNew"
+            class="ant-btn-cus" [ngClass]="{'disabled-button-state-v3': isSaved == false || isSigned == true, 'blueButton': isSaved == true && isSigned == false}">
+            <i nz-icon nzSize="small" nzType="edit" nzTheme="outline"></i>Sửa
+          </button>
+          <button style="margin: 2px;" nzSize="small" nz-button nz-tooltip nzTooltipTitle="F9" nzType="default" (click)="onDeleteClick()" *ngIf="(isSigned == false && autoSign == false) || isAddNew"
+            [disabled]="(permission != true  && thaoTacs.indexOf('MNG_FULL') < 0 && thaoTacs.indexOf('MNG_DELETE') < 0) || fbEnableEdit || isAddNew"  class="button-close"
+            [ngClass]="{'disabled-button-state-v3': isSaved == false || isSigned == true, 'button-close': isSaved == true && isSigned == false}">
+            <i nz-icon nzSize="small" nzType="delete" nzTheme="outline"></i>Xóa
+          </button>
+          <button style="margin: 2px;" nzSize="small" nz-button nz-tooltip nzTooltipTitle="Alt + S" nzType="default" (click)="submitForm()" *ngIf="(isSigned == false && autoSign == false) || isAddNew"
+            [disabled]="(!isAddNew && permission != true  && thaoTacs.indexOf('MNG_FULL') < 0 && thaoTacs.indexOf('MNG_UPDATE') < 0) || (!fbEnableEdit && !isAddNew)" [ngClass]="{'disabled-button-state-v3': isSaved == true || isSigned == true}"
+            class="ant-btn-cus button-save">
+            <i nz-icon nzSize="small" nzType="save" nzTheme="outline"></i>Lưu
+          </button>
+          <button style="margin: 2px 0px 2px 2px;" nz-button nzType="default" class="button-close" nz-tooltip nzTooltipTitle="ESC" (click)="destroyModal()" nzSize = "small"><i nz-icon nzSize="small" nzType="close"></i>Đóng</button>
+        </div>
+      </div>
+    </div>
+    <div nz-row id="layoutContent">
+      <div style="margin-top: 5px">
+        <span style = "position: absolute; z-index: 10; margin-left: 60px;; top: 5px"><label nz-checkbox [(ngModel)]="dataTTC.hDDIn" [nzDisabled]="!fbEnableEdit && !isAddNew">Hóa đơn đặt in</label></span>
+        <h1 style="text-align: center;text-transform: uppercase;"><strong>BẢNG TỔNG HỢP DỮ LIỆU HÓA ĐƠN ĐIỆN TỬ GỬI CƠ QUAN THUẾ</strong></h1>
+        <span style = "padding: 5px 15px; margin-right: 60px; border: #E5E5E5 solid 1px; position: absolute; z-index: 10; right: 5px; top: 5px">Mẫu số 01/TH-HĐĐT</span>
+      </div>
+      <div nz-row>
+        <h3 style="text-align: center;">[01] Kỳ dữ liệu: {{dataTTC.kyDuLieuDisplay}}</h3>
+        <h3 style="text-align: center;">
+          <span><label nz-checkbox [(ngModel)]="dataTTC.lanDauDisplay" nzDisabled>[02] Lần đầu</label></span>
+          <span style="margin-left: 30px;">[03] Bổ sung lần thứ {{ dataTTC.boSungLanThuDisplay }}</span>
+          <span style="margin-left: 30px;">[04] Sửa đổi lần thứ {{ dataTTC.suaDoiLanThuDisplay }}</span>
+        </h3>
+        <br>
+      </div>
+      <div nz-row id="formLayout" >
+        <div nz-row class="inner-content">
+          <nz-form-item>
+            <nz-form-label class="title-form" [nzSm]="4" [nzXs]="24" [nzNoColon]="true" title="Tên người nộp thuế">Tên người nộp thuế:
+            </nz-form-label>
+            <nz-form-control [nzSm]="20" [nzXs]="24">
+              <input nzSize="small" nz-input [(ngModel)]="dataTTC.tenNNT" [ngModelOptions]="{standalone:true}" readonly disabled/>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-label class="title-form" [nzSm]="4" [nzXs]="24" [nzNoColon]="true" title="Mã số thuế">Mã số thuế:
+            </nz-form-label>
+            <nz-form-control [nzSm]="isSigned == false ? 3 : 5" [nzXs]="24">
+              <input nzSize="small" nz-input [(ngModel)]="dataTTC.maSoThue" [ngModelOptions]="{standalone:true}" readonly disabled/>
+            </nz-form-control>
+            <nz-form-label class="title-form" [nzOffset]="1" [nzSm]="2" [nzXs]="24" [nzNoColon]="true" title="Mã số thuế">Loại hàng hóa:
+            </nz-form-label>
+            <nz-form-control [nzSm]="isSigned == false ? 2 : 5" [nzXs]="24">
+              <input nzSize="small" nz-input [(ngModel)]="dataTTC.tenLoaiHHoa" [ngModelOptions]="{standalone:true}" readonly disabled/>
+            </nz-form-control>
+            <nz-form-label class="title-form" [nzOffset]="1" [nzSm]="3" [nzXs]="24" [nzNoColon]="true" title="Mã số thuế">Số bảng tổng hợp dữ liệu:
+            </nz-form-label>
+            <nz-form-control [nzOffset]="1" [nzSm]="isSigned == false ? 1 : 2" [nzXs]="24">
+              <input nz-input nzSize="small" type="number" min="1" step="1" [(ngModel)]="dataTTC.soBTHDLieu"/>
+            </nz-form-control>
+            <nz-form-control [nzOffset]="1" [nzSm]="5" [nzXs]="24">
+              <button nz-button *ngIf="isSigned == false && autoSign == false" style="float:right;" nzSize="small" class="blueButton" (click)="taiLaiThongTinNNT()"><i nz-icon nzSize="small" nzType="reload"></i>Tải lại thông tin người nộp thuế</button>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-row class="inner-content">
+          <div nz-row style="margin-bottom: 2px">
+            <button style="float: right;"  *ngIf="isSigned == false && autoSign == false" nz-button nzSize="small" (click)="loadData()"><i nz-icon nzSize="small" nzType="reload"></i>Tải lại dữ liệu</button>
+          </div>
+
+          <div nz-row *ngIf="dataTTC.lanDauDisplay == true;else boSungSuaDoiTmp">
+            <nz-table class="table-hover" [nzNoResult]="null" nzSize="small" #expandTable [nzData]="listData" [nzLoading]="loading"
+              [nzWidthConfig]="widthConfig" [nzScroll]="scrollConfig" [nzFrontPagination]="false" [nzTotal]="total"
+              [nzPageIndex]="1" [nzPageSize]="total" nzBordered [nzHideOnSinglePage]="true">
+              <thead>
+                <tr>  
+                  <th nzLeft="0px" nzAlign="center">STT</th>
+                  <th nzLeft="50px" nzAlign="center">Ký hiệu mẫu số hóa đơn, ký hiệu hóa đơn</th>
+                  <th nzAlign="center">Số hóa đơn</th>
+                  <th nzAlign="center">Ngày hóa đơn</th>
+                  <th nzAlign="center">Tên người mua</th>
+                  <th nzAlign="center">Mã số thuế người mua/mã khách </th>
+                  <th nzAlign="center">Mặt hàng</th>
+                  <th nzAlign="center">Số lượng hàng hóa</th>
+                  <th nzAlign="center">Tổng giá trị hàng hoá, dịch vụ bán ra chưa có thuế GTGT</th>
+                  <th nzAlign="center">Thuế suất thuế GTGT</th>
+                  <th nzAlign="center">Tổng số thuế GTGT</th>
+                  <th nzAlign="center">Tổng tiền thanh toán</th>
+                  <th nzAlign="center">Trạng thái</th>
+                  <th nzAlign="center">Thông tin hóa đơn liên quan</th>
+                  <th nzAlign="center">
+                    Số thông báo của CQT<br>về hóa đơn điện tử cần rà soát
+                  </th>
+                  <th nzAlign="center">
+                    Ngày thông báo của CQT<br>về hóa đơn điện tử cần rà soát
+                  </th>
+                  <th nzAlign="center">Ghi chú</th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngFor="let data of expandTable.data; let i=index">
+                  <tr>
+                    <td nzLeft="0px" nzAlign="center">{{i+1}}</td>
+                    <td nzLeft="50px">{{data.mauSo}}{{data.kyHieu}}</td>
+                    <td>{{data.soHoaDon}}</td>
+                    <td nzAlign="center">{{data.ngayHoaDon | date:'dd/MM/yyyy'}}</td>
+                    <td>{{data.hoTenNguoiMuaHang}}</td>
+                    <td>{{data.maSoThue}}</td>
+                    <td>{{data.tenHang}}</td>
+                    <td nzAlign="right">{{data.soLuong}}</td>
+                    <td nzAlign="right">{{data.thanhTien | formatPrice}}</td>
+                    <td nzAlign="right">{{data.thueGTGT}}</td>
+                    <td nzAlign="right">{{data.tienThueGTGT | formatPrice}}</td>
+                    <td nzAlign="right">{{data.tongTienThanhToan | formatPrice}}
+                    </td>
+                    <td>
+                      <nz-select [nzDisabled]="!fbEnableEdit" [(ngModel)]="data.trangThaiHoaDon">
+                        <nz-option *ngFor="let item of data.trangThais" [nzLabel]="item.value" [nzValue]="item.id">
+                        </nz-option>
+                      </nz-select>
+                    </td>
+                    <td>
+                      <span
+                        *ngIf="data.mauSoHoaDonLienQuan && data.loaiApDungHoaDonLienQuan == 1">{{data.mauSoHoaDonLienQuan}}{{data.kyHieuHoaDonLienQuan}},
+                        số {{data.soHoaDonLienQuan}} ngày {{data.ngayHoaDonLienQuan | date: 'dd/MM/yyyy'}}</span>
+                      <span *ngIf="data.mauSoHoaDonLienQuan && data.loaiApDungHoaDonLienQuan != 1">Mẫu số
+                        {{data.mauSoHoaDonLienQuan}}, ký hiệu {{data.kyHieuHoaDonLienQuan}}, số {{data.soHoaDonLienQuan}} ngày
+                        {{data.ngayHoaDonLienQuan | date: 'dd/MM/yyyy'}}</span>
+                      <span
+                        *ngIf="!data.mauSoHoaDonLienQuan && data.soHoaDonLienQuan && data.loaiApDungHoaDonLienQuan != 1">Số
+                        {{data.soHoaDonLienQuan}} ngày {{data.ngayHoaDonLienQuan | date: 'dd/MM/yyyy'}}</span>
+                    </td>
+                    <td><input nz-input [disabled]="!fbEnableEdit && !isAddNew && data.trangThaiHoaDon != 5" nzSize="small" style="width: 100%;" (ngModel)="data.sTBao" /></td>
+                    <td nzAlign="center"><input nz-input [disabled]="!fbEnableEdit && !isAddNew && data.trangThaiHoaDon != 5 && data.sTBao != ''" type="date" nzSize="small" style="width: 100%;" (ngModel)="data.nTBao" /></td>
+                    <td><input nz-input [disabled]="!fbEnableEdit && !isAddNew" nzSize="small" style="width: 100%;" (ngModel)="data.ghiChu" /></td>
+                  </tr>
+                </ng-container>
+              </tbody>
+              <tfoot *ngIf="total > 0" class="total-footer">
+                <td colspan="2" nzLeft="0px">Số dòng = {{total}}</td>
+                <td colspan="16"></td>
+              </tfoot>
+            </nz-table>
+          </div>
+          <ng-template #boSungSuaDoiTmp>
+            <nz-table class="table-hover" [nzNoResult]="null" nzSize="small" #expandTable [nzLoading]="loading"
+              [nzWidthConfig]="widthConfigBS" [nzScroll]="scrollConfigBS" [nzFrontPagination]="false" [nzTotal]="total"
+              [nzPageIndex]="1" [nzPageSize]="total" nzBordered [nzHideOnSinglePage]="true">
+              <thead>
+                <tr>
+                  <th nzLeft="0px" nzAlign="center"></th>
+                  <th nzLeft="50px" nzAlign="center">STT</th>
+                  <th nzLeft="100px" nzAlign="center">Ký hiệu mẫu số hóa đơn, ký hiệu hóa đơn</th>
+                  <th nzAlign="center">Số hóa đơn</th>
+                  <th nzAlign="center">Ngày hóa đơn</th>
+                  <th nzAlign="center">Tên người mua</th>
+                  <th nzAlign="center">Mã số thuế người mua/mã khách </th>
+                  <th nzAlign="center">Mặt hàng</th>
+                  <th nzAlign="center">Số lượng hàng hóa</th>
+                  <th nzAlign="center">Tổng giá trị hàng hoá, dịch vụ bán ra chưa có thuế GTGT</th>
+                  <th nzAlign="center">Thuế suất thuế GTGT</th>
+                  <th nzAlign="center">Tổng số thuế GTGT</th>
+                  <th nzAlign="center">Tổng tiền thanh toán</th>
+                  <th nzAlign="center">Trạng thái</th>
+                  <th nzAlign="center">Thông tin hóa đơn liên quan</th>
+                  <th nzAlign="center">
+                    Số thông báo của CQT<br>về hóa đơn điện tử cần rà soát
+                  </th>
+                  <th nzAlign="center">
+                    Ngày thông báo của CQT<br>về hóa đơn điện tử cần rà soát
+                  </th>
+                  <th nzAlign="center">Ghi chú</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngIf="dataTTC.lanDau == 3"><td colspan="16"  style="color: #1877F2!important"><b>Hóa đơn đã chọn <span *ngIf="totalTrongHeThong > 0">({{totalTrongHeThong}})</span></b></td></tr>
+                <ng-container *ngFor="let data of hoaDonTrongHeThongs; let i=index">
+                  <tr>
+                    <td [ngClass]="{'grayCell': dataTTC.lanDau != 3}" nzLeft="0px" nzAlign="center">
+                      <button *ngIf="dataTTC.lanDau == 3" [disabled]="(permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0)" nzSize="small" type="button" nz-button nzType="default" (click)="removeRowIdx(i, true)" [ngClass]="{'disabled-button-state-circle': (permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0), 'circleButtonRed': !((permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0))}">
+                        <i nz-icon nzType="minus" nzTheme="outline"></i></button>
+                      
+                    </td>
+                    <td nzLeft="50px" nzAlign="center">{{i+1}}</td>
+                    <td nzLeft="100px">{{data.mauSo}}{{data.kyHieu}}</td>
+                    <td>{{data.soHoaDon}}</td>
+                    <td nzAlign="center">{{data.ngayHoaDon | date:'dd/MM/yyyy'}}</td>
+                    <td>{{data.hoTenNguoiMuaHang}}</td>
+                    <td>{{data.maSoThue}}</td>
+                    <td>{{data.tenHang}}</td>
+                    <td nzAlign="right">{{data.soLuong}}</td>
+                    <td nzAlign="right">{{data.thanhTien | formatPrice}}</td>
+                    <td nzAlign="right">{{data.thueGTGT}}</td>
+                    <td nzAlign="right">{{data.tienThueGTGT | formatPrice}}</td>
+                    <td nzAlign="right">{{data.tongTienThanhToan | formatPrice}}
+                    </td>
+                    <td>
+                      <nz-select [nzDisabled]="!fbEnableEdit && !isAddNew" [(ngModel)]="data.trangThaiHoaDon">
+                        <nz-option *ngFor="let item of data.trangThais" [nzLabel]="item.value" [nzValue]="item.id">
+                        </nz-option>
+                      </nz-select>
+                    </td>
+                    <td>
+                      <span
+                        *ngIf="data.mauSoHoaDonLienQuan && data.loaiApDungHoaDonLienQuan == 1">{{data.mauSoHoaDonLienQuan}}{{data.kyHieuHoaDonLienQuan}},
+                        số {{data.soHoaDonLienQuan}} ngày {{data.ngayHoaDonLienQuan | date: 'dd/MM/yyyy'}}</span>
+                      <span *ngIf="data.mauSoHoaDonLienQuan && data.loaiApDungHoaDonLienQuan != 1">Mẫu số
+                        {{data.mauSoHoaDonLienQuan}}, ký hiệu {{data.kyHieuHoaDonLienQuan}}, số {{data.soHoaDonLienQuan}} ngày
+                        {{data.ngayHoaDonLienQuan | date: 'dd/MM/yyyy'}}</span>
+                      <span
+                        *ngIf="!data.mauSoHoaDonLienQuan && data.soHoaDonLienQuan && data.loaiApDungHoaDonLienQuan != 1">Số
+                        {{data.soHoaDonLienQuan}} ngày {{data.ngayHoaDonLienQuan | date: 'dd/MM/yyyy'}}</span>
+                    </td>
+                    <td>{{data.stBao}}</td>
+                    <td nzAlign="center">{{data.ntBao ? (data.ntBao | date: 'dd/MM/yyyy') : ''}}</td>
+                    <td><input nz-input [disabled]="!fbEnableEdit && !isAddNew" nzSize="small" style="width: 100%;" (ngModel)="data.ghiChu" /></td>
+                  </tr>
+                </ng-container>
+                <tr class="total-footer" *ngIf="totalTrongHeThong > 0" class="total-footer">
+                  <td colspan="2"  nzLeft="0px">Số dòng = {{totalTrongHeThong}}</td>
+                  <td colspan="16"></td>
+                </tr>
+                <tr class="total-footer" *ngIf="totalTrongHeThong <= 0">
+                  <td colspan="18"> Không có dữ liệu hiển thị.
+                  </td>
+                </tr>
+                <tr style="color: #1877F2!important"><td colspan="16" style="color: #1877F2!important"><b>Hóa đơn đã lập trên phần mềm giải pháp khác
+                  <span *ngIf="totalNgoaiHeThong > 0">({{totalNgoaiHeThong}})</span></b></td></tr>
+                <ng-container *ngFor="let data of hoaDonNgoaiHeThongs; let i=index">
+                  <tr>
+                    <td nzLeft="0px" nzAlign="center">
+                      <button [disabled]="(permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0)" nzSize="small" type="button" nz-button nzType="default" (click)="removeRowIdx(i, false)" [ngClass]="{'disabled-button-state-circle': (permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0), 'circleButtonRed': !((permission != true && thaoTacs.indexOf('SYS_UPDATE') < 0))}">
+                        <i nz-icon nzType="minus" nzTheme="outline"></i></button>
+                    </td>
+                    <td nzLeft="50px" nzAlign="center">{{i+1}}</td>
+                    <td nzLeft="100px">{{data.mauSo}}{{data.kyHieu}}</td>
+                    <td>{{data.soHoaDon}}</td>
+                    <td nzAlign="center">{{data.ngayHoaDon | date:'dd/MM/yyyy'}}</td>
+                    <td>{{data.hoTenNguoiMuaHang}}</td>
+                    <td>{{data.maSoThue}}</td>
+                    <td>{{data.tenHang}}</td>
+                    <td nzAlign="right">{{data.soLuong}}</td>
+                    <td nzAlign="right">{{data.thanhTien | formatPrice}}</td>
+                    <td nzAlign="right">{{data.thueGTGT}}</td>
+                    <td nzAlign="right">{{data.tienThueGTGT | formatPrice}}</td>
+                    <td nzAlign="right">{{data.tongTienThanhToan | formatPrice}}
+                    </td>
+                    <td>
+                      <nz-select [nzDisabled]="!fbEnableEdit && !isAddNew" [(ngModel)]="data.trangThaiHoaDon">
+                        <nz-option *ngFor="let item of data.trangThais" [nzLabel]="item.value" [nzValue]="item.id">
+                        </nz-option>
+                      </nz-select>
+                    </td>
+                    <td>
+                      <span
+                        *ngIf="data.mauSoHoaDonLienQuan && data.loaiApDungHoaDonLienQuan == 1">{{data.mauSoHoaDonLienQuan}}{{data.kyHieuHoaDonLienQuan}},
+                        số {{data.soHoaDonLienQuan}} ngày {{data.ngayHoaDonLienQuan | date: 'dd/MM/yyyy'}}</span>
+                      <span *ngIf="data.mauSoHoaDonLienQuan && data.loaiApDungHoaDonLienQuan != 1">Mẫu số
+                        {{data.mauSoHoaDonLienQuan}}, ký hiệu {{data.kyHieuHoaDonLienQuan}}, số {{data.soHoaDonLienQuan}} ngày
+                        {{data.ngayHoaDonLienQuan | date: 'dd/MM/yyyy'}}</span>
+                      <span
+                        *ngIf="!data.mauSoHoaDonLienQuan && data.soHoaDonLienQuan && data.loaiApDungHoaDonLienQuan != 1">Số
+                        {{data.soHoaDonLienQuan}} ngày {{data.ngayHoaDonLienQuan | date: 'dd/MM/yyyy'}}</span>
+                    </td>
+                    <td>{{data.stBao}}</td>
+                    <td nzAlign="center">{{data.ntBao ? (data.ntBao | date: 'dd/MM/yyyy') : ''}}</td>
+                    <td><input nz-input [disabled]="!fbEnableEdit && !isAddNew" nzSize="small" style="width: 100%;" (ngModel)="data.ghiChu" /></td>
+                  </tr>
+                </ng-container>
+                <tr class="total-footer" *ngIf="totalNgoaiHeThong > 0" class="total-footer">
+                  <td [attr.colspan]="2"  nzLeft="0px">Số dòng = {{totalNgoaiHeThong}}</td>
+                  <td colspan="16"></td>
+                </tr>
+                <tr class="total-footer" *ngIf="totalNgoaiHeThong <= 0">
+                  <td colspan="18"> Không có dữ liệu hiển thị.
+                  </td>
+                </tr>
+              </tbody>
+
+            </nz-table>
+          </ng-template>
+          <div nz-row style="margin-top: 5px">
+            <button *ngIf="dataTTC.lanDau == 3 && autoSign == false && isSigned == false" style="float: left;" nz-button class="blueButton" nzSize="small" (click)="chonHoaDon()"><i nz-icon nzSize="small" nzType="select"></i>Chọn hóa đơn</button>
+            <button *ngIf="autoSign == false && isSigned == false" [style.margin-left.px]="dataTTC.lanDau == 3 ? 2 : 0" style="float: left;" nz-button nzSize="small" class="blueButton" (click)="themHoaDonNgoaiHeThong()"><i nz-icon nzSize="small" nzType="plus"></i>Chọn hóa đơn khác</button>
+          </div>
+        </div>
+        <div nz-row class="inner-content">
+          <p>Tôi cam đoan tài liệu khai trên là đúng và chịu trách nhiệm trước pháp luật về những tài liệu đã khai./.
+          </p>
+        </div>
+        <div nz-row class="inner-content">
+          <div nz-col nzSpan="12">
+            <nz-form-item>
+              <nz-form-label class="title-form" [nzSm]="8" [nzXs]="24" [nzNoColon]="true" title="Ngày lập:">Ngày lập:
+              </nz-form-label>
+              <nz-form-control [nzSm]="16" [nzXs]="24">
+                <input style="width: 100%;" nz-input nzSize="small" type="date" [(ngModel)]="dataTTC.ngayLap" (ngModelChange)="changeSoBTH()"/>
+              </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+              <nz-form-label class="title-form" [nzSm]="8" [nzXs]="24" [nzNoColon]="true" title="Mã số thuế">Người nộp thuế:
+              </nz-form-label>
+              <nz-form-control [nzSm]="16" [nzXs]="24">
+                <input style="width: 100%;" nz-input nzSize="small" [(ngModel)]="dataTTC.nnt" readonly disabled/>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col nzSpan="12">
+            <div style = "width: 350px; margin-top: 0px; margin-left: auto; margin-right: 0; text-align: center;">
+              {{chuoiDiaDanh}}
+            </div>
+            <div style = "width: 350px; text-transform: uppercase; text-align: center; font-weight: bold; margin-left: auto; margin-right: 0;">
+                NGƯỜI NỘP THUẾ
+            </div>
+            <div style = "width: 350px; text-align: center; margin-left: auto; margin-right: 0;">
+              (Chữ ký số, chữ ký điện tử của người nộp thuế)
+            </div>
+            <div style = "width: 350px; margin-top: 3px; margin-left: auto; margin-right: 0; margin-bottom: 5px; text-align: center;">
+              <app-chu-ky-dien-tu *ngIf="isSigned" [tenDonVi]="dataTTC.tenNNT" [ngayKy]="data.thoiGianGui"></app-chu-ky-dien-tu>
+            </div>
+          </div>
+        </div>
+        <div nz-row class="inner-content">
+          <div nz-row class="box-border">
+            <h3 style="font-style: italic;"><strong>Ghi chú:</strong></h3>
+            <p>
+              &nbsp;- Trường hợp hóa đơn không nhất thiết có đầy đủ các nội dung quy định tại khoản 14 Điều 10 Nghị định thì bỏ trống các chỉ tiêu không có trên hóa đơn.
+              <br>
+              &nbsp;- [03] Bổ sung Mẫu bảng tổng hợp dữ liệu hóa đơn trường hợp dữ liệu tổng hợp thiếu cần bổ sung.
+              <br>
+              &nbsp;- [04] Sửa đổi lần thứ [ ] trường hợp mẫu bảng tổng hợp dữ liệu hóa đơn đã gửi có sai sót.
+              <br>
+              &nbsp;- Chỉ tiêu (6): người bán điền mã số thuế đối với người mua là tổ chức kinh doanh, cá nhân kinh doanh có mã số thuế, trường hợp là cá nhân tiêu dùng cuối cùng không có mã số thuế thì để trống; mã khách hàng đối với trường hợp bán điện, nước cho khách hàng không có mã số thuế.
+            </p>
+          </div>
+        </div>
+      </div> 
+    </div>
+  </div>
+</nz-spin>

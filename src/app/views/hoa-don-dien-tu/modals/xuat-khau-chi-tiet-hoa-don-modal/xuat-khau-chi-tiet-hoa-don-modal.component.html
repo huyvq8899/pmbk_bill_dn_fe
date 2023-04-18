@@ -1,0 +1,226 @@
+<nz-spin [nzSpinning]="spinning">
+    <form nz-form [formGroup]="mainForm">
+        <div nz-row class="inner-content" style="border-bottom: 1px solid #e8e8e8;">
+            <nz-form-item nz-row style="background-color: #FFEDB7!important;">
+                <nz-form-label style="margin-left: 10px;" [nzSm]="4" [nzXs]="24" [nzNoColon]='true' title="Thống kê theo">Thống kê theo:</nz-form-label>
+                <nz-form-control [nzSm]="19" [nzXs]="24">
+                    <nz-radio-group style="display: inline-block;position:relative; top:4px;" nzSize="small" formControlName="mode">
+                        <label nz-radio [nzValue]="1">1-{{textHD_PXK_UPPER}}</label>
+                        <label nz-radio [nzValue]="2">2-Thuế suất thuế GTGT</label>
+                    </nz-radio-group>
+                </nz-form-control>
+            </nz-form-item>
+            <div nz-row style="margin: 5px 10px;">
+                <div nz-col nzSpan="8">
+                    <div>Kỳ</div>
+                    <nz-form-control>
+                        <nz-select style="width: 100%" class="with-ky" nzSize="small" nzShowSearch nzPlaceHolder="Chọn kỳ" [(ngModel)]="ky" (ngModelChange)="changeKy($event)" [ngModelOptions]="{standalone: true}">
+                            <nz-option *ngFor="let item of kys" [nzLabel]="item.value" [nzValue]="item.key"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </div>
+                <div nz-col nzSpan="8">
+                    <div style="margin-left: 10px;">
+                        <div>Từ ngày</div>
+                        <nz-form-control>
+                            <input style="width: 100%" type="date" nzSize="small" nz-input formControlName="tuNgay" id="tuNgay" (blur)="blurDate()" max="2999-12-31" />
+                        </nz-form-control>
+                    </div>
+                </div>
+                <div nz-col nzSpan="8">
+                    <div style="margin-left: 10px;">
+                        <div>Đến ngày</div>
+                        <nz-form-control>
+                            <input style="width: 100%" type="date" nzSize="small" nz-input formControlName="denNgay" id="tuNgay" (blur)="blurDate()" max="2999-12-31" />
+                        </nz-form-control>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div nz-row style="margin: 10px;">
+            <div nz-row>
+                <div nz-col nzSpan="8"*ngIf="!IsPos"  >
+                    <div style="margin-right: 5px;">
+                        <div>Hình thức {{textHD_PXK}}</div>
+                        <nz-form-control>
+                            <nz-select style="width: 100%" nzShowSearch formControlName="hinhThucHoaDon" [nzSize]="'small'" nzPlaceHolder="Chọn hình thức hóa đơn">
+                            <nz-option nzCustomContent *ngFor="let item of hinhThucHoaDons" [nzLabel]="item.value" [nzValue]="item.key">
+                                {{item.value}}
+                            </nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </div>
+                </div>
+                <div nz-col nzSpan="8" *ngIf="!IsPos">
+                    <div style="margin-right: 5px;">
+                        <div>Ủy nhiệm lập {{textHD_PXK}}</div>
+                        <nz-form-control>
+                            <nz-select [nzDisabled]="isPos" style="width: 100%" nzShowSearch formControlName="uyNhiemLapHoaDon" [nzSize]="'small'" nzPlaceHolder="Chọn ủy nhiệm lập hóa đơn">
+                                <nz-option nzCustomContent *ngFor="let item of uyNhiemLapHoaDons" [nzLabel]="item.value" [nzValue]="item.key">
+                                    {{item.value}}
+                                </nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </div>
+                </div>               
+                <div nz-col nzSpan="8" *ngIf="!IsPos">
+                    <div>
+                        <div>Trạng thái chuyển đổi</div>
+                        <nz-form-control>
+                            <nz-select style="width: 100%" nzSize="small" nzShowSearch formControlName="trangThaiChuyenDoi" title="Trạng thái chuyển đổi">
+                                <nz-option nzLabel="Tất cả" [nzValue]="-1"></nz-option>
+                                <nz-option [nzLabel]="'Chưa chuyển thành ' + textHD_PXK + ' giấy'" [nzValue]="0"></nz-option>
+                                <nz-option [nzLabel]="'Đã chuyển thành ' + textHD_PXK + ' giấy'" [nzValue]="1"></nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </div>
+                </div>
+                <div nz-row nzSpan="8" *ngIf="IsPos">
+                    <div>
+                        <div>Trạng thái chuyển đổi</div>
+                        <nz-form-control>
+                            <nz-select style="width: 100%" nzSize="small" nzShowSearch formControlName="trangThaiChuyenDoi" title="Trạng thái chuyển đổi">
+                                <nz-option nzLabel="Tất cả" [nzValue]="-1"></nz-option>
+                                <nz-option [nzLabel]="'Chưa chuyển thành ' + textHD_PXK + ' giấy'" [nzValue]="0"></nz-option>
+                                <nz-option [nzLabel]="'Đã chuyển thành ' + textHD_PXK + ' giấy'" [nzValue]="1"></nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </div>
+                </div>
+            </div>
+            <div nz-row>
+                <div>Loại {{textHD_PXK}}</div>
+                <nz-form-control>
+                    <nz-select style="width: 100%" class="select-tag-limit-2" nzSize="small" nzShowSearch formControlName="loaiHoaDon" id="loaiHoaDon" nzPlaceHolder="Chọn loại hóa đơn" nzMode="tags" nzServerSearch (ngModelChange)="changeLoaiHoaDon($event)">
+                        <nz-option *ngFor="let item of loaiHoaDons" nzCustomContent [nzLabel]="item.value" [nzValue]="item.key" [nzDisabled]="item.disabled">
+                            <label nz-checkbox [(ngModel)]="item.checked" [ngModelOptions]="{standalone: true}" (ngModelChange)="checkFilterLoaiHoaDon(item)">{{item.value}}</label>
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </div>
+            <div nz-row>
+                <div>Ký hiệu</div>
+                <nz-form-control>
+                    <nz-select style="width:100%" class="select-tag-limit-2" nzShowSearch nzSize="small" formControlName="boKyHieuHoaDonId" nzMode="multiple" (ngModelChange)="changeKyHieu($event)" id="boKyHieuHoaDonId" nzPlaceHolder="Chọn ký hiệu hóa đơn" nzServerSearch >
+                        <nz-option *ngFor="let item of kyHieuHoaDons" nzCustomContent [nzLabel]="item.kyHieu" [nzValue]="item.boKyHieuHoaDonId" [nzDisabled]="item.disabled">
+                            <label nz-checkbox [(ngModel)]="item.checked" [ngModelOptions]="{standalone: true}" (ngModelChange)="checkFilterKyHieu(item)">{{item.kyHieu}}</label>
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </div>
+            <div nz-row>
+                <div>Trạng thái {{textHD_PXK}}</div>
+                <nz-form-control>
+                    <nz-select style="width: 100%" class="select-tag-limit-2" nzShowSearch formControlName="trangThaiHoaDon" [nzSize]="'small'" nzPlaceHolder="Chọn trạng thái hóa đơn" nzMode="tags" (ngModelChange)="changeTrangThaiHoaDon($event)">
+                        <nz-option *ngFor="let item of trangThaiHoaDons" nzCustomContent [nzLabel]="item.ten" [nzValue]="item.trangThaiId" [nzDisabled]="item.disabled">
+                            <div [style.padding-left.px]="item.level * 20" [style.font-weight]="item.isParent == true  ? 'bold' : 'normal'" nz-row>
+                                <div title="{{item.ten}}">
+                                    <label nz-checkbox [(ngModel)]="item.checked" [ngModelOptions]="{standalone: true}" (ngModelChange)="checkFilterTrangThaiHoaDon(item)">{{item.ten}}</label>
+                                </div>
+                            </div>
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </div>
+            <div nz-row>
+                <div>Trạng thái quy trình</div>
+                <nz-form-control>
+                    <nz-select style="width: 100%" class="select-tag-limit-2" nzSize="small" nzShowSearch formControlName="trangThaiQuyTrinh" nzPlaceHolder="Chọn trạng thái quy trình" nzMode="multiple" (ngModelChange)="changeTrangThaiQuyTrinh($event)">
+                        <nz-option *ngFor="let item of trangThaiQuyTrinhs" nzCustomContent [nzLabel]="item.value" [nzValue]="item.key" [nzDisabled]="item.disabled">
+                            <label nz-checkbox [(ngModel)]="item.checked" [ngModelOptions]="{standalone: true}" (ngModelChange)="checkFilterTrangThaiQuyTrinh(item)">{{item.value}}</label>
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </div>
+            <div nz-row>
+                <div>Trạng thái gửi {{textHD_PXK}}</div>
+                <nz-form-control>
+                    <nz-select style="width: 100%" class="select-tag-limit-2" nzShowSearch formControlName="trangThaiGuiHoaDon" [nzSize]="'small'" nzPlaceHolder="Chọn trạng thái gửi hóa đơn" nzMode="tags" (ngModelChange)="changeTrangThaiGuiHoaDon($event)">
+                        <nz-option *ngFor="let item of trangThaiGuiHoaDons" nzCustomContent [nzLabel]="item.ten" [nzValue]="item.trangThaiId" [nzDisabled]="item.disabled">
+                            <div [style.margin-left.px]="item.level * 20" [style.font-weight]="item.isParent == true  ? 'bold' : 'normal'" nz-row>
+                                <div title="{{item.ten}}">
+                                    <label nz-checkbox [(ngModel)]="item.checked" [ngModelOptions]="{standalone: true}" (ngModelChange)="checkFilterTrangThaiGuiHoaDon(item)">{{item.ten}}</label>
+                                </div>
+                            </div>
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </div>
+            <div nz-row>
+                <div>Khách hàng</div>
+                <nz-form-control>
+                    <nz-select nzPlaceHolder="Chọn khách hàng" class="select-tag-limit-3" nzSize="small" nzShowSearch="false" formControlName="khachHangId" nzMode="tags"
+                     (ngModelChange)="changeKhachHang($event)" nzServerSearch (nzOnSearch)="searchDoiTuong($event)" 
+                     (nzOpenChange)="openChangeDropDown($event)" (keyup.enter)="getData()" [nzDropdownStyle]="customOverlayStyle1">
+                        <nz-option nzCustomContent nzDisabled="true">
+                            <div nz-row >
+                              <div nz-col nzXs="1" nzSm="1" nzMd="1" nzLg="1" nzXl="1">
+                                    <span class="info_SeacrchKhachHang_XuatKhau" nz-dropdown [nzDropdownMenu]="menuPlusMutiple" [nzClickHide]="false" ><i nz-icon nzType="search" nzTheme="outline"
+                                    (click)="themHangHoaDichVu(data, i)"></i></span>
+                                    <nz-dropdown-menu #menuPlusMutiple="nzDropdownMenu">
+                                        <ul nz-menu>
+                                            <li nz-menu-item *ngFor="let item of timKiemTheos">
+                                                <label nz-checkbox [(ngModel)]="item.checked"  [ngModelOptions]="{standalone: true}" >{{item.value}}</label>
+                                            </li>
+                                        </ul>
+                                    </nz-dropdown-menu>
+                              </div>
+                              <div nz-col nzXs="6" nzSm="6" nzMd="6" nzLg="6" nzXl="6">
+                                Mã khách hàng
+                              </div>
+                              <div nz-col nzXs="8" nzSm="8" nzMd="8" nzLg="8" nzXl="8">
+                                Tên khách hàng
+                              </div>
+                              <div nz-col nzXs="4" nzSm="4" nzMd="4" nzLg="4" nzXl="4">
+                                Mã số thuế
+                              </div>
+                              <div nz-col nzXs="4" nzSm="4" nzMd="4" nzLg="4" nzXl="4">
+                               Người mua hàng
+                              </div>
+                            </div>
+                          </nz-option>
+                            <nz-option *ngFor="let item of khachHangs" [nzLabel]="item.ten" nzCustomContent [nzValue]="item.doiTuongId" style="width: 1000px !important;">
+                                <div nz-row (click)= "checkFilterKhachHang(item)" >
+                                    <div nz-col nzXs="1" nzSm="1" nzMd="1" nzLg="1" nzXl="1">
+                                        <label nz-checkbox [(ngModel)]="item.checked" [ngModelOptions]="{standalone: true}" (ngModelChange)="checkFilterKhachHang(item)">
+                                            <span  style="white-space: nowrap !important;overflow: hidden !important;text-overflow: ellipsis !important;"></span>
+                                        </label>
+                                    </div>
+    
+                                    <div title="{{item?.ma}}" nz-col nz-col nzXs="6" nzSm="6" nzMd="6" nzLg="6" nzXl="6">
+                                      <div *ngIf="item.doiTuongId != -1 && item.doiTuongId != -2" class="text-ellipsis" >{{item?.ma}}</div>
+                                      <div  *ngIf="item.doiTuongId == -1 || item.doiTuongId == -2"  class="text-ellipsis" >{{item?.ten}}</div>
+                                    </div>
+                                    <div title="{{item?.ten}}" nz-col nzXs="8" nzSm="8" nzMd="8" nzLg="8" nzXl="8">
+                                      <div *ngIf="item.doiTuongId != -1 && item.doiTuongId != -2"  class="text-ellipsis">{{item?.ten}}</div>
+                                      <div  *ngIf="item.doiTuongId == -1 || item.doiTuongId == -2" class="text-ellipsis"> </div>
+                                    </div>
+                                    <div title="{{item?.ten}}" nz-col nzXs="4" nzSm="4" nzMd="4" nzLg="4" nzXl="4">
+                                        <div class="text-ellipsis">{{item?.maSoThue}}</div>
+                                      </div>
+                                      <div title="{{item?.ten}}" nz-col nzXs="4" nzSm="4" nzMd="4" nzLg="4" nzXl="4">
+                                        <div class="text-ellipsis">{{item?.nguoiMuaHang}}</div>
+                                      </div>
+                                </div>
+    
+                            </nz-option>
+                        <nz-option *ngIf="loadingSearchDropdown == true" nzDisabled nzCustomContent>
+                            <i nz-icon nzType="loading" class="loading-icon"></i> Đang tải...
+                          </nz-option>
+                          <nz-option *ngIf="isLoadingMore == true" nzDisabled nzCustomContent>
+                            <i nz-icon nzType="loading" class="loading-icon"></i> Đang tải thêm...
+                          </nz-option>
+                          
+                    </nz-select>
+                </nz-form-control>
+            </div>
+        </div>
+    </form>
+</nz-spin>
+
+<div *nzModalFooter>
+    <button nz-button nzSize="small" nzType="default" (click)="export()" class="button-agree">
+    <i nz-icon nzType="vertical-align-bottom" nzTheme="outline"></i>Thực hiện
+  </button>
+    <button nz-button nzSize="small" nzType="default" (click)="destroyModal()" class="button-cancel"><i nz-icon nzType="close"></i>Hủy</button>
+</div>

@@ -1,0 +1,24 @@
+@import "../../../../../../shared/scss/modal.scss";
+
+.ant-checkbox-group {
+    flex-direction: column !important;
+    display: flex !important;
+
+    .ant-checkbox-group-item {
+        margin-bottom: 2px !important;
+    }
+}
+
+.format-file {
+    border: 1px solid #c1c1c1; 
+    border-radius: 3px; 
+    padding: 5px; 
+    margin-right: 10px;
+    opacity: 0.5;
+    cursor: pointer;
+
+    &-selected {
+        border: 1px solid #3b8ced; 
+        opacity: 1;
+    }
+}

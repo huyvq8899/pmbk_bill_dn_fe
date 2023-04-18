@@ -1,0 +1,100 @@
+<nz-spin [nzSpinning]="spinning">
+    <form nz-form>
+        <div nz-row>
+            <nz-form-item>
+                <nz-form-control [nzSm]="4" [nzXs]="24" >
+                    <button style="width: 100px!important" nz-button nzSize="small" nzType="default" class="blueButton" (click)="fImportExcel.click()" nz-dropdown [nzDropdownMenu]="fileTypeMenu" [nzOverlayStyle]="dropdownOverlayStyle">
+                        <i nz-icon nzType="vertical-align-top" nzTheme="outline"></i>Tải lên
+                        <nz-dropdown-menu #fileTypeMenu="nzDropdownMenu">
+                          <ul nz-menu nzSelectable  style="min-width: 100px !important;">
+                            <li nz-menu-item (click)="fImportExcel.click()">
+                              <img height="15" width="17" src="assets/xml.png" />XML
+                            </li>
+                            <!-- <li nz-menu-item (click)="fileType = 2" [nzSelected]="fileType === 2">
+                              <i [style.visibility]="fileType === 2 ? 'visible' : 'hidden'" nz-icon nzType="check"
+                                nzTheme="outline"></i>XML
+                            </li> -->
+                          </ul>
+                        </nz-dropdown-menu>
+                        <input #fImportExcel type="file" multiple (change)="ImportFile($event)" style="display: none;"/>            
+                    </button>
+                </nz-form-control>
+                <nz-form-control [nzSm]="20" [nzXs]="24">
+                    <input disabled type="text" nz-input nzSize="small" [(ngModel)]="xmlFileName" [ngModelOptions]="{standalone: true}" placeholder="Thông báo về việc chấp nhận sử dụng/thay đổi thông tin hóa đơn điện tử..."/>
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-control [nzSm]="24" [nzXs]="24">
+                   <label [disabled]="!xmlFileName || xmlFileName == ''" nz-checkbox [(ngModel)]="isAccept" (ngModelChange)="changeAccept($event)" [ngModelOptions]="{standalone: true}"><span style="color: #0070C0">Tôi xác nhận và chịu trách nhiệm về việc xác nhận thông tin của tờ khai đã được <b>CQT chấp nhận</b>.</span>
+                    </label>
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <div nz-row class="box-border1">
+                    <div nz-row style="text-align: left;">
+                        <div nz-col nzSpan="6">Mẫu số:</div>
+                        <div nz-col nzSpan="18"><span *ngIf="dataReader">{{dataReader?.dltBao.mSo}}</span></div>
+                    </div>
+                    <div nz-row style="text-align: left;">
+                        <div nz-col nzSpan="6">Tên thông báo:</div>
+                        <div nz-col nzSpan="18"><span *ngIf="dataReader">{{dataReader?.dltBao.ten}}</span></div>
+                        <!-- Tên thông báo:&nbsp;<span *ngIf="dataReader">{{dataReader?.dltBao.ten}}</span> -->
+                    </div>
+
+                    <div nz-row style="text-align: left;">
+                        <div nz-col nzSpan="6">Số thông báo:</div>
+                        <div nz-col nzSpan="18"> 
+                            <span *ngIf="dataReader">{{dataReader.stBao?.so}}</span>
+                        </div>
+                        <!-- Số thông báo: &nbsp;<span *ngIf="dataReader">{{dataReader.stBao?.so}}</span> -->
+                    </div>
+
+                    <div nz-row style="text-align: left;">
+                        <div nz-col nzSpan="6">Ngày thông báo:</div>
+                        <div nz-col nzSpan="18"> 
+                            <span *ngIf="dataReader">{{dataReader?.stBao.ntBao | date: 'dd/MM/yyyy HH:mm:ss'}}</span>
+                        </div>
+                        <!-- Ngày thông báo:&nbsp;<span *ngIf="dataReader">{{dataReader?.stBao.ntBao | date: 'dd/MM/yyyy'}}</span> -->
+                    </div> 
+
+                    <div nz-row style="text-align: left;">
+                        <div nz-col nzSpan="6">Hình thức:</div>
+                        <div nz-col nzSpan="18"> 
+                            <span>
+                                <span *ngIf="dataReader && dataReader.dltBao.htdKy == 1">Đăng ký</span>
+                                <span *ngIf="dataReader && dataReader.dltBao.htdKy == 2">Thay đổi thông tin</span>
+                            </span>
+                        </div>
+                        <!-- Hình thức: &nbsp;
+                        <span>
+                            <span *ngIf="dataReader && dataReader.dltBao.htdKy == 1">Đăng ký</span>
+                            <span *ngIf="dataReader && dataReader.dltBao.htdKy == 2">Thay đổi thông tin</span>
+                        </span> -->
+                    </div>
+
+                    <div nz-row style="text-align: left;">
+                        <div nz-col nzSpan="6">Trạng thái:</div>
+                        <div nz-col nzSpan="18"> 
+                            <span *ngIf="dataReader">
+                                <span *ngIf="dataReader && dataReader.dltBao.ttxncqt == 1">Chấp nhận</span>
+                                <span *ngIf="dataReader && dataReader.dltBao.ttxncqt == 2">Không chấp nhận</span>
+                            </span>
+                        </div>
+                        <!-- Trạng thái:&nbsp;
+                        <span *ngIf="dataReader">
+                            <span *ngIf="dataReader && dataReader.dltBao.ttxncqt == 1">Chấp nhận</span>
+                            <span *ngIf="dataReader && dataReader.dltBao.ttxncqt == 2">Không chấp nhận</span>
+                        </span> -->
+                    </div>
+                </div>
+            </nz-form-item>
+        </div>
+    </form>
+</nz-spin>
+
+<div *nzModalFooter style="padding-right: 4px!important;">
+    <button [disabled]="!isAccept" [nzLoading]="signing" nzSize="small" nz-button nzType="default" (click)="confirm()" class="blueButton"><i nz-icon nzType="check" nzTheme="outline"></i>Xác nhận</button>
+    <button nzSize="small" [nzLoading]="signing" nz-button nzType="default" (click)="colseModal()" class="button-cancel"><i nz-icon nzSize="small" nzType="close"></i>Hủy</button>
+</div>

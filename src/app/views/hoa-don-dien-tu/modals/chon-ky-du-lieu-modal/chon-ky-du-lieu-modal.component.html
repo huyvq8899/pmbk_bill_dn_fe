@@ -1,0 +1,165 @@
+<nz-spin [nzSpinning]="spinning">
+  <form nz-form [formGroup]="mainForm">
+
+    <nz-form-item>
+      <nz-form-label class="title-form" [nzSm]="6" [nzXs]="24" [nzNoColon]="true" title="Mẫu số và tên bảng tổng hợp dữ liệu">Mẫu số và tên bảng tổng hợp dữ liệu:
+      </nz-form-label>
+      <nz-form-control [nzSm]="18" [nzXs]="24">
+        <input nzSize="small" nz-input [(ngModel)]="title" [ngModelOptions]="{standalone:true}" disabled/>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label class="title-form" [nzSm]="6" [nzXs]="24" [nzNoColon]="true" nzFor="mCQTQLy" title="Cơ quan thuế">Cơ quan thuế:
+      </nz-form-label>
+      <nz-form-control [nzSm]="18" [nzXs]="24">
+        <nz-select nzSize="small" nzShowSearch [(ngModel)]="mCQTQLy" [ngModelOptions]="{standalone:true}"
+          tooltipInput nzDisabled>
+          <nz-option *ngFor="let item of coQuanThueQuanLys" [nzLabel]="item?.name" [nzValue]="item?.code">
+          </nz-option>
+        </nz-select>
+        <ng-template #errorCoQuanThueQuanLy let-control>
+          <ng-container *ngIf="control.hasError('required')">
+            <div class="tooltip-error">&lt;Cơ quan thuế&gt; không được để trống.</div>
+          </ng-container>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" [nzNoColon]="true" title="Phương pháp tính thuế GTGT">Phương pháp tính thuế GTGT:
+      </nz-form-label>
+      <nz-form-control [nzSm]="18" [nzXs]="24">
+        <input type="text" readonly nzSize="small" nz-input [(ngModel)]="pPTThue" [ngModelOptions]="{standalone:true}" disabled/>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label class="title-form" [nzSm]="6" [nzXs]="24" [nzNoColon]="true" nzFor="lHHoa" title="Loại hàng hóa">Loại hàng hóa:
+      </nz-form-label>
+      <nz-form-control [nzSm]="18" [nzXs]="24">
+        <nz-select nzSize="small" nzShowSearch formControlName = "lHHoa">
+          <nz-option *ngFor="let item of loaiHHs" [nzLabel]="item?.name" [nzValue]="item?.value">
+          </nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label class="title-form" style="top: -2px!important" [nzSm]="6" [nzXs]="24" [nzNoColon]="true" nzFor="loaiKyDuLieu" title="Loại kỳ dữ liệu">Loại kỳ dữ liệu:
+      </nz-form-label>
+      <nz-form-control [nzSm]="18" [nzXs]="24">
+        <nz-radio-group formControlName="loaiKyDuLieu" (ngModelChange)="changeLoaiKyDuLieu($event)" [ngClass] = "{'notOpacityRadio': 1 == 1}">
+          <label nz-radio nzValue="N" [nzDisabled]="mainForm.get('lHHoa').value == 9">N-Kỳ theo ngày</label>
+          <label nz-radio nzValue="T" [nzDisabled]="mainForm.get('lHHoa').value == 1">T-Kỳ theo tháng</label>
+          <label nz-radio nzValue="Q" [nzDisabled]="mainForm.get('lHHoa').value == 1">Q-Kỳ theo quý</label>
+        </nz-radio-group>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label class="title-form" [nzSm]="6" [nzXs]="24" [nzNoColon]="true" nzFor="kyDuLieu" title="Loại kỳ dữ liệu">Kỳ dữ liệu:
+      </nz-form-label>
+      <div *ngIf="mainForm.get('loaiKyDuLieu').value == 'N'">
+        <nz-form-control [nzSm]="7" [nzXs]="24">
+          <input nz-input nzSize="small" type="date" formControlName="ngayDuLieu" (ngModelChange)="changeNgay($event)"/>
+        </nz-form-control>
+      </div>
+      <div *ngIf="mainForm.get('loaiKyDuLieu').value == 'T'">
+        <nz-form-control [nzSm]="3" [nzXs]="24">
+          <nz-select nzSize="small" nzShowSearch formControlName="thangDuLieu" (ngModelChange)="changeThang($event)">
+            <nz-option *ngFor="let item of thangs" [nzLabel]="item" [nzValue]="item">
+            </nz-option>
+          </nz-select>
+        </nz-form-control>
+        <nz-form-control [nzOffset]="1" [nzSm]="3" [nzXs]="24">
+
+          <nz-select nzSize="small" nzShowSearch formControlName="namDuLieu" (ngModelChange)="changeNam($event)">
+            <nz-option *ngFor="let item of nams" [nzLabel]="item" [nzValue]="item">
+            </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </div>
+      <div *ngIf="mainForm.get('loaiKyDuLieu').value == 'Q'">
+        <nz-form-control [nzSm]="3" [nzXs]="24">
+          <nz-select nzSize="small" nzShowSearch formControlName="quyDuLieu" (ngModelChange)="changeQuy($event)">
+            <nz-option *ngFor="let item of quys" [nzLabel]="item" [nzValue]="item">
+            </nz-option>
+          </nz-select>
+        </nz-form-control>
+        <nz-form-control [nzOffset]="1" [nzSm]="3" [nzXs]="24">
+          <nz-select style="margin-left: 2px" nzSize="small" formControlName="namDuLieu" (ngModelChange)="changeNam($event)">
+            <nz-option *ngFor="let item of nams" [nzLabel]="item" [nzValue]="item">
+            </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </div>
+      <nz-form-label class="title-form" [nzOffset]="1" [nzSm]="3" [nzXs]="24" [nzNoColon]="true" nzFor="thoiHanGuiDisplay" title="Thời hạn gửi">Thời hạn gửi:
+      </nz-form-label>
+      <nz-form-control [nzSm]="7" [nzXs]="24">
+        <nz-input-group [nzSuffix]="suffixThoiHanGui" nzSize="small">
+          <input nz-input nzSize="small" formControlName="thoiHanGuiDisplay"/>
+        </nz-input-group>
+        <ng-template #suffixThoiHanGui>
+          <i nz-icon nzType="info-circle" class="info-circle" nz-tooltip [nzTooltipTitle]="mainForm.get('lHHoa').value == 1 ? titleThoiHanGuiXDau : titleThoiHanGui"></i>
+        </ng-template>
+        <ng-template #titleThoiHanGui>
+          <p>
+            Luật Quản lý thuế số 38/2019/QH14
+            <br>
+            Điều 44. Thời hạn nộp hồ sơ khai thuế
+            <br>
+            1. Thời hạn nộp hồ sơ khai thuế đối với loại thuế khai theo tháng, theo quý được quy định như sau:
+            <br>
+            a) Chậm nhất là ngày thứ 20 của tháng tiếp theo tháng phát sinh nghĩa vụ thuế đối với trường hợp khai và nộp theo tháng;
+            <br>
+            b) Chậm nhất là ngày cuối cùng của tháng đầu của quý tiếp theo quý phát sinh nghĩa vụ thuế đối với trường hợp khai và nộp theo quý.
+            <br>
+            <br>
+            Thông tư số 80/2021/TT-BTC
+            <br>
+            Điều 86. Thời hạn nộp hồ sơ khai thuế và thời hạn nộp thuế
+            <br>
+            Trường hợp thời hạn nộp hồ sơ khai thuế, thời hạn nộp thuế trùng với ngày nghỉ theo quy định thì thời hạn nộp hồ sơ khai thuế, thời hạn nộp thuế được tính là ngày làm việc tiếp theo của ngày nghỉ đó theo quy định tại Bộ Luật dân sự.
+          </p>
+        </ng-template>
+        <ng-template #titleThoiHanGuiXDau>
+          <p>
+            Điểm a1, khoản 3, điều 22 Nghị định số 123/2020/NĐ-CP
+            <br>
+            Riêng đối với trường hợp bán xăng dầu cho khách hàng thì người bán tổng hợp dữ liệu tất cả các hóa đơn bán xăng dầu trong ngày theo từng mặt hàng để thể hiện trên bảng tổng hợp dữ liệu hóa đơn điện tử và chuyển bảng tổng hợp dữ liệu hóa đơn điện tử này ngay trong ngày.
+          </p>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label class="title-form" [nzSm]="6" [nzXs]="24" [nzNoColon]="true">Hình thức:
+      </nz-form-label>
+      <nz-form-control [nzSm]="8" [nzXs]="24">
+        <nz-radio-group formControlName="lanDau" (ngModelChange)="changeLanDau($event)" [ngClass] = "{'notOpacityRadio': 1 == 1}" >
+          <label nz-radio [nzValue]="1">Lần đầu</label>
+          <label nz-radio [nzValue]="2">Bổ sung&nbsp;<span class="circleInfo_Blue" nz-tooltip [nzTooltipTitle]="tooltipBoSung">i</span></label>
+          <ng-template #tooltipBoSung>
+            <p>
+              Luật Quản lý thuế số 38/2019/QH14
+              <br>
+              Điều 47. Khai bổ sung hồ sơ khai thuế
+              <br>
+              1. Người nộp thuế phát hiện hồ sơ khai thuế đã nộp cho cơ quan thuế có sai, sót thì được khai bổ sung hồ sơ khai thuế trong thời hạn 10 năm kể từ ngày hết thời hạn nộp hồ sơ khai thuế của kỳ tính thuế có sai, sót nhưng trước khi cơ quan thuế, cơ quan có thẩm quyền công bố quyết định thanh tra, kiểm tra.
+            </p>
+          </ng-template>
+          <label nz-radio [nzValue]="3" [nzDisabled]="enableSuaDoi == false">Sửa đổi</label>
+        </nz-radio-group>
+      </nz-form-control>
+      <nz-form-label class="title-form" [nzSm]="3" [nzXs]="24" [nzNoColon]="true" nzFor="boSungLanThu" title="Lần thứ">Lần thứ:
+      </nz-form-label>
+      <nz-form-control [nzSm]="1" [nzXs]="24">
+        <input nz-input nzSize="small" style="text-align: right!important" type="number" step="1" min="1" formControlName="boSungLanThu" readonly disabled/>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+  <div *nzModalFooter>
+      <button nz-button nzSize="small" nzType="default" (click)="onNextClick()" class="blueButton">Tiếp tục<i nz-icon nzType="arrow-right" nzTheme="outline"></i></button>
+      <button nz-button nzSize="small" nzType="default" (click)="destroyModal()" class="button-cancel" style="margin-right: 4px!important"><i nz-icon nzType="close" nzTheme="outline"></i>Đóng</button>
+  </div>
+</nz-spin>

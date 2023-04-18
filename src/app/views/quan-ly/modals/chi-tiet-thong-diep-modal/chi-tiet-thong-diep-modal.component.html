@@ -1,0 +1,110 @@
+<div style="background-color: white;margin: -11px;" class="card">
+    <!-- <div nz-col nzSpan="23" style="text-align: left; padding-left: 3px;padding-bottom: 4px;">
+    <button style="float:right;" nz-button nzSize="small" nzType="primary" (click)="sendThongDiepPhanHoi999()">
+      <i nz-icon nzType="plus"></i>Gửi thông điệp phản hồi kĩ thuật</button>
+  </div> -->
+
+    <nz-table #TDHDonTable nzBordered [nzData]="listThongDiepLienQuan" nzSize="small" nzNoResult="Không có dữ liệu" [nzFrontPagination]="true" [(nzPageSize)]="listThongDiepLienQuan.length" [nzHideOnSinglePage]="true" [nzLoading]="loading" [nzScroll]="scrollConfig">
+        <thead>
+            <tr>
+                <th nzAlign="center" [nzWidth]="'4%'">STT</th>
+                <th nzAlign="center" [nzWidth]="'8%'">Thời gian</th>
+                <th nzAlign="center" [nzWidth]="'10%'">Nơi gửi</th>
+                <th nzAlign="center" [nzWidth]="'10%'">Nơi nhận</th>
+                <th nzAlign="center" [nzWidth]="'28%'">Mã loại thông điệp - Tên thông điệp</th>
+                <th nzAlign="center" [nzWidth]="'28%'">Mã thông điệp/ <br> Mã thông điệp tham chiếu</th>
+                <th nzAlign="center" [nzWidth]="'8%'">Chi tiết</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of TDHDonTable.data;let i = index">
+                <td class="td-text-center-ng-host">{{ i + 1 }}</td>
+                <td class="td-text-center-ng-host">{{ data.createdDate | date:"HH:mm:ss"}} <br/> {{ data.createdDate | date:"dd/MM/yyyy"}}</td>
+                <td class="td-text-center-ng-host">{{ data.maNoiGui }}</td>
+                <td class="td-text-center-ng-host">{{ data.maNoiNhan }}</td>
+                <td class="" style="white-space: unset;">
+                    <div *ngIf=" data.maLoaiThongDiep === 100">
+                        100 - Thông điệp gửi tờ khai đăng ký/thay đổi thông tin sử dụng hóa đơn điện tử
+                    </div>
+                    <div *ngIf=" data.maLoaiThongDiep === 101">
+                        101 - Thông điệp gửi tờ khai đăng ký thay đổi thông tin đăng ký sử dụng HĐĐT khi ủy nhiệm/nhận ủy nhiệm lập hóa đơn
+                    </div>
+                    <div *ngIf=" data.maLoaiThongDiep === 102">
+                        102 - Thông điệp thông báo về việc tiếp nhận/không tiếp nhận tờ khai đăng ký/thay đổi thông tin sử dụng HĐĐT, tờ khai đăng ký thay đổi thông tin đăng ký sử dụng HĐĐT khi ủy nhiệm/nhận ủy nhiệm lập hoá đơn
+                    </div>
+                    <div *ngIf=" data.maLoaiThongDiep === 103">
+                        103 - Thông điệp thông báo về việc chấp nhận/không chấp nhận đăng ký/thay đổi thông tin sử dụng hóa đơn điện tử
+                    </div>
+                    <div *ngIf=" data.maLoaiThongDiep === 104">
+                        104 - Thông điệp thông báo về việc chấp nhận/không chấp nhận đăng ký thay đổi thông tin đăng ký sử dụng HĐĐT khi ủy nhiệm/nhận ủy nhiệm lập hoá đơn
+                    </div>
+                    <div *ngIf=" data.maLoaiThongDiep === 105">
+                        105 - Thông điệp thông báo về việc hết thời gian sử dụng hóa đơn điện tử có mã qua cổng thông tin điện tử Tổng cục Thuế/qua ủy thác tổ chức cung cấp dịch vụ về hóa đơn điện tử; không thuộc trường hợp sử dụng hóa đơn điện tử không có mã
+                    </div>
+                    <div *ngIf=" data.maLoaiThongDiep === 106">
+                        106 - Thông điệp gửi Đơn đề nghị cấp hóa đơn điện tử có mã của CQT theo từng lần phát sinh
+                    </div>
+                    <div *ngIf=" data.maLoaiThongDiep === 200">
+                        200 - Thông điệp gửi hóa đơn điện tử tới cơ quan thuế để cấp mã
+                    </div>
+                    <div *ngIf=" data.maLoaiThongDiep === 201">
+                        201 - Thông điệp gửi hóa đơn điện tử tới cơ quan thuế để cấp mã theo từng lần phát sinh
+                    </div>
+                    <div *ngIf=" data.maLoaiThongDiep === 202">
+                        202 - Thông điệp thông báo kết quả cấp mã hóa đơn điện tử của cơ quan thuế
+                    </div>
+                    <div *ngIf=" data.maLoaiThongDiep === 203">
+                        203 - Thông điệp chuyển dữ liệu hóa đơn điện tử không mã đến cơ quan thuế
+                    </div>
+                    <div *ngIf=" data.maLoaiThongDiep === 204">
+                        204 - Thông điệp thông báo về việc kết quả kiểm tra dữ liệu hóa đơn điện tử
+                    </div>
+                    <div *ngIf=" data.maLoaiThongDiep === 205">
+                        205 - Thông điệp gửi đề nghị cấp hóa đơn điện tử có mã của CQT theo từng lần phát sinh
+                    </div>
+                    <div *ngIf=" data.maLoaiThongDiep === 206">
+                        206 - hông điệp thông báo về việc kết quả kiểm tra (hồ sơ đề nghị cấp hóa đơn điện tử có mã của cơ quan thuế/chứng từ nộp thuế/hóa đơn điện tử có mã của cơ quan thuế) theo từng lần phát sinh
+                    </div>
+                    <div *ngIf=" data.maLoaiThongDiep === 300">
+                        300 - Thông điệp thông báo về hóa đơn điện tử đã lập có sai sót
+                    </div>
+                    <div *ngIf=" data.maLoaiThongDiep === 301">
+                        301 - Thông điệp gửi thông báo về việc tiếp nhận và kết quả xử lý về việc hóa đơn điện tử đã lập có sai sót
+                    </div>
+                    <div *ngIf=" data.maLoaiThongDiep === 302">
+                        302 - Thông điệp thông báo về hóa đơn điện tử cần rà soát
+                    </div>
+                    <div *ngIf=" data.maLoaiThongDiep === 400">
+                        400 - Thông điệp chuyển bảng tổng hợp dữ liệu hóa đơn điện tử đến cơ quan thuế
+                    </div>
+                    <div *ngIf=" data.maLoaiThongDiep === 500">
+                        500 - Thông điệp chuyển dữ liệu hóa đơn điện tử do T-VAN uỷ quyền cấp mã đến cơ quan thuế
+                    </div>
+                    <div *ngIf=" data.maLoaiThongDiep === 999">
+                        999 - Thông điệp phản hồi kỹ thuật
+                    </div>
+                </td>
+                <td class="td-text-center-ng-host"><a>{{ data.maThongDiep }}</a>/
+                    <br>
+                    <span *ngIf="data?.maThongDiepThamChieu != null || data?.maThongDiepThamChieu != ''">{{
+            data.maThongDiepThamChieu }}</span>
+                    <span *ngIf="data?.maThongDiepThamChieu == null || data?.maThongDiepThamChieu == ''" style="color: red;">(Không có thông điệp tham chiếu)</span>
+                </td>
+                <td class="td-text-center-ng-host">
+                    <a nz-button nzSize="small" nzType="link" (click)="viewDetail(data)" nz-tooltip nzTooltipTitle="Xem chi tiết xml"><i nz-icon nzType="eye" nzTheme="outline"
+               nzTooltipPlacement="top" nz-tooltip></i></a>
+                    <a nz-button nzSize="small" nzType="link" (click)="downloadFileXML(data)" style="margin-left: 5px;" nz-tooltip nzTooltipTitle="Tải xuống XML"><i nz-icon
+              nzType="download" nzTheme="outline"  nzTooltipPlacement="top"
+              nz-tooltip></i></a>
+                    <a nz-tooltip nzTooltipTitle="Tải thông điệp" *ngIf=" data.maLoaiThongDiep === 102 || data.maLoaiThongDiep===103 || data.maLoaiThongDiep === 301" nz-button nzSize="small" nzType="link" (click)="viewReceipt(data)" style="margin-left: 10px;"><i nz-icon
+              nzType="file-pdf" nzTheme="outline" nzTooltipPlacement="top"
+              nz-tooltip></i></a>
+                </td>
+            </tr>
+            <tr class="total-footer" *ngIf="TDHDonTable.data.length <= 0">
+                <td colspan="7"> Không có dữ liệu hiển thị.
+                </td>
+              </tr>
+        </tbody>
+    </nz-table>
+</div>

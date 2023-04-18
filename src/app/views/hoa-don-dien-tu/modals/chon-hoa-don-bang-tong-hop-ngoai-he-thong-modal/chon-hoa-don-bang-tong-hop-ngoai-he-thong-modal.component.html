@@ -1,0 +1,409 @@
+<nz-spin [nzSpinning]="spinning">
+  <div nz-row style="max-height: 84vh!important; overflow-y: auto; overflow-x : hidden; padding: 5px!important;">
+    <div>
+      <div>
+        <form [formGroup]="mainForm">
+          <nz-table [nzNoResult]="null" nzSize="small" nzBordered #basicTable nzShowPagination="false"
+          [nzData]="this.mainForm.get('hoaDons').value" [nzWidthConfig]="widthConfig"
+          [nzScroll]="scrollConfig">
+          <thead>
+            <tr>
+              <th nzAlign="center" nzLeft="0px">
+                <button nz-button nzType="default" type="button" nzSize="small" (click)="addItemHD()"
+                class="circleButton"><i nz-icon nzType="plus" nzTheme="outline"></i></button>
+              </th>
+              <th nzAlign="center">
+                Ký hiệu mẫu số hóa đơn
+              </th>
+              <th nzAlign="center">
+                Ký hiệu hóa đơn
+              </th>
+              <th nzAlign="center">
+                Số hóa đơn
+              </th>
+              <th nzAlign="center">
+                Ngày hóa đơn
+              </th>
+              <th nzAlign="center">
+                Tên khách hàng
+              </th>
+              <th nzAlign="center">
+                Mã số thuế
+              </th>
+              <th nzAlign="center">
+                Tiền ngoại tệ
+              </th>
+              <th nzAlign="center">
+                Hóa đơn nhiều thuế suất
+              </th>
+              <th nzAlign="center">
+                Mặt hàng
+              </th>
+              <th nzAlign="center">
+                Số lượng
+              </th>
+              <th nzAlign="center">
+                Tổng giá trị hàng hóa, dịch vụ bán ra chưa có thuế GTGT
+              </th>
+              <th nzAlign="center">
+                Thuế suất thuế GTGT
+              </th>
+              <th nzAlign="center">
+                Tổng tiền thuế GTGT
+              </th>
+              <th nzAlign="center">
+                Tổng tiền thanh toán
+              </th>
+              <th nzAlign="center">
+                Trạng thái
+              </th>
+              <th nzAlign="center">
+                Loại hóa đơn có liên quan
+              </th>
+              <th nzAlign="center">
+                Ký hiệu mẫu số hóa đơn có liên quan
+              </th>
+              <th nzAlign="center">
+                Ký hiệu hóa đơn có liên quan
+              </th>
+              <th nzAlign="center">
+                Số hóa đơn có liên quan
+              </th>
+              <th nzAlign="center">
+                Số thông báo của CQT<br>về hóa đơn điện tử cần rà soát
+              </th>
+              <th nzAlign="center">
+                Ngày thông báo của CQT<br>về hóa đơn điện tử cần rà soát
+              </th>
+              <th nzAlign="center">
+                Ghi chú
+              </th>
+            </tr>
+          </thead>
+          <tbody formArrayName="hoaDons">
+            <tr *ngFor="let data of mainForm.get('hoaDons')['controls']; let i = index"
+              [formGroupName]="i">
+              <td nzAlign="center" nzLeft="0px">
+                <button nzSize="small" nz-button nzType="default" (click)="removeRowHD(i)"
+                  class="circleButtonRed"><i nz-icon nzType="minus" nzTheme="outline"></i>
+                </button>
+              </td>
+              <td nzAlign="center">
+                <nz-form-item>
+                  <nz-form-control [nzSm]="24" [nzXs]="24"  [nzErrorTip]="errorKHMSHD">
+                    <input nz-input nzSize="small" formControlName="mauSo" style="width: 100%;"/>
+                    <ng-template #errorKHMSHD let-control>
+                      <ng-container *ngIf="control.hasError('required')">
+                        <div class="tooltip-error">&lt;Ký hiệu mẫu số hóa đơn&gt; không được để trống.</div>
+                      </ng-container>
+                    </ng-template>
+                  </nz-form-control>
+                </nz-form-item>
+              </td>
+              <td nzAlign="center">
+                <nz-form-item>
+                  <nz-form-control [nzSm]="24" [nzXs]="24">
+                    <nz-input-group nzAddOnBefore="K">
+                      <input nz-input nzSize="small" formControlName="kyHieuInput" style="width: 100%;" (blur)="changeKyHieu($event, i)"/>
+                    </nz-input-group>
+                  </nz-form-control>
+                  <nz-form-control [nzSm]="24" [nzXs]="24" style="display:none" [nzErrorTip]="errorKH">
+                    <input nz-input nzSize="small" type="hidden" formControlName="kyHieu" style="width: 100%;"/>
+                    <ng-template #errorKH let-control>
+                      <ng-container *ngIf="control.hasError('required')">
+                        <div class="tooltip-error">&lt;Ký hiệu hóa đơn liên quan&gt; không được để trống.</div>
+                      </ng-container>
+                      <ng-container *ngIf="!control.hasError('required') && control.hasError('invalid')">
+                        <div class="tooltip-error">&lt;Ký hiệu hóa đơn liên quan&gt; không hợp lệ.</div>
+                      </ng-container>
+                    </ng-template>
+                  </nz-form-control>
+                </nz-form-item>
+              </td>
+              <td nzAlign="center">
+                <nz-form-item>
+                  <nz-form-control [nzSm]="24" [nzXs]="24"
+                  [nzErrorTip]="errorSHD">
+                    <input type="number" min="1" nzSize="small" nz-input placeholder="Không được để trống" formControlName="soHoaDon" id="soHoaDon"  style="width: 100%;"/>
+                  </nz-form-control>
+                  <ng-template #errorSHD let-control>
+                    <ng-container *ngIf="control.hasError('required')">
+                      <div class="tooltip-error">&lt;Số hóa đơn&gt; không được để trống.</div>
+                    </ng-container>
+                  </ng-template>
+                </nz-form-item>
+              </td>
+              <td nzAlign="center">
+                <nz-form-item>
+                  <nz-form-control [nzSm]="24" [nzXs]="24"
+                  [nzErrorTip]="errorNHD">
+                    <input type="date" nzSize="small" nz-input formControlName="ngayHoaDon" id="ngayHoaDon"  style="width: 100%;"/>
+                  </nz-form-control>
+                  <ng-template #errorNHD let-control>
+                    <ng-container *ngIf="control.hasError('required')">
+                      <div class="tooltip-error">&lt;Ngày hóa đơn&gt; không được để trống.</div>
+                    </ng-container>
+                  </ng-template>
+                </nz-form-item>
+              </td>
+              <td nzAlign="center">
+                <nz-form-item>
+                  <nz-form-control [nzSm]="24" [nzXs]="24"
+                  [nzErrorTip]="errorTKH">
+                    <input type="text" nzSize="small" nz-input placeholder="Không được để trống" formControlName="tenKhachHang" id="tenKhachHang"  style="width: 100%;"/>
+                  </nz-form-control>
+                  <ng-template #errorTKH let-control>
+                    <ng-container *ngIf="control.hasError('required')">
+                      <div class="tooltip-error">&lt;Tên khách hàng&gt; không được để trống.</div>
+                    </ng-container>
+                  </ng-template>
+                </nz-form-item>
+              </td>
+              <td nzAlign="center">
+                <nz-form-item>
+                  <nz-form-control [nzSm]="24" [nzXs]="24"
+                  [nzErrorTip]="errorMST">
+                    <input nzSize="small" nz-input placeholder="Mã số thuế" formControlName="mST" id="mST"  style="width: 100%;"/>
+                  </nz-form-control>
+                  <ng-template #errorMST let-control>
+                    <ng-container *ngIf="control.hasError('required')">
+                      <div class="tooltip-error">&lt;Mã số thuế&gt; không được để trống.</div>
+                    </ng-container>
+                    <ng-container *ngIf="!control.hasError('required') && control.hasError('invalid')">
+                      Mã số thuế hợp lệ là: 1-Để trống; 2-Số ký tự của MST bằng 10 hoặc bằng 14
+                    </ng-container>
+                    <ng-container *ngIf="!control.hasError('required') && !control.hasError('invalid') && control.hasError('invalidLength')">
+                      Mã số thuế phải nhỏ hơn 15 ký tự
+                    </ng-container>
+                  </ng-template>
+                </nz-form-item>
+              </td>              
+              <td nzAlign="center">
+                <nz-form-item>
+                  <nz-form-control [nzSm]="24" [nzXs]="24">
+                    <label nz-checkbox style="text-align: center" formControlName="tienNgoaiTe"></label>
+                  </nz-form-control>
+                </nz-form-item>
+              </td>
+              <td nzAlign="center">
+                <nz-form-item>
+                  <nz-form-control [nzSm]="24" [nzXs]="24">
+                    <label nz-checkbox style="text-align: center" formControlName="nhieuThueSuat"></label>
+                  </nz-form-control>
+                </nz-form-item>
+              </td>
+              <td nzAlign="center">
+                <nz-form-item>
+                  <nz-form-control [nzSm]="24" [nzXs]="24" [nzErrorTip]="errorTH">
+                    <input nz-input nzSize="small" placeholder="Các mặt hàng trong 1 hóa đơn có chung 1 loại thuế suất sẽ liệt kê 1 dòng. Các nhau bởi dấy phẩy và 1 cách trống (a, b).
+                    Định dạng xml chỉ bắt buộc nếu loại hàng hóa là Xăng dầu nên có thể để trống" formControlName="tenHang" style="width: 100%;">
+                    <ng-template #errorTH let-control>
+                      <ng-container *ngIf="control.hasError('required')">
+                        <div class="tooltip-error">&lt;Tên hàng&gt; không được để trống.</div>
+                      </ng-container>
+                    </ng-template>
+                  </nz-form-control>
+                </nz-form-item>
+              </td>
+              <td nzAlign="center">
+                <nz-form-item>
+                  <nz-form-control [nzSm]="24" [nzXs]="24" [nzErrorTip]="errorSL">
+                    <input nz-input nzSize="small" placeholder="Số lượng cộng gộp của các hàng hóa có chung 1 loại thuế suất (Không phân biệt Đơn vị tính, không có đơn vị tính thì xác định giá trị của số lượng là bằng 0 để số lượng thể hiện trên giao diện và XML là bằng nhau).
+                    Định dạng xml chỉ bắt buộc nếu loại hàng hóa là Xăng dầu nên có thể để trống" 
+                    formControlName="soLuong" style="width: 100%;" currencyMask
+                    [options]="{ precision: ddtp.getSoLuong(), allowNegative: true}">
+                    <ng-template #errorSL let-control>
+                      <ng-container *ngIf="control.hasError('required')">
+                        <div class="tooltip-error">&lt;Số lượng&gt; không được để trống.</div>
+                      </ng-container>
+                    </ng-template>
+                  </nz-form-control>
+                </nz-form-item>
+              </td>
+              <td nzAlign="center">
+                <nz-form-item>
+                  <nz-form-control [nzSm]="24" [nzXs]="24">
+                    <input nz-input nzSize="small" formControlName="thanhTien" style="width: 100%;" currencyMask
+                    [options]="{ precision: data.get('tienNgoaiTe').value == true ? ddtp.getTienNgoaiTe() : ddtp.getTienQuyDoi(), allowNegative: true}">
+                  </nz-form-control>
+                </nz-form-item>
+              </td>
+              <td nzAlign="center">
+                <nz-form-item>
+                  <nz-form-control [nzSm]="24" [nzXs]="24">
+                    <ng-container>
+                      <nz-select
+                          *ngIf="data.get('thueGTGT').value !== 'KHAC'" nzShowSearch
+                          formControlName = "thueGTGT" nzSize="small">
+                          <nz-option *ngFor="let item of phanTramThueGTGTs" [nzLabel]="item?.text"
+                              [nzValue]="item?.value">
+                              <nz-form-item>
+                                  <nz-form-control [nzSm]="6" [nzXs]="24">{{item?.value}}
+                                  </nz-form-control>
+                                  <nz-form-control [nzSm]="18" [nzXs]="24">{{item?.text}}
+                                  </nz-form-control>
+                              </nz-form-item>
+                          </nz-option>
+                      </nz-select>
+                      <input
+                          *ngIf="data.get('thueGTGT').value === 'KHAC'" class="input-vat" nz-input
+                          nzSize="small" type="text" formControlName="thueKhac"
+                          nz-dropdown nzTrigger="click" #thueGTGTTemp
+                          [nzDropdownMenu]="menuThueGTGT"
+                      >
+                      <nz-dropdown-menu #menuThueGTGT="nzDropdownMenu">
+                          <ul nz-menu>
+                              <li (click)="selectedThueGTGT(item, i)" nz-menu-item
+                                  *ngFor="let item of phanTramThueGTGTs"
+                                  [nzSelected]="item.value === 'KHAC'">
+                                  <b *ngIf="item.value === 'KHAC'">{{item.text}}</b>
+                                  <span *ngIf="item.value !== 'KHAC'">{{item.text}}</span>
+                              </li>
+                          </ul>
+                      </nz-dropdown-menu>
+                  </ng-container>
+                  </nz-form-control>
+                </nz-form-item>
+              </td>
+              <td nzAlign="center">
+                <nz-form-item>
+                  <nz-form-control style="margin-top:2px;" [nzSm]="24" [nzXs]="24">
+                    <input nz-input nzSize="small" formControlName="tienThueGTGT" style="width: 100%;" currencyMask
+                    [options]="{ precision: ddtp.getTienQuyDoi(), allowNegative: true}">
+                  </nz-form-control>
+                </nz-form-item>
+              </td>
+              <td nzAlign="center">
+                <nz-form-item>
+                  <nz-form-control style="margin-top:2px;" [nzSm]="24" [nzXs]="24">
+                    <input nz-input nzSize="small" formControlName="tongTienThanhToan" style="width: 100%;" currencyMask
+                    [options]="{ precision: ddtp.getTienQuyDoi(), allowNegative: true}">
+                  </nz-form-control>
+                </nz-form-item>
+              </td>
+              <td nzAlign="center">
+                <nz-form-item>
+                  <nz-form-control [nzSm]="24" [nzXs]="24">
+                    <nz-select nzSize="small" nzShowSearch formControlName="trangThaiHoaDon" tooltipInput>
+                      <nz-option *ngFor="let item of trangThais" [nzLabel]="item?.value" [nzValue]="item?.id" (ngModelChange)="changeTrangThai(i, $event)">
+                      </nz-option>
+                    </nz-select>      
+                  </nz-form-control>
+                </nz-form-item>
+              </td>
+              <td nzAlign="center">
+                <nz-form-item>
+                  <nz-form-control [nzSm]="24" [nzXs]="24" [nzErrorTip]="errorLHDLQ">
+                    <nz-select style="width: 100%;" nzPlaceHolder="Bắt buộc nếu trạng thái là Điều chỉnh và Thay thế" [nzSize]="'small'" nzShowSearch formControlName="loaiHoaDonLienQuan">
+                        <nz-option nzCustomContent *ngFor="let item of loaiHoaDons" [nzLabel]="item.value" [nzValue]="item.key">
+                          <span style="text-align: center!important;" nz-tooltip nzTitle="{{item.value}}">{{item.key}}</span>
+                        </nz-option>
+                        <ng-template #errorLHDLQ let-control>
+                          <ng-container *ngIf="control.hasError('required')">
+                            <div class="tooltip-error">&lt;Loại hóa đơn liên quan&gt; không được để trống.</div>
+                          </ng-container>
+                        </ng-template>
+                    </nz-select>     
+                  </nz-form-control>
+                </nz-form-item>
+              </td>
+              <td nzAlign="center">
+                <nz-form-item>
+                  <nz-form-control [nzSm]="24" [nzXs]="24" [nzErrorTip]="errorMSHDLQ">
+                    <input nz-input nzSize="small" formControlName="mauSoHoaDonLienQuan" style="width: 100%;"/>
+                    <ng-template #errorMSHDLQ let-control>
+                      <ng-container *ngIf="control.hasError('required')">
+                        <div class="tooltip-error">&lt;Mẫu số hóa đơn liên quan&gt; không được để trống.</div>
+                      </ng-container>
+                      <ng-container *ngIf="!control.hasError('required') && control.hasError('invalid')">
+                        <div class="tooltip-error">&lt;Mẫu số hóa đơn liên quan&gt; không hợp lệ.</div>
+                      </ng-container>
+                    </ng-template>
+                  </nz-form-control>
+                </nz-form-item>
+              </td>
+              <td nzAlign="center">
+                <nz-form-item>
+                  <nz-form-control [nzSm]="24" [nzXs]="24" [nzErrorTip]="errorKHHDonLQ">
+                    <input nz-input nzSize="small" formControlName="kyHieuHoaDonLienQuan" style="width: 100%;"/>
+                    <ng-template #errorKHHDonLQ let-control>
+                      <ng-container *ngIf="control.hasError('required')">
+                        <div class="tooltip-error">&lt;Ký hiệu hóa đơn liên quan&gt; không được để trống.</div>
+                      </ng-container>
+                      <ng-container *ngIf="!control.hasError('required') && control.hasError('invalid')">
+                        <div class="tooltip-error">&lt;Ký hiệu hóa đơn liên quan&gt; không hợp lệ.</div>
+                      </ng-container>
+                    </ng-template>
+                  </nz-form-control>
+                </nz-form-item>
+              </td>
+              <td nzAlign="center">
+                <nz-form-item>
+                  <nz-form-control [nzSm]="24" [nzXs]="24" [nzErrorTip]="errorSoHoaDonLQ">
+                    <input nz-input nzSize="small" formControlName="soHoaDonLienQuan" style="width: 100%;"/>
+                    <ng-template #errorSoHoaDonLQ let-control>
+                      <ng-container *ngIf="control.hasError('required')">
+                        <div class="tooltip-error">&lt;Số hóa đơn liên quan&gt; không được để trống.</div>
+                      </ng-container>
+                    </ng-template>   
+                  </nz-form-control>
+                </nz-form-item>
+              </td>
+              <td nzAlign="center">
+                <nz-form-item>
+                  <nz-form-control [nzSm]="24" [nzXs]="24" [nzErrorTip]="errorSTBCQT">
+                    <input nz-input nzSize="small" formControlName="soThongBaoCuaCQT" style="width: 100%;" (blur)="changeNgayTBao(i)"/>
+                    <ng-template #errorSTBCQT let-control>
+                      <ng-container *ngIf="control.hasError('maxLength')">
+                        <div class="tooltip-error">&lt;Số thông báo của CQT về hóa đơn điện tử cần rà soát&gt; không quá 30 ký tự.</div>
+                      </ng-container>
+                    </ng-template>     
+                  </nz-form-control>
+                </nz-form-item>
+              </td>
+              <td nzAlign="center">
+                <nz-form-item>
+                  <nz-form-control [nzSm]="24" [nzXs]="24" [nzErrorTip]="errorSTBCQT">
+                    <input nz-input type="date" nzSize="small" formControlName="ngayThongBaoCuaCQT" style="width: 100%;"/>    
+                  </nz-form-control>
+                </nz-form-item>
+              </td>
+              <td nzAlign="center">
+                <nz-form-item>
+                  <nz-form-control [nzSm]="24" [nzXs]="24" [nzErrorTip]="errorSTBCQT">
+                    <input nz-input nzSize="small" placeHolder="Không quá 255 ký tự. Chỉ để trống khi cột trạng thái là: Mới" formControlName="ghiChu" style="width: 100%;"/>
+                    <ng-template #errorSTBCQT let-control>
+                      <ng-container *ngIf="control.hasError('required')">
+                        <div class="tooltip-error">&lt;Ghi chú&gt; không được để trống.</div>
+                      </ng-container>
+                      <ng-container *ngIf="control.hasError('maxLength')">
+                        <div class="tooltip-error">&lt;Ghi chú&gt; không quá 255 ký tự.</div>
+                      </ng-container>
+                    </ng-template>     
+                  </nz-form-control>
+                </nz-form-item>
+              </td>
+            </tr>
+          </tbody>
+        </nz-table>
+        </form>
+      </div>
+    </div>
+</div>
+</nz-spin>
+
+<div *nzModalFooter>
+  <div nz-row>
+    <div nz-col nzSpan="12" style="text-align: left;">
+      &nbsp;
+    </div>
+    <div nz-col nzSpan="12" style="text-align: right;">
+      <button nz-button nzType="default" (click)="submitForm()" class="blueButton" nzSize="small" style = "padding: 0px 13px!important;">
+        <i nz-icon nzType="check" nzTheme="outline"></i>Xác nhận
+      </button>
+      <button nz-button nzType="default" (click)="closeModal()" class="button-cancel" nzSize="small" style = "padding: 0px 13px!important;">
+        <i nz-icon nzType="close" nzTheme="outline"></i>Hủy
+      </button>
+    </div>
+  </div>
+</div>

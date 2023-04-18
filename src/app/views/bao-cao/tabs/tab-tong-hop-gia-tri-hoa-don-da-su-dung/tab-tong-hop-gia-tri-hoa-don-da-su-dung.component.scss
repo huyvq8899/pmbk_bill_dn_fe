@@ -1,0 +1,19 @@
+@import "../../../../shared/scss/tab.scss";
+
+.baocao-title,
+.baocao-subtitle {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.baocao-title {
+  font-weight: bold;
+  text-transform: uppercase;
+}
+.baocao-subtitle {
+  font-style: italic !important;
+}
+
+.textCenter{
+    text-align: center;
+}

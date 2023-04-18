@@ -1,0 +1,1137 @@
+<div class="container">
+  <div class="frame-template" [style.background-image]="bgUrlKhungVien">
+    <app-config-border *ngIf="isSVGKhungVien" [type]="inputData.codeKhungVienMacDinh"
+      [color]="inputData.mauKhungVienMacDinh">
+    </app-config-border>
+  </div>
+  <div class="bg-template-default" style="z-index: -1; width: 500px; height: 500px; left: 185px; top: 368px;">
+    <div class="bg-default" [style.background-image]="bgUrlHinhNen">
+      <app-config-background *ngIf="isSVGHinhNen" [type]="inputData.codeHinhNenMacDinh"
+        [color]="inputData.mauHinhNenMacDinh">
+      </app-config-background>
+    </div>
+  </div>
+  <div class="bg-template-parent">
+    <div class="bg-template"></div>
+  </div>
+  <div style="display: none;" class="infoTemplate">
+    <div class="xsltVersion">4</div>
+    <div class="LANGUAGE-TEMPLATE">LANGUAGE-VN</div>
+    <div id="TemplateType" style="display:none">A4</div>
+    <div>XsltVersion3</div>
+    <div class="IsDuplicateHeader">0</div>
+    <div class="IsShowAllRowEmpty">0</div>
+    <div class="mode-template">1</div>
+  </div>
+  <div class="auContent ruler-template">
+    <div class="content-detail">
+      <div class="header-block">
+        <div style="display: flex; flex-direction: column;">
+          <div class="invoice-first" id="blockfrist" #blockfrist style="display: flex;">
+            <table cellpadding="0" cellspacing="0" style="width:100%;" id="firstInvoice" class="highlight-block">
+              <tbody>
+                <tr class="tr-invoice-first">
+                  <td id="logoCB01" #logoCB01 class="table-header-item item-logo" style="width: 0px;">
+                    <div class="logo-template logo-left">
+                      <div class="logo-template-content"></div>
+                    </div>
+                  </td>
+                  <td class="header-content-invoice table-header-item" style="width: 775px;">
+                    <div class="seller-infor information-company can-select offset-resize-width"
+                      [attr.group-field]="groupField[groupField.ThongTinNguoiBan]">
+                      <ng-container *ngFor="let item of listTenDonViVaMSTNguoiBan">
+                        <div *ngIf="item.loaiChiTiet === dataField.TenDonViNguoiBan"
+                          class="edit-item disable-hiden float-left width-full type-2"
+                          [attr.data-field]="item.dataFieldName">
+                          <div class="edit-label display-table-cell white-space-nowrap display-none">{{item.tieuDe?.giaTri}}</div>
+                          <div *ngIf="item.tieuDe?.giaTri" class="edit-label-en display-table-cell white-space-nowrap">
+                            {{item.tieuDeSongNgu?.giaTri}}
+                          </div>
+                          <div [ngClass]="{'padding-none': !item?.tieuDe?.giaTri}" class="edit-value display-table-cell font-bold style-title none-edit header-title">
+                            {{item.noiDung?.giaTri}}
+                          </div>
+                        </div>
+                        <div *ngIf="item.loaiChiTiet === dataField.MaSoThueNguoiBan"
+                          class="edit-item disable-hiden float-left width-full" [attr.data-field]="item.dataFieldName">
+                          <div class="edit-label display-table-cell white-space-nowrap">{{item.tieuDe?.giaTri}}</div>
+                          <div class="edit-label-en display-table-cell white-space-nowrap" *ngIf="item.tieuDeSongNgu.giaTri">
+                            {{item.tieuDeSongNgu?.giaTri}} {{item.tieuDeSongNgu}} + huyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy
+                          </div>
+                          <div class="two-dot display-table-cell white-space-nowrap">:</div>
+                          <div class="edit-value display-table-cell none-edit">
+                            <ng-container *ngFor="let mst of listMaSoThueNguoiBan">
+                              <div class="e-tax-code display-table-cell text-center">{{mst}}</div>
+                              <div class="margin-e-tax-code display-table-cell"></div>
+                            </ng-container>
+                          </div>
+                        </div>
+                      </ng-container>
+                      <ng-container *ngFor="let item of listCanCuSoVaNgayCanCuNguoiBan; let i = index">
+                        <div class="edit-item float-left width-half" [attr.data-field]="item.dataFieldName">
+                          <ng-container *ngIf="item.dataFieldName === dataField[dataField.CanCuSo]">
+                            <div class="edit-label display-table-cell white-space-nowrap" [class.no-width]="i >= 1">
+                              {{item.tieuDe?.giaTri}}
+                            </div>
+                            <div class="edit-label-en display-table-cell white-space-nowrap" [class.no-width]="i >= 1"
+                              *ngIf="item.tieuDeSongNgu">
+                              {{item.tieuDeSongNgu?.giaTri}}
+                            </div>
+                            <div class="two-dot display-table-cell white-space-nowrap" [class.no-width]="i >= 1">:</div>
+                            <div class="edit-value display-table-cell none-edit" [class.none-offset-left]="i >= 1">
+                              {{item.noiDung?.giaTri}}
+                            </div>
+                          </ng-container>
+                          <ng-container *ngIf="item.dataFieldName === dataField[dataField.NgayCanCu]">
+                            <div class="edit-value none-edit padding-left-none none-offset-left">
+                              <span class="date-text">Ngày</span>
+                              <span class="edit-label-en no-width" *ngIf="inputData.loaiNgonNgu === 2"
+                                [style.font-size.px]="item.noiDung.tuyChonChiTiet.coChu - 1">(Date)</span>
+                              <span class="month-text padding-left-16">tháng</span>
+                              <span class="edit-label-en no-width" *ngIf="inputData.loaiNgonNgu === 2"
+                                [style.font-size.px]="item.noiDung.tuyChonChiTiet.coChu - 1">(month)</span>
+                              <span class="year-text padding-left-16">năm</span>
+                              <span class="edit-label-en no-width" *ngIf="inputData.loaiNgonNgu === 2"
+                                [style.font-size.px]="item.noiDung.tuyChonChiTiet.coChu - 1">(year)</span>
+                            </div>
+                          </ng-container>
+                        </div>
+                      </ng-container>
+                      <ng-container *ngFor="let item of listCuaVeViecNguoiBan; let i = index">
+                        <div class="edit-item float-left width-half" [attr.data-field]="item.dataFieldName">
+                          <div class="edit-label display-table-cell white-space-nowrap" [class.no-width]="i >= 1">
+                            {{item.tieuDe?.giaTri}}
+                          </div>
+                          <div class="edit-label-en display-table-cell white-space-nowrap" [class.no-width]="i >= 1"
+                            *ngIf="item.tieuDeSongNgu">
+                            {{item.tieuDeSongNgu?.giaTri}}
+                          </div>
+                          <div class="two-dot display-table-cell white-space-nowrap" [class.no-width]="i >= 1">:</div>
+                          <div class="edit-value display-table-cell none-edit" [class.none-offset-left]="i >= 1">
+                            {{item.noiDung?.giaTri}}
+                          </div>
+                        </div>
+                      </ng-container>
+                      <ng-container *ngFor="let item of listDiaChiVaTenNguoiXuatHang">
+                        <div class="edit-item float-left width-full" [attr.data-field]="item.dataFieldName">
+                          <div class="edit-label display-table-cell white-space-nowrap">{{item.tieuDe?.giaTri}}</div>
+                          <div class="edit-label-en display-table-cell white-space-nowrap" *ngIf="item.tieuDeSongNgu">
+                            {{item.tieuDeSongNgu?.giaTri}}
+                          </div>
+                          <div class="two-dot display-table-cell white-space-nowrap">:</div>
+                          <div class="edit-value display-table-cell none-edit">{{item.noiDung?.giaTri}}</div>
+                        </div>
+                      </ng-container>
+                      <ng-container *ngFor="let item of listTenNguoiVanChuyenVaHopDongSoNguoiBan; let i = index">
+                        <div class="edit-item float-left width-half" [attr.data-field]="item.dataFieldName">
+                          <div class="edit-label display-table-cell white-space-nowrap" [class.no-width]="i >= 1">
+                            {{item.tieuDe?.giaTri}}
+                          </div>
+                          <div class="edit-label-en display-table-cell white-space-nowrap" [class.no-width]="i >= 1"
+                            *ngIf="item.tieuDeSongNgu">
+                            {{item.tieuDeSongNgu?.giaTri}}
+                          </div>
+                          <div class="two-dot display-table-cell white-space-nowrap" [class.no-width]="i >= 1">:</div>
+                          <div class="edit-value display-table-cell none-edit" [class.none-offset-left]="i >= 1">
+                            {{item.noiDung?.giaTri}}
+                          </div>
+                        </div>
+                      </ng-container>
+                      <ng-container *ngFor="let item of listThongTinNguoiBan">
+                        <div *ngIf="item.loaiChiTiet === dataField.TenDonViNguoiBan"
+                          class="edit-item disable-hiden float-left width-full type-2"
+                          [attr.data-field]="item.dataFieldName">
+                          <div class="edit-label display-table-cell white-space-nowrap">{{item.tieuDe?.giaTri}}</div>
+                          <div class="edit-label-en display-table-cell white-space-nowrap"
+                            *ngIf="item.tieuDeSongNgu && item.tieuDe?.giaTri">
+                            {{item.tieuDeSongNgu?.giaTri}}
+                          </div>
+                          <div *ngIf="item.tieuDe?.giaTri" class="two-dot display-table-cell white-space-nowrap">:
+                          </div>
+                          <div class="edit-value display-table-cell font-bold style-title none-edit header-title"
+                            [ngClass]="{'padding-none': !item?.tieuDe?.giaTri}">
+                            {{item.noiDung?.giaTri}}
+                          </div>
+                        </div>
+                        <div *ngIf="item.loaiChiTiet === dataField.MaSoThueNguoiBan"
+                          class="edit-item disable-hiden float-left width-full" [attr.data-field]="item.dataFieldName">
+                          <div class="edit-label display-table-cell white-space-nowrap">{{item.tieuDe?.giaTri}}</div>
+                          <div class="edit-label-en display-table-cell white-space-nowrap" *ngIf="item.tieuDeSongNgu">
+                            {{item.tieuDeSongNgu?.giaTri}}
+                          </div>
+                          <div class="two-dot display-table-cell white-space-nowrap">:</div>
+                          <div class="edit-value display-table-cell none-edit">
+                            <ng-container *ngFor="let mst of listMaSoThueNguoiBan">
+                              <div class="e-tax-code display-table-cell text-center">{{mst}}</div>
+                              <div class="margin-e-tax-code display-table-cell"></div>
+                            </ng-container>
+                          </div>
+                        </div>
+                        <div
+                          *ngIf="item.loaiChiTiet !== dataField.TenDonViNguoiBan && item.loaiChiTiet !== dataField.MaSoThueNguoiBan"
+                          class="edit-item float-left width-full" [attr.data-field]="item.dataFieldName">
+                          <div class="edit-label display-table-cell white-space-nowrap">{{item.tieuDe?.giaTri}}</div>
+                          <div class="edit-label-en display-table-cell white-space-nowrap" *ngIf="item.tieuDeSongNgu">
+                            {{item.tieuDeSongNgu?.giaTri}}
+                          </div>
+                          <div class="two-dot display-table-cell white-space-nowrap">:</div>
+                          <div class="edit-value display-table-cell none-edit">{{item.noiDung?.giaTri}}</div>
+                        </div>
+                      </ng-container>
+                      <div class="clear"></div>
+                    </div>
+                  </td>
+                  <td class="table-header-item item-logo" style="width: 0px;">
+                    <div class="logo-template logo-right">
+                      <div class="logo-template-content"></div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="header-invoice invoice-second highlight-block" style="display: flex;" id="blocksecond"
+            #blocksecond>
+            <div class="title-invoice-seires">
+              <table id="invoiceInfor" class="invoice-information highlight-block">
+                <tbody>
+                  <tr class="tr-invoice-infor">
+                    <td class="table-header-item item-logo" style="width: 0px;" id="logoCB05" #logoCB05>
+                      <div class="logo-template logo-left">
+                        <div class="logo-template-content"></div>
+                      </div>
+                    </td>
+                    <td class="element-help-center item-invoice-infor"
+                      *ngIf="inputData.tenBoMau == '01.CB.05' && !inputData.widthLogo" style="width: 145px;"></td>
+                    <td class="element-help-center item-invoice-infor" *ngIf="inputData.tenBoMau != '01.CB.05'"
+                      style="width: 145px;"></td>
+                    <td class="element-help-center item-invoice-infor"
+                      *ngIf="inputData.tenBoMau == '01.CB.05' && inputData.widthLogo" style="width: 65px;"></td>
+                    <td class="item-invoice-infor other-table-container" style="width: 485px;">
+                      <div class="can-select" [attr.group-field]="groupField[groupField.ThongTinHoaDon]">
+                        <ng-container *ngFor="let item of listThongTinHoaDon">
+                          <div *ngIf="item.loaiChiTiet === dataField.TenLoaiHoaDon"
+                            class="disable-hiden style-title header-title" [attr.data-field]="item.dataFieldName">
+                            <div class="edit-label">{{item.tieuDe?.giaTri}}</div>
+                            <div class="edit-label-en" *ngIf="item.tieuDeSongNgu">
+                              {{item.tieuDeSongNgu?.giaTri}}
+                            </div>
+                          </div>
+
+                          <div *ngIf="item.loaiChiTiet === dataField.KhuVucPhiThueQuan" class="sub-title-invoice"
+                            [attr.data-field]="item.dataFieldName">
+                            <div class="edit-label">{{item.tieuDe?.giaTri}}</div>
+                            <div class="edit-label-en" *ngIf="item.tieuDeSongNgu">
+                              {{item.tieuDeSongNgu?.giaTri}}
+                            </div>
+                          </div>
+
+                          <div *ngIf="item.loaiChiTiet === dataField.TenKhacLoaiHoaDon" class="sub-title-invoice"
+                            [attr.data-field]="item.dataFieldName">
+                            <span class="edit-value">{{item.noiDung?.giaTri}}</span>
+                          </div>
+
+                          <div *ngIf="item.loaiChiTiet === dataField.TenMauHoaDon" class="description-invoice-client"
+                            for="Client">
+                            <div [attr.data-field]="item.dataFieldName" showmode="2" *ngIf="dinhDangHoaDon === 2">
+                              <div class="edit-label none-edit font-italic">
+                                <ng-container
+                                  *ngIf="inputData.loaiHoaDon === loaiHoaDon.HoaDonGTGT || inputData.loaiHoaDon === loaiHoaDon.HoaDonBanHang || inputData.loaiHoaDon === loaiHoaDon.HoaDonGTGTCMTMTT || inputData.loaiHoaDon === loaiHoaDon.HoaDonBanHangCMTMTT || inputData.loaiHoaDon === loaiHoaDon.HoaDonKhacCMTMTT || inputData.loaiHoaDon === loaiHoaDon.TemVeBanHang">
+                                  (Hóa đơn chuyển đổi từ hóa đơn điện tử)
+                                </ng-container>
+                                <ng-container *ngIf="inputData.loaiHoaDon === loaiHoaDon.PXKKiemVanChuyenNoiBo">
+                                  (Bản chuyển đổi của phiếu xuất kho kiêm vận chuyển nội bộ điện tử)
+                                </ng-container>
+                                <ng-container *ngIf="inputData.loaiHoaDon === loaiHoaDon.PXKHangGuiBanDaiLy">
+                                  (Bản chuyển đổi của phiếu xuất kho hàng gửi bán đại lý điện tử)
+                                </ng-container>
+                              </div>
+                              <div class="edit-label-en none-edit" *ngIf="item.tieuDeSongNgu">
+                                (Invoice converted from E-invoice)
+                              </div>
+                            </div>
+                            <div [attr.data-field]="item.dataFieldName" hidenmode="2" *ngIf="dinhDangHoaDon !== 2">
+                              <div class="edit-label none-edit font-italic">
+                                <ng-container
+                                  *ngIf="inputData.loaiHoaDon === loaiHoaDon.HoaDonGTGT || inputData.loaiHoaDon === loaiHoaDon.HoaDonBanHang || inputData.loaiHoaDon === loaiHoaDon.HoaDonGTGTCMTMTT || inputData.loaiHoaDon === loaiHoaDon.HoaDonBanHangCMTMTT || inputData.loaiHoaDon === loaiHoaDon.HoaDonKhacCMTMTT || inputData.loaiHoaDon === loaiHoaDon.TemVeBanHang">
+                                  (Bản thể hiện của hóa đơn điện tử)
+                                </ng-container>
+                                <ng-container *ngIf="inputData.loaiHoaDon === loaiHoaDon.PXKKiemVanChuyenNoiBo">
+                                  (Bản thể hiện của phiếu xuất kho kiêm vận chuyển nội bộ điện tử)
+                                </ng-container>
+                                <ng-container *ngIf="inputData.loaiHoaDon === loaiHoaDon.PXKHangGuiBanDaiLy">
+                                  (Bản thể hiện của phiếu xuất kho hàng gửi bán đại lý điện tử)
+                                </ng-container>
+                              </div>
+                              <div class="edit-label-en none-edit" *ngIf="item.tieuDeSongNgu">
+                                (E-Invoice viewer)
+                              </div>
+                            </div>
+                          </div>
+
+                          <div *ngIf="item.loaiChiTiet === dataField.NgayThangNamTieuDe" class="disable-hiden"
+                            [attr.data-field]="item.dataFieldName">
+                            <div class="edit-value none-edit font-italic">
+                              <span class="date-text">Ngày</span>
+                              <span class="edit-label-en padding-left-4" *ngIf="inputData.loaiNgonNgu === 2"
+                                [style.font-size.px]="item.noiDung.tuyChonChiTiet.coChu - 1">
+                                (Date)
+                              </span>
+                              <span class="month-text padding-left-16">tháng</span>
+                              <span class="edit-label-en padding-left-4" *ngIf="inputData.loaiNgonNgu === 2"
+                                [style.font-size.px]="item.noiDung.tuyChonChiTiet.coChu - 1">
+                                (month)
+                              </span>
+                              <span class="year-text padding-left-16 ">năm</span>
+                              <span class="edit-label-en padding-left-4" *ngIf="inputData.loaiNgonNgu === 2"
+                                [style.font-size.px]="item.noiDung.tuyChonChiTiet.coChu - 1">
+                                (year)
+                              </span>
+                            </div>
+                          </div>
+
+                          <div *ngIf="item.loaiChiTiet === dataField.CustomThongTinHoaDon" class="custom-invoice-infor"
+                            [attr.data-field]="item.dataFieldName">
+                            <div class="edit-value padding-none">
+                              {{item.noiDung?.giaTri}}
+                            </div>
+                          </div>
+                        </ng-container>
+                      </div>
+                    </td>
+                    <td class="item-invoice-infor inv-series-no vertical-align-top" style="width: 145px;">
+                      <div class="other-invoice can-select offset-resize-width"
+                        [attr.group-field]="groupField[groupField.MauSoKyHieuSoHoaDon]">
+                        <table id="tbOther" cellpadding="0" cellspacing="0" style="text-align: left;border: none;">
+                          <tbody>
+                            <tr *ngFor="let item of listMauSoKyHieuSoHoaDon" class="disable-hiden edit-item"
+                              [attr.data-field]="item.dataFieldName">
+                              <td><span class="edit-label">{{item.tieuDe?.giaTri}}</span><span class="edit-label-en "
+                                  *ngIf="item.tieuDeSongNgu">
+                                  {{item.tieuDeSongNgu?.giaTri}}
+                                </span><span class="two-dot">:</span></td>
+                              <td><span class="edit-value none-edit">{{item.noiDung?.giaTri}}</span></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr class="tr-invoice-infor" *ngIf="inputData.hinhThucHoaDon === 1 || inputData.hinhThucHoaDon === 2">
+                    <td colspan="2" class="item-invoice-infor other-table-container">
+                      <div class="can-select" [attr.group-field]="groupField[groupField.ThongTinMaCuaCoQuanThue]">
+                        <div class="edit-item float-left width-full" [attr.data-field]="dataField[dataField.MaCuaCQT]">
+                          <div class="edit-label display-table-cell white-space-nowrap">
+                            {{mapOfData[dataField[dataField.MaCuaCQT]]?.tieuDe?.giaTri}}
+                          </div>
+                          <div class="edit-label-en display-table-cell white-space-nowrap padding-left-4"
+                            *ngIf="mapOfData[dataField[dataField.MaCuaCQT]]">
+                            {{mapOfData[dataField[dataField.MaCuaCQT]]?.tieuDeSongNgu?.giaTri}}
+                          </div>
+                          <div class="two-dot display-table-cell white-space-nowrap">:</div>
+                          <div class="edit-value display-table-cell none-edit">
+                            {{mapOfData[dataField[dataField.MaCuaCQT]]?.noiDung?.giaTri}}
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="buyer-qr-infor invoice-third highlight-block">
+          <div class="float-left buyer-infor can-select" [attr.group-field]="groupField[groupField.ThongTinNguoiMua]">
+            <div class="main-buyer-wrapper">
+              <div class="left-main-buyer highlight-block">
+                <div *ngFor="let item of listCanCuSoVaNgayCanCu; let i=index"
+                  class="disable-hiden edit-item width-half float-left" [attr.data-field]="item.dataFieldName">
+                  <ng-container *ngIf="item.dataFieldName === dataField[dataField.CanCuSo]">
+                    <div class="edit-label white-space-nowrap display-table-cell" [class.no-width]="i >= 1">
+                      {{item.tieuDe?.giaTri}}</div>
+                    <div class="edit-label-en display-table-cell white-space-nowrap" [class.no-width]="i >= 1"
+                      *ngIf="item.tieuDeSongNgu">
+                      {{item.tieuDeSongNgu?.giaTri}}
+                    </div>
+                    <div class="two-dot display-table-cell white-space-nowrap" [class.no-width]="i >= 1">:</div>
+                    <div class="edit-value display-table-cell none-edit" [class.none-offset-left]="i >= 1">
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="item.dataFieldName === dataField[dataField.NgayCanCu]">
+                    <div class="edit-value none-edit padding-left-none none-offset-left">
+                      <span class="date-text">Ngày</span>
+                      <span class="edit-label-en no-width" *ngIf="inputData.loaiNgonNgu === 2"
+                        [style.font-size.px]="item.noiDung.tuyChonChiTiet.coChu - 1">(Date)</span>
+                      <span class="month-text padding-left-16">tháng</span>
+                      <span class="edit-label-en no-width" *ngIf="inputData.loaiNgonNgu === 2"
+                        [style.font-size.px]="item.noiDung.tuyChonChiTiet.coChu - 1">(month)</span>
+                      <span class="year-text padding-left-16">năm</span>
+                      <span class="edit-label-en no-width" *ngIf="inputData.loaiNgonNgu === 2"
+                        [style.font-size.px]="item.noiDung.tuyChonChiTiet.coChu - 1">(year)</span>
+                    </div>
+                  </ng-container>
+                </div>
+                <div class="clear"></div>
+                <div *ngFor="let item of listCuaVeViec; let i=index"
+                  class="disable-hiden edit-item width-half float-left" [attr.data-field]="item.dataFieldName">
+                  <div class="edit-label white-space-nowrap display-table-cell" [class.no-width]="i >= 1">
+                    {{item.tieuDe?.giaTri}}
+                  </div>
+                  <div class="edit-label-en display-table-cell white-space-nowrap" [class.no-width]="i >= 1"
+                    *ngIf="item.tieuDeSongNgu">
+                    {{item.tieuDeSongNgu?.giaTri}}
+                  </div>
+                  <div class="two-dot display-table-cell white-space-nowrap" [class.no-width]="i >= 1">:</div>
+                  <div class="edit-value display-table-cell none-edit" [class.none-offset-left]="i >= 1">
+                  </div>
+                </div>
+                <div class="clear"></div>
+                <div *ngFor="let item of listCuaVoiMaSoThue" class="disable-hiden edit-item width-full float-left"
+                  [attr.data-field]="item.dataFieldName">
+                  <div class="edit-label white-space-nowrap display-table-cell">{{item.tieuDe?.giaTri}}</div>
+                  <div class="edit-label-en display-table-cell white-space-nowrap" *ngIf="item.tieuDeSongNgu">
+                    {{item.tieuDeSongNgu?.giaTri}}
+                  </div>
+                  <div class="two-dot display-table-cell white-space-nowrap">:</div>
+                  <div class="edit-value display-table-cell none-edit">
+                  </div>
+                </div>
+                <div class="clear"></div>
+                <div *ngFor="let item of listTenNguoiVanChuyenVaHopDongSo; let i=index"
+                  class="disable-hiden edit-item width-half float-left" [attr.data-field]="item.dataFieldName">
+                  <div class="edit-label white-space-nowrap display-table-cell" [class.no-width]="i >= 1">
+                    {{item.tieuDe?.giaTri}}
+                  </div>
+                  <div class="edit-label-en display-table-cell white-space-nowrap" [class.no-width]="i >= 1"
+                    *ngIf="item.tieuDeSongNgu">
+                    {{item.tieuDeSongNgu?.giaTri}}
+                  </div>
+                  <div class="two-dot display-table-cell white-space-nowrap" [class.no-width]="i >= 1">:</div>
+                  <div class="edit-value display-table-cell none-edit" [class.none-offset-left]="i >= 1">
+                  </div>
+                </div>
+                <div class="clear"></div>
+                <div *ngFor="let item of listPhuongTienVanChuyen" class="disable-hiden edit-item width-full float-left"
+                  [attr.data-field]="item.dataFieldName">
+                  <div class="edit-label white-space-nowrap display-table-cell">{{item.tieuDe?.giaTri}}</div>
+                  <div class="edit-label-en display-table-cell white-space-nowrap" *ngIf="item.tieuDeSongNgu">
+                    {{item.tieuDeSongNgu?.giaTri}}
+                  </div>
+                  <div class="two-dot display-table-cell white-space-nowrap">:</div>
+                  <div class="edit-value display-table-cell none-edit">
+                  </div>
+                </div>
+                <div class="clear"></div>
+                <div *ngFor="let item of listXuatKho; let i=index" class="disable-hiden edit-item width-half float-left"
+                  [attr.data-field]="item.dataFieldName">
+                  <div class="edit-label white-space-nowrap display-table-cell" [class.no-width]="i >= 1">
+                    {{item.tieuDe?.giaTri}}
+                  </div>
+                  <div class="edit-label-en display-table-cell white-space-nowrap" [class.no-width]="i >= 1"
+                    *ngIf="item.tieuDeSongNgu">
+                    {{item.tieuDeSongNgu?.giaTri}}
+                  </div>
+                  <div class="two-dot display-table-cell white-space-nowrap" [class.no-width]="i >= 1">:</div>
+                  <div class="edit-value display-table-cell none-edit" [class.none-offset-left]="i >= 1">
+                  </div>
+                </div>
+                <div class="clear"></div>
+                <div *ngFor="let item of listNhapKho; let i=index" class="disable-hiden edit-item width-half float-left"
+                  [attr.data-field]="item.dataFieldName">
+                  <div class="edit-label white-space-nowrap display-table-cell" [class.no-width]="i >= 1">
+                    {{item.tieuDe?.giaTri}}
+                  </div>
+                  <div class="edit-label-en display-table-cell white-space-nowrap" [class.no-width]="i >= 1"
+                    *ngIf="item.tieuDeSongNgu">
+                    {{item.tieuDeSongNgu?.giaTri}}
+                  </div>
+                  <div class="two-dot display-table-cell white-space-nowrap" [class.no-width]="i >= 1">:</div>
+                  <div class="edit-value display-table-cell none-edit" [class.none-offset-left]="i >= 1">
+                  </div>
+                </div>
+                <div class="clear"></div>
+                <div *ngFor="let item of listThongTinNguoiMua" class="disable-hiden edit-item width-full float-left"
+                  [attr.data-field]="item.dataFieldName">
+                  <div class="edit-label white-space-nowrap display-table-cell">{{item.tieuDe?.giaTri}}</div>
+                  <div class="edit-label-en display-table-cell white-space-nowrap" *ngIf="item.tieuDeSongNgu">
+                    {{item.tieuDeSongNgu?.giaTri}}
+                  </div>
+                  <div class="two-dot display-table-cell white-space-nowrap">:</div>
+                  <div class="edit-value display-table-cell none-edit">
+                  </div>
+                </div>
+                <div class="clear"></div>
+                <div *ngFor="let item of listTenNguoiNhanHangNguoiMua; let i=index"
+                  class="disable-hiden edit-item width-half float-left" [attr.data-field]="item.dataFieldName">
+                  <div class="edit-label white-space-nowrap display-table-cell" [class.no-width]="i >= 1">
+                    {{item.tieuDe?.giaTri}}
+                  </div>
+                  <div class="edit-label-en display-table-cell white-space-nowrap" [class.no-width]="i >= 1"
+                    *ngIf="item.tieuDeSongNgu">
+                    {{item.tieuDeSongNgu?.giaTri}}
+                  </div>
+                  <div class="two-dot display-table-cell white-space-nowrap" [class.no-width]="i >= 1">:</div>
+                  <div class="edit-value display-table-cell none-edit" [class.none-offset-left]="i >= 1">
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div class="float-left qrcode-parent offset-resize-width">
+                  <div class="qrcode"></div>
+                </div>
+                <div class="clear"></div>
+              </div>
+            </div>
+            <ng-container *ngIf="listHinhThucTTSoTaiKhoan.length > 1; else isOneFieldOnOneRow">
+              <div class="float-left width-full merge-row-infor display-flex" merge-field="MergeFied_1">
+                <ng-container *ngFor="let item of listHinhThucTTSoTaiKhoan; let i=index">
+                  <div class="width-half edit-item float-left" [attr.data-field]="item.dataFieldName" *ngIf="i === 0">
+                    <div class="edit-label white-space-nowrap display-table-cell">{{item.tieuDe?.giaTri}}</div>
+                    <div class="edit-label-en display-table-cell white-space-nowrap" *ngIf="item.tieuDeSongNgu">
+                      {{item.tieuDeSongNgu?.giaTri}}
+                    </div>
+                    <div class="two-dot display-table-cell white-space-nowrap">:</div>
+                    <div class="edit-value display-table-cell none-edit">
+                    </div>
+                  </div>
+                  <div class="width-half edit-item float-left" [attr.data-field]="item.dataFieldName" *ngIf="i !== 0">
+                    <div class="edit-label white-space-nowrap display-table-cell no-width">{{item.tieuDe?.giaTri}}</div>
+                    <div class="edit-label-en display-table-cell white-space-nowrap no-width"
+                      *ngIf="item.tieuDeSongNgu">
+                      {{item.tieuDeSongNgu?.giaTri}}
+                    </div>
+                    <div class="two-dot display-table-cell white-space-nowrap no-width">:</div>
+                    <div class="edit-value display-table-cell none-edit none-offset-left">
+                    </div>
+                  </div>
+                </ng-container>
+                <div class="clear"></div>
+              </div>
+            </ng-container>
+            <ng-template #isOneFieldOnOneRow>
+              <div *ngFor="let item of listHinhThucTTSoTaiKhoan" class="disable-hiden edit-item width-full float-left"
+                [attr.data-field]="item.dataFieldName">
+                <div class="edit-label white-space-nowrap display-table-cell">{{item.tieuDe?.giaTri}}</div>
+                <div class="edit-label-en display-table-cell white-space-nowrap" *ngIf="item.tieuDeSongNgu">
+                  {{item.tieuDeSongNgu?.giaTri}}
+                </div>
+                <div class="two-dot display-table-cell white-space-nowrap">:</div>
+                <div class="edit-value display-table-cell none-edit">
+                </div>
+              </div>
+            </ng-template>
+            <div *ngFor="let item of listBoSungNguoiMua" class="edit-item float-left width-full custom-buyer"
+              [attr.data-field]="item.dataFieldName">
+              <div class="edit-label display-table-cell white-space-nowrap">{{item.tieuDe?.giaTri}}</div>
+              <div class="edit-label-en display-table-cell white-space-nowrap" *ngIf="item.tieuDeSongNgu">
+                {{item.tieuDeSongNgu?.giaTri}}
+              </div>
+              <div class="two-dot display-table-cell white-space-nowrap">:</div>
+              <div class="edit-value display-table-cell none-edit">
+                {{item.noiDung?.giaTri}}
+              </div>
+            </div>
+            <div class="clear"></div>
+          </div>
+        </div>
+        <div class="other-invoice-infor text-left"></div>
+      </div>
+      <div class="table-detail p-relative">
+        <div class="template-table"></div>
+        <table id="tbDetail" cellpadding="0" cellspacing="0" width="100%"
+          [attr.group-field]="groupField[groupField.ThongTinVeHangHoaDichVu]" class="can-select highlight-block">
+          <tbody>
+            <tr class="font-bold tr-header">
+              <ng-container *ngFor="let item of listThongTinVeHangHoaDichVu">
+                <td [attr.data-field]="item.dataFieldName" class="disable-hiden"
+                  [attr.rowspan]="(item.loaiChiTiet !== dataField.SoLuongNhapXuat && mapOfData[dataField[dataField.SoLuongNhapXuat]]?.checked) ? 2 : 1"
+                  [attr.colspan]="item.loaiChiTiet === dataField.SoLuongNhapXuat ? 2 : 1">
+                  <div class="edit-label">{{item.tieuDe?.giaTri}}</div>
+                  <div class="edit-label-en" *ngIf="item.tieuDeSongNgu">
+                    {{item.tieuDeSongNgu?.giaTri}}
+                  </div>
+                </td>
+              </ng-container>
+            </tr>
+            <tr class="font-bold tr-header" *ngIf="listSoLuongNhapXuat.length > 0">
+              <td *ngFor="let item of listSoLuongNhapXuat" [attr.data-field]="item.dataFieldName" class="disable-hiden">
+                <div class="edit-label">{{item.tieuDe?.giaTri}}</div>
+                <div class="edit-label-en" *ngIf="item.tieuDeSongNgu">
+                  {{item.tieuDeSongNgu?.giaTri}}
+                </div>
+              </td>
+            </tr>
+            <tr *ngIf="inputData.isThietLapDongKyHieuCot" class="tr-symbol">
+              <ng-container *ngFor="let item of listDongKyHieuCot">
+                <td [attr.data-field]="item.dataFieldName">
+                  <div class="edit-symbol">
+                    {{item.kyHieuCot?.giaTri}}
+                  </div>
+                </td>
+              </ng-container>
+            </tr>
+            <tr class="text-left tr-data-detail" *ngFor="let obj of emptyArrayRows">
+              <td *ngFor="let empty of emptyArrayCols; let idx = index" [attr.data-field]="empty">
+                <div class="edit-value">
+                  &nbsp;
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <table id="tbFooter" cellpadding="0" cellspacing="0" class="can-select highlight-block table-footer"
+          [attr.group-field]="groupField[groupField.ThongTinVeTongGiaTriHHDV]">
+          <tbody>
+            <ng-container
+              *ngIf="inputData.loaiHoaDon === loaiHoaDon.HoaDonGTGT || inputData.loaiHoaDon === loaiHoaDon.CacLoaiHoaDonKhac || inputData.loaiHoaDon === loaiHoaDon.HoaDonGTGTCMTMTT || inputData.loaiHoaDon === loaiHoaDon.HoaDonKhacCMTMTT">
+              <!-- 1 thuế suất -->
+              <ng-container *ngIf="inputData.loaiThueGTGT === 1">
+                <tr class="detail-sumary text-left">
+                  <td class="resize-width resize-right" data-field="NotShow1" style="width: 193px;"></td>
+                  <td class="resize-width resize-right" data-field="NotShow2" style="width: 193.5px;"></td>
+                  <td class="width-quarter resize-width resize-right disable-hiden"
+                    [attr.data-field]="dataField[dataField.CongTienHang]" style="width: 193.5px;">
+                    <div class="edit-label display-table-cell white-space-nowrap padding-left-2">
+                      {{mapOfData[dataField[dataField.CongTienHang]]?.tieuDe?.giaTri}}&nbsp;
+                      {{dinhDangHoaDon === 3 ? '(Chưa trừ CK)' : ''}}
+                    </div>
+                    <div class="edit-label-en display-table-cell white-space-nowrap"
+                      *ngIf="mapOfData[dataField[dataField.CongTienHang]]?.tieuDeSongNgu">
+                      {{mapOfData[dataField[dataField.CongTienHang]]?.tieuDeSongNgu?.giaTri}}
+                    </div>
+                    <div class="two-dot display-table-cell white-space-nowrap">:</div>
+                  </td>
+                  <td class="width-quarter resize-width resize-right disable-hiden" data-field="TotalAmountWithoutVAT"
+                    style="width: 193px;">
+                    <div class="edit-value font-bold text-right style-number-value none-edit"></div>
+                  </td>
+                </tr>
+                <ng-container *ngIf="dinhDangHoaDon === 3">
+                  <tr class="detail-sumary text-left discountAmount">
+                    <td class="width-quarter resize-width resize-right disable-hiden"
+                      [attr.data-field]="dataField[dataField.TyLeChietKhau]">
+                      <div class="edit-label display-table-cell white-space-nowrap padding-left-2">
+                        {{mapOfData[dataField[dataField.TyLeChietKhau]]?.tieuDe?.giaTri}}
+                      </div>
+                      <div class="edit-label-en display-table-cell white-space-nowrap"
+                        *ngIf="mapOfData[dataField[dataField.TyLeChietKhau]]?.tieuDeSongNgu">
+                        {{mapOfData[dataField[dataField.TyLeChietKhau]]?.tieuDeSongNgu?.giaTri}}
+                      </div>
+                      <div class="two-dot display-table-cell white-space-nowrap">:</div>
+                    </td>
+                    <td class="width-quarter resize-width resize-right disable-hiden" data-field="DiscountRate">
+                      <div class="edit-value font-bold text-right style-number-value none-edit"></div>
+                    </td>
+                    <td class="width-quarter resize-width resize-right disable-hiden"
+                      [attr.data-field]="dataField[dataField.SoTienChietKhau]">
+                      <div class="edit-label display-table-cell white-space-nowrap padding-left-2">
+                        {{mapOfData[dataField[dataField.SoTienChietKhau]]?.tieuDe?.giaTri}}
+                      </div>
+                      <div class="edit-label-en display-table-cell white-space-nowrap"
+                        *ngIf="mapOfData[dataField[dataField.SoTienChietKhau]]?.tieuDeSongNgu">
+                        {{mapOfData[dataField[dataField.SoTienChietKhau]]?.tieuDeSongNgu?.giaTri}}
+                      </div>
+                      <div class="two-dot display-table-cell white-space-nowrap">:</div>
+                    </td>
+                    <td class="width-quarter resize-width resize-right disable-hiden" data-field="TotalDiscountAmount">
+                      <div class="edit-value font-bold text-right style-number-value none-edit"></div>
+                    </td>
+                  </tr>
+                  <tr class="detail-sumary text-left">
+                    <td class="resize-width resize-right" data-field="NotShow3" style="width: 193px;"></td>
+                    <td class="resize-width resize-right" data-field="NotShow4" style="width: 193.5px;"></td>
+                    <td class="width-quarter resize-width resize-right disable-hiden"
+                      [attr.data-field]="dataField[dataField.CongTienHangDaTruCK]" style="width: 193.5px;">
+                      <div class="edit-label display-table-cell white-space-nowrap padding-left-2">
+                        {{mapOfData[dataField[dataField.CongTienHangDaTruCK]]?.tieuDe?.giaTri}} (Đã trừ CK)
+                      </div>
+                      <div class="edit-label-en display-table-cell white-space-nowrap"
+                        *ngIf="mapOfData[dataField[dataField.CongTienHangDaTruCK]].tieuDeSongNgu">
+                        {{mapOfData[dataField[dataField.CongTienHangDaTruCK]]?.tieuDeSongNgu?.giaTri}}
+                      </div>
+                      <div class="two-dot display-table-cell white-space-nowrap">:</div>
+                    </td>
+                    <td class="width-quarter resize-width resize-right disable-hiden" data-field="TotalAmountWithVAT"
+                      style="width: 193px;">
+                      <div class="edit-value font-bold text-right style-number-value none-edit"></div>
+                    </td>
+                  </tr>
+                </ng-container>
+                <tr class="detail-sumary text-left">
+                  <td class="width-quarter resize-width resize-right disable-hiden"
+                    [attr.data-field]="dataField[dataField.ThueSuatGTGT]" style="width: 193px;">
+                    <div class="edit-label display-table-cell white-space-nowrap padding-left-2">
+                      {{mapOfData[dataField[dataField.ThueSuatGTGT]]?.tieuDe?.giaTri}}
+                    </div>
+                    <div class="edit-label-en display-table-cell white-space-nowrap padding-left-4"
+                      *ngIf="mapOfData[dataField[dataField.ThueSuatGTGT]]?.tieuDeSongNgu">
+                      {{mapOfData[dataField[dataField.ThueSuatGTGT]]?.tieuDeSongNgu?.giaTri}}
+                    </div>
+                    <div class="two-dot display-table-cell white-space-nowrap">:</div>
+                  </td>
+                  <td class="width-quarter resize-width resize-right disable-hiden" data-field="VatPercentage"
+                    style="width: 193.5px;">
+                    <div class="edit-value font-bold text-right style-number-value none-edit"></div>
+                  </td>
+                  <td class="width-quarter resize-width resize-right disable-hiden"
+                    [attr.data-field]="dataField[dataField.TienThueGTGT]" style="width: 193.5px;">
+                    <div class="edit-label display-table-cell white-space-nowrap padding-left-2">
+                      {{mapOfData[dataField[dataField.TienThueGTGT]]?.tieuDe?.giaTri}}
+                    </div>
+                    <div class="edit-label-en display-table-cell white-space-nowrap padding-left-4"
+                      *ngIf="mapOfData[dataField[dataField.TienThueGTGT]]?.tieuDeSongNgu">
+                      {{mapOfData[dataField[dataField.TienThueGTGT]]?.tieuDeSongNgu?.giaTri}}
+                    </div>
+                    <div class="two-dot display-table-cell white-space-nowrap">:</div>
+                  </td>
+                  <td class="width-quarter resize-width resize-right disable-hiden" data-field="TotalVATAmount"
+                    style="width: 193px;">
+                    <div class="edit-value font-bold text-right style-number-value none-edit"></div>
+                  </td>
+                </tr>
+                <tr class="detail-sumary text-left">
+                  <td class="resize-width resize-right" data-field="NotShow3" style="width: 193px;"></td>
+                  <td class="resize-width resize-right" data-field="NotShow4" style="width: 193.5px;"></td>
+                  <td class="width-quarter resize-width resize-right disable-hiden"
+                    [attr.data-field]="dataField[dataField.TongTienThanhToan]" style="width: 193.5px;">
+                    <div class="edit-label display-table-cell white-space-nowrap padding-left-2">
+                      {{mapOfData[dataField[dataField.TongTienThanhToan]]?.tieuDe?.giaTri}}
+                    </div>
+                    <div class="edit-label-en display-table-cell white-space-nowrap"
+                      *ngIf="mapOfData[dataField[dataField.TongTienThanhToan]]?.tieuDeSongNgu">
+                      {{mapOfData[dataField[dataField.TongTienThanhToan]]?.tieuDeSongNgu?.giaTri}}
+                    </div>
+                    <div class="two-dot display-table-cell white-space-nowrap">:</div>
+                  </td>
+                  <td class="width-quarter resize-width resize-right disable-hiden" data-field="TotalAmountWithVAT"
+                    style="width: 193px;">
+                    <div class="edit-value font-bold text-right style-number-value none-edit"></div>
+                  </td>
+                </tr>
+              </ng-container>
+              <!-- Nhiều thuế suất -->
+              <ng-container *ngIf="inputData.loaiThueGTGT === 2">
+                <table *ngIf="inputData?.tenBoMau === '01.CB.01'" id="tbFooter" cellpadding="0" cellspacing="0"
+                  class="can-select highlight-block table-footer" group-field="table-footer">
+                  <tbody>
+                    <tr class="detail-sumary text-left discountAmount"
+                      *ngIf="dinhDangHoaDon === 3 && (mapOfData[dataField[dataField.TyLeChietKhau]].checked || mapOfData[dataField[dataField.SoTienChietKhau]].checked)">
+                      <td class="width-quarter disable-hiden" [attr.data-field]="dataField[dataField.TyLeChietKhau]">
+                        <ng-container *ngIf="mapOfData[dataField[dataField.TyLeChietKhau]].checked">
+                          <div class="edit-label display-table-cell white-space-nowrap padding-left-2">
+                            {{mapOfData[dataField[dataField.TyLeChietKhau]]?.tieuDe?.giaTri}}
+                          </div>
+                          <div class="edit-label-en display-table-cell white-space-nowrap"
+                            *ngIf="mapOfData[dataField[dataField.TyLeChietKhau]]?.tieuDeSongNgu">
+                            {{mapOfData[dataField[dataField.TyLeChietKhau]]?.tieuDeSongNgu?.giaTri}}
+                          </div>
+                          <div class="two-dot display-table-cell white-space-nowrap">:</div>
+                        </ng-container>
+                      </td>
+                      <td class="width-quarter disable-hiden" data-field="DiscountRate">
+                        <div class="edit-value font-bold text-right style-number-value none-edit"></div>
+                      </td>
+                      <td class="width-quarter disable-hiden" [attr.data-field]="dataField[dataField.SoTienChietKhau]">
+                        <ng-container *ngIf="mapOfData[dataField[dataField.SoTienChietKhau]].checked">
+                          <div class="edit-label display-table-cell white-space-nowrap padding-left-2">
+                            {{mapOfData[dataField[dataField.SoTienChietKhau]]?.tieuDe?.giaTri}}
+                          </div>
+                          <div class="edit-label-en display-table-cell white-space-nowrap"
+                            *ngIf="mapOfData[dataField[dataField.SoTienChietKhau]]?.tieuDeSongNgu">
+                            {{mapOfData[dataField[dataField.SoTienChietKhau]]?.tieuDeSongNgu?.giaTri}}
+                          </div>
+                          <div class="two-dot display-table-cell white-space-nowrap">:</div>
+                        </ng-container>
+                      </td>
+                      <td class="width-quarter disable-hiden" data-field="TotalDiscountAmount">
+                        <div class="edit-value font-bold text-right style-number-value none-edit"></div>
+                      </td>
+                    </tr>
+                    <tr class="tr-multi-tax tr-footer-header font-bold center">
+                      <ng-container *ngFor="let item of listTieuDeTongHopThueGTGT">
+                        <td class="disable-hiden" [attr.data-field]="item.dataFieldName" [style.width.px]="item.width">
+                          <div class="edit-label none-edit">
+                            {{mapOfData[item.dataFieldName]?.tieuDe?.giaTri}}
+                          </div>
+                          <div class="edit-label-en none-edit" *ngIf="mapOfData[item.dataFieldName]?.tieuDeSongNgu">
+                            {{mapOfData[item.dataFieldName]?.tieuDeSongNgu?.giaTri}}
+                          </div>
+                        </td>
+                      </ng-container>
+                    </tr>
+                    <ng-container *ngFor="let item of listTongTienChiuThueSuat">
+                      <tr class="tr-multi-tax tr-footer-data" [attr.data-field]="item.dataFieldName">
+                        <td class="text-left" style="width: 194.469px;">
+                          <div class="edit-label none-edit display-table-cell white-space-nowrap">
+                            {{mapOfData[item.dataFieldName]?.tieuDe?.giaTri}}
+                          </div>
+                          <div class="edit-label-en display-table-cell white-space-nowrap"
+                            *ngIf="mapOfData[item.dataFieldName]?.tieuDeSongNgu">
+                            {{mapOfData[item.dataFieldName]?.tieuDeSongNgu?.giaTri}}
+                          </div>
+                          <div class="two-dot display-table-cell white-space-nowrap">:</div>
+                        </td>
+                        <td class="number" style="width: 191.719px;">
+                          <div class="padding-right-2"></div>
+                        </td>
+                        <td class="number" style="width: 192.047px;">
+                          <div class="padding-right-2"></div>
+                        </td>
+                        <td class="number" style="width: 191.766px;">
+                          <div class="padding-right-2">
+                            &nbsp;
+                          </div>
+                        </td>
+                      </tr>
+                    </ng-container>
+                  </tbody>
+                </table>
+                <ng-container *ngIf="inputData?.tenBoMau === '01.CB.04'">
+                  <tr class="detail-sumary text-left">
+                    <td colspan="4" class="disable-hiden" [attr.data-field]="dataField[dataField.CongTienHang]"
+                      style="width: 773px;">
+                      <div>
+                        <div class="display-table-cell white-space-nowrap edit-label padding-left-2">
+                          {{mapOfData[dataField[dataField.CongTienHang]]?.tieuDe?.giaTri}}
+                        </div>
+                        <div class="edit-label-en display-table-cell white-space-nowrap"
+                          *ngIf="mapOfData[dataField[dataField.CongTienHang]]">
+                          {{mapOfData[dataField[dataField.CongTienHang]]?.tieuDeSongNgu?.giaTri}}
+                        </div>
+                        <div class="two-dot display-table-cell white-space-nowrap">:</div>
+                        <div class="display-table-cell edit-value font-bold font-italic padding-left-4 none-edit">
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <ng-container *ngIf="dinhDangHoaDon === 3">
+                    <tr class="detail-sumary text-left discountAmount">
+                      <td class="width-quarter resize-width resize-right disable-hiden"
+                        [attr.data-field]="dataField[dataField.TyLeChietKhau]">
+                        <div class="edit-label display-table-cell white-space-nowrap padding-left-2">
+                          {{mapOfData[dataField[dataField.TyLeChietKhau]]?.tieuDe?.giaTri}}
+                        </div>
+                        <div class="edit-label-en display-table-cell white-space-nowrap"
+                          *ngIf="mapOfData[dataField[dataField.TyLeChietKhau]]?.tieuDeSongNgu">
+                          {{mapOfData[dataField[dataField.TyLeChietKhau]]?.tieuDeSongNgu?.giaTri}}
+                        </div>
+                        <div class="two-dot display-table-cell white-space-nowrap">:</div>
+                      </td>
+                      <td class="width-quarter resize-width resize-right disable-hiden" data-field="DiscountRate">
+                        <div class="edit-value font-bold text-right style-number-value none-edit"></div>
+                      </td>
+                      <td class="width-quarter resize-width resize-right disable-hiden"
+                        [attr.data-field]="dataField[dataField.SoTienChietKhau]">
+                        <div class="edit-label display-table-cell white-space-nowrap padding-left-2">
+                          {{mapOfData[dataField[dataField.SoTienChietKhau]]?.tieuDe?.giaTri}}
+                        </div>
+                        <div class="edit-label-en display-table-cell white-space-nowrap"
+                          *ngIf="mapOfData[dataField[dataField.SoTienChietKhau]]?.tieuDeSongNgu">
+                          {{mapOfData[dataField[dataField.SoTienChietKhau]]?.tieuDeSongNgu?.giaTri}}
+                        </div>
+                        <div class="two-dot display-table-cell white-space-nowrap">:</div>
+                      </td>
+                      <td class="width-quarter resize-width resize-right disable-hiden"
+                        data-field="TotalDiscountAmount">
+                        <div class="edit-value font-bold text-right style-number-value none-edit"></div>
+                      </td>
+                    </tr>
+                  </ng-container>
+                  <tr class="detail-sumary text-left">
+                    <td colspan="4" class="disable-hiden" [attr.data-field]="dataField[dataField.TienThueGTGT]"
+                      style="width: 773px;">
+                      <div>
+                        <div class="display-table-cell white-space-nowrap edit-label padding-left-2">
+                          {{mapOfData[dataField[dataField.TienThueGTGT]]?.tieuDe?.giaTri}}
+                        </div>
+                        <div class="edit-label-en display-table-cell white-space-nowrap"
+                          *ngIf="mapOfData[dataField[dataField.TienThueGTGT]]">
+                          {{mapOfData[dataField[dataField.TienThueGTGT]]?.tieuDeSongNgu?.giaTri}}
+                        </div>
+                        <div class="two-dot display-table-cell white-space-nowrap">:</div>
+                        <div class="display-table-cell edit-value font-bold font-italic padding-left-4 none-edit">
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr class="detail-sumary text-left">
+                    <td colspan="4" class="disable-hiden" [attr.data-field]="dataField[dataField.TongTienThanhToan]"
+                      style="width: 773px;">
+                      <div>
+                        <div class="display-table-cell white-space-nowrap edit-label padding-left-2">
+                          {{mapOfData[dataField[dataField.TongTienThanhToan]]?.tieuDe?.giaTri}}
+                        </div>
+                        <div class="edit-label-en display-table-cell white-space-nowrap"
+                          *ngIf="mapOfData[dataField[dataField.TongTienThanhToan]]">
+                          {{mapOfData[dataField[dataField.TongTienThanhToan]]?.tieuDeSongNgu?.giaTri}}
+                        </div>
+                        <div class="two-dot display-table-cell white-space-nowrap">:</div>
+                        <div class="display-table-cell edit-value font-bold font-italic padding-left-4 none-edit">
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </ng-container>
+              </ng-container>
+            </ng-container>
+            <ng-container
+              *ngIf="inputData.loaiHoaDon === loaiHoaDon.HoaDonBanHang || inputData.loaiHoaDon === loaiHoaDon.HoaDonBanHangCMTMTT || inputData.loaiHoaDon === loaiHoaDon.TemVeBanHang">
+              <ng-container *ngIf="dinhDangHoaDon === 3">
+                <tr class="detail-sumary text-left">
+                  <td colspan="4" class="disable-hiden" [attr.data-field]="dataField[dataField.CongTienHang]"
+                    style="width: 773px;">
+                    <div>
+                      <div class="display-table-cell white-space-nowrap edit-label padding-left-2">
+                        {{mapOfData[dataField[dataField.CongTienHang]]?.tieuDe?.giaTri}}&nbsp;(Chưa trừ CK)
+                      </div>
+                      <div class="edit-label-en display-table-cell white-space-nowrap "
+                        *ngIf="mapOfData[dataField[dataField.CongTienHang]]">
+                        {{mapOfData[dataField[dataField.CongTienHang]]?.tieuDeSongNgu?.giaTri}}
+                      </div>
+                      <div class="two-dot display-table-cell white-space-nowrap">:</div>
+                      <div class="display-table-cell edit-value font-bold font-italic padding-left-4 none-edit">
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr class="detail-sumary text-left discountAmount">
+                  <td class="width-quarter resize-width resize-right disable-hiden"
+                    [attr.data-field]="dataField[dataField.TyLeChietKhau]">
+                    <div class="edit-label display-table-cell white-space-nowrap padding-left-2">
+                      {{mapOfData[dataField[dataField.TyLeChietKhau]]?.tieuDe?.giaTri}}
+                    </div>
+                    <div class="edit-label-en display-table-cell white-space-nowrap"
+                      *ngIf="mapOfData[dataField[dataField.TyLeChietKhau]]">
+                      {{mapOfData[dataField[dataField.TyLeChietKhau]]?.tieuDeSongNgu?.giaTri}}
+                    </div>
+                    <div class="two-dot display-table-cell white-space-nowrap">:</div>
+                  </td>
+                  <td class="width-quarter resize-width resize-right disable-hiden" data-field="DiscountRate">
+                    <div class="edit-value font-bold text-right style-number-value none-edit"></div>
+                  </td>
+                  <td class="width-quarter resize-width resize-right disable-hiden"
+                    [attr.data-field]="dataField[dataField.SoTienChietKhau]">
+                    <div class="edit-label display-table-cell white-space-nowrap padding-left-2">
+                      {{mapOfData[dataField[dataField.SoTienChietKhau]]?.tieuDe?.giaTri}}
+                    </div>
+                    <div class="edit-label-en display-table-cell white-space-nowrap"
+                      *ngIf="mapOfData[dataField[dataField.SoTienChietKhau]]">
+                      {{mapOfData[dataField[dataField.SoTienChietKhau]]?.tieuDeSongNgu?.giaTri}}
+                    </div>
+                    <div class="two-dot display-table-cell white-space-nowrap">:</div>
+                  </td>
+                  <td class="width-quarter resize-width resize-right disable-hiden" data-field="TotalDiscountAmount">
+                    <div class="edit-value font-bold text-right style-number-value none-edit"></div>
+                  </td>
+                </tr>
+              </ng-container>
+              <tr class="detail-sumary text-left">
+                <td colspan="4" class="disable-hiden" [attr.data-field]="dataField[dataField.TongTienThanhToan]"
+                  style="width: 773px;">
+                  <div>
+                    <div class="display-table-cell white-space-nowrap edit-label padding-left-2">
+                      {{mapOfData[dataField[dataField.TongTienThanhToan]]?.tieuDe?.giaTri}}
+                    </div>
+                    <div class="edit-label-en display-table-cell white-space-nowrap"
+                      *ngIf="mapOfData[dataField[dataField.TongTienThanhToan]]">
+                      {{mapOfData[dataField[dataField.TongTienThanhToan]]?.tieuDeSongNgu?.giaTri}}
+                    </div>
+                    <div class="two-dot display-table-cell white-space-nowrap">:</div>
+                    <div class="display-table-cell edit-value font-bold font-italic padding-left-4 none-edit">
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </ng-container>
+            <ng-container
+              *ngIf="inputData.loaiHoaDon === loaiHoaDon.PXKKiemVanChuyenNoiBo || inputData.loaiHoaDon === loaiHoaDon.PXKHangGuiBanDaiLy">
+              <tr class="detail-sumary text-left">
+                <td colspan="4" class="disable-hiden" [attr.data-field]="dataField[dataField.TongTienThanhToan]"
+                  style="width: 773px;">
+                  <div>
+                    <div class="display-table-cell white-space-nowrap edit-label padding-left-2">
+                      {{mapOfData[dataField[dataField.TongTienThanhToan]]?.tieuDe?.giaTri}}
+                    </div>
+                    <div class="edit-label-en display-table-cell white-space-nowrap"
+                      *ngIf="mapOfData[dataField[dataField.TongTienThanhToan]]">
+                      {{mapOfData[dataField[dataField.TongTienThanhToan]]?.tieuDeSongNgu?.giaTri}}
+                    </div>
+                    <div class="two-dot display-table-cell white-space-nowrap">:</div>
+                    <div class="display-table-cell edit-value font-bold font-italic padding-left-4 none-edit">
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </ng-container>
+            <tr class="detail-sumary text-left" *ngIf="mapOfData[dataField[dataField.SoTienBangChu]]">
+              <td colspan="4" class="disable-hiden" [attr.data-field]="dataField[dataField.SoTienBangChu]"
+                style="width: 773px;">
+                <div>
+                  <div class="display-table-cell white-space-nowrap edit-label padding-left-2">
+                    {{mapOfData[dataField[dataField.SoTienBangChu]]?.tieuDe?.giaTri}}
+                  </div>
+                  <div class="edit-label-en display-table-cell white-space-nowrap"
+                    *ngIf="mapOfData[dataField[dataField.SoTienBangChu]]">
+                    {{mapOfData[dataField[dataField.SoTienBangChu]]?.tieuDeSongNgu?.giaTri}}
+                  </div>
+                  <div class="two-dot display-table-cell white-space-nowrap">:</div>
+                  <div class="display-table-cell edit-value font-bold font-italic padding-left-4 none-edit">
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr class="detail-sumary text-left" *ngIf="mapOfData[dataField[dataField.GhiChuTongTien]].checked">
+              <td colspan="4" [attr.data-field]="dataField[dataField.GhiChuTongTien]">
+                <div class="display-table-cell edit-value padding-left-2">
+                  {{mapOfData[dataField[dataField.GhiChuTongTien]]?.noiDung?.giaTri}}
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div *ngIf="dinhDangHoaDon === 4 && listThongTinNgoaiTe != null" class="curency-block can-select highlight-block"
+        [attr.group-field]="groupField[groupField.ThongTinNgoaiTe]">
+        <div class="text-left content-currency">
+          <ng-container *ngIf="listThongTinNgoaiTe.length > 0">
+            <div *ngFor="let item of listThongTinNgoaiTe" [attr.data-field]="item.dataFieldName">
+              <div class="edit-label display-table-cell white-space-nowrap">{{item.tieuDe?.giaTri}}</div>
+              <div class="edit-label-en display-table-cell white-space-nowrap" *ngIf="item.tieuDeSongNgu">
+                {{item.tieuDeSongNgu?.giaTri}}
+              </div>
+              <div class="two-dot display-table-cell white-space-nowrap">:</div>
+              <div class="font-bold edit-value display-table-cell white-space-nowrap"></div>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="listThongTinNgoaiTe.length === 0">
+            <div>
+              <div class="edit-label display-table-cell white-space-nowrap">.</div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+      <table cellpadding="0" cellspacing="0" width="100%" id="signXml"
+        [attr.group-field]="groupField[groupField.ThongTinNguoiKy]"
+        class="tbl-thong-tin-nguoi-ky can-select sign-block highlight-block">
+        <tbody>
+          <tr class="sign-region-content">
+            <ng-container *ngIf="listGroupThongTinNguoiKy.length === 1">
+              <td></td>
+            </ng-container>
+            <td *ngFor="let item of listGroupThongTinNguoiKy" class="vertical-align-top"
+              [style.width.px]="(item.key === dataField.TieuDeKyNguoiBan || item.key === dataField.TieuDeKyThuKhoNhap || item.key === dataField.TieuDeKyThuTruongDonVi) && listGroupThongTinNguoiKy.length >= 4 ? (inputData?.loaiNgonNgu === 1 ? 212 : 280) : 'auto'">
+              <ng-container *ngFor="let child of item.children">
+                <div *ngIf="child.isTieuDeKy" class="edit-item disable-hiden font-bold"
+                  [attr.data-field]="child.dataFieldName">
+                  <ng-container *ngFor="let superChild of child.children">
+                    <span class="edit-label" *ngIf="superChild.loaiContainer === 1">{{superChild.giaTri}}</span>
+                    <span class="edit-label-en padding-left-4" *ngIf="superChild.loaiContainer === 4">
+                      {{superChild.giaTri}}
+                    </span>
+                  </ng-container>
+                </div>
+                <div *ngIf="!child.isTieuDeKy" class="edit-item font-italic" [attr.data-field]="child.dataFieldName">
+                  <ng-container *ngFor="let superChild of child.children">
+                    <div class="edit-label" *ngIf="superChild.loaiContainer === 1">{{superChild.giaTri}}</div>
+                    <div class="edit-label-en sign-full-en" *ngIf="superChild.loaiContainer === 4">
+                      {{superChild.giaTri}}
+                    </div>
+                  </ng-container>
+                </div>
+              </ng-container>
+              <div
+                *ngIf="item.key === dataField.TieuDeKyNguoiBan || item.key === dataField.TieuDeKyThuKhoNhap || item.key === dataField.TieuDeKyThuTruongDonVi">
+                <div class="text-left not-show-preview background-sign" [class.background-sign]="inputData.ngayKy"
+                  data-field="SellerSignContent">
+                  <div class="edit-value">
+                    <div class="content-sign" [style.width.px]="inputData.loaiNgonNgu === 2 ? 270 : 200">
+                      <div>Signature Valid</div>
+                      <div>
+                        <span class="esign-label edit-label">Ký bởi</span>
+                        <span class="esign-label-en edit-label-en" *ngIf="inputData.loaiNgonNgu === 2">
+                          &nbsp;(Signed By)</span>
+                        <span class="two-dot">:</span>
+                        <span class="esign-value" *ngIf="inputData.ngayKy">
+                          {{company?.tenDonVi}}
+                        </span>
+                      </div>
+                      <div>
+                        <span class="esign-label edit-label">Ký ngày</span>
+                        <span class="esign-label-en edit-label-en" *ngIf="inputData.loaiNgonNgu === 2">
+                          &nbsp;(Signing Date)</span>
+                        <span class="two-dot">:</span>
+                        <span class="esign-value" *ngIf="inputData.ngayKy">
+                          {{inputData.ngayKy | date:'yyyy-MM-dd HH:mm:ss'}}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="search-block can-select highlight-block" [attr.group-field]="groupField[groupField.ThongTinTraCuu]">
+      <div *ngIf="inputData.loaiHoaDon === loaiHoaDon.HoaDonBanHang" class="disable-hiden"
+        [attr.data-field]="dataField[dataField.MaTraCuu]">
+        <span class="edit-label none-edit">
+          {{mapOfData[dataField[dataField.MaTraCuu]]?.tieuDe?.giaTri}}</span>
+        <span class="edit-label-en none-edit padding-left-4"
+          *ngIf="mapOfData[dataField[dataField.MaTraCuu]]?.tieuDeSongNgu">
+          {{mapOfData[dataField[dataField.MaTraCuu]]?.tieuDeSongNgu?.giaTri}}
+        </span>
+        <span class="two-dot">:</span><span class="not-show-preview font-bold padding-left-4"></span>
+      </div>
+      <div class="text-left not-show-preview" data-field="InforWebsiteSearch">
+        <span class="disable-hiden note-search" [attr.data-field]="dataField[dataField.TraCuuTai]">
+          <span class="edit-label none-edit">{{mapOfData[dataField[dataField.TraCuuTai]]?.tieuDe?.giaTri}}</span>
+          <span class="edit-label-en none-edit padding-left-4"
+            *ngIf="mapOfData[dataField[dataField.TraCuuTai]]?.tieuDeSongNgu">
+            {{mapOfData[dataField[dataField.TraCuuTai]]?.tieuDeSongNgu?.giaTri}}
+          </span>
+          <span class="two-dot">:</span>
+        </span>
+        <span class="padding-left-4 disable-hiden" [attr.data-field]="dataField[dataField.LinkTraCuu]">
+          <span class="edit-value none-edit not-show-preview">
+            <a target="_blank" [href]="mapOfData[dataField[dataField.LinkTraCuu]]?.noiDung?.giaTri">
+              {{mapOfData[dataField[dataField.LinkTraCuu]]?.noiDung?.giaTri}}
+            </a>
+          </span>
+        </span>
+        <ng-container
+          *ngIf="inputData.loaiHoaDon === loaiHoaDon.HoaDonGTGT || inputData.loaiHoaDon === loaiHoaDon.PXKKiemVanChuyenNoiBo || inputData.loaiHoaDon === loaiHoaDon.PXKHangGuiBanDaiLy || inputData.loaiHoaDon === loaiHoaDon.CacLoaiHoaDonKhac || inputData.loaiHoaDon === loaiHoaDon.HoaDonGTGTCMTMTT || inputData.loaiHoaDon === loaiHoaDon.HoaDonBanHangCMTMTT || inputData.loaiHoaDon === loaiHoaDon.HoaDonKhacCMTMTT || inputData.loaiHoaDon === loaiHoaDon.TemVeBanHang">
+          <span class="disable-hiden note-search text-left padding-left-4"
+            [attr.data-field]="dataField[dataField.MaTraCuu]">
+            <span class="edit-label none-edit">
+              {{mapOfData[dataField[dataField.MaTraCuu]]?.tieuDe?.giaTri}}</span>
+            <span class="edit-label-en none-edit padding-left-4"
+              *ngIf="mapOfData[dataField[dataField.MaTraCuu]]?.tieuDeSongNgu">
+              {{mapOfData[dataField[dataField.MaTraCuu]]?.tieuDeSongNgu?.giaTri}}
+            </span>
+            <span class="two-dot">:</span><span class="not-show-preview font-bold padding-left-4"></span>
+          </span>
+        </ng-container>
+      </div>
+      <div
+        *ngIf="inputData.loaiHoaDon === loaiHoaDon.HoaDonGTGT || inputData.loaiHoaDon === loaiHoaDon.PXKKiemVanChuyenNoiBo || inputData.loaiHoaDon === loaiHoaDon.PXKHangGuiBanDaiLy || inputData.loaiHoaDon === loaiHoaDon.CacLoaiHoaDonKhac || inputData.loaiHoaDon === loaiHoaDon.HoaDonGTGTCMTMTT|| inputData.loaiHoaDon === loaiHoaDon.HoaDonBanHangCMTMTT || inputData.loaiHoaDon === loaiHoaDon.HoaDonKhacCMTMTT || inputData.loaiHoaDon === loaiHoaDon.TemVeBanHang"
+        class="note" [attr.data-field]="dataField[dataField.CanKiemTraDoiChieu]">
+        <span class="edit-label">{{mapOfData[dataField[dataField.CanKiemTraDoiChieu]]?.tieuDe?.giaTri}}</span><span
+          class="edit-label-en padding-left-4"
+          *ngIf="mapOfData[dataField[dataField.CanKiemTraDoiChieu]]?.tieuDeSongNgu">
+          {{mapOfData[dataField[dataField.CanKiemTraDoiChieu]]?.tieuDeSongNgu?.giaTri}}
+        </span>
+      </div>
+      <div class="disable-hiden" [attr.data-field]="dataField[dataField.PhatHanhBoi]">
+        <div class="edit-label none-edit">
+          {{mapOfData[dataField[dataField.PhatHanhBoi]]?.tieuDe?.giaTri}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="fakeContent"></div>

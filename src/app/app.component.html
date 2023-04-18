@@ -1,0 +1,18 @@
+<router-outlet></router-outlet>
+<ngx-spinner bdOpacity=0.9 bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="ball-spin" [fullScreen]="true">
+    <p style="color: white"> Mất mạng ... </p>
+  </ngx-spinner>
+  
+  <div *ngIf="loadingRoute" class="wrapper">
+    <div class="loader"></div>
+  </div>
+  
+  <div *ngIf="loadingRoute" style="min-width: 100vw !important;
+    min-height: 100vh;
+    background: black;
+    position: fixed;
+    top: 0px;
+    opacity: 0.5;
+    z-index: 99;
+    ">
+  </div>

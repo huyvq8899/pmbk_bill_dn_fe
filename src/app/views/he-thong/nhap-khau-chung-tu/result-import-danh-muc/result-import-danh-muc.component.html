@@ -1,0 +1,13 @@
+<div style="font-size: larger;"><strong>Kết quả nhập khẩu</strong></div>
+<div *ngIf="status===true;else template">
+  <div *ngIf="key === '1001' || key === '1002' || key === '1003' ">
+    <div>Nhập khẩu thành công {{ numberSuccess}}/{{numberDanhMuc }} dòng dữ liệu</div>
+    <div style="color: red !important;">Số dòng dữ liệu không hợp lệ: {{ listError.length }}</div>
+    <div style="margin-top: 57px;">
+      <button [nzLoading]="isLoading" nz-button nzType="default" (click)="downloadFilesError()"
+        [disabled]="listError.length<=0"><i nz-icon nzType="vertical-align-bottom" nzTheme="outline"></i>
+        Tải tệp dữ liệu lỗi</button>
+    </div>
+  </div>
+</div>
+<ng-template #template>Nhập khẩu không thành công. Vui lòng thử lại sau</ng-template>

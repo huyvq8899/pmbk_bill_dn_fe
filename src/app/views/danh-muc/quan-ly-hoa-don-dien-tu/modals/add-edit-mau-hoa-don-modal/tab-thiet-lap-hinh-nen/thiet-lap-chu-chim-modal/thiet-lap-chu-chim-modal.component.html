@@ -1,0 +1,54 @@
+<nz-spin [nzSpinning]="spinning">
+  <div style="position: relative;">
+    <div nz-row nzGutter="16">
+      <div nz-col nzSpan="5">
+        <nz-select nzSize="small" nzShowSearch [(ngModel)]="form.kieuChuChim" (ngModelChange)="changeKieuChu($event)">
+          <nz-option nzLabel="Arial" [nzValue]="'Arial'"> </nz-option>
+          <nz-option nzLabel="Times New Roman" [nzValue]="'Times New Roman'">
+          </nz-option>
+        </nz-select>
+      </div>
+      <div nz-col nzSpan="3">
+        <nz-select nzSize="small" nzShowSearch [(ngModel)]="form.coChuChim" (ngModelChange)="changeCoChu($event)">
+          <nz-option *ngFor="let item of coChus" [nzLabel]="item" [nzValue]="item"> </nz-option>
+        </nz-select>
+      </div>
+      <div nz-col nzSpan="1" class="action-icon" (click)="setBold()">
+        <i [ngClass]="{'icon-active': form.boldChuChim, 'icon-unactive': !form.boldChuChim}" nz-icon nzType="bold"
+          nzTheme="outline"></i>
+      </div>
+      <div nz-col nzSpan="1" class="action-icon" (click)="setItalic()">
+        <i [ngClass]="{'icon-active': form.italicChuChim, 'icon-unactive': !form.italicChuChim}" nz-icon nzType="italic"
+          nzTheme="outline"></i>
+      </div>
+      <div nz-col nzSpan="1" class="action-icon">
+        <i class="color-icon" nz-icon nzType="font-colors" nzTheme="outline">
+          <input type="color" #colorPicker [(ngModel)]="form.mauChuChim" (ngModelChange)="changeColorPicker($event)" />
+        </i>
+      </div>
+      <div nz-col nzSpan="1" style="text-align: center;">
+        <span style="font-weight: bold; font-size: 16px !important;">|</span>
+      </div>
+      <div nz-col nzSpan="11" style="display: flex; align-items: center;">
+        <span>Độ nét</span>
+        <nz-slider style="flex: 1; padding: 0 8px;" [nzTooltipVisible]="'never'" [(ngModel)]="form.doNetChuChimPer"
+          (nzOnAfterChange)="afterChangeOpacity($event)"></nz-slider>
+        <span>{{form.doNetChuChimPer}}%</span>
+      </div>
+    </div>
+    <div>
+      <textarea rows="22" cols="100" autofocus="" id="txtNoiDungChuChim" [(ngModel)]="form.noiDungChuChim"></textarea>
+    </div>
+    <div style="position: absolute; opacity: 0; z-index: -10;" [innerHTML]="html | safeHtml">
+    </div>
+  </div>
+</nz-spin>
+
+<div *nzModalFooter>
+  <button nz-button nzType="default" (click)="submitForm()" nzSize="small" class="blueButton" [nzLoading]="spinning">
+    <i nz-icon nzType="check" nzTheme="outline"></i>Đồng ý
+  </button>
+  <button nz-button nzType="default" (click)="closeModal()" nzSize="small" class="button-cancel">
+    <i nz-icon nzType="close" nzTheme="outline"></i>Hủy
+  </button>
+</div>

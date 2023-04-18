@@ -1,0 +1,23 @@
+<nz-spin [nzSpinning]="spinning">
+    <form nz-form>
+        <div nz-row>
+            <div style="text-align: justify !important; background-color: #FFF2CC; padding: 5px;">
+                Bắt đầu từ thời điểm người dùng xác nhận thành công, hóa đơn được xác định là đã thỏa mãn điều kiện <b>Đã gửi cho khách hàng</b> khi thực hiện các quy trình nghiệp vụ xử lý hóa đơn có sai sót. 
+                <br>
+                Sau khi xác nhận sẽ không thể phục hồi về trạng thái chưa xác nhận. Người dùng cân nhắc kỹ trước khi thực hiện
+            </div>
+
+            <nz-form-item style="padding: 5px;">
+                <nz-form-control [nzSm]="24" [nzXs]="24">
+                   <label nz-checkbox [(ngModel)]="isAccept" [ngModelOptions]="{standalone: true}"><span style="color: #0070C0">Tôi xác nhận và chịu trách nhiệm về việc xác nhận hóa đơn đã gửi cho khách hàng.</span>
+                    </label>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </form>
+</nz-spin>
+
+<div *nzModalFooter style="padding-right: 4px!important;">
+    <button [disabled]="!isAccept" [nzLoading]="signing" nzSize="small" nz-button nzType="default" (click)="confirm()" class="blueButton"><i nz-icon nzType="check" nzTheme="outline"></i>Xác nhận</button>
+    <button nzSize="small" [nzLoading]="signing" nz-button nzType="default" (click)="closeModal()" class="button-cancel"><i nz-icon nzSize="small" nzType="close"></i>Hủy</button>
+</div>

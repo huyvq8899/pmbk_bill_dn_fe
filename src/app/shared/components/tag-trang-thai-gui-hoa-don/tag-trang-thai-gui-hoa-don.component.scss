@@ -1,0 +1,56 @@
+// :host ::ng-deep .mail-icon {
+//     &-chua-gui, &-chua-ky {
+//         svg {
+//             background: #a5a5a5;
+//         }
+//     }
+//     &-dang-gui {
+//         svg {
+//             background: #8b4513;
+//         }
+//     }
+//     &-gui-loi {
+//         svg {
+//             background: #ff0000b2;
+//         }
+//     }
+//     &-da-gui {
+//         svg {
+//             background: #0099ff;
+//         }
+//     }
+//     &-da-ky {
+//         svg {
+//             background: #008000;
+//         }
+//     }
+// }
+
+.circle-mail {
+    height: 18px;
+    width: 18px;
+    border-radius: 50%;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    color: #fff;
+
+    &-chua-gui, &-chua-ky {
+        background: #a5a5a5;
+    }
+    &-dang-gui {
+        background: #8b4513;
+
+    }
+    &-gui-loi {
+        background: #ff0000b2;
+
+    }
+    &-da-gui {
+        background: #0099ff;
+
+    }
+    &-da-ky {
+        background: #008000;
+    }
+}

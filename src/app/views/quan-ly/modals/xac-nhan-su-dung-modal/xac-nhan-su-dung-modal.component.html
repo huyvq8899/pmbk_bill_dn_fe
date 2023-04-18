@@ -1,0 +1,152 @@
+<nz-spin [nzSpinning]="spinning">
+  <div nz-row class="inner-content" style="height: 100%;">
+    <form nz-form [formGroup]="mainForm" class="form">
+      <div class="bottom-border">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="3" nzFor="kyHieu">Ký hiệu</nz-form-label>
+          <nz-form-control [nzSpan]="5">
+            <input nz-input nzSize="small" formControlName="kyHieu" />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label [nzSpan]="3" nzFor="trangThaiCuaCQT">Trạng thái</nz-form-label>
+          <nz-form-control [nzSpan]="7">
+            <app-tag-status-gui-xml [loai]="data.toKhaiForBoKyHieuHoaDon.trangThaiGui"
+              [ten]="data.toKhaiForBoKyHieuHoaDon.tenTrangThaiGui"></app-tag-status-gui-xml>
+          </nz-form-control>
+          <nz-form-label [nzOffset]="1" [nzSpan]="6" nzFor="thoiDiemChapNhan">Thời điểm chấp nhận</nz-form-label>
+          <nz-form-control [nzSpan]="7">
+            <input nz-input nzSize="small" formControlName="thoiDiemChapNhan" />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-row class="inner-content box-content" style="margin-left: 5px; margin-right: 5px;"
+        *ngIf="data?.uyNhiemLapHoaDon === 1">
+        <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="24" nzXl="24" class="box-border2">
+          <span class="box-title">Bên ủy nhiệm lập hóa đơn</span>
+          <nz-form-item>
+            <nz-form-label [nzSpan]="5" nzFor="maSoThueBenUyNhiem">Mã số thuế</nz-form-label>
+            <nz-form-control [nzSpan]="19">
+              <input nz-input nzSize="small" formControlName="maSoThueBenUyNhiem" />
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-label [nzSpan]="5" nzFor="tenDonViBenUyNhiem">Tên đơn vị</nz-form-label>
+            <nz-form-control [nzSpan]="19">
+              <input nz-input nzSize="small" formControlName="tenDonViBenUyNhiem" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <nz-form-item [style.margin-top.px]="data?.uyNhiemLapHoaDon === 1 ? 0 : 10">
+        <nz-form-label [nzSpan]="5" nzFor="tenTrangThaiSuDung">Trạng thái sử dụng</nz-form-label>
+        <nz-form-control [nzSpan]="19">
+          <app-tag-status-su-dung [loai]="data.trangThaiSuDung"></app-tag-status-su-dung>
+        </nz-form-control>
+      </nz-form-item>
+
+      <div nz-row class="inner-content box-content" style="margin-left: 5px; margin-right: 5px; flex: 1;">
+        <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="24" nzXl="24" class="box-border2 box-nhat-ky-xac-thuc">
+          <span class="box-title">Nhật ký xác thực</span>
+          <div class="content" style="overflow-y: scroll;">
+            <ul>
+              <li *ngFor="let item of nhatKys; let i=index">
+                <div class="status" [ngClass]="{
+                  'status-chua-xac-thuc': item.trangThaiSuDung === 0,
+                  'status-da-xac-thuc': item.trangThaiSuDung === 1,
+                  'status-ngung-su-dung': item.trangThaiSuDung === 3,
+                  'status-het-hieu-luc': item.trangThaiSuDung === 4
+                }">* {{item.tenTrangThaiSuDung}}</div>
+                <div *ngIf="item.loaiHetHieuLuc === 3">
+                  <div>
+                    - <b>{{item.tenNguoiXacThuc}}</b> đã xác thực: {{item.thoiGianXacThuc | date:'dd/MM/yyyy HH:mm:ss'}}
+                  </div>
+                  <div>
+                    - Ngừng sử dụng theo thông báo về việc hết thời gian sử dụng hóa đơn điện tử có mã qua cổng thông tin điện tử Tổng cục Thuế/qua ủy thác tổ chức cung cấp dịch vụ về hóa đơn điện tử; không thuộc trường hợp sử dụng hóa đơn điện tử không có mã. Được cơ quan thuế gửi đến người nộp thuế ngày {{item.createdDate | date: 'dd/MM/yyyy HH:mm:ss'}} 
+                  </div>
+                  <div>
+                    - Hệ thống không cho phép <b>Xác thực sử dụng</b> trong trường hợp tự động ngừng sử dụng này
+                  </div>
+                  <div>
+                    - Mẫu hóa đơn: <b>{{item.tenMauHoaDon}}</b>&nbsp;
+                    <a (click)="xemMauHoaDonTaiDay(item, i)"><i>(Xem tại đây)</i>
+                    </a>
+                  </div>
+                  <div>
+                    - Mã thông điệp nhận: <a>{{item.maThongDiepGui}}</a>
+                  </div>
+                  <div>
+                    - Thời điểm không thuộc trường hợp sử dụng: {{item.thoiDiemChapNhan | date:'dd/MM/yyyy HH:mm:ss'}}
+                  </div>
+                </div>
+                <div *ngIf="item.loaiHetHieuLuc !== 3 && (item.trangThaiSuDung === 1 || item.trangThaiSuDung === 3)">
+                  <div>
+                    - <b>{{item.tenNguoiXacThuc}}</b> đã xác thực: {{item.thoiGianXacThuc | date:'dd/MM/yyyy HH:mm:ss'}}
+                  </div>
+                  <div>
+                    - Tên tổ chức chứng thực chữ ký số, chứ ký điện tử: {{item.tenToChucChungThuc}}
+                  </div>
+                  <div>
+                    - Số sê-ri chứng thư: {{item.soSeriChungThu}}
+                  </div>
+                  <div>
+                    - Thời hạn sử dụng chứng thư số: từ ngày {{item.thoiGianSuDungTu | date:'dd/MM/yyyy HH:mm:ss'}} đến
+                    ngày {{item.thoiGianSuDungDen | date:'dd/MM/yyyy HH:mm:ss'}}
+                  </div>
+                  <div>
+                    - Mẫu hóa đơn: <b>{{item.tenMauHoaDon}}</b>&nbsp;
+                    <a (click)="xemMauHoaDonTaiDay(item, i)"><i>(Xem tại đây)</i>
+                    </a>
+                  </div>
+                  <div>
+                    - Mã thông điệp gửi CQT: <a (click)="xemToKhai(item)">{{item.maThongDiepGui}}</a>
+                  </div>
+                  <div>
+                    - Thời điểm chấp nhận: {{item.thoiDiemChapNhan | date:'dd/MM/yyyy HH:mm:ss'}}
+                  </div>
+                </div>
+                <div *ngIf="item.trangThaiSuDung === 4" [ngSwitch]="item.loaiHetHieuLuc">
+                  <div *ngSwitchCase="0">
+                    - Bộ ký hiệu hết hiệu lực: tại thời điểm {{item.thoiGianXacThuc | date:'dd/MM/yyyy HH:mm:ss'}}
+                    <!-- , số hóa đơn lớn nhất đã lập là {{item.soLuongHoaDon}} ngày {{item.thoiGianXacThuc | date:'dd/MM/yyyy'}} -->
+                  </div>
+                  <div *ngSwitchCase="1">
+                    - Bộ ký hiệu hết hiệu lực: tại thời điểm lập hóa đơn số {{item.soLuongHoaDon}} ngày
+                    {{item.ngayHoaDon | date:'dd/MM/yyyy'}}
+                  </div>
+                  <div *ngSwitchCase="2">
+                    - Bộ ký hiệu hết hiệu lực: tại thời điểm hết thời hạn ủy nhiệm {{item.thoiGianXacThuc | date:'dd/MM/yyyy HH:mm:ss'}}, 
+                    số hóa đơn lớn nhất đã lập là {{item.soLuongHoaDon}} ngày dd/mm/yyyy
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</nz-spin>
+
+<div *nzModalFooter>
+  <div nz-row>
+    <div nz-col nzSpan="12" style="text-align: left;">
+      <button nzSize="small" nz-button nzType="default" (click)="xemMauHoaDon()" class="blueButton"
+        [nzLoading]="spinning">Xem mẫu hóa đơn</button>
+    </div>
+    <div nz-col nzSpan="12">
+      <button nzSize="small" nz-button nzType="default" (click)="submitForm()" class="footer-save"
+        [nzLoading]="spinning"
+        *ngIf="isXacThuc && mainForm.get('trangThaiSuDung').value >= 0 && mainForm.get('trangThaiSuDung').value <= 3">
+        <span *ngIf="mainForm.get('trangThaiSuDung').value === 0 || mainForm.get('trangThaiSuDung').value === 3">Xác
+          thực</span>
+        <span *ngIf="mainForm.get('trangThaiSuDung').value === 1 || mainForm.get('trangThaiSuDung').value === 2">
+          Ngừng sử dụng
+        </span>
+      </button>
+      <button nzSize="small" nz-button nzType="default" (click)="closeModal()" class="button-cancel">Hủy</button>
+    </div>
+  </div>
+</div>

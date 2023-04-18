@@ -1,0 +1,16 @@
+<div class="card-container">
+  <nz-tabset nzSize="small" [nzTabPosition]="'top'" [nzType]="'card'" [(nzSelectedIndex)]="selectedTab">
+    <nz-tab nzTitle="Nhật ký truy cập" (nzClick)="clickTab('/tien-ich/nhat-ky-truy-cap')"
+      *ngIf="globalConstants.UserPermissions != null && (globalConstants.UserPermissions === true || globalConstants.UserPermissions.indexOf('NhatKyTruyCap') >= 0)">
+      <ng-template nz-tab>
+        <app-tab-nhat-ky-truy-cap></app-tab-nhat-ky-truy-cap>
+      </ng-template>
+    </nz-tab>
+    <nz-tab nzTitle="Nhật ký gửi email" (nzClick)="clickTab('/tien-ich/nhat-ky-gui-email')"
+      *ngIf="globalConstants.UserPermissions != null && (globalConstants.UserPermissions === true || globalConstants.UserPermissions.indexOf('NhatKyGuiEmail') >= 0)">
+      <ng-template nz-tab>
+        <app-tab-nhat-ky-gui-email></app-tab-nhat-ky-gui-email>
+      </ng-template>
+    </nz-tab>
+  </nz-tabset>
+</div>

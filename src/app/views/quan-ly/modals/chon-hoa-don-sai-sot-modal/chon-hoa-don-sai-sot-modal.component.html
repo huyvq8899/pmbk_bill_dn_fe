@@ -1,0 +1,1130 @@
+<nz-spin [nzSpinning]="spinning">
+  <!--<div nz-row style="max-height: 84vh!important; overflow-y: auto; overflow-x : hidden; padding: 5px!important;">-->
+  <div>
+    <div nz-row nzGutter="10" style="margin-bottom: 5px;" *ngIf="1 == 0">
+      <div nz-col nzSpan="10">
+        <label nz-checkbox [(ngModel)]="checkedSuDungLoai"><strong>1 - Hóa đơn điện tử theo Nghị
+            định 123/2020/NĐ-CP</strong></label>
+      </div>
+    </div>
+    <div class="" style="margin: 7px 7px 0px 7px!important;" *ngIf="(lapTuHoaDonDienTuId == '' && isTBaoHuyGiaiTrinhKhacCuaNNT != true && !isXemChiTiet) || isTBaoHuyGiaiTrinhKhacCuaNNT == true">
+      <form nz-form [formGroup]="thamSoForm" *ngIf="thamSoForm != null && thamSoForm != undefined">
+        <nz-form-item style="display: flex; align-items: center;" *ngIf="isTBaoHuyGiaiTrinhKhacCuaNNT != true">
+          <nz-form-label style="margin-top:8px!important" [nzNoColon]="true" [nzSm]="2" [nzXs]="24">Hình thức hóa đơn</nz-form-label>
+          <nz-form-control style="margin-left:-15px" [nzSm]="16" [nzXs]="24" [ngClass]="{'notOpacityRadio': 1 == 1}">
+            <nz-radio-group (ngModelChange)="changeHinhThucHoaDon($event)"  class="switchSelect" [nzButtonStyle]="'solid'" nzSize="small" formControlName="hinhThucHoaDon" [nzDisabled]="checkedSuDungLoai === false" style="width: fit-content!important; display: flex!important; align-items: center!important;">
+              <span *ngIf="checkedSuDungLoai">
+                <label nz-radio-button nzValue="1" data-value="1" *ngIf="hinhThucHoaDonDangSuDungs.indexOf(1) > -1" class="orangeButton" [nzDisabled]="isNgungSuDung(1)">Có mã của CQT</label>
+                <label nz-radio-button nzValue="0" data-value="0" *ngIf="hinhThucHoaDonDangSuDungs.indexOf(2) > -1" class="xanhButton switchSelectHover" [nzDisabled]="isNgungSuDung(2)">Không có mã của CQT</label>
+                <label nz-radio-button nzValue="2" data-value="2" *ngIf="hinhThucHoaDonDangSuDungs.indexOf(9) > -1" class="vangkheButton switchSelectHover" [nzDisabled]="isNgungSuDung(9)" >Có mã từ máy tính tiền</label>
+              </span>
+              <span *ngIf="!checkedSuDungLoai">
+                <label nz-radio-button nzValue="1" data-value="1" *ngIf="hinhThucHoaDonDangSuDungs.indexOf(1) > -1" class="orangeButton-disabled" nzDisabled>Có mã của CQT</label>
+                <label nz-radio-button nzValue="0" data-value="0" *ngIf="hinhThucHoaDonDangSuDungs.indexOf(2) > -1" class="blueButton-disabled switchSelectHover" nzDisabled>Không có mã của CQT</label>
+                <label nz-radio-button nzValue="2" data-value="2" *ngIf="hinhThucHoaDonDangSuDungs.indexOf(9) > -1" class="yellowButton-disabled switchSelectHover" nzDisabled>Có mã từ máy tính tiền</label>
+            </span>
+            </nz-radio-group>
+          </nz-form-control>
+        </nz-form-item>
+        <div nz-row nzGutter="6" style="margin-bottom: 10px;"
+          *ngIf="isTBaoHuyGiaiTrinhKhacCuaNNT == false">
+          <div nz-col nzSpan="4">
+            <div>Kỳ</div>
+            <nz-select style="width: 100%;" nzSize="small" nzShowSearch nzPlaceHolder="Chọn kỳ"
+              [nzDisabled]="checkedSuDungLoai === false" [(ngModel)]="displayDataTemp.Ky"
+              [ngModelOptions]="{standalone: true}" (ngModelChange)="changeKy($event)">
+              <nz-option *ngFor="let item of kys" [nzLabel]="item.value" [nzValue]="item.key"></nz-option>
+            </nz-select>
+          </div>
+
+          <div nz-col nzSpan="5">
+            <div nz-row nzGutter="6">
+              <div nz-col nzSpan="12">
+                <div>Từ ngày</div>
+                <input style="width: 100%;" nzSize="small" type="date" max="2999-12-31" nz-input
+                  [disabled]="checkedSuDungLoai === false" [readonly]="checkedSuDungLoai === false"
+                  [(ngModel)]="displayDataTemp.fromDate" [ngModelOptions]="{standalone: true}" (blur)="blurDate()" />
+
+              </div>
+
+              <div nz-col nzSpan="12">
+                <div>Đến ngày</div>
+                <input style="width: 100%;" nzSize="small" type="date" max="2999-12-31" nz-input
+                  [disabled]="checkedSuDungLoai === false" [readonly]="checkedSuDungLoai === false"
+                  [(ngModel)]="displayDataTemp.toDate" [ngModelOptions]="{standalone: true}" (blur)="blurDate()" />
+              </div>
+            </div>
+          </div>
+          <div nz-col nzSpan="8">
+            <div>Tìm kiếm theo</div>
+            <nz-form-item>
+              <nz-form-control [nzErrorTip]="errorTimKiemTheo">
+                <nz-input-group style="width: 100%;" nzSize="small" [nzPrefix]="prefixTemplateUser"
+                  class="input-group-label">
+                  <input type="text" nz-input [placeholder]="placeHolderTimKiemTheo()" nz-tooltip
+                    [nzTooltipTitle]="placeHolderTimKiemTheo()" formControlName="timKiemTheo"
+                    (ngModelChange)="changeTimKiemTheo()" nzTooltipPlacement="bottomRight" />
+                </nz-input-group>
+
+                <ng-template #errorTimKiemTheo let-control>
+                  <ng-container *ngIf="control.hasError('required')">
+                    <div class="tooltip-error">&lt;Tìm kiếm theo&gt; không được để trống.</div>
+                  </ng-container>
+                </ng-template>
+
+                <ng-template #prefixTemplateUser>
+                  <i nz-icon nzType="setting" nzTheme="outline" nz-dropdown [nzDropdownMenu]="menuPlusMutiple"
+                    [nzClickHide]="false"></i>
+                  <nz-dropdown-menu #menuPlusMutiple="nzDropdownMenu">
+                    <ul nz-menu>
+                      <li nz-menu-item *ngFor="let item of timKiemTheos">
+                        <label nz-checkbox [(ngModel)]="item.checked"
+                          [ngModelOptions]="{standalone: true}">{{item.name}}</label>
+                      </li>
+                    </ul>
+                  </nz-dropdown-menu>
+                </ng-template>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col nzSpan="3">
+            <div>Hình thức thông báo sai sót</div>
+            <nz-form-item>
+              <nz-form-control [nzErrorTip]="errorLoaiSaiSot">
+                <nz-select nzSize="small" nzPlaceHolder="Chọn Hình thức thông báo sai sót" formControlName="loaiSaiSot"
+                  [nzDisabled]="checkedSuDungLoai === false">
+                  <nz-option *ngFor="let item of listLoaiSaiSot" [nzLabel]="item.text" [nzValue]="item.value">
+                  </nz-option>
+                </nz-select>
+
+                <ng-template #errorLoaiSaiSot let-control>
+                  <ng-container *ngIf="control.hasError('required')">
+                    <div class="tooltip-error">&lt;Hình thức thông báo sai sót&gt; không được để
+                      trống.</div>
+                  </ng-container>
+                </ng-template>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col nzSpan="4">
+            <div>&nbsp;</div>
+            <button nz-button nzType="default" [disabled]="checkedSuDungLoai === false"
+              [ngClass]="{'disabled-button-state': checkedSuDungLoai === false, 'blueButton': checkedSuDungLoai}"
+              nzSize="small" style="padding: 0px 13px!important;" (click)="layDuLieu()"><i nz-icon nzType="sync"
+                nzTheme="outline"></i>&nbsp;Lấy dữ liệu</button>
+          </div>
+        </div>
+        <div nz-row *ngIf="isTBaoHuyGiaiTrinhKhacCuaNNT == true">
+          <div nz-col nzSpan="5" style="display: flex; align-items: center">
+            <div nz-col nzSpan="10" style="margin-top:-10px">
+              <div>Loại áp dụng hóa đơn</div>
+            </div>
+            <div nz-col nzSpan="14" id="loaiApDung">
+              <nz-form-control>
+                <nz-radio-group (ngModelChange)="changeLoaiApDungHoaDon($event)" class="switchSelect" [nzButtonStyle]="'solid'" nzSize="small" formControlName="loaiApDungHoaDonKhacHienThi" [nzDisabled]="isXemChiTiet === true" style="width: fit-content!important; display: flex!important; align-items: center!important;">
+                  <span *ngIf="!isXemChiTiet">
+                    <label nz-radio-button  [nzValue]="1" data-value="1" class="loaiApDungHoaDon xanhButton" nz-tooltip nzTooltipTitle="Hóa đơn điện tử theo Nghị định 123/2020/NĐ-CP">1</label>
+                    <label nz-radio-button  [nzValue]="2" data-value="2" class="loaiApDungHoaDon xanhButton switchSelectHover" nz-tooltip nzTooltipTitle="Hóa đơn điện tử có mã xác thực của cơ quan thuế theo Quyết định số 1209/QĐ-BTC ngày 23 tháng 6 năm 2015 và Quyết định số 2660/QĐ-BTC ngày 14 tháng 12 năm 2016 của Bộ Tài chính (Hóa đơn có mã xác thực của CQT theo Nghị định số 51/2010/NĐ-CP và Nghị định số 04/2014/NĐ-CP)">2</label>
+                    <label nz-radio-button  [nzValue]="3" data-value="3" class="loaiApDungHoaDon xanhButton switchSelectHover" nz-tooltip nzTooltipTitle="Các loại hóa đơn theo Nghị định số 51/2010/NĐ-CP và Nghị định số 04/2014/NĐ-CP (Trừ hóa đơn điện tử có mã xác thực của cơ quan thuế theo Quyết định số 1209/QĐ-BTC và Quyết định số 2660/QĐ-BTC)">3</label>
+                    <label nz-radio-button  [nzValue]="4" data-value="4" class="loaiApDungHoaDon xanhButton switchSelectHover" nz-tooltip nzTooltipTitle="Hóa đơn đặt in theo Nghị định 123/2020/NĐ-CP">4</label>
+                  </span>
+                  <span *ngIf="isXemChiTiet">
+                    <label nz-radio-button [nzValue]="1" data-value="1" class="loaiApDungHoaDon xanhButton-disabled" nz-tooltip nzTooltipTitle="Hóa đơn điện tử theo Nghị định 123/2020/NĐ-CP">1</label>
+                    <label nz-radio-button [nzValue]="2" data-value="2" class="loaiApDungHoaDon xanhButton-disabled switchSelectHover" nz-tooltip nzTooltipTitle="Hóa đơn điện tử có mã xác thực của cơ quan thuế theo Quyết định số 1209/QĐ-BTC ngày 23 tháng 6 năm 2015 và Quyết định số 2660/QĐ-BTC ngày 14 tháng 12 năm 2016 của Bộ Tài chính (Hóa đơn có mã xác thực của CQT theo Nghị định số 51/2010/NĐ-CP và Nghị định số 04/2014/NĐ-CP)">2</label>
+                    <label nz-radio-button [nzValue]="3" data-value="3" class="loaiApDungHoaDon xanhButton-disabled switchSelectHover" nz-tooltip nzTooltipTitle="Các loại hóa đơn theo Nghị định số 51/2010/NĐ-CP và Nghị định số 04/2014/NĐ-CP (Trừ hóa đơn điện tử có mã xác thực của cơ quan thuế theo Quyết định số 1209/QĐ-BTC và Quyết định số 2660/QĐ-BTC)">3</label>
+                    <label nz-radio-button [nzValue]="4" data-value="4" class="loaiApDungHoaDon xanhButton-disabled switchSelectHover" nz-tooltip nzTooltipTitle="Hóa đơn đặt in theo Nghị định 123/2020/NĐ-CP">4</label>
+                  </span>
+                </nz-radio-group>
+              </nz-form-control>
+            </div>
+          </div>
+          <div nz-col nzSpan="11" style="display: flex; justify-content: flex-end; align-items: center;">
+            <div nz-col nzSpan="4" style="margin-top:-10px">
+              <div>Hình thức hóa đơn</div>
+            </div>
+            <div nz-col nzSpan="20">
+              <nz-form-control>
+                <nz-radio-group (ngModelChange)="changeHinhThucHoaDonKhac($event)"  class="switchSelect" [nzButtonStyle]="'solid'" nzSize="small" formControlName="hinhThucHoaDonKhacHienThi" [nzDisabled]="isXemChiTiet === true" style="width: fit-content!important; display: flex!important; align-items: center!important;">
+                  <span *ngIf="this.oldLoaiApDungHoaDonKhac == 1">
+                    <span *ngIf="isXemChiTiet != true">
+                      <label nz-radio-button [nzValue]="1" data-value="1" *ngIf="hinhThucHoaDonDangSuDungs.indexOf(1) > -1" class="hinhThucHoaDon orangeButton">Có mã của CQT</label>
+                      <label nz-radio-button [nzValue]="0" data-value="0" *ngIf="hinhThucHoaDonDangSuDungs.indexOf(2) > -1" class="hinhThucHoaDon xanhButton witchSelectHover">Không có mã của CQT</label>
+                      <label nz-radio-button [nzValue]="2" data-value="2" *ngIf="hinhThucHoaDonDangSuDungs.indexOf(9) > -1" class="hinhThucHoaDon vangkheButton switchSelectHover">Có mã từ máy tính tiền</label>
+                    </span>
+                    <span *ngIf="isXemChiTiet == true">
+                      <label nz-radio-button [nzValue]="1" data-value="1"  *ngIf="hinhThucHoaDonDangSuDungs.indexOf(1) > -1" class="hinhThucHoaDon orangeButton-disabled" nzDisabled>Có mã của CQT</label>
+                      <label nz-radio-button [nzValue]="0" data-value="0" *ngIf="hinhThucHoaDonDangSuDungs.indexOf(2) > -1" class="hinhThucHoaDon xanhButton-disabled switchSelectHover" nzDisabled>Không có mã của CQT</label>
+                      <label nz-radio-button [nzValue]="2" data-value="2" *ngIf="hinhThucHoaDonDangSuDungs.indexOf(9) > -1" class="hinhThucHoaDon vangKheButton-disabled switchSelectHover" nzDisabled>Có mã từ máy tính tiền</label>
+                    </span>
+                  </span>
+                  <span *ngIf="this.oldLoaiApDungHoaDonKhac == 2">
+                    <span *ngIf="!isXemChiTiet">
+                      <label nz-radio-button nzValue="E" data-value="E" class="hinhThucHoaDon xanhButton">Điện tử (E)</label>
+                    </span>
+                    <span *ngIf="isXemChiTiet">
+                      <label nz-radio-button nzValue="E" data-value="E" class="hinhThucHoaDon xanhButton-disabled">Điện tử (E)</label>
+                    </span>
+                  </span>
+                  <span *ngIf="this.oldLoaiApDungHoaDonKhac == 3">
+                    <span *ngIf="!isXemChiTiet">
+                      <label nz-radio-button nzValue="E" data-value="E" class="hinhThucHoaDon xanhButton">Điện tử (E)</label>
+                      <label nz-radio-button nzValue="T" data-value="T" class="hinhThucHoaDon xanhButton switchSelectHover">Tự in (T)</label>
+                      <label nz-radio-button nzValue="P_TC" data-value="P_TC" class="hinhThucHoaDon xanhButton switchSelectHover">Tổ chức đặt in (P)</label>
+                      <label nz-radio-button nzValue="P_CT" data-value="P_CT" class="hinhThucHoaDon xanhButton switchSelectHover">Cục thuế đặt in (P)</label>
+                    </span>
+                    <span *ngIf="isXemChiTiet">
+                      <label nz-radio-button nzValue="E" data-value="E" class="hinhThucHoaDon xanhButton-disabled">Điện tử (E)</label>
+                      <label nz-radio-button nzValue="T" data-value="T" class="hinhThucHoaDon xanhButton-disabled switchSelectHover">Tự in (T)</label>
+                      <label nz-radio-button nzValue="P_TC" data-value="P_TC" class="hinhThucHoaDon xanhButton-disabled switchSelectHover">Tổ chức đặt in (P)</label>
+                      <label nz-radio-button nzValue="P_CT" data-value="P_CT" class="hinhThucHoaDon xanhButton-disabled switchSelectHover">Cục thuế đặt in (P)</label>
+                    </span>
+                  </span>
+                  <span *ngIf="this.oldLoaiApDungHoaDonKhac == 4">
+                    <span *ngIf="!isXemChiTiet">
+                      <label nz-radio-button nzValue="P_CT" data-value="P_CT" class="hinhThucHoaDon xanhButton">Cục thuế đặt in (P)</label>
+                    </span>
+                    <span *ngIf="isXemChiTiet">
+                      <label nz-radio-button nzValue="P_CT" data-value="P_CT" class="hinhThucHoaDon xanhButton-disabled">Cục thuế đặt in (P)</label>
+                    </span>
+                  </span>
+                </nz-radio-group>
+              </nz-form-control>
+            </div>
+          </div>
+          <!-- <div nz-col nzSpan="8"></div> -->
+        </div>
+
+        <div
+          *ngIf="(noiDungDongDaTichChon != '' || viewConditionList.length > 0) && isTBaoHuyGiaiTrinhKhacCuaNNT == false"
+          style='margin-top: 3px!important;margin-bottom: -5px!important;margin-left: 7px!important;'>
+          <span [innerHTML]="noiDungDongDaTichChon"></span>
+          <ul class="view-filter-list">
+            <li *ngIf='viewConditionList.length > 0' style="margin-right: 0px!important;" class="blueText">
+              &nbsp;Lọc:&nbsp;</li>
+            <li *ngFor="let tl of viewConditionList; let i = index">
+              <div>
+                <span class="label">{{tl.label}}</span>
+                <span class="value">{{tl.value}}</span>
+                <i (click)="removeFilter(tl)" class="remove" nz-icon nzType="close" nzTheme="outline"></i>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div *ngIf="noiDungDongDaTichChon == '' && viewConditionList.length == 0 && isTBaoHuyGiaiTrinhKhacCuaNNT == false" style='margin-bottom: -5px!important'>
+          &nbsp;
+        </div>
+      </form>
+    </div>
+
+    <div *ngIf="isTBaoHuyGiaiTrinhKhacCuaNNT != true">
+      <form nz-form [formGroup]="mainForm" *ngIf="mainForm" class="container">
+        <nz-table [nzNoResult]="null" style="margin-top: 5px;" nzSize="small" #fixedTable
+          [nzData]="this.mainForm.get('hoaDonSaiSots').value"
+          [nzScroll]="{ x: (1900 - 40).toString() + 'px', y: '55vh' }" [nzShowPagination]="false"
+          [nzFrontPagination]="false" [nzTotal]="totalRecords" [nzPageIndex]="1" [(nzPageSize)]="totalRecords"
+          nzBordered [nzLoading]="loading">
+          <thead (nzSortChange)="sort($event)" nzSingleSort>
+            <tr>
+              <th nzAlign="center" nzWidth="40px">
+                <label nz-checkbox formControlName="tichChonTatCa" (ngModelChange)="checkTichChonTatCa($event)"
+                  [nzDisabled]="checkedSuDungLoai === false || isXemChiTiet"></label>
+              </th>
+              <th nzAlign="center" nzWidth="50px">
+                STT
+              </th>
+              <th nzAlign="center" nzWidth="80px">
+                Số lần<br>gửi CQT
+              </th>
+              <th nzAlign="center" nzWidth="240px" nzShowSort nzSortKey="ChungTuLienQuan" nzCustomFilter>
+                Chứng từ/hóa đơn<br>liên quan
+                <i nz-th-extra class="ant-table-filter-icon-ext" nz-icon nz-dropdown #ddChungTu="nzDropdown"
+                  nzType="filter" [nzDropdownMenu]="menuChungTu" [(nzVisible)]="mapOfStatusFilteredCols['chungTu']"
+                  [class.ant-table-filter-open-ext]="mapOfStatusFilteredCols['chungTu_marked']" nzTrigger="click"
+                  (nzVisibleChange)="onVisibleFilterCol($event, 'chungTu', filterColChungTu)" nzPlacement="bottomRight"
+                  [nzClickHide]="false" nzTableFilter></i>
+                <nz-dropdown-menu #menuChungTu="nzDropdownMenu">
+                  <app-filter-column #filterColChungTu [title]="tenFilterChungTuHoaDonLienQuan" [dataType]="1"
+                    (submitFilterCol)="onFilterCol($event)">
+                  </app-filter-column>
+                </nz-dropdown-menu>
+              </th>
+              <th nzAlign="center" nzWidth="250px">
+                Trạng thái hóa đơn
+              </th>
+              <th nzAlign="center" nzWidth="260px" nzShowSort nzSortKey="MaCQTCap" nzCustomFilter>Mã CQT
+                cấp
+                <i nz-th-extra class="ant-table-filter-icon-ext" nz-icon nz-dropdown #ddMaCQTCap="nzDropdown"
+                  nzType="filter" [nzDropdownMenu]="menuMaCQTCap" [(nzVisible)]="mapOfStatusFilteredCols['maCQTCap']"
+                  [class.ant-table-filter-open-ext]="mapOfStatusFilteredCols['maCQTCap_marked']" nzTrigger="click"
+                  (nzVisibleChange)="onVisibleFilterCol($event, 'maCQTCap', filterColMaCQTCap)"
+                  nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter></i>
+                <nz-dropdown-menu #menuMaCQTCap="nzDropdownMenu">
+                  <app-filter-column #filterColMaCQTCap [title]="tenFilterMaCQTCap" [dataType]="1"
+                    (submitFilterCol)="onFilterCol($event)">
+                  </app-filter-column>
+                </nz-dropdown-menu>
+              </th>
+              <th nzAlign="center" nzWidth="160px" nzShowSort nzSortKey="MauHoaDon">Ký hiệu mẫu hóa
+                đơn<br>và ký hiệu hóa đơn</th>
+              <th nzAlign="center" nzWidth="130px" nzShowSort nzSortKey="SoHoaDon" nzCustomFilter>Số hóa
+                đơn<br>điện tử
+                <i nz-th-extra class="ant-table-filter-icon-ext" nz-icon nz-dropdown #ddSoHoaDon="nzDropdown"
+                  nzType="filter" [nzDropdownMenu]="menuSoHoaDon" [(nzVisible)]="mapOfStatusFilteredCols['soHoaDon']"
+                  [class.ant-table-filter-open-ext]="mapOfStatusFilteredCols['soHoaDon_marked']" nzTrigger="click"
+                  (nzVisibleChange)="onVisibleFilterCol($event, 'soHoaDon', filterColSoHoaDon)"
+                  nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter></i>
+                <nz-dropdown-menu #menuSoHoaDon="nzDropdownMenu">
+                  <app-filter-column #filterColSoHoaDon [title]="tenFilterSoHoaDon" [dataType]="1"
+                    (submitFilterCol)="onFilterCol($event)">
+                  </app-filter-column>
+                </nz-dropdown-menu>
+              </th>
+              <th nzAlign="center" nzWidth="110px" nzShowSort nzSortKey="NgayLapHoaDon">Ngày lập<br>hóa
+                đơn</th>
+              <th nzAlign="center" nzWidth="130px" nzShowSort nzSortKey="MaCQTCap">
+                Loại áp dụng<br>hóa đơn điện tử
+              </th>
+              <th nzAlign="center" nzWidth="40px" (nzCheckedChange)="checkTichChonTatCaPhanLoaiHD($event)"
+                nzShowCheckbox [(nzChecked)]="tatCaPhanLoaiHDChecked" [nzDisabled]="isXemChiTiet" nz-tooltip
+                nzTooltipTitle="Bỏ tích để tùy chỉnh <Hủy/Điều chỉnh/Thay thế/Giải trình>" *ngIf="1==0">
+              </th>
+              <th nzAlign="center" nzWidth="120px">Hủy/Điều chỉnh/<br>Thay thế/Giải trình</th>
+              <th nzAlign="center" nzWidth="250px">Lý do</th>
+            </tr>
+          </thead>
+          <tbody formArrayName="hoaDonSaiSots">
+            <tr *ngFor="let data of mainForm.get('hoaDonSaiSots')['controls']; let i = index" [formGroupName]="i">
+              <td nzAlign="center" [class.highLightRow]="data.value.tichChon">
+                <nz-form-control [nzSm]="24" [nzXs]="24">
+                  <label nz-checkbox formControlName="tichChon"
+                    [nzDisabled]="checkedSuDungLoai === false || data.value.errorNgayLapHoaDon || isXemChiTiet"
+                    (ngModelChange)="tichChonDong()" nz-tooltip
+                    [nzTooltipTitle]="data.value.errorNgayLapHoaDon? invalidMessageNgayLapHoaDon: ''"></label>
+                </nz-form-control>
+              </td>
+              <td [class.highLightRow]="data.value.tichChon">
+                {{i+1}}
+              </td>
+              <td [class.highLightRow]="data.value.tichChon">
+                {{data.value.soLanGuiCQT}}
+              </td>
+              <td [class.highLightRow]="data.value.tichChon">
+                {{getChungTuLienQuan(data.value.chungTuLienQuan)}}
+              </td>
+              <td [class.highLightRow]="data.value.tichChon">
+                <span>
+                  <ng-container *ngIf="data.value.laHoaDonNgoaiHeThong != true">
+                    <span *ngIf="data.value.trangThaiHoaDon == 1" class="lightBlueRoundedShape">Hóa
+                      đơn gốc
+                      <!-- <span *ngIf="data.value.daBiDieuChinh == true" style="color: #ed7d31;"> | Bị điều chỉnh</span> -->
+                    </span>
+                    <span *ngIf="data.value.trangThaiHoaDon == 2" class="grayRoundedShape">Hóa đơn
+                      hủy</span>
+                    <span *ngIf="data.value.trangThaiHoaDon == 3" class="hoaDonThayTheRoundedShape">Hóa đơn thay thế</span>
+                    <span *ngIf="data.value.trangThaiHoaDon == 4 && data.value.loaiDieuChinh == 1">
+                      <span class="hoaDonDieuChinhRoundedShape" title="Hóa đơn điều chỉnh tăng">
+                        Hóa đơn điều chỉnh
+                        <span class="circleHoaDonDieuChinhTang"><i nz-icon nzType="arrow-up" nzTheme="outline"></i>
+                        </span>
+                      </span>
+                    </span>
+
+                    <span *ngIf="data.value.trangThaiHoaDon == 4 && data.value.loaiDieuChinh == 2">
+                      <span class="hoaDonDieuChinhRoundedShape" title="Hóa đơn điều chỉnh giảm">
+                        Hóa đơn điều chỉnh
+                        <span class="circleHoaDonDieuChinhGiam">
+                          <i nz-icon nzType="arrow-down" nzTheme="outline"></i>
+                        </span>
+                      </span>
+                    </span>
+                    <span *ngIf="data.value.trangThaiHoaDon == 4 && data.value.loaiDieuChinh == 3">
+                      <span class="hoaDonDieuChinhRoundedShape" title="Hóa đơn điều chỉnh thông tin">
+                        Hóa đơn điều chỉnh
+                        <span class="circleHoaDonDieuChinhThongTin">
+                          <i nz-icon nzType="info" nzTheme="outline"></i>
+                        </span>
+                      </span>
+                    </span>
+                  </ng-container>
+                  <ng-container *ngIf="data.value.laHoaDonNgoaiHeThong == true">
+                    <span *ngIf="data.value.trangThaiHoaDon == 1" class="hoaDonNgoaiHeThongRoundedShape">Hóa đơn
+                      gốc</span>
+                    <span *ngIf="data.value.trangThaiHoaDon == 3" class="hoaDonNgoaiHeThongRoundedShape">Thay thế</span>
+                    <span *ngIf="data.value.trangThaiHoaDon == 4 && data.value.loaiDieuChinh == 1">
+                      <span class="hoaDonDieuChinhRoundedShape" title="Hóa đơn điều chỉnh tăng">
+                        Điều chỉnh
+                        <span class="circleHoaDonDieuChinhTang"><i nz-icon nzType="arrow-up" nzTheme="outline"></i>
+                        </span>
+                      </span>
+                    </span>
+
+                    <span *ngIf="data.value.trangThaiHoaDon == 4 && data.value.loaiDieuChinh == 2">
+                      <span class="hoaDonDieuChinhRoundedShape" title="Hóa đơn điều chỉnh giảm">
+                        Điều chỉnh
+                        <span class="circleHoaDonDieuChinhGiam">
+                          <i nz-icon nzType="arrow-down" nzTheme="outline"></i>
+                        </span>
+                      </span>
+                    </span>
+                  </ng-container>
+                  <span class="colorDienGiai" [innerHTML]="data.value.dienGiaiTrangThai"></span>
+                </span>
+              </td>
+              <td [class.highLightRow]="data.value.tichChon">
+                {{data.value.maCQTCap}}
+              </td>
+              <td [class.highLightRow]="data.value.tichChon">
+                {{data.value.mauVaKyHieuHoaDon}}
+                <!--
+                      <nz-form-item>
+                        <nz-form-control [nzSm]="24" [nzXs]="24">
+                          <input nz-input nzSize="small" formControlName="mauVaKyHieuHoaDon" maxlength = "19" readonly [disabled] = "checkedSuDungLoai === false || data.value.errorNgayLapHoaDon">
+                        </nz-form-control>
+                      </nz-form-item>
+                      -->
+              </td>
+              <td [class.highLightRow]="data.value.tichChon">
+                {{data.value.soHoaDon}}
+                <!--
+                      <nz-form-item>
+                        <nz-form-control [nzSm]="24" [nzXs]="24">
+                          <input nz-input nzSize="small" formControlName="soHoaDon" maxlength = "8" readonly [disabled] = "checkedSuDungLoai === false || data.value.errorNgayLapHoaDon">
+                        </nz-form-control>
+                      </nz-form-item>
+                      -->
+              </td>
+              <td [class.highLightRow]="data.value.tichChon" nzAlign="center">
+                <span class="centerInputText" [ngClass]="{'inValidNgayLapHoaDon': data.value.errorNgayLapHoaDon}"
+                  nz-tooltip [nzTooltipTitle]="data.value.errorNgayLapHoaDon? invalidMessageNgayLapHoaDon: ''">
+                  {{data.value.ngayLapHoaDonText}}
+                </span>
+                <!--
+                      <nz-form-item>
+                        <nz-form-control [nzSm]="24" [nzXs]="24">
+                          <input nz-input nzSize="small" formControlName="ngayLapHoaDonText" maxlength = "12" class = "centerInputText"
+                          [ngClass] = "{'inValidNgayLapHoaDon': data.value.errorNgayLapHoaDon}"
+                          nz-tooltip [nzTooltipTitle] = "data.value.errorNgayLapHoaDon? invalidMessageNgayLapHoaDon: ''" readonly [disabled] = "checkedSuDungLoai === false">
+                        </nz-form-control>
+                      </nz-form-item>
+                      -->
+              </td>
+              <td title="{{data.value.tenLoaiApDungHDDT}}" [class.highLightRow]="data.value.tichChon" nzAlign="center">
+                {{data.value.loaiApDungHoaDon}}
+              </td>
+              <td nzAlign="center" [class.highLightRow]="data.value.tichChon" *ngIf="1==0">
+                <label nz-checkbox formControlName="tichChonPhanLoaiHD" nz-tooltip
+                  nzTooltipTitle="Bỏ tích để tùy chỉnh <Hủy/Điều chỉnh/Thay thế/Giải trình>" [nzDisabled]="isXemChiTiet"
+                  (ngModelChange)="changeTichChonPhanLoaiHD($event, i)"></label>
+              </td>
+              <td [class.highLightRow]="data.value.tichChon">
+                <nz-form-item>
+                  <nz-form-control [nzSm]="24" [nzXs]="24">
+                    <!--
+                          <nz-select nzSize="small" formControlName="phanLoaiHDSaiSot" [nzDisabled] = "checkedSuDungLoai === false || data.value.errorNgayLapHoaDon"
+                            *ngIf = "data.value.mauHoaDon === '' && data.value.kyHieuHoaDon === '' && data.value.soHoaDon === ''">
+                            <nz-option nzCustomContent nzLabel="Điều chỉnh" [nzValue]="2">
+                              <div>2-Điều chỉnh</div>
+                            </nz-option>
+                            <nz-option nzCustomContent nzLabel="Giải trình" [nzValue]="4">
+                              <div>4-Giải trình</div>
+                            </nz-option>
+                          </nz-select>
+
+                          <nz-select nzSize="small" formControlName="phanLoaiHDSaiSot" [nzDisabled] = "checkedSuDungLoai === false || data.value.errorNgayLapHoaDon"
+                            *ngIf = "data.value.mauHoaDon !== '' || data.value.kyHieuHoaDon !== '' || data.value.soHoaDon !== ''">
+                            <nz-option nzCustomContent nzLabel="Hủy" [nzValue]="1">
+                              <div>1-Hủy</div>
+                            </nz-option>
+                            <nz-option nzCustomContent nzLabel="Điều chỉnh" [nzValue]="2">
+                              <div>2-Điều chỉnh</div>
+                            </nz-option>
+                            <nz-option nzCustomContent nzLabel="Thay thế" [nzValue]="3">
+                              <div>3-Thay thế</div>
+                            </nz-option>
+                            <nz-option nzCustomContent nzLabel="Giải trình" [nzValue]="4">
+                              <div>4-Giải trình</div>
+                            </nz-option>
+                          </nz-select>
+                          -->
+
+                    <span *ngIf="data.value.phanLoaiHDSaiSot == 1">Hủy</span>
+                    <span *ngIf="data.value.phanLoaiHDSaiSot == 2">Điều chỉnh</span>
+                    <span *ngIf="data.value.phanLoaiHDSaiSot == 3">Thay thế</span>
+                    <span *ngIf="data.value.phanLoaiHDSaiSot == 4">Giải trình</span>
+
+                    <!--
+                          <nz-select nzSize="small" formControlName="phanLoaiHDSaiSot" [nzDisabled] = "checkedSuDungLoai === false || data.value.errorNgayLapHoaDon || data.value.tichChonPhanLoaiHD || isXemChiTiet">
+                            <nz-option nzCustomContent nzLabel="Hủy" [nzValue]="1">
+                              <div>1-Hủy</div>
+                            </nz-option>
+                            <nz-option nzCustomContent nzLabel="Điều chỉnh" [nzValue]="2">
+                              <div>2-Điều chỉnh</div>
+                            </nz-option>
+                            <nz-option nzCustomContent nzLabel="Thay thế" [nzValue]="3">
+                              <div>3-Thay thế</div>
+                            </nz-option>
+                            <nz-option nzCustomContent nzLabel="Giải trình" [nzValue]="4">
+                              <div>4-Giải trình</div>
+                            </nz-option>
+                          </nz-select>
+                          -->
+                  </nz-form-control>
+                </nz-form-item>
+              </td>
+              <td [class.highLightRow]="data.value.tichChon">
+                <nz-form-item>
+                  <nz-form-control [nzSm]="24" [nzXs]="24" [nzErrorTip]="errorLyDo">
+                    <textarea nz-input placeholder="Không để trống, không quá 255 ký tự" nzSize="small" type="text" formControlName="lyDo" [nzAutosize]
+                      [disabled]="checkedSuDungLoai === false || data.value.errorNgayLapHoaDon || isXemChiTiet"
+                      [readonly]="checkedSuDungLoai === false || data.value.errorNgayLapHoaDon || isXemChiTiet"
+                      [title]="data.value.lyDo == null?'': data.value.lyDo"></textarea>
+
+                    <ng-template #errorLyDo let-control>
+                      <ng-container *ngIf="control.hasError('required')">
+                        <div class="tooltip-error">&lt;Lý do&gt; không được để trống.</div>
+                      </ng-container>
+                      <ng-container *ngIf="control.hasError('invalid')">
+                        <div class="tooltip-error">&lt;Lý do&gt; không được quá 255 ký tự.</div>
+                      </ng-container>
+                    </ng-template>
+                  </nz-form-control>
+                </nz-form-item>
+              </td>
+            </tr>
+          </tbody>
+          <tfoot *ngIf="totalRecords > 0">
+            <tr class="total-footer">
+              <td colspan="2">Số dòng = {{totalRecords}}</td>
+              <td colspan="11"></td>
+            </tr>
+          </tfoot>
+          <tfoot *ngIf="totalRecords == 0">
+            <tr class="total-footer">
+              <td colspan="13">Không có dữ liệu hiển thị.</td>
+            </tr>
+          </tfoot>
+        </nz-table>
+      </form>
+    </div>
+
+    <div *ngIf="isTBaoHuyGiaiTrinhKhacCuaNNT == true">
+      <form nz-form [formGroup]="mainFormKhac" *ngIf="mainFormKhac" class="container">
+        <div nz-row *ngIf="this.oldLoaiApDungHoaDonKhac == 1">
+          <nz-table [nzNoResult]="null" style="margin-top: 5px;" nzSize="small" #fixedTable
+            [nzData]="this.mainFormKhac.get('hoaDonSaiSots').value"
+            [nzScroll]="{ x:'1390px', y: '55vh' }" [nzShowPagination]="false"
+            [nzFrontPagination]="false" [nzTotal]="totalRecords" [nzPageIndex]="1" [(nzPageSize)]="totalRecords"
+            nzBordered [nzLoading]="loading">
+            <thead (nzSortChange)="sort($event)" nzSingleSort>
+              <tr>
+                <th [nzWidth]="'50px'" nzAlign="center" nzLeft="0px">
+                  <button nz-button nzType="default" class="circleButton" type="button" nzSize="small" (click)="addRowKhac()"
+                    [disabled]="isXemChiTiet"><i nz-icon nzType="plus" nzTheme="outline"></i></button>
+                </th>
+                <th nzAlign="center" nzWidth="50px">
+                  STT
+                </th>
+                <th nzAlign="center" nzWidth="280px" nzShowSort nzSortKey="MaCQTCap" nzCustomFilter>Mã CQT
+                  cấp
+                  <i nz-th-extra class="ant-table-filter-icon-ext" nz-icon nz-dropdown #ddMaCQTCap="nzDropdown"
+                    nzType="filter" [nzDropdownMenu]="menuMaCQTCap" [(nzVisible)]="mapOfStatusFilteredCols['maCQTCap']"
+                    [class.ant-table-filter-open-ext]="mapOfStatusFilteredCols['maCQTCap_marked']" nzTrigger="click"
+                    (nzVisibleChange)="onVisibleFilterCol($event, 'maCQTCap', filterColMaCQTCap)"
+                    nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter></i>
+                  <nz-dropdown-menu #menuMaCQTCap="nzDropdownMenu">
+                    <app-filter-column #filterColMaCQTCap [title]="tenFilterMaCQTCap" [dataType]="1"
+                      (submitFilterCol)="onFilterCol($event)">
+                    </app-filter-column>
+                  </nz-dropdown-menu>
+                </th>
+                <th nzAlign="center" nzWidth="260px" nzShowSort nzSortKey="MauHoaDon">Ký hiệu mẫu hóa
+                  đơn<br>và ký hiệu hóa đơn</th>
+                <th nzAlign="center" nzWidth="100px" nzShowSort nzSortKey="SoHoaDon" nzCustomFilter>Số hóa
+                  đơn<br>điện tử
+                  <i nz-th-extra class="ant-table-filter-icon-ext" nz-icon nz-dropdown #ddSoHoaDon="nzDropdown"
+                    nzType="filter" [nzDropdownMenu]="menuSoHoaDon" [(nzVisible)]="mapOfStatusFilteredCols['soHoaDon']"
+                    [class.ant-table-filter-open-ext]="mapOfStatusFilteredCols['soHoaDon_marked']" nzTrigger="click"
+                    (nzVisibleChange)="onVisibleFilterCol($event, 'soHoaDon', filterColSoHoaDon)"
+                    nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter></i>
+                  <nz-dropdown-menu #menuSoHoaDon="nzDropdownMenu">
+                    <app-filter-column #filterColSoHoaDon [title]="tenFilterSoHoaDon" [dataType]="1"
+                      (submitFilterCol)="onFilterCol($event)">
+                    </app-filter-column>
+                  </nz-dropdown-menu>
+                </th>
+                <th nzAlign="center" nzWidth="120px" nzShowSort nzSortKey="NgayLapHoaDon">Ngày lập<br>hóa
+                  đơn
+                </th>
+                <th nzAlign="center" nzWidth="120px">Hủy/Điều chỉnh/<br>Thay thế/Giải trình</th>
+                <th nzAlign="center" nzWidth="400px">Lý do</th>
+              </tr>
+            </thead>
+            <tbody formArrayName="hoaDonSaiSots">
+              <tr *ngFor="let data of mainFormKhac.get('hoaDonSaiSots')['controls']; let i = index" [formGroupName]="i">
+                <td nzAlign="center" nzLeft="0px">
+                  <button nzSize="small" type="button" nz-button nzType="button" (click)="removeRowKhac(i)"
+                  [disabled]="isXemChiTiet" class="circleButtonRed"><i nz-icon
+                    nzType="minus" nzTheme="outline"></i></button>
+                </td>
+                <td nzAlign="center">
+                  {{i+1}}
+                </td>
+                <td nzAlign="center">
+                  <div *ngIf="!isXemChiTiet">
+                    <nz-form-item class="cus-form-item" *ngIf="this.oldHinhThucHoaDonKhac == '1'">
+                      <nz-form-control [nzSm]="24" [nzXs]="24">
+                        <input nz-input nzSize="small" formControlName="maCQTCap" #maCQTCap maxlength="34" tooltipInput [disabled]="thamSoForm.get('hinhThucHoaDonKhacHienThi').value != '1'" (ngModelChange)="blurDetail(i, 'maCQTCap')" (blur)="blurDetail(i, 'maCQTCap')" [placeholder]="thamSoForm.get('hinhThucHoaDonKhacHienThi').value != '1' ? '' : 'Không để trống, nhập 34 ký tự MCCQT'" />
+                        <!-- <ng-template #errorMaCQTCap let-control>
+                          <ng-container *ngIf="maCQTCap.errors && (maCQTCap.dirty || maCQTCap.touched)">
+                            <div class="custom-tooltip-error">&lt;Mã CQT cấp&gt; không được để trống.</div>
+                          </ng-container>
+                          <ng-container *ngIf="control.dirty && !control.hasError('invalid') && control.hasError('invalidLength')">
+                              <div class="custom-tooltip-error">Độ dài của &lt;Mã CQT cấp&gt; phải bằng 34 ký tự.</div>
+                          </ng-container>
+                        </ng-template> -->
+                        <div *ngIf="data.get('maCQTCap').hasError && data.get('maCQTCap').touched">
+                          <div class="custom-tooltip-error"  *ngIf="data.get('maCQTCap').hasError('invalid')">
+                            &lt;Mã CQT cấp&gt; không được để trống
+                          </div>
+                          <div class="custom-tooltip-error" *ngIf="!data.get('maCQTCap').hasError('invalid') && data.get('maCQTCap').hasError('invalidLength')">
+                            Độ dài của &lt;Mã CQT cấp&gt; phải bằng 34 ký tự.
+                          </div>
+                        </div>
+                      </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item class="cus-form-item" *ngIf="this.oldHinhThucHoaDonKhac =='2'">
+                      <nz-form-control [nzSm]="8" [nzXs]="24">
+                        <input nz-input nzSize="small" formControlName="maCQTFixed" disabled />
+                      </nz-form-control>
+                      <nz-form-control [nzSm]="1" [nzXs]="1">
+                          -
+                      </nz-form-control>
+                      <nz-form-control [nzSm]="15" [nzXs]="24">
+                        <input name="maCQTChuoiKyTuSo" nz-input nzSize="small" style="text-align: right!important" formControlName="maCQTChuoiKyTuSo" maxlength="11" tooltipInput (click)="clickChuoiKyTu(i, 'maCQTChuoiKyTuSo')" (focus)="focusKyTuSo(i)" (blur)="blurKyTuSo(i, $event)" (ngModelChange)="blurDetail(i, 'maCQTChuoiKyTuSo'); GetMaCQTCap(i);" placeholder="Nhập 11 ký tự số còn lại" dir="rtl"/>
+                        <div *ngIf="data.get('maCQTChuoiKyTuSo').hasError && data.get('maCQTChuoiKyTuSo').touched">
+                          <div class="custom-tooltip-error"  *ngIf="data.get('maCQTChuoiKyTuSo').hasError('invalid')">
+                            Không được để trống
+                          </div>
+                        </div>
+                      </nz-form-control>
+
+                    </nz-form-item>
+                  </div>
+                  <div *ngIf="isXemChiTiet">
+                    {{data.value.maCQTCap}}
+                  </div>
+                </td>
+                <td nzAlign="center">
+                  <!-- {{data.value.mauVaKyHieuHoaDon}} -->
+                  <div *ngIf="!isXemChiTiet">
+                    <nz-form-item>
+                      <nz-form-control [nzSm]="24" [nzXs]="24">
+                        <nz-select style="width: 20%;text-align: center;" [nzDropdownStyle]="searchCustomOverlayStyle"  nzPlaceHolder="Chọn ký hiệu mẫu số hóa đơn" [nzSize]="'small'" nzShowSearch formControlName="loaiHoaDon"
+                        (ngModelChange)="changeMauSoHoaDon(i, $event)" (blur)="blurDetail(i, 'mauHoaDon')">
+                          <nz-option nzCustomContent nzDisabled="true">
+                            <div nz-row>
+                                <div nz-col nzXs="8" nzSm="4" nzMd="4" nzLg="4" nzXl="4">
+                                    Mẫu số
+                                </div>
+                                <div nz-col nzXs="16" nzSm="20" nzMd="20" nzLg="20" nzXl="20">
+                                    Loại hóa đơn
+                                </div>
+                            </div>
+                          </nz-option>
+                          <nz-option nzCustomContent *ngFor="let item of loaiHoaDons"
+                              [nzLabel]="item.mhd" [nzValue]="item.key">
+                              <div nz-row>
+                                <div title="{{item?.mhd}}" nz-col nzXs="8" nzSm="4" nzMd="4"
+                                    nzLg="4" nzXl="4">
+                                    <div class="text-ellipsis">{{item?.mhd}}</div>
+                                </div>
+                                <div title="{{item?.value}}" nz-col nzXs="16" nzSm="20"
+                                    nzMd="20" nzLg="20" nzXl="20">
+                                    <div class="justify-content-wrap">{{item?.value}}</div>
+                                </div>
+                              </div>
+                            </nz-option>
+                          </nz-select>
+                          <div *ngIf="data.get('mauHoaDon').hasError && data.get('mauHoaDon').touched">
+                            <div class="custom-tooltip-error" *ngIf="data.get('mauHoaDon').hasError('invalid')">
+                              Không được để trống
+                            </div>
+                          </div>
+                      </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item style="margin-top: 3px;">
+                      <nz-form-control [nzSm]="1" [nzXs]="24" [ngClass]="{'space': true}">
+                      </nz-form-control>
+                      <nz-form-control [nzSm]="4" [nzXs]="24">
+                        <nz-select style="width: 100%;" [nzSize]="'small'" nzShowSearch formControlName="kyHieu1"
+                          (ngModelChange)="setKyHieuHoaDon(i)" nzDisabled>
+                          <nz-option nzCustomContent *ngFor="let item of kyHieu1s" [nzLabel]="item" [nzValue]="item">
+                            <span style="text-align: center!important;" *ngIf="item == 'C'" nz-tooltip nzTitle="Có mã của cơ quan thuế">{{item}}</span>
+                            <span style="text-align: center!important;" *ngIf="item == 'K'" nz-tooltip nzTitle="Không có mã của cơ quan thuế">{{item}}</span>
+                          </nz-option>
+                        </nz-select>
+                      </nz-form-control>
+                      <nz-form-control [nzSm]="1" [nzXs]="24" [ngClass]="{'space': true}">
+                      </nz-form-control>
+                      <nz-form-control [nzSm]="5" [nzXs]="24">
+                        <nz-select style="width: 100%;" [nzSize]="'small'" nzShowSearch formControlName="kyHieu23"
+                          (ngModelChange)="changeKyHieu23(i, $event);setKyHieuHoaDon(i)">
+                          <nz-option  nzCustomContent *ngFor="let item of kyHieu23s" [nzLabel]="item" [nzValue]="item">
+                            <span style="text-align:center!important">{{item}}</span>
+                          </nz-option>
+                        </nz-select>
+                      </nz-form-control>
+                      <nz-form-control [nzSm]="1" [nzXs]="24" [ngClass]="{'space': true}">
+                      </nz-form-control>
+                      <nz-form-control [nzSm]="5" [nzXs]="24">
+                        <nz-select style="width: 100%;" [nzSize]="'small'" nzShowSearch formControlName="kyHieu4"
+                          (ngModelChange)="setKyHieuHoaDon(i)" nzDisabled>
+                          <nz-option nzCustomContent *ngFor="let item of kyHieuThu4s" [nzLabel]="item.key" [nzValue]="item.key">
+                            <span nz-tooltip nzTitle="{{item.value}}">{{item.key}}</span>
+                          </nz-option>
+                        </nz-select>
+                      </nz-form-control>
+                      <nz-form-control [nzSm]="1" [nzXs]="24" [ngClass]="{'space': true}">
+                      </nz-form-control>
+                      <nz-form-control [nzSm]="6" [nzXs]="24">
+                        <nz-select style="width: 100%;" [nzSize]="'small'" nzShowSearch formControlName="kyHieu56"
+                          (ngModelChange)="setKyHieuHoaDon(i)">
+                          <nz-option *ngFor="let item of kyHieu56s" [nzLabel]="item" [nzValue]="item">
+                          </nz-option>
+                        </nz-select>
+                      </nz-form-control>
+                      <nz-form-control [nzSm]="1" [nzXs]="1" [ngClass]="{'space': true}">
+                      </nz-form-control>
+                    </nz-form-item>
+                  </div>
+                  <div *ngIf="isXemChiTiet">
+                    {{data.value.mauHoaDon}}<br/>{{data.value.kyHieuHoaDon}}
+                  </div>
+                </td>
+                <td nzAlign="center">
+                  <!-- {{data.value.soHoaDon}} -->
+                  <div *ngIf="!isXemChiTiet">
+                    <nz-form-item class="cus-form-item">
+                      <nz-form-control [nzSm]="24" [nzXs]="24">
+                        <input nz-input nzSize="small" name="soHoaDon" formControlName="soHoaDon" maxlength = "8" (blur)="blurDetail(i, 'soHoaDon')" (focus)="clickChuoiKyTu(i, 'soHoaDon')" (click)="clickChuoiKyTu(i, 'soHoaDon')" style="text-align: right!important;">
+                      </nz-form-control>
+                      <div *ngIf="data.get('soHoaDon').touched">
+                        <div  class="custom-tooltip-error" *ngIf="data.get('soHoaDon').hasError('required')">
+                          &lt;Số hóa đơn &gt; không được để trống
+                        </div>
+                      </div>
+                    </nz-form-item>
+                  </div>
+                  <div *ngIf="isXemChiTiet">
+                    {{data.value.soHoaDon}}
+                  </div>
+                </td>
+                <td nzAlign="center">
+                  <!-- <span class="centerInputText" [ngClass]="{'inValidNgayLapHoaDon': data.value.errorNgayLapHoaDon}"
+                    nz-tooltip [nzTooltipTitle]="data.value.errorNgayLapHoaDon? invalidMessageNgayLapHoaDon: ''">
+                    {{data.value.ngayLapHoaDonText}}
+                  </span> -->
+                  <div *ngIf="!isXemChiTiet">
+                    <nz-form-item>
+                      <nz-form-control [nzSm]="24" [nzXs]="24">
+                        <input nz-input nzSize="small" formControlName="ngayLapHoaDon" maxlength = "10" class = "centerInputText" min="1900-01-01" max="9999-12-31" type="date"
+                          [ngClass] = "{'inValidNgayLapHoaDon': data.value.errorNgayLapHoaDon}"
+                          nz-tooltip [nzTooltipTitle] = "data.value.errorNgayLapHoaDon? invalidMessageNgayLapHoaDon: ''"  (ngModelChange)="changeNgayLapHoaDon(i, $event)">
+                      </nz-form-control>
+                    </nz-form-item>
+                  </div>
+                  <div *ngIf="isXemChiTiet">
+                    {{data.value.ngayLapHoaDon | date: 'dd/MM/yyyy'}}
+                  </div>
+                </td>
+                <td nzAlign="center">
+                  <div *ngIf="!isXemChiTiet">
+                    <nz-form-item>
+                      <nz-form-control [nzSm]="24" [nzXs]="24">
+                        <nz-select nzSize="small" formControlName="phanLoaiHDSaiSot" [nzDisabled] = "isXemChiTiet">
+                          <nz-option nzCustomContent nzLabel="Hủy" [nzValue]="1">
+                            <div>Hủy</div>
+                          </nz-option>
+                          <!-- <nz-option nzCustomContent nzLabel="Điều chỉnh" [nzValue]="2">
+                            <div>2-Điều chỉnh</div>
+                          </nz-option>
+                          <nz-option nzCustomContent nzLabel="Thay thế" [nzValue]="3">
+                            <div>3-Thay thế</div>
+                          </nz-option> -->
+                          <nz-option nzCustomContent nzLabel="Giải trình" [nzValue]="4">
+                            <div>Giải trình</div>
+                          </nz-option>
+                        </nz-select>
+                      </nz-form-control>
+                    </nz-form-item>
+                  </div>
+                  <div *ngIf="isXemChiTiet">
+                    <span *ngIf="data.value.phanLoaiHDSaiSot == 1">Hủy</span>
+                    <span *ngIf="data.value.phanLoaiHDSaiSot == 4">Giải trình</span>
+                  </div>
+                </td>
+                <td nzAlign="center">
+                  <div *ngIf="!isXemChiTiet">
+                    <nz-form-item class="cus-form-item">
+                      <nz-form-control [nzSm]="24" [nzXs]="24">
+                        <textarea nz-input nzSize="small" type="text" formControlName="lyDo" [nzAutosize]
+                          [disabled]="checkedSuDungLoai === false || data.value.errorNgayLapHoaDon || isXemChiTiet"
+                          [readonly]="checkedSuDungLoai === false || data.value.errorNgayLapHoaDon || isXemChiTiet"
+                          [title]="data.value.lyDo == null?'': data.value.lyDo"
+                          placeHolder="Không để trống, không quá 255 ký tự" (blur)="blurDetail(i, 'lyDo')"></textarea>
+                        <!-- <ng-template #errorLyDo let-control>
+                          <ng-container *ngIf="control.hasError('required')">
+                            <div class="tooltip-error">&lt;Lý do&gt; không được để trống.</div>
+                          </ng-container>
+                          <ng-container *ngIf="control.hasError('invalid')">
+                            <div class="tooltip-error">&lt;Lý do&gt; không được quá 255 ký tự.</div>
+                          </ng-container>
+                        </ng-template> -->
+                        <div *ngIf="data.get('lyDo').hasError && data.get('lyDo').touched">
+                          <div  class="custom-tooltip-error" *ngIf="data.get('lyDo').hasError('required')">
+                            &lt;Lý do &gt; không được để trống
+                          </div>
+                          <div  class="custom-tooltip-error" *ngIf="data.get('lyDo').hasError('invalid')">
+                            &lt;Lý do&gt; không được quá 255 ký tự.
+                          </div>
+                        </div>
+                      </nz-form-control>
+                    </nz-form-item>
+                  </div>
+                  <div *ngIf="isXemChiTiet">
+                    <span class="justify-content-wrap">{{data.value.lyDo}}</span>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+            <tfoot *ngIf="totalRecords > 0">
+              <tr class="total-footer">
+                <td colspan="2">Số dòng = {{totalRecords}}</td>
+                <td colspan="11"></td>
+              </tr>
+            </tfoot>
+            <tfoot *ngIf="totalRecords == 0">
+              <tr class="total-footer">
+                <td colspan="13">Không có dữ liệu hiển thị.</td>
+              </tr>
+            </tfoot>
+          </nz-table>
+        </div>
+        <div nz-row *ngIf="this.oldLoaiApDungHoaDonKhac != 1">
+          <nz-table [nzNoResult]="null" style="margin-top: 5px;" nzSize="small" #fixedTable1
+            [nzData]="this.mainFormKhac.get('hoaDonSaiSots').value"
+            [nzScroll]="{ x: '1390px', y: '55vh' }" [nzShowPagination]="false"
+            [nzFrontPagination]="false" [nzTotal]="totalRecords" [nzPageIndex]="1" [(nzPageSize)]="totalRecords"
+            nzBordered [nzLoading]="loading">
+            <thead (nzSortChange)="sort($event)" nzSingleSort>
+              <tr>
+                <th [nzWidth]="'50px'" nzAlign="center" nzLeft="0px">
+                  <button nz-button nzType="default" class="circleButton" type="button" nzSize="small" (click)="addRowKhac()"
+                    [disabled]="isXemChiTiet"><i nz-icon nzType="plus" nzTheme="outline"></i></button>
+                </th>
+                <th nzAlign="center" nzWidth="50px">
+                  STT
+                </th>
+                <th nzAlign="center" nzWidth="280px" nzShowSort nzSortKey="MaCQTCap" nzCustomFilter>Mã CQT
+                  cấp
+                  <i nz-th-extra class="ant-table-filter-icon-ext" nz-icon nz-dropdown #ddMaCQTCap="nzDropdown"
+                    nzType="filter" [nzDropdownMenu]="menuMaCQTCap" [(nzVisible)]="mapOfStatusFilteredCols['maCQTCap']"
+                    [class.ant-table-filter-open-ext]="mapOfStatusFilteredCols['maCQTCap_marked']" nzTrigger="click"
+                    (nzVisibleChange)="onVisibleFilterCol($event, 'maCQTCap', filterColMaCQTCap)"
+                    nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter></i>
+                  <nz-dropdown-menu #menuMaCQTCap="nzDropdownMenu">
+                    <app-filter-column #filterColMaCQTCap [title]="tenFilterMaCQTCap" [dataType]="1"
+                      (submitFilterCol)="onFilterCol($event)">
+                    </app-filter-column>
+                  </nz-dropdown-menu>
+                </th>
+                <th nzAlign="center" nzWidth="260px" nzShowSort nzSortKey="MauHoaDon">Ký hiệu mẫu hóa
+                  đơn<br>và ký hiệu hóa đơn</th>
+                <th nzAlign="center" nzWidth="100px" nzShowSort nzSortKey="SoHoaDon" nzCustomFilter>Số hóa
+                  đơn<br>điện tử
+                  <i nz-th-extra class="ant-table-filter-icon-ext" nz-icon nz-dropdown #ddSoHoaDon="nzDropdown"
+                    nzType="filter" [nzDropdownMenu]="menuSoHoaDon" [(nzVisible)]="mapOfStatusFilteredCols['soHoaDon']"
+                    [class.ant-table-filter-open-ext]="mapOfStatusFilteredCols['soHoaDon_marked']" nzTrigger="click"
+                    (nzVisibleChange)="onVisibleFilterCol($event, 'soHoaDon', filterColSoHoaDon)"
+                    nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter></i>
+                  <nz-dropdown-menu #menuSoHoaDon="nzDropdownMenu">
+                    <app-filter-column #filterColSoHoaDon [title]="tenFilterSoHoaDon" [dataType]="1"
+                      (submitFilterCol)="onFilterCol($event)">
+                    </app-filter-column>
+                  </nz-dropdown-menu>
+                </th>
+                <th nzAlign="center" nzWidth="120px" nzShowSort nzSortKey="NgayLapHoaDon">Ngày lập<br>hóa
+                  đơn
+                </th>
+                <th nzAlign="center" nzWidth="120px">Hủy/Điều chỉnh/<br>Thay thế/Giải trình</th>
+                <th nzAlign="center" nzWidth="400px">Lý do</th>
+              </tr>
+            </thead>
+            <tbody formArrayName="hoaDonSaiSots">
+              <tr *ngFor="let data of mainFormKhac.get('hoaDonSaiSots')['controls']; let i = index" [formGroupName]="i">
+                <td nzAlign="center" nzLeft="0px">
+                  <button nzSize="small" type="button" nz-button nzType="button" (click)="removeRowKhac(i)"
+                  [disabled]="isXemChiTiet" class="circleButtonRed"><i nz-icon
+                    nzType="minus" nzTheme="outline"></i></button>
+                </td>
+                <td>
+                  {{i+1}}
+                </td>
+                <td nzAlign="center">
+                  <div *ngIf="!isXemChiTiet">
+                    <nz-form-item class="cus-form-item">
+                      <nz-form-control [nzSm]="24" [nzXs]="24">
+                        <input nz-input nzSize="small" formControlName="maCQTCap" #maCQTCap maxlength="34" tooltipInput  [placeholder]="oldLoaiApDungHoaDonKhac != '2' ? '' : 'Không để trống, nhập 34 ký tự MCCQT'" (ngModelChange)="blurDetail(i, 'maCQTCap')" (blur)="blurDetail(i, 'maCQTCap')" [disabled]="oldLoaiApDungHoaDonKhac != '2'"/>
+                        <div *ngIf="data.get('maCQTCap').hasError && data.get('maCQTCap').touched">
+                          <div class="custom-tooltip-error"  *ngIf="data.get('maCQTCap').hasError('invalid')">
+                            &lt;Mã CQT cấp&gt; không được để trống
+                          </div>
+                          <div class="custom-tooltip-error" *ngIf="!data.get('maCQTCap').hasError('invalid') && data.get('maCQTCap').hasError('invalidLength')">
+                            Độ dài của &lt;Mã CQT cấp&gt; phải bằng 34 ký tự.
+                          </div>
+                        </div>
+                      </nz-form-control>
+                    </nz-form-item>
+                  </div>
+                  <div *ngIf="isXemChiTiet">
+                    {{data.value.maCQTCap}}
+                  </div>
+                </td>
+                <td nzAlign="center">
+                  <div *ngIf="!isXemChiTiet">
+                    <nz-form-item>
+                      <nz-form-control [nzSm]="10" [nzXs]="10">
+                        <nz-select style="width: 100%;" nzSize="small" nzShowSearch formControlName="mauSoHoaDon_LoaiHoaDon" [nzDropdownStyle]="searchCustomOverlayStyle" (ngModelChange)="getMauHoaDon(i)">
+                            <nz-option nzCustomContent nzDisabled="true">
+                                <div nz-row>
+                                    <div nz-col nzXs="6" nzSm="4" nzMd="4" nzLg="4" nzXl="4">
+                                        Mẫu số
+                                    </div>
+                                    <div nz-col nzXs="18" nzSm="20" nzMd="20" nzLg="20" nzXl="20">
+                                        Loại hóa đơn
+                                    </div>
+                                </div>
+                            </nz-option>
+                            <nz-option nzCustomContent *ngFor="let item of list_LoaiHoaDon" [nzLabel]="item.value" [nzValue]="item.value">
+                                <div nz-row>
+                                    <div nz-col nzXs="6" nzSm="4" nzMd="4" nzLg="4" nzXl="4">
+                                        <div class="text-ellipsis">{{item.value}}</div>
+                                    </div>
+                                    <div nz-col nzXs="18" nzSm="20" nzMd="20" nzLg="20" nzXl="20">
+                                        <div class="optionItem">{{item.name}}</div>
+                                    </div>
+                                </div>
+                            </nz-option>
+                        </nz-select>
+                      </nz-form-control>
+                      <nz-form-control [nzSm]="1" [nzXs]="1" [ngClass]="{'space': true}">
+                      </nz-form-control>
+                      <nz-form-control [nzSm]="4" [nzXs]="24">
+                        <nz-select style="width: 100%;" nzSize="small" nzShowSearch formControlName="mauSoHoaDon_SoLienHoaDon" (ngModelChange)="getMauHoaDon(i)">
+                            <nz-option *ngFor="let item of list_MauSoHoaDon_SoLienHoaDon" [nzLabel]="item" [nzValue]="item">
+                            </nz-option>
+                        </nz-select>
+                      </nz-form-control>
+                      <nz-form-control [nzSm]="1" [nzXs]="1" [ngClass]="{'space': true}">
+                      </nz-form-control>
+                      <nz-form-control [nzSm]="2" [nzXs]="2">
+                        <input nz-input nzSize="small" value="/" [disabled]="true" [readonly]="true" style="text-align: center;"/>
+                      </nz-form-control>
+                      <nz-form-control [nzSm]="1" [nzXs]="1" [ngClass]="{'space': true}">
+                      </nz-form-control>
+                      <nz-form-control [nzSm]="5" [nzXs]="5">
+                          <nz-select style="width: 100%;" nzSize="small" nzShowSearch formControlName="mauSoHoaDon_SoThuTuMau" (ngModelChange)="getMauHoaDon(i)">
+                              <nz-option *ngFor="let item of list_MauSoHoaDon_SoThuTuMau" [nzLabel]="item" [nzValue]="item">
+                              </nz-option>
+                          </nz-select>
+                      </nz-form-control>
+                    </nz-form-item>
+
+                    <nz-form-item style="margin-top: 3px">
+                      <nz-form-control *ngIf="thamSoForm.get('hinhThucHoaDonKhacHienThi').value == 'P_CT'" [nzSm]="thamSoForm.get('hinhThucHoaDonKhac').value == 'P_CT' ? 5 : 11" [nzXs]="thamSoForm.get('hinhThucHoaDonKhac').value == 'P_CT'  ? 5 : 11">
+                        <nz-select style="width: 100%;" nzSize="small" nzShowSearch formControlName="kyHieuHoaDon_2KyTuDau_DatIn" [nzDropdownStyle]="searchCustomOverlayStyle" (ngModelChange)="changeKyHieuHoaDon_2KyTuDau_DatIn($event)">
+                            <nz-option nzCustomContent nzDisabled="true">
+                                <div nz-row>
+                                    <div nz-col nzMd="6">
+                                        Mã
+                                    </div>
+                                    <div nz-col nzMd="18">
+                                        Tỉnh, thành phố
+                                    </div>
+                                </div>
+                            </nz-option>
+                            <nz-option nzCustomContent *ngFor="let item of list_KyHieuHoaDon_2KyTuDau_DatIn" [nzLabel]="item.code" [nzValue]="item.code">
+                                <div nz-row>
+                                    <div nz-col nzMd="6">
+                                        <div class="text-ellipsis">{{item.code}}</div>
+                                    </div>
+                                    <div nz-col nzMd="18">
+                                        <div class="optionItem">{{item.name}}</div>
+                                    </div>
+                                </div>
+                            </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                    <nz-form-control *ngIf="thamSoForm.get('hinhThucHoaDonKhacHienThi').value == 'P_CT'" [nzSm]="1" [nzXs]="1" [ngClass]="{'space': true}"></nz-form-control>
+                    <nz-form-control [nzSm]="thamSoForm.get('hinhThucHoaDonKhacHienThi').value == 'P_CT' ? 5 : 11" [nzXs]="thamSoForm.get('hinhThucHoaDonKhac').value == 'P_CT' ? 5 : 11">
+                        <nz-select style="width: 100%;" nzSize="small" nzShowSearch formControlName="kyHieuHoaDon_2KyTuDau" (ngModelChange)="setKyHieuHoaDon(i)" style="text-align: right;">
+                            <nz-option *ngFor="let item of list_KyHieuHoaDon_2KyTuDau" [nzLabel]="item" [nzValue]="item">
+                            </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+
+                    <nz-form-control [nzSm]="1" [nzXs]="1" [ngClass]="{'space': true}">
+                    </nz-form-control>
+                      <nz-form-control [nzSm]="2" [nzXs]="2">
+                        <input nz-input nzSize="small" value="/" [disabled]="true" [readonly]="true" style="text-align: center;"/>
+                      </nz-form-control>
+                      <nz-form-control [nzSm]="1" [nzXs]="1" [ngClass]="{'space': true}">
+                      </nz-form-control>
+                      <nz-form-control [nzSm]="5" [nzXs]="5">
+                        <nz-select style="width: 100%;" nzSize="small" nzShowSearch formControlName="kyHieuHoaDon_2SoCuoiNamThongBao" (ngModelChange)="setKyHieuHoaDon(i)" style="text-align: right;">
+                          <nz-option *ngFor="let item of list_KyHieuHoaDon_2SoCuoiNamThongBao" [nzLabel]="item" [nzValue]="item">
+                          </nz-option>
+                        </nz-select>
+                      </nz-form-control>
+
+                      <nz-form-control [nzSm]="1" [nzXs]="1" [ngClass]="{'space': true}">
+                      </nz-form-control>
+                      <nz-form-control [nzSm]="3" [nzXs]="3">
+                          <input nz-input nzSize="small" formControlName="kyHieuHoaDon_hinhThucHoaDon" (ngModelChange)="setKyHieuHoaDon(i)" [disabled]="true" [readonly]="true" style="text-align: right;"/>
+                      </nz-form-control>
+                    </nz-form-item>
+                  </div>
+                  <div *ngIf="isXemChiTiet">
+                    {{data.value.mauHoaDon}}<br/>{{data.value.kyHieuHoaDon}}
+                  </div>
+                </td>
+                <td nzAlign="center">
+                  <!-- {{data.value.soHoaDon}} -->
+                  <div *ngIf="!isXemChiTiet">
+                    <nz-form-item class="cus-form-item">
+                      <nz-form-control [nzSm]="24" [nzXs]="24">
+                        <input nz-input nzSize="small" name="soHoaDon" formControlName="soHoaDon" maxlength = "8" (blur)="changeSoHoaDon(i, $event)" oninput="this.value=this.value.replace(/[^0-9]/g,'');" (focus)="clickChuoiKyTu(i, 'soHoaDon')" (click)="clickChuoiKyTu(i, 'soHoaDon')"  [disabled] = "data.value.errorNgayLapHoaDon" style="text-align: right;">
+
+                      <div *ngIf="data.get('soHoaDon').touched">
+                        <div  class="custom-tooltip-error" *ngIf="data.get('soHoaDon').hasError('required')">
+                          &lt;Số hóa đơn &gt; không được để trống
+                        </div>
+                      </div>
+                    </nz-form-control>
+                    </nz-form-item>
+                  </div>
+                  <div *ngIf="isXemChiTiet">
+                    {{data.value.soHoaDon}}
+                  </div>
+                </td>
+                <td nzAlign="center">
+                  <!-- <span class="centerInputText" [ngClass]="{'inValidNgayLapHoaDon': data.value.errorNgayLapHoaDon}"
+                    nz-tooltip [nzTooltipTitle]="data.value.errorNgayLapHoaDon? invalidMessageNgayLapHoaDon: ''">
+                    {{data.value.ngayLapHoaDonText}}
+                  </span> -->
+                  <div *ngIf="!isXemChiTiet">
+                    <nz-form-item>
+                      <nz-form-control [nzSm]="24" [nzXs]="24">
+                        <input type="date" nz-input nzSize="small" formControlName="ngayLapHoaDon" maxlength = "10" class = "centerInputText" min="1900-01-01" max="9999-12-31" (ngModelChange)="changeNgayLapHoaDon(i, $event)">
+                      </nz-form-control>
+                    </nz-form-item>
+                  </div>
+                  <div *ngIf="isXemChiTiet">
+                    {{data.value.ngayLapHoaDon | date: 'dd/MM/yyyy'}}
+                  </div>
+                </td>
+                <td nzAlign="center">
+                  <div *ngIf="!isXemChiTiet">
+                    <nz-form-item>
+                      <nz-form-control [nzSm]="24" [nzXs]="24">
+                        <nz-select nzSize="small" formControlName="phanLoaiHDSaiSot" [nzDisabled] = "isXemChiTiet">
+                          <nz-option nzCustomContent nzLabel="Hủy" [nzValue]="1">
+                            <div>Hủy</div>
+                          </nz-option>
+                          <!-- <nz-option nzCustomContent nzLabel="Điều chỉnh" [nzValue]="2">
+                            <div>2-Điều chỉnh</div>
+                          </nz-option>
+                          <nz-option nzCustomContent nzLabel="Thay thế" [nzValue]="3">
+                            <div>3-Thay thế</div>
+                          </nz-option> -->
+                          <nz-option nzCustomContent nzLabel="Giải trình" [nzValue]="4">
+                            <div>Giải trình</div>
+                          </nz-option>
+                        </nz-select>
+                      </nz-form-control>
+                    </nz-form-item>
+                  </div>
+                  <div *ngIf="isXemChiTiet">
+                    <span *ngIf="data.value.phanLoaiHDSaiSot == 1">Hủy</span>
+                    <span *ngIf="data.value.phanLoaiHDSaiSot == 4">Giải trình</span>
+                  </div>
+                </td>
+                <td nzAlign="center">
+                  <div *ngIf="!isXemChiTiet">
+                    <nz-form-item class="cus-form-item">
+                      <nz-form-control [nzSm]="24" [nzXs]="24">
+                        <textarea nz-input nzSize="small" type="text" formControlName="lyDo" [nzAutosize]
+                          [disabled]="checkedSuDungLoai === false || data.value.errorNgayLapHoaDon || isXemChiTiet"
+                          [readonly]="checkedSuDungLoai === false || data.value.errorNgayLapHoaDon || isXemChiTiet"
+                          [title]="data.value.lyDo == null?'': data.value.lyDo"
+                          placeHolder="Không để trống, không quá 255 ký tự" (blur)="blurDetail(i, 'lyDo')"></textarea>
+                      <div *ngIf="data.get('lyDo').hasError && data.get('lyDo').touched">
+                        <div  class="custom-tooltip-error" *ngIf="data.get('lyDo').hasError('required')">
+                          &lt;Lý do &gt; không được để trống
+                        </div>
+                        <div  class="custom-tooltip-error" *ngIf="data.get('lyDo').hasError('invalid')">
+                          &lt;Lý do&gt; không được quá 255 ký tự.
+                        </div>
+                      </div>
+                    </nz-form-control>
+                    </nz-form-item>
+                  </div>
+                  <div *ngIf="isXemChiTiet">
+                    <span class="justify-content-wrap">{{data.value.lyDo}}</span>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+            <tfoot *ngIf="totalRecords > 0">
+              <tr class="total-footer">
+                <td colspan="2">Số dòng = {{totalRecords}}</td>
+                <td colspan="11"></td>
+              </tr>
+            </tfoot>
+            <tfoot *ngIf="totalRecords == 0">
+              <tr class="total-footer">
+                <td colspan="13">Không có dữ liệu hiển thị.</td>
+              </tr>
+            </tfoot>
+          </nz-table>
+        </div>
+      </form>
+    </div>
+  </div>
+</nz-spin>
+
+<div *nzModalFooter>
+  <div nz-row>
+    <div nz-col nzSpan="12" style="text-align: left;">
+      <button *ngIf="lapTuHoaDonDienTuId != '' && !isXemChiTiet" nz-button nzType="default" nzSize="small"
+        (click)="chonLaiHoaDon()" class="filterDefaultButton" title="Chọn hóa đơn khác"><i nz-icon nzType="select"
+          nzTheme="outline"></i>Chọn lại</button>
+    </div>
+    <div style="float: left; margin-left: 8px; padding-top: 3px;"
+      *ngIf="!(lapTuHoaDonDienTuId != '' && !isXemChiTiet) && isTBaoHuyGiaiTrinhKhacCuaNNT == false">
+      <span style="color: #1877F2;">
+        <i nz-icon class="info-circle" nzTheme="fill" nzType="info-circle"></i>&nbsp;
+        Dữ liệu không bao gồm các hóa đơn đã lập Thông báo hóa đơn điện tử có sai sót có trạng thái gửi và phản
+        hồi từ CQT là: <b>Chưa gửi, Chờ phản hồi, Gửi CQT không lỗi, Hóa đơn hợp lệ, CQT đã tiếp nhận, CQT không tiếp nhận</b>
+      </span>
+    </div>
+    <div style="text-align: right; float: right">
+      <button *ngIf="!isXemChiTiet" nz-button nzType="default" (click)="submitForm()" class="blueButton"
+        nzSize="small"><i nz-icon nzType="check" nzTheme="outline"></i>Xác nhận</button>
+      <button *ngIf="!isXemChiTiet" nz-button nzType="default" (click)="closeModal()" class="button-cancel"
+        nzSize="small"><i nz-icon nzSize="small" nzType="close"></i>Hủy</button>
+      <button *ngIf="isXemChiTiet" nz-button nzType="default" (click)="closeModal()" class="button-cancel"
+        nzSize="small"><i nz-icon nzSize="small" nzType="close"></i>Đóng</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,52 @@
+<nz-spin [nzSpinning]="spinning">
+    <div class="card-body card-content-padding-hor">
+        <nz-form-item>
+            <nz-form-label [nzSpan]="16" class="centerLable" >Số lớn nhất đã tự sinh đến hiện tại</nz-form-label>
+            <nz-form-control [nzSpan]="8" class="tooltip-width-220 tooltip-left-0">
+                <input style="text-align: right;" nz-input nzSize="small" maxlength="11" [(ngModel)]="soLonNhatDaSinh"
+                    tooltipInput disabled />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSpan]="16" class="centerLable">Số cập nhật</nz-form-label>
+            <nz-form-control [nzSpan]="8">
+                <input nz-input type="number" (ngModelChange)="ChangeValueSoCapNhat($event)"  onKeyPress="if(this.value >= 99999999999) return false;" min="0" max="99999999999" class="no-spin" style="text-align: right;"  nzSize="small" (focus)="FoCusSoCapNhat()"
+                    (blur)="BlurSoCapNhat()" [(ngModel)]="soCapNhatView"
+                    [ngClass]="{'border-error': isPassCondition}" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item *ngIf="isPassCondition" style="margin-bottom: 5px !important;">
+            <span  class="error-duplicate">Số cập nhật phải lớn hơn Số lớn nhất đã tự sinh đến hiện tại</span>
+        </nz-form-item>
+        <nz-form-item *ngIf="isPassErrorValue" style="margin-bottom: 5px !important;">
+            <span  class="error-duplicate">Số cập nhật không được lớn hơn <b>&lsaquo;99999999998&rsaquo;</b></span>
+        </nz-form-item>
+
+      
+        <nz-form-item>
+            <nz-form-label [nzSpan]="16" nzFor="soToiDa" class="centerLable">Số kế tiếp sẽ tự sinh sau cập nhật</nz-form-label>
+            <nz-form-control [nzSpan]="8" class="tooltip-width-220 tooltip-left-0">
+                <input nz-input style="text-align: right;" nzSize="small" [(ngModel)]="soKeTiep" tooltipInput
+                    disabled />
+
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-control [nzSm]="24" [nzXs]="24" style="margin: 5px;">
+                <label nz-checkbox [(ngModel)]="isAccept" (ngModelChange)="changeAccept($event)"
+                    [ngModelOptions]="{standalone: true}"><span style="color: #0070C0">Tôi xác nhận và chịu trách nhiệm
+                        về việc
+                        xác nhận thông tin.</span>
+                </label>
+            </nz-form-control>
+        </nz-form-item>
+
+
+    </div>
+</nz-spin>
+<div *nzModalFooter style="padding-right: 4px!important;">
+    <button [disabled]="!isAccept" [nzLoading]="signing" nzSize="small" nz-button nzType="default"
+        (click)="ConfirmUpdateSoLonNhat()" class="blueButton"><i nz-icon nzType="check" nzTheme="outline"></i>Cập nhật</button>
+    <button nzSize="small" [nzLoading]="signing" nz-button nzType="default" (click)="closeModal()"
+        class="button-cancel"><i nz-icon nzSize="small" nzType="close"></i>Hủy</button>
+</div>

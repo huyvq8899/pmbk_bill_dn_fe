@@ -1,0 +1,42 @@
+@import "../../../../shared/scss/modal.scss";
+
+.buttonBlue_LapHoaDon
+{
+    background: #0070C0 !important;
+    color: white !important;
+    border: 1px solid #0070C0 !important;
+    font-weight: 600 !important;
+    padding: 0px 13px !important;
+}
+
+.buttonBlue_LapHoaDon:hover {
+    background: #fff !important;
+    color: #0070C0 !important;
+    border: 1px solid #0070C0 !important;
+}
+
+.buttonGray_LapHoaDon
+{
+    background: #a4a4a4 !important;
+    color: white !important;
+    border: 1px solid #a4a4a4 !important;
+    font-weight: 600 !important;
+    padding: 0px 13px !important;
+}
+
+.buttonGray_LapHoaDon:hover {
+    background: #fff !important;
+    color: #a4a4a4 !important;
+    border: 1px solid #a4a4a4 !important;
+}
+
+.customColumn
+{
+    display: flex;
+}
+
+.customColumn div
+{
+    -ms-flex: 1;  /* IE 10 */  
+    flex: 1;
+}

@@ -1,0 +1,112 @@
+<div nz-row>
+  <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="8" nzXl="6" class="card">
+    <nz-card style="width:100%;">
+      <div nz-row style="margin-bottom: 24px;
+      text-align: center;">
+        <!-- <img style="width: 104px;
+        height: 104px;
+        margin-bottom: 20px;object-fit: cover;" alt="" [src]="userSelected?.avatar"> -->
+        <nz-avatar [nzShape]="'square'" [nzSize]="104" [nzIcon]="'user'" [nzSrc]="userSelected?.avatar"
+          style="margin-bottom: 20px;"></nz-avatar>
+        <div style="margin-bottom: 4px;
+        color: rgba(0,0,0,.85);
+        font-weight: 500;
+        font-size: 20px;
+        line-height: 28px;">
+          {{userSelected?.userName}}
+        </div>
+        <div>
+          {{userSelected?.fullName}}
+        </div>
+      </div>
+      <div nz-row><i nz-icon nzType="phone" nzTheme="outline" class="iconInfor"></i> {{userSelected?.phone}}</div>
+      <div nz-row><i nz-icon nzType="gift" nzTheme="outline" class="iconInfor"></i>
+        {{userSelected?.dateOfBirth | date:'dd/MM/yyyy'}}</div>
+      <div nz-row><i nz-icon nzType="mail" nzTheme="outline" class="iconInfor"></i> {{userSelected?.email}}</div>
+      <div nz-row><i nz-icon nzType="home" nzTheme="outline" class="iconInfor"></i> {{userSelected?.address}}</div>
+      <div class="line"></div>
+      <h4>Skills</h4>
+      <div nz-row>
+        <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="12" nzXl="12" style="padding:5px">
+          <a class="fixLengtTextNotNoWrap" style="display: block;">
+            <nz-avatar nzIcon="user" nzSrc="https://gw.alipayobjects.com/zos/rmsportal/zOsKZmFRdUtvpqCImOVY.png"
+              style="background-color:#87d068;margin-right: 5px;display: inline-block;"></nz-avatar>
+            Angular 8
+          </a>
+        </div>
+        <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="12" nzXl="12" style="padding:5px">
+          <a class="fixLengtTextNotNoWrap">
+            <nz-avatar nzIcon="user" nzSrc="https://gw.alipayobjects.com/zos/rmsportal/kZzEzemZyKLKFsojXItE.png"
+              style="background-color:#87d068;margin-right: 5px;display: inline-block;"></nz-avatar>
+            React
+          </a>
+        </div>
+        <!-- <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="12" nzXl="12" style="padding:5px">
+          <nz-avatar nzIcon="user" nzSrc="https://gw.alipayobjects.com/zos/rmsportal/zOsKZmFRdUtvpqCImOVY.png"
+          style="background-color:#87d068;margin-right: 5px;"></nz-avatar>
+          <span>Angular</span>
+        </div>
+        <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="12" nzXl="12" style="padding:5px">
+          <nz-avatar nzIcon="user" nzSrc="https://gw.alipayobjects.com/zos/rmsportal/kZzEzemZyKLKFsojXItE.png"
+          style="background-color:#87d068;margin-right: 5px;"></nz-avatar>
+          <span>React</span>
+        </div> -->
+      </div>
+    </nz-card>
+  </div>
+  <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="16" nzXl="18" class="card">
+    <nz-card style="width:100%;">
+      <nz-tabset>
+        <nz-tab nzTitle="Activities">
+          <nz-comment nzAuthor="Han Solo" [nzDatetime]="time" *ngFor="let item of listCard">
+            <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="userSelected?.avatar"></nz-avatar>
+            <nz-comment-content>
+              <p>
+                We supply a series of design principles, practical patterns and high quality design resources (Sketch
+                and
+                Axure), to help people create their product prototypes beautifully and efficiently.
+              </p>
+            </nz-comment-content>
+            <nz-comment-action>
+              <i nz-tooltip nzTitle="Like" nz-icon nzType="like" [theme]="likes > 0 ? 'twotone' : 'outline'"
+                (click)="like()"></i>
+              <span class="count like">{{ likes }}</span>
+            </nz-comment-action>
+            <nz-comment-action>
+              <i nz-tooltip nzTitle="Dislike" nz-icon nzType="dislike" [theme]="dislikes > 0 ? 'twotone' : 'outline'"
+                (click)="dislike()"></i>
+              <span class="count dislike">{{ dislikes }}</span>
+            </nz-comment-action>
+            <nz-comment-action>Reply to</nz-comment-action>
+          </nz-comment>
+        </nz-tab>
+        <nz-tab nzTitle="Groups">
+          <div nz-row>
+            <div nz-col nzXs="24" nzSm="24" nzMd="12" nzLg="12" nzXl="8" *ngFor="let item of listCard"
+              style="padding:5px">
+              <nz-card style="width: 100%;" [nzActions]="[actionSetting, actionEdit, actionEllipsis]">
+                <nz-skeleton [nzActive]="true" [nzLoading]="false" [nzAvatar]="{ size: 'large' }">
+                  <nz-card-meta [nzAvatar]="avatarTemplate" nzTitle="Card title"
+                    nzDescription="This is the description"></nz-card-meta>
+                </nz-skeleton>
+              </nz-card>
+              <ng-template #avatarTemplate>
+                <nz-avatar nzSrc="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></nz-avatar>
+              </ng-template>
+              <ng-template #actionSetting>
+                <i nz-icon nzType="setting"></i>
+              </ng-template>
+              <ng-template #actionEdit>
+                <i nz-icon nzType="edit"></i>
+              </ng-template>
+              <ng-template #actionEllipsis>
+                <i nz-icon nzType="ellipsis"></i>
+              </ng-template>
+            </div>
+          </div>
+
+        </nz-tab>
+      </nz-tabset>
+    </nz-card>
+  </div>
+</div>

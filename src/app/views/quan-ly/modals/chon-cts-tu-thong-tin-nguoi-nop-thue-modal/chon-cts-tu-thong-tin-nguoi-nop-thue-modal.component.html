@@ -1,0 +1,77 @@
+<nz-spin [nzSpinning]="spinning">
+  <div nz-row style="max-height: 84vh!important; overflow-y: auto; overflow-x : hidden; padding: 5px!important;">
+    <div>
+      <div>
+        <nz-table [nzNoResult]="null" style="margin-top: 5px;" nzSize="small" #fixedTable [nzData]="listChungThuSo" 
+          [nzScroll]="scrollConfig" [nzShowPagination]="false" [nzFrontPagination]="false" [nzWidthConfig]="widthConfig"
+          [nzTotal]="total" [nzPageIndex]="1" [(nzPageSize)]="total" nzBordered [nzLoading]="loading">
+            <thead>
+              <tr>
+                <th rowspan="2" nzShowCheckbox [(nzChecked)]="isAllDisplayDataChecked" [nzIndeterminate]="isIndeterminate" nzLeft="0px"
+                (nzCheckedChange)="checkAll($event)"></th>
+                <th rowspan="2" nzAlign="center" nzLeft="50px">STT</th>
+                <th rowspan="2" nzAlign="center">
+                  Tên tổ chức/cơ quan chứng thực/cấp/công nhận chữ ký số, chữ ký điện tử
+                </th>
+                <th rowspan="2" nzAlign="center">
+                  Số seri chứng thư
+                </th>
+                <th colspan="2" nzAlign="center">
+                  Thời hạn sử dụng chứng thư số
+                </th>
+                <th rowspan="2" nzAlign="center">
+                  Hình thức đăng ký (Thêm mới, gia hạn, ngừng sử dụng)
+                </th>
+              </tr>
+              <tr>
+                <th nzAlign="center">Từ ngày</th>
+                <th nzAlign="center">Đến ngày</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of fixedTable.data; let i = index" [class.row-selected]="data.checked">
+                <td [class.row-selected]="data.checked" nzLeft="0px" nzShowCheckbox [(nzChecked)]="data.checked" (nzCheckedChange)="refreshStatus(data, $event)"></td>
+                <td [class.row-selected]="data.checked" nzAlign="center" nzLeft="50px">{{i+1}}</td>
+                <td [class.row-selected]="data.checked" nzAlign="center">
+                  {{data.ttChuc}}
+                </td>
+                <td [class.row-selected]="data.checked" nzAlign="center">
+                  {{data.seri}}
+                </td>
+                <td [class.row-selected]="data.checked" nzAlign="center">
+                  {{data.tNgay | date: 'dd/MM/yyyyThh:mm:ss'}}
+                </td>
+                <td [class.row-selected]="data.checked" nzAlign="center">
+                  {{data.dNgay | date: 'dd/MM/yyyyThh:mm:ss'}}
+                </td>
+                <td [class.row-selected]="data.checked" nzAlign="center">
+                  {{data.tenHThuc}}
+                </td>                
+              </tr>
+            </tbody>
+            <tfoot *ngIf = "listChungThuSo.length == 0">
+              <tr class="total-footer">
+                <td colspan = "7">Không có dữ liệu hiển thị.</td>
+              </tr>
+            </tfoot>
+        </nz-table>
+      </div>
+    </div>
+</div>
+</nz-spin>
+
+<div *nzModalFooter>
+  <div nz-row>
+    <div nz-col nzSpan="12" style="text-align: left;">
+      &nbsp;
+    </div>
+    <div nz-col nzSpan="12" style="text-align: right;">
+      <button nz-button nzType="default" (click)="submitForm()" class="blueButton" nzSize="small" style = "padding: 0px 13px!important;">
+        <i nz-icon nzType="check" nzTheme="outline"></i>Xác nhận
+      </button>
+      <button nz-button nzType="default" (click)="closeModal()" class="button-cancel" nzSize="small" style = "padding: 0px 13px!important;">
+        <i nz-icon nzType="close" nzTheme="outline"></i>Hủy
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,54 @@
+nz-tree {
+    overflow: hidden;
+}
+
+.custom-node {
+    cursor: pointer;
+    line-height: 24px;
+    margin-left: 4px;
+    display: inline-block;
+}
+
+// .file-name,
+.folder-name {
+    margin-left: 4px;
+}
+
+.file-desc,
+.folder-desc {
+    padding: 0 8px;
+    display: inline-block;
+    background: #87ceff;
+    color: #ffffff;
+    position: relative;
+    left: 12px;
+}
+
+//@extend
+.box-title {
+    position: absolute;
+    top: -12px;
+    // margin-left: 16px;
+    padding: 1px 8px;
+    color: #777;
+    background: #fff;
+    border-radius: 2px 2px 0 0;
+    transition: background-color 0.4s;
+}
+
+.box-border {
+    border: solid;
+    border-width: 1px;
+    border-color: #e0e0e0;
+}
+
+.inner-content {
+    margin-bottom: 5px;
+}
+
+.title {
+    background-color: var(--primary-color1) !important;
+    color: black;
+    font-weight: bold;
+    padding: 4px 0px 4px 5px;
+}

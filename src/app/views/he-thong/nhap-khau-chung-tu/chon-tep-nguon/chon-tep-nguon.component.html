@@ -1,0 +1,101 @@
+<div style="text-align: left; padding-left: 0px; padding-bottom: 5px;">
+    <nz-form-label [nzNoColon]="true">Loại dữ liệu</nz-form-label>
+    <nz-radio-group [(ngModel)]="radioValue" (ngModelChange)="changeLoaiNhapKhau($event)">
+        <label nz-radio nzValue="A">Danh mục</label>
+        <label nz-radio nzValue="B">Hóa đơn</label>
+        <label nz-radio nzValue="C">Phiếu xuất kho</label>
+    </nz-radio-group>
+</div>
+
+<div nz-row [nzGutter]="8" style="margin-bottom: 8px;">
+    <div nz-col nzXs="10" class="gutter-row">
+        <div class="title">
+            <span>{{boxTitle}}</span>
+        </div>
+        <div class="box-border" style="padding: 0;">
+            <div style="max-height: 240px;overflow:hidden; padding: 10px 5px;" *ngIf="radioValue==='A'">
+                <nz-radio-group [(ngModel)]="selectedLoaiChungTu" (ngModelChange)="changeLoaiChungTu($event)">
+                    <div *ngFor="let node of nodesDanhMuc" style="padding: 2.5px 0;margin-left: 10px;">
+                        <label [nzDisabled]="node.disabled" nz-radio [nzValue]="node.key">{{ node.title }}</label>
+                    </div>
+                </nz-radio-group>
+            </div>
+            <div style="max-height: 240px; overflow: hidden;" *ngIf="radioValue==='B' || radioValue==='C'">
+                <div *ngIf="hasToKhaiDuocChapNhan" style="padding: 10px 5px;">
+                    <nz-radio-group [(ngModel)]="selectedLoaiChungTu" (ngModelChange)="changeLoaiChungTu($event)">
+                        <div *ngFor="let node of nodesHoaDon" style="padding: 2.5px 0;margin-left: 10px;" >
+                            <label nz-radio  [nzDisabled]="node.disabled"  [nzValue]="node.key">{{ node.title }}</label>
+                            <ng-container *ngIf="selectedLoaiChungTu === node.key">
+                                <div style="margin-left: 24px;">Chọn ký hiệu {{radioValue==='B' ? 'hóa đơn' : 'PXK'}} để nhập khẩu
+                                    <nz-select style="width:100px" nzShowSearch nzSize="small" [(ngModel)]="boKyHieuHoaDonId" nzPlaceHolder="Chọn ký hiệu" (ngModelChange)="changeKyHieu($event)">
+                                        <nz-option *ngFor="let item of boKyHieuHoaDons" [nzLabel]="item?.kyHieu" [nzValue]="item?.boKyHieuHoaDonId">
+                                        </nz-option>
+                                    </nz-select>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </nz-radio-group>
+                </div>
+                <div *ngIf="!hasToKhaiDuocChapNhan" style="font-weight: bold; background-color: #ededed;padding: 5px;">
+                    Không có dữ liệu hiển thị
+                </div>
+            </div>
+        </div>
+    </div>
+    <div nz-col nzXs="14" class="gutter-row">
+        <div class="title">
+            <span>Tải tệp nguồn</span>
+        </div>
+        <div class="box-border">
+            <div nz-row [nzGutter]="[8,8]">
+                <div nz-col nzXs="24" class="gutter-row">
+                    <div class="inner-content">
+                        <button nz-button nzSize="small" style="width: 86px;" class="blueButton" nzType="default" (click)="downloadTemplate()" [disabled]="tenLoaiTepMau == ''">
+                            <i nz-icon nzType="vertical-align-bottom" nzTheme="outline"></i>Tải về
+                        </button>&nbsp;<span>tệp mẫu dữ liệu <span
+                                style='color: #0068ff!important'>{{tenLoaiTepMau}}</span></span>
+                    </div>
+                </div>
+                <div nz-col nzXs="24" class="gutter-row">
+                    <div class="inner-content cus-form-item">
+                        <button nz-button nzSize="small" nzType="default" class="blueButton" (click)="fImportExcel.click()" nz-dropdown [nzDropdownMenu]="fileTypeMenu" [disabled]="!selectedLoaiChungTu" [nzDisabled]="!selectedLoaiChungTu">
+                            <i nz-icon nzType="vertical-align-top" nzTheme="outline"></i>Tải lên
+                            <nz-dropdown-menu #fileTypeMenu="nzDropdownMenu">
+                                <ul nz-menu nzSelectable style="min-width: 86px !important;">
+                                    <li nz-menu-item (click)="fileType = 1" [nzSelected]="fileType === 1">
+                                        <img [style.visibility]="fileType === 1 ? 'visible' : 'hidden'" width="17"
+                                            height="15" src="assets/xlsx.png" /> Excel
+                                    </li>
+                                    <!-- <li nz-menu-item (click)="fileType = 2" [nzSelected]="fileType === 2">
+                  <i [style.visibility]="fileType === 2 ? 'visible' : 'hidden'" nz-icon nzType="check"
+                    nzTheme="outline"></i>XML
+                </li> -->
+                                </ul>
+                            </nz-dropdown-menu>
+                        </button>&nbsp;<span>tệp dữ liệu</span>&nbsp;
+                        <input id="fImportExcel" type="file" #fImportExcel (change)="ImportFile($event)" style="display: none;">
+
+                        <input style="width: calc(100% - 154px); display: inline-block;" nz-input nzSize="small" placeholder="Tên tệp dữ liệu" [(ngModel)]="linkFile" title="Tên tệp dữ liệu" [class.custom-input-error]="clickedContinue && !fileData" disabled />
+
+                        <div *ngIf="clickedContinue && !fileData" class="custom-tooltip-error-absolute">
+                            Chưa chọn tệp dữ liệu tải lên
+                        </div>
+                    </div>
+                </div>
+                <div nz-col nzXs="24" class="gutter-row">
+                    <div class="inner-content" style="max-height: 140px; padding-left: 152px;">
+                        Chế độ nhập: Thêm mới
+                        <!-- <nz-radio-group style="margin-left:125px;width:100%" [(ngModel)]="modeValue"
+                            (ngModelChange)="changeModeNhap($event)">
+                            <span
+                                style="margin-left: 28px!important;margin-right: 20px!important; padding: 2px!important;">Chọn chế độ nhập</span>
+                            <label *ngFor="let node of nodesModeNhap"
+                                [nzDisabled]="!selectedLoaiChungTu || node.disabled" nz-radio [nzValue]="node.key">{{
+                                node.title }}</label>
+                        </nz-radio-group> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

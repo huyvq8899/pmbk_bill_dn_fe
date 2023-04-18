@@ -1,0 +1,196 @@
+@import '../../../../shared/scss/modal.scss';
+.centerInputText {
+    text-align: center!important;
+}
+
+.highLightRow {
+    background-color: #FFEDB7!important;
+}
+
+.selectedRow {
+    background-color: #9CB6E5!important;
+}
+
+.is-filtering {
+    color: blue;
+    font-weight: bold;
+}
+
+:host ::ng-deep .ant-table-thead>tr>th .anticon-filter {
+    color: #bfbfbf !important;
+    display: none;
+}
+
+:host ::ng-deep .ant-table-thead>tr>th .anticon-filter:not(.ant-table-filter-open-ext):hover {
+    background-color: #e5e5e5!important;
+}
+
+:host ::ng-deep .ant-table-thead>tr>th .ant-table-filter-open-ext {
+    color: #fff!important;
+    background-color: #1877f2 !important;
+}
+
+:host ::ng-deep input:placeholder-shown{
+    text-align: left!important;
+}
+
+:host ::ng-deep input[type=date]{
+    text-align: left!important;
+}
+
+.blueButton-disabled{
+  background-color: #1877f2;
+  color: #fff;
+  font-weight: 600 !important;
+  padding: 0px 13px !important;
+}
+
+.orangeButton-disabled{
+  background-color: #ec7d31;
+  color: #fff;
+  font-weight: 600 !important;
+  padding: 0px 13px !important;
+}
+.yellowButton-disabled{
+  background-color: #e9bf27;
+  color: #fff;
+  font-weight: 600 !important;
+  padding: 0px 13px !important;
+}
+
+.view-filter-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: inline-block;
+    li {
+        display: inline-block;
+        margin-right: 10px;
+        .label {
+            color: gray;
+        }
+        .value {
+            font-weight: bold;
+        }
+        .remove {
+            cursor: pointer;
+            color: red;
+        }
+    }
+}
+
+.noMarginTable2 {
+    margin: -4px -12px !important;
+    font-weight: normal!important;
+}
+
+.noMarginTable2 tbody td {
+    background-color: #FFF!important;
+    font-weight: normal!important;
+    border-top: 1px dotted #e8e8e8 !important;
+    border-bottom: 1px dotted #e8e8e8 !important;
+}
+
+.noMarginTable2 tbody tr:hover td {
+    background-color: var(--row-hover-color) !important;
+}
+
+.noMarginTable {
+    margin: -4px -20px !important;
+    font-weight: normal!important;
+}
+
+.noMarginTable tbody td {
+    background-color: #FFF!important;
+    font-weight: normal!important;
+    border-top: 1px dotted #e8e8e8 !important;
+    border-bottom: 1px dotted #e8e8e8 !important;
+}
+
+.noMarginTable tbody tr:hover td {
+    background-color: var(--item-hover-color) !important;
+}
+
+.paddingCheckbox {
+    padding-left: 5px!important;
+}
+
+.ant-select-dropdown-menu-item {
+    padding: 0px!important;
+}
+
+.inValidNgayLapHoaDon {
+    //background-color: #FF7E7E!important;
+    //color: #FFF!important;
+    color: #FF2929!important;
+    font-weight: bold!important;
+}
+
+.blueButton2 {
+    background: #1877f2 !important;
+    color: white !important;
+    border: 1px solid #1877f2 !important;
+    &:focus {
+        background: #1877f2 !important;
+        color: white !important;
+        border: 1px solid #1877f2 !important;
+    }
+}
+
+.blueButton2:hover {
+    background: #fff !important;
+    color: #1877f2 !important;
+    border: 1px solid #1877f2 !important;
+}
+
+.button-cancel2 {
+    background: #e82a2a !important;
+    color: white !important;
+    border: 1px solid #e82a2a !important;
+    &:hover {
+        background: white !important;
+        color: #e82a2a !important;
+    }
+}
+
+.marginLeftCheckBox {
+    margin-left: 12px!important;
+}
+
+.marginLeftCheckBox2 {
+    margin-left: -12px!important;
+}
+
+.textBold {
+    font-weight: bolder!important;
+}
+
+.info-circle {
+    background-color: #fff!important;
+    color: #1877f2;
+    font-weight: bold;
+    margin-left: -10px!important;
+    display: inline-block!important;
+}
+
+.optionItem {
+    white-space: pre-wrap!important;
+    text-align: justify!important;
+}
+
+.error {
+    border: 1px solid red !important;
+    color: #FF2929!important;
+    font-weight: bold!important;
+}
+
+.error:hover {
+    border: 1px solid red !important;
+}
+.labelCustom label::after{
+    content: ''!important;
+}
+
+input {
+    text-align: right!important
+}

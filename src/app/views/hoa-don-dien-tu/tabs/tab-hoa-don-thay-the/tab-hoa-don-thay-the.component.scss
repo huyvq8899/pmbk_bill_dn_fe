@@ -1,0 +1,23 @@
+@import '../../../../shared/scss/tab.scss';
+.ant-table-row-expanded2::after {
+    content: "\25BC"!important;
+}
+
+.ant-table-row-collapsed2::after {
+    content: "\25BA"!important;
+}
+
+.btnLapThayThe {
+    background-color: #70AD47;
+    color: white;
+    border: 1px solid #70AD47;
+    &:hover {
+        color: #70AD47!important;
+        background-color: white;
+    }
+    &:disabled{
+        border: 1px solid #dedede !important;
+        color: rgba(0, 0, 0, 0.25) !important;
+        background-color: #dedede !important;
+    }
+}

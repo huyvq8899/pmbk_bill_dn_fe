@@ -1,0 +1,102 @@
+<nz-spin [nzSpinning]="spinning">
+    <div class="inner-content" style="margin-left: 8px; margin-right: 8px;">
+        <form nz-form [formGroup]="hhdvForm">
+            <nz-form-item>
+                <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="ma">Mã (*)</nz-form-label>
+                <nz-form-control [nzSm]="20" [nzXs]="24" [nzErrorTip]="errorMa">
+                    <input nz-input nzSize="small" formControlName="ma" tooltipInput />
+                    <ng-template #errorMa let-control>
+                        <ng-container *ngIf="control.hasError('required')">
+                            <div class="tooltip-error">&lt;Mã&gt; không được để trống.</div>
+                        </ng-container>
+                        <ng-container *ngIf="control.hasError('maxlength')">
+                            <div class="tooltip-error">&lt;Mã&gt; không nhập quá 50 ký tự</div>
+                        </ng-container>
+                    </ng-template>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="ten">Tên (*)</nz-form-label>
+                <nz-form-control [nzSm]="20" [nzXs]="24" [nzErrorTip]="errorTen">
+                    <input nz-input formControlName="ten" nzSize="small" tooltipInput />
+                    <ng-template #errorTen let-control>
+                        <ng-container *ngIf="control.hasError('required')">
+                            <div class="tooltip-error">&lt;Tên&gt; không được để trống.</div>
+                        </ng-container>
+                        <ng-container *ngIf="control.hasError('maxlength')">
+                            <div class="tooltip-error">&lt;Tên&gt; không nhập quá 500 ký tự</div>
+                        </ng-container>
+                    </ng-template>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="donViTinhId">Đơn vị tính</nz-form-label>
+                <nz-form-control [nzSm]="20" [nzXs]="24">
+                    <nz-input-group class="group-add-item">
+                        <nz-select style="width: 100%;" nzShowSearch nzAllowClear formControlName="donViTinhId" nzSize="small" (ngModelChange)="changeDonViTinh($event)">
+                            <nz-option *ngIf="!loadingSearchDropdown" nzCustomContent nzDisabled="true">
+                                <div nz-row>
+                                    <div nz-col nzSm="24">
+                                        Đơn vị tính
+                                        <span class="addExtent"><i nz-icon nzType="plus"
+                                                                    nzTheme="outline"
+                                                                    (click)="addItemDonViTinhModal()"></i></span>
+                                    </div>
+                                </div>
+                            </nz-option>
+                            <nz-option *ngFor="let item of donViTinhs" [nzLabel]="item.ten" [nzValue]="item.donViTinhId">
+                            </nz-option>
+                        </nz-select>
+                    </nz-input-group>
+                    <!-- <ng-template #addDonViTinhTemplate>
+                        <button nzSize="small" nz-button (click)="addItemDonViTinhModal()" class="blueButton filterButton">
+                            <i nz-icon nzType="plus" nzTheme="outline"></i>
+                        </button>
+                    </ng-template> -->
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <ng-container>
+                    <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="donGiaBan">Đơn giá bán</nz-form-label>
+                    <nz-form-control [nzSm]="8" [nzXs]="24">
+                        <input nz-input formControlName="donGiaBan" nzSize="small" bkCurrencyMask [options]="{ precision: ddtp.getDonGiaQuyDoi() }" (blur)="blurDecimal($event, 'donGiaBan')" />
+                    </nz-form-control>
+                </ng-container>
+                <nz-form-control *ngIf="boolPhatSinhBanHangTheoDGSauThue == true || boolPhatSinhBanHangTheoDGSauThue == 'true'" [nzSm]="8" [nzXs]="24" nzFor="isGiaBanLaDonGiaSauThue" style="padding-left: 10px;">
+                    <label nz-checkbox formControlName="isGiaBanLaDonGiaSauThue">Giá bán là đơn giá sau thuế</label>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <ng-container>
+                    <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="thueGTGT">Thuế GTGT (%)</nz-form-label>
+                    <nz-form-control [nzSm]="8" [nzXs]="24">
+                        <nz-select nzShowSearch formControlName="thueGTGT" nzSize="small">
+                            <nz-option *ngFor="let item of thueGTGTs" [nzLabel]="item.text" [nzValue]="item.value">
+                            </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </ng-container>
+                <nz-form-label [nzSm]="5" [nzXs]="24" nzFor="tyLeChietKhau" style="text-align: right!important;">Tỷ lệ chiết khấu (%)</nz-form-label>
+                <nz-form-control [nzSm]="7" [nzXs]="24" nzFor="tyLeChietKhau">
+                    <input nz-input formControlName="tyLeChietKhau" nzSize="small" bkCurrencyMask [options]="{ precision: ddtp.getHeSoTyLe(), maxIntegerDigit: ddtp.maxIntegerHeSoTyLe }" (blur)="blurDecimal($event, 'tyLeChietKhau')" />
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="moTa">Mô tả</nz-form-label>
+                <nz-form-control [nzSm]="20" [nzXs]="24">
+                    <textarea rows="2" nz-input formControlName="moTa" nzSize="small"></textarea>
+                </nz-form-control>
+            </nz-form-item>
+        </form>
+    </div>
+</nz-spin>
+
+<div *nzModalFooter nz-row>
+    <div nz-col nzSpan="12" style="text-align: left;">
+        <label nz-checkbox [hidden]="isAddNew" [(ngModel)]="isNgungTheoDoi">Ngừng theo dõi</label>
+    </div>
+    <div nz-col nzSpan="12" style="text-align: right;">
+        <button nzSize="small" [disabled]="permission != true && isAddNew == false && !isCopy && thaoTacs.indexOf('DM_UPDATE') < 0" nz-button nzType="default" (click)="submitForm()" [ngClass]="{'footer-save': !(permission != true && isAddNew == false && !isCopy && thaoTacs.indexOf('DM_UPDATE') < 0), 'disabled-button-state-v3': permission != true && isAddNew == false && !isCopy && thaoTacs.indexOf('DM_UPDATE') < 0}" [nzLoading]="spinning"><i nz-icon nzType="save" nzTheme="outline"></i>&nbsp;Lưu</button>
+        <button nzSize="small" nz-button nzType="default" (click)="closeModal()" class="button-cancel"><i nz-icon nzType="close" nzTheme="outline"></i>&nbsp;Hủy</button>
+    </div>
+</div>

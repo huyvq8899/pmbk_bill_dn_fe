@@ -1,0 +1,166 @@
+@import "../../../../shared/scss/modal.scss";
+
+/* .DongY {
+    color: #15a85f!important;
+    font-weight: bold;
+  }
+
+  .QuayLai {
+    color: #1877f2!important ;
+    font-weight: bold;
+  } */
+
+:host ::ng-deep tbody tr.total-footer .ant-table-td-left-sticky {
+    background-color: #eeeeee !important;
+}
+
+
+:host ::ng-deep .ant-table-body {
+    overflow: auto scroll!important;
+    // max-height: 280px;
+}
+:host ::ng-deep .prefix-input-title .ant-input-prefix{
+  left: 7px;
+}
+
+:host ::ng-deep .ant-table-empty .ant-table-body {
+    // overflow-x: auto !important;
+    // overflow-y: auto !important;
+    overflow: auto scroll!important;
+}
+
+:host ::ng-deep .tab-detail-hddt .ant-tabs-extra-content {
+    width: calc(100% - 277px) !important;
+    margin-top: -5px;
+    text-align: right;
+}
+
+:host ::ng-deep .ant-tabs-bar {
+    position: relative;
+}
+
+.btn-config-data-field {
+    padding: 0 !important;
+    position: absolute;
+    left: 285px;
+    z-index: 100;
+    top: 3px;
+}
+.ant-dropdown-menu .ant-dropdown-menu-item-selected{
+  border: 1px!important;
+  margin-left: 1px;
+}
+
+.form-header-title {
+    margin-left: 8px;
+    font-weight: bold;
+    line-height: 40px;
+    vertical-align: middle;
+    font-size: 17px!important;
+}
+
+.form-header-title2 {
+    margin-left: 8px;
+    font-weight: bold;
+    vertical-align: middle;
+    font-size: 17px!important;
+}
+
+.dongMoTaHoaDonThayThe {
+    margin-left: 8px;
+    margin-bottom: 20px;
+}
+
+.select-loai-chiet-khau {
+    width: 190px;
+}
+
+.input-ty-le-chiet-khau {
+    width: 80px;
+}
+
+.dongMoTaHoaDonSaiSotBiThayThe {
+    margin-left: 4px;
+    margin-bottom: 20px;
+}
+
+.tlck-wrapper {
+    position: relative;
+    display: inline;
+    .input-ty-le-chiet-khau {
+        padding-right: 20px;
+    }
+    .percent-text {
+        position: absolute;
+        right: 8px;
+    }
+    .percent2-text {
+        position: absolute;
+        top: -2px;
+        right: 8px;
+    }
+}
+
+.moRongThuGonDuLieu {
+    position: absolute;
+    right: 0;
+    top: 0px;
+    padding: 1px 3px;
+    background: #1877f2;
+    color: white;
+    border: 1px solid transparent;
+    cursor: pointer;
+    &:hover {
+        color: #1877f2;
+        background: white;
+        border: 1px solid #1877f2;
+    }
+}
+
+.dummy-cell {
+    padding: 0 !important;
+}
+
+.resize-trigger {
+    width: 1px;
+    height: 30px;
+    margin: 12px 5px;
+    background: #e8e8e8;
+}
+
+.nz-resizable-preview {
+    border-width: 0;
+    border-right-width: 1px;
+}
+
+table th.resizing {
+    cursor: col-resize;
+}
+
+.resize-trigger {
+    width: 1px;
+    height: 30px;
+    margin: 4px 5px;
+    background: #e8e8e8;
+}
+
+.nz-resizable-preview {
+    border-width: 0;
+    border-right-width: 1px;
+}
+
+:host ::ng-deep .tooltip-error-top-left .ant-form-explain {
+    width: max-content !important;
+    top: -24px !important;
+    left: 0 !important;
+}
+
+.title-total-money {
+    font-weight: bold;
+    padding: 0 8px;
+}
+
+
+.baocao-subtitle-NotItalic {
+    margin-bottom: 0;
+}

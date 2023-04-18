@@ -1,0 +1,65 @@
+<nz-spin [nzSpinning]="spinning">
+    <div nz-row style="margin-bottom: 5px;padding: 8px 10px;
+        border: 1px solid rgb(217, 217, 217) !important;">
+        <div nz-col class="gutter-row" nzSpan="12">
+            <div nz-row [nzGutter]="8" style="margin-bottom: 5px;">
+                <div nz-col class="gutter-row" [nzSpan]="7" style="top: 3px">Hình thức hóa đơn:</div>
+                <div nz-col class="gutter-row" [nzSpan]="16">
+                    <span [ngClass]="{'oldOrangeRoundedShape': data?.hinhThucHoaDon == 1, 'oldBlueRoundedShape': data?.hinhThucHoaDon == 0}">{{data?.tenHinhThucHoaDon}}</span>
+                </div>
+            </div>
+            <div nz-row [nzGutter]="8">
+                <div nz-col class="gutter-row" [nzSpan]="7" style="top: 3px">Tên mẫu hóa đơn:</div>
+                <div nz-col class="gutter-row" [nzSpan]="16"><input type="text" nzSize="small" disabled nz-input id="ten" value="{{data?.ten}}" /></div>
+            </div>
+
+        </div>
+        <div nz-col class="gutter-row" nzSpan="12">
+            <div nz-row [nzGutter]="8" style="margin-bottom: 5px;">
+                <div nz-col class="gutter-row" [nzSpan]="7" style="top: 3px">Ủy nhiệm lập hóa đơn: </div>
+                <div nz-col class="gutter-row" [nzSpan]="16">
+                    <span class="daGuiRoundedShape" [ngClass]="{'daGuiRoundedShape-orange': data?.uyNhiemLapHoaDon == 1, 'daGuiRoundedShape-green': data?.uyNhiemLapHoaDon == 0}">{{this.data?.tenUyNhiemLapHoaDon}}</span>
+                </div>
+            </div>
+            <div nz-row [nzGutter]="8">
+                <div nz-col class="gutter-row" [nzSpan]="7" style="top: 3px">Loại hóa đơn:</div>
+                <div nz-col class="gutter-row" [nzSpan]="16"><input type="text" nzSize="small" disabled nz-input id="loaiHoaDon" value="{{data?.tenLoaiHoaDon}}" /></div>
+            </div>
+
+        </div>
+    </div>
+
+    <div nz-row>
+        <nz-table [nzNoResult]="null" nzSize="small" #fixedTable [nzData]="list" [nzWidthConfig]="widthConfig" [nzScroll]="scrollConfig" [nzFrontPagination]="false" [nzTotal]="list.length" [nzPageIndex]="1" [nzPageSize]="list.length" nzBordered [nzHideOnSinglePage]="true">
+            <thead>
+                <tr>
+                    <th nzAlign="center" nzWidth="150px">Người thực hiện</th>
+                    <th nzAlign="center" nzWidth="150px">Thời gian</th>
+                    <th nzAlign="center" nzWidth="150px">Hành động</th>
+                    <th nzAlign="center" nzWidth="150px">Mô tả chi tiết</th>
+                    <th nzAlign="center" nzWidth="100px">Địa chỉ IP thực hiện</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of fixedTable.data" (dblclick)="xemThem(data)">
+                    <td nzAlign="center">{{data?.createdByUserName}}
+                    </td>
+                    <td nzAlign="center">{{ data?.createdDate | date:'dd/MM/yyyy'}}<br/> {{ data?.createdDate | date:"HH:mm:ss"}}
+                    </td>
+                    <td nzAlign="center">{{ data?.hanhDong }}</td>
+                    <td title="{{ data?.moTaChiTiet }}">
+                        {{ data?.moTaChiTiet }}
+                        <!-- <div *ngIf="data?.moTaChiTiet && data?.isOverLimitContent"><a href="javascript:void(0);" (click)="xemThem(data)">Xem thêm</a></div> -->
+                    <td nzAlign="center">{{ data?.diaChiIP }}</td>
+                </tr>
+                <tr class="total-footer" *ngIf="total == 0">
+                    <td colspan="5">Không có dữ liệu hiển thị.</td>
+                </tr>
+            </tbody>
+        </nz-table>
+    </div>
+</nz-spin>
+
+<div *nzModalFooter>
+    <button nz-button nzType="default" nzSize="small" (click)="closeModal()" class="button-cancel"><i nz-icon nzType="close"></i>Đóng</button>
+</div>

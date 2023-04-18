@@ -1,0 +1,102 @@
+<div nz-row>
+    <nz-table #basicTable1 [nzData]="listLichSuSinhSo" [nzWidthConfig]="widthConfig" nzShowPagination="false"
+        nzBordered="true">
+        <thead>
+            <tr>
+                <th nzAlign="center">Năm</th>
+                <th nzAlign="center">Số bắt đầu từ</th>
+                <th nzAlign="center">Số lớn nhất đã tự sinh</th>
+                <th nzAlign="center">Nhật ký cập nhật</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of basicTable1.data">
+                <td nzAlign="center">{{ data.namPhatHanh }}</td>
+                <td>
+
+                    <ng-container *ngIf="data.soBatDau > 0; else elseTemplate">
+                        <span style="text-align: right !important; width: 100;display: block;">{{ data.soBatDau
+                            }}</span>
+                    </ng-container>
+                    <ng-template #elseTemplate>
+                        <span style="text-align: left;">Chưa cấp số</span>
+                    </ng-template>
+
+                </td>
+                <td>
+                    <ng-container *ngIf="data.soKetThuc > 0; else elseTemplate">
+                        <span style="text-align: right !important; width: 100;display: block;">{{ data.soKetThuc
+                            }}</span>
+
+                    </ng-container>
+                    <ng-template #elseTemplate>
+                        <span style="text-align: left;">Chưa cấp số</span>
+                    </ng-template>
+                </td>
+                <td nzAlign="center" *ngIf="data.isUpdateSoKetThuc || data.isUpdateSoBatDau">
+                    <button class="circleHistory" (click)="clickOpenNhatKySinhSo(data)" nz-popover
+                        nzPopoverPlacement='rightTop' [(nzVisible)]="data.visible" nzPopoverTrigger="click"
+                        [nzPopoverContent]="contentTemplate">
+                        <i nz-icon nzType="history"></i>
+                    </button>
+                    <ng-template #contentTemplate >
+                        <div  *ngIf="listNhatKySinhSo.length > 0" style="padding-top: 20px;
+                        padding-right: 10px;
+                        padding-left: 10px;
+                        background-color: rgb(255, 242, 204);
+                        height: 260px;
+                        overflow: scroll;
+                        overflow-x: hidden;">
+                            <nz-timeline>
+                                <ng-container *ngFor="let item of listNhatKySinhSo; let i=index">
+                                    <nz-timeline-item nzColor="#1877f2" >
+                                        <div
+                                            style="padding: 5px; background-color: white;box-shadow: 2px 3px 6px 0px rgb(0 0 0 / 55%) !important;">
+                                            <div style="font-weight: bold;">
+                                                {{item?.createdDate |
+                                                date:'dd/MM/yyyy HH:mm:ss'}}</div>
+                                            <div>
+                                                - Người thực hiện: {{item?.createdByUserName}}
+                                            </div>
+                                            <div>
+                                                - {{item?.thamChieu}}
+                                            </div>
+                                        </div>
+
+                                    </nz-timeline-item>
+                                </ng-container>
+                            </nz-timeline>
+                        </div>
+                        <tr class="total-footer" *ngIf="listNhatKySinhSo.length <= 0">
+                        <td colspan="4"> Không có dữ liệu hiển thị.
+                        </td>
+                    </tr>
+                    </ng-template>
+                   
+ 
+                </td>
+
+
+                <td [class.disable-cell]="true" [ngClass]="{'pd-left-10': true}" *ngIf="!data?.isUpdateSoKetThuc && !data?.isUpdateSoBatDau">
+                    <div class="status status-khong-su-dung" style="display: none; width: 100%; height: 100%;">
+                        Không có dữ liệu
+                    </div>
+
+                </td>
+            </tr>
+            <tr class="total-footer" *ngIf="basicTable1.data.length > 0">
+                <td colspan="4"> Số dòng: {{listLichSuSinhSo.length}}
+                </td>
+            </tr>
+            <tr class="total-footer" *ngIf="basicTable1.data.length <= 0">
+                <td colspan="4"> Không có dữ liệu hiển thị.
+                </td>
+            </tr>
+        </tbody>
+
+    </nz-table>
+</div>
+<div *nzModalFooter style="padding-right: 4px!important;">
+    <button nzSize="small" [nzLoading]="signing" nz-button nzType="default" (click)="destroyModal()"
+        class="button-cancel"><i nz-icon nzSize="small" nzType="close"></i>Đóng</button>
+</div>

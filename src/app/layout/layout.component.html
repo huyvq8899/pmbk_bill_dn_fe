@@ -1,0 +1,655 @@
+<nz-layout>
+  <nz-layout>
+    <div style="height: 45px;background-color: #fff;">
+      <img src="../../assets/logo.png" style="display: inline-block; height: 45px; width: 191px; margin-left: 20px" />
+
+      <div class="antd-pro-components-global-header-index-right" style="display: flex; align-items: center;">
+
+        <div class="inline-component-v2 rightNotificationIcons opacityRightNotificationIcons"
+          style="text-align: right;">
+          <div style="margin-left: 10px; margin-right:2px; font-weight:bold">
+            <span>{{taxCode}} - {{info?.tenDonVi | uppercase}}</span>
+          </div>
+          <div style="display: flex; align-items: center;">
+            <div id="marquee">
+              <marquee id="marqueerun" behavior="scroll" direction="left" onmouseout="this.start()"
+                onmouseover="this.stop()"
+                style="vertical-align: bottom;font-weight:bold; color: red;text-transform: uppercase;line-height: 1.5;">
+                <span id="marqueeContent">
+
+                </span>
+              </marquee>
+            </div>
+            <div id="username" style="margin-left: 10px;">
+              <span style="margin-right:2px; font-weight:bold; font-style: italic;"
+                *ngIf="isCollapsed && showUserName">{{currentUser?.fullName
+                | uppercase}}</span>
+              <span style="margin-right:5px;" *ngIf="(currentUser?.userName | uppercase) == 'ADMIN'">(Quản trị
+                viên)</span>
+              <span style="margin-right:5px;"
+                *ngIf="(currentUser?.userName | uppercase) != 'ADMIN'">({{currentUser?.title}})</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- <div class="inline-component-v2 rightNotificationIcons" nz-dropdown [nzDropdownMenu]="menu">
+          <nz-avatar nzIcon="user" nzSrc="{{currentUser?.avatar}}">
+          </nz-avatar>
+        </div>
+        <div>
+          <nz-dropdown-menu #menu="nzDropdownMenu">
+            <div class="arrow-up">
+            </div>
+            <div style="clear: both;">
+            </div>
+            <ul nz-menu style="width: max-content!important">
+              <li nz-menu-item (click)="fImportExcel.click()">
+                <i nz-icon nzSize="small" nzType="user" nzTheme="outline"></i>
+                <span>Thay ảnh đại diện</span>
+                <input id="fImportExcel" type="file" #fImportExcel (change)="importFile($event)" style="display: none;">
+              </li>
+              <li nz-menu-item (click)="changePass()">
+                <i nz-icon nzSize="small" nzType="unlock" nzTheme="outline"></i>
+                <span>Đặt lại mật khẩu</span>
+              </li>
+              <li nz-menu-item (click)="clickTroGiup()">
+                <i nz-icon nzType="question-circle" nzTheme="outline"></i>
+                <span>Trợ giúp (Ctrl + F1)</span>
+              </li>
+              <li nz-menu-divider></li>
+              <li nz-menu-item (click)="logout()" (click)="CollapseMenu()">
+                <i nz-icon nzType="logout" nzTheme="outline"></i> Đăng xuất
+              </li>
+            </ul>
+          </nz-dropdown-menu>
+        </div> -->
+        <div class="inline-component-v2 rightNotificationIcons avatar-wrapper"
+          (mouseover)="isOpenAvatarMenu = true; isHoverAvatar = true" (mouseout)="closeAvatarMenu()">
+          <nz-avatar nzIcon="user" nzSrc="{{currentUser?.avatar}}">
+          </nz-avatar>
+          <div class="dropdown-avatar-menu" *ngIf="isOpenAvatarMenu || isOpenChangePass"
+            (mouseover)="isOpenAvatarMenu = true; isHoverAvatar = true" (mouseout)="closeAvatarMenu()">
+            <div class="arrow-up">
+            </div>
+            <div style="clear: both;">
+            </div>
+            <ul nz-menu style="width: max-content!important">
+              <li nz-menu-item (click)="fImportExcel.click()">
+                <i nz-icon nzSize="small" nzType="user" nzTheme="outline"></i>
+                <span>Thay ảnh đại diện</span>
+                <input id="fImportExcel" type="file" #fImportExcel (change)="importFile($event)" style="display: none;">
+              </li>
+              <li nz-menu-item (click)="changePass()">
+                <i nz-icon nzSize="small" nzType="unlock" nzTheme="outline"></i>
+                <span>Đặt lại mật khẩu</span>
+              </li>
+              <li nz-menu-item (click)="clickTroGiup()">
+                <i nz-icon nzType="question-circle" nzTheme="outline"></i>
+                <span>Trợ giúp (Ctrl + F1)</span>
+              </li>
+              <li nz-menu-divider></li>
+              <li nz-menu-item (click)="logout()" (click)="CollapseMenu()">
+                <i nz-icon nzType="logout" nzTheme="outline"></i> Đăng xuất
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <nz-header>
+      <ul nz-menu nzTheme="light" nzMode="horizontal" style="display: inline-block;height: 57px;margin-left: 15px;">
+        <li nz-submenu nzTitle="Hệ thống" [class.sizeMenuDanhMuc]="isShowMeNuDanhMuc">
+          <ul>
+            <li
+              *ngIf="userPermissions != null && (userPermissions === true || userPermissions.indexOf('ThongTinNguoiNopThue') >= 0)"
+              nz-menu-item class="heightMenuDanhMuc" [nzMatchRouter]="true" (click)="CollapseMenu()">
+              <a [routerLink]="['/he-thong/thong-tin-nguoi-nop-thue']">
+                <span>Thông tin người nộp thuế</span>
+              </a>
+            </li>
+
+            <li *ngIf="userPermissions == true" nz-menu-item class="heightMenuDanhMuc" [nzMatchRouter]="true"
+              (click)="CollapseMenu()">
+              <a [routerLink]="['/he-thong/quan-ly-vai-tro']">
+                <span>Quản lý vai trò</span>
+              </a>
+            </li>
+
+            <li *ngIf="userPermissions == true" nz-menu-item class="heightMenuDanhMuc" [nzMatchRouter]="true"
+              (click)="CollapseMenu()">
+              <a [routerLink]="['/he-thong/quan-ly-nguoi-dung']">
+                <span>Quản lý người dùng</span>
+              </a>
+            </li>
+
+            <li nz-menu-item class="heightMenuDanhMuc" [nzMatchRouter]="true" (click)="CollapseMenu()">
+              <a [routerLink]="['/he-thong/nhap-khau-chung-tu']">
+                <span>Nhập dữ liệu từ Excel</span>
+              </a>
+            </li>
+
+            <li *ngIf="userPermissions != null && (userPermissions === true || userPermissions.indexOf('TuyChonChung') >= 0
+                    || userPermissions.indexOf('DinhDangSo') >= 0
+                    || userPermissions.indexOf('ThongTinTaiNguyen') >= 0
+                    || userPermissions.indexOf('ThietLapCongCuKy') >= 0
+                    || userPermissions.indexOf('MayChuGuiEmail') >= 0
+                    || userPermissions.indexOf('EmailGuiHoaDon') >= 0
+                    || userPermissions.indexOf('EmailGuiPhieuXuatKho') >= 0
+                    || userPermissions.indexOf('ThietLapSMSGuiHoaDon') >= 0
+                    || userPermissions.indexOf('ThietLapXacNhanCTS') >= 0
+                    || userPermissions.indexOf('PheDuyetHoaDon') >= 0)" nz-menu-item class="heightMenuDanhMuc"
+              [nzMatchRouter]="true" (click)="CollapseMenu()">
+              <a [routerLink]="['/he-thong/tuy-chon']">
+                <span>Tùy chọn</span>
+              </a>
+            </li>
+            <li nz-menu-item class="heightMenuDanhMuc" [nzMatchRouter]="true" (click)="CollapseMenu()">
+              <a [routerLink]="['/he-thong/lich-su-phien-ban']">
+              <span>Lịch sử phiên bản</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <li nz-submenu nzTitle="Quản lý" [class.sizeMenuDanhMuc]="isShowMeNuDanhMuc" *ngIf="userPermissions != null && (userPermissions === true
+        || userPermissions.indexOf('ThongTinHoaDon') >= 0  || userPermissions.indexOf('MauHoaDon') >= 0 || userPermissions.indexOf('ThongDiepGui') >= 0 || userPermissions.indexOf('ThongDiepNhan') >= 0
+                || userPermissions.indexOf('BoKyHieuHoaDon') >= 0)">
+          <ul>
+            <li nz-menu-item class="heightMenuDanhMuc" [nzMatchRouter]="true" (click)="CollapseMenu()"
+              *ngIf="userPermissions != null && (userPermissions === true || userPermissions.indexOf('ThongTinHoaDon') >= 0)">
+              <a [routerLink]="['/quan-ly/thong-tin-hoa-don']">
+                Thông tin hóa đơn
+              </a>
+            </li>
+            <li nz-menu-item class="heightMenuDanhMuc" [nzMatchRouter]="true" (click)="CollapseMenu()"
+              *ngIf="userPermissions != null && (userPermissions === true || userPermissions.indexOf('MauHoaDon') >= 0)">
+              <a [routerLink]="['/quan-ly/mau-hoa-don']">
+                Mẫu hóa đơn
+              </a>
+            </li>
+            <li nz-menu-item class="heightMenuDanhMuc" [nzMatchRouter]="true" (click)="CollapseMenu()"
+              *ngIf="userPermissions != null && (userPermissions === true || userPermissions.indexOf('ThongDiepGui') >= 0)">
+              <a [routerLink]="['/quan-ly/thong-diep-gui']">
+                Thông điệp gửi
+              </a>
+            </li>
+            <li nz-menu-item class="heightMenuDanhMuc" [nzMatchRouter]="true" (click)="CollapseMenu()"
+              *ngIf="userPermissions != null && (userPermissions === true || userPermissions.indexOf('ThongDiepNhan') >= 0)">
+              <a [routerLink]="['/quan-ly/thong-diep-nhan']">
+                Thông điệp nhận
+              </a>
+            </li>
+            <li nz-menu-item class="heightMenuDanhMuc" [nzMatchRouter]="true" (click)="CollapseMenu()"
+              *ngIf="userPermissions != null && (userPermissions === true || userPermissions.indexOf('BoKyHieuHoaDon') >= 0)">
+              <a [routerLink]="['/quan-ly/bo-ky-hieu-hoa-don']">
+                Bộ ký hiệu hóa đơn
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <li nz-submenu nzTitle="Danh mục" [class.sizeMenuDanhMuc]="isShowMeNuDanhMuc" *ngIf="userPermissions != null && (userPermissions === true  || userPermissions.indexOf('KhachHang') >= 0
+                  || userPermissions.indexOf('NhanVien') >= 0 || userPermissions.indexOf('HangHoaDichVu') >= 0
+                  || userPermissions.indexOf('DonViTinh') >= 0 || userPermissions.indexOf('LoaiTien') >= 0)">
+          <ul>
+            <li nz-menu-item class="heightMenuDanhMuc" [nzMatchRouter]="true" (click)="CollapseMenu()"
+              *ngIf="userPermissions != null && (userPermissions === true || userPermissions.indexOf('KhachHang') >= 0)">
+              <a [routerLink]="['/danh-muc/khach-hang']">
+                Khách hàng
+              </a>
+            </li>
+            <li nz-menu-item class="heightMenuDanhMuc" [nzMatchRouter]="true" (click)="CollapseMenu()"
+              *ngIf="boolQuanLyNhanVienBanHangTrenHoaDon && userPermissions != null && (userPermissions === true || userPermissions.indexOf('NhanVien') >= 0)">
+              <a [routerLink]="['/danh-muc/nhan-vien']">
+                Nhân viên
+              </a>
+            </li>
+            <li nz-menu-item class="heightMenuDanhMuc" [nzMatchRouter]="true" (click)="CollapseMenu()"
+              *ngIf="userPermissions != null && (userPermissions === true || userPermissions.indexOf('HangHoaDichVu') >= 0)">
+              <a [routerLink]="['/danh-muc/hang-hoa-dich-vu']">
+                Hàng hóa, dịch vụ
+              </a>
+            </li>
+            <li nz-menu-item class="heightMenuDanhMuc" [nzMatchRouter]="true" (click)="CollapseMenu()"
+              *ngIf="userPermissions != null && (userPermissions === true || userPermissions.indexOf('DonViTinh') >= 0)">
+              <a [routerLink]="['/danh-muc/don-vi-tinh']">
+                Đơn vị tính
+              </a>
+            </li>
+            <!-- <li nz-menu-item class="heightMenuDanhMuc"
+              *ngIf="userPermissions != null && (userPermissions === true || userPermissions.indexOf('HoSoHoaDonDienTu') >= 0)">
+              <a [routerLink]="['/quan-ly/thong-diep-nhan']">
+                Nhóm hàng hóa, dịch vụ
+              </a>
+            </li> -->
+            <li nz-menu-item class="heightMenuDanhMuc" [nzMatchRouter]="true" (click)="CollapseMenu()"
+              *ngIf="userPermissions != null && (userPermissions === true || userPermissions.indexOf('LoaiTien') >= 0)">
+              <a [routerLink]="['/danh-muc/loai-tien']">
+                Loại tiền
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <li nz-submenu nzTitle="Hóa đơn" [class.sizeMenuDanhMuc]="isShowMeNuDanhMuc"
+          *ngIf="userPermissions != null && (userPermissions === true || userPermissions.indexOf('HoaDon') >= 0)">
+          <ul>
+            <li nz-menu-item [nzMatchRouter]="true" (click)="CollapseMenu()">
+              <a [routerLink]="['/hoa-don-dien-tu/quan-li-hoa-don-dien-tu']">
+                Hóa đơn điện tử
+              </a>
+            </li>
+            <li nz-menu-item [nzMatchRouter]="true" (click)="CollapseMenu()">
+              <a [routerLink]="['/hoa-don-dien-tu/hoa-don-xoa-bo']">
+                Hóa đơn xóa bỏ
+              </a>
+            </li>
+            <li nz-menu-item [nzMatchRouter]="true" (click)="CollapseMenu()">
+              <a [routerLink]="['/hoa-don-dien-tu/hoa-don-thay-the']">
+                Hóa đơn thay thế
+              </a>
+            </li>
+            <li nz-menu-item [nzMatchRouter]="true" (click)="CollapseMenu()">
+              <a [routerLink]="['/hoa-don-dien-tu/hoa-don-dieu-chinh']">
+                Hóa đơn điều chỉnh
+              </a>
+            </li>
+            <li *ngIf="isKhongCoMa" nz-menu-item [nzMatchRouter]="true" (click)="CollapseMenu()">
+              <a [routerLink]="['/hoa-don-dien-tu/bang-tong-hop-du-lieu-hoa-don']">
+                Bảng tổng hợp dữ liệu hóa đơn
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <li id="phieuxuatkho" class="hoadonmenu phieuxuatkho" nz-submenu nzTitle="Phiếu xuất kho"
+          [class.sizeMenuDanhMuc]="isShowMeNuDanhMuc"
+          *ngIf="userPermissions != null && (userPermissions === true || userPermissions.indexOf('PhieuXuatKho') >= 0)">
+          <ul>
+            <li nz-menu-item [nzMatchRouter]="true" (click)="CollapseMenu()">
+              <a [routerLink]="['/phieu-xuat-kho/quan-li-phieu-xuat-kho']">
+                Phiếu xuất kho điện tử
+              </a>
+            </li>
+            <li nz-menu-item [nzMatchRouter]="true" (click)="CollapseMenu()">
+              <a [routerLink]="['/phieu-xuat-kho/pxk-xoa-bo']">
+                Phiếu xuất kho xóa bỏ
+              </a>
+            </li>
+            <li nz-menu-item [nzMatchRouter]="true" (click)="CollapseMenu()">
+              <a [routerLink]="['/phieu-xuat-kho/pxk-thay-the']">
+                Phiếu xuất kho thay thế
+              </a>
+            </li>
+            <li nz-menu-item [nzMatchRouter]="true" (click)="CollapseMenu()">
+              <a [routerLink]="['/phieu-xuat-kho/pxk-dieu-chinh']">
+                Phiếu xuất kho điều chỉnh
+              </a>
+            </li>
+            <li *ngIf="isKhongCoMa" nz-menu-item [nzMatchRouter]="true" (click)="CollapseMenu()">
+              <a [routerLink]="['/phieu-xuat-kho/bang-tong-hop-du-lieu-pxk']">
+                Bảng tổng hợp dữ liệu phiếu xuất kho
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <li id="hoadontumaytinhtien" class="hoadonmenu hoadontumaytinhtien" nz-submenu nzTitle="Máy tính tiền"
+          [class.sizeMenuDanhMuc]="isShowMeNuDanhMuc"
+          *ngIf="userPermissions != null && ((userPermissions === true || userPermissions.indexOf('HoaDon') >= 0) && isCMTMTT == true)">
+          <ul>
+            <li nz-menu-item [nzMatchRouter]="true" (click)="CollapseMenu()">
+              <a [routerLink]="['/hoa-don-tu-mtt/quan-li-hoa-don-tu-mtt']">
+                Hóa đơn điện tử
+              </a>
+            </li>
+            <li nz-menu-item [nzMatchRouter]="true" (click)="CollapseMenu()">
+              <a [routerLink]="['/hoa-don-tu-mtt/hoa-don-tu-mtt-xoa-bo']">
+                Hóa đơn xóa bỏ
+              </a>
+            </li>
+            <li nz-menu-item [nzMatchRouter]="true" (click)="CollapseMenu()">
+              <a [routerLink]="['/hoa-don-tu-mtt/hoa-don-tu-mtt-thay-the']">
+                Hóa đơn thay thế
+              </a>
+            </li>
+            <li nz-menu-item [nzMatchRouter]="true" (click)="CollapseMenu()">
+              <a [routerLink]="['/hoa-don-tu-mtt/hoa-don-tu-mtt-dieu-chinh']">
+                Hóa đơn điều chỉnh
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <li nz-submenu nzTitle="Tiện ích" [class.sizeMenuDanhMuc]="isShowMeNuDanhMuc">
+          <ul>
+            <li nz-menu-item [nzMatchRouter]="true" (click)="CollapseMenu()"
+              *ngIf="userPermissions != null && (userPermissions === true || userPermissions.indexOf('NhatKyTruyCap') >= 0)">
+              <a [routerLink]="['/tien-ich/nhat-ky-truy-cap']">
+                Nhật ký truy cập
+              </a>
+            </li>
+            <li nz-menu-item [nzMatchRouter]="true" (click)="CollapseMenu()"
+              *ngIf="userPermissions != null && (userPermissions === true || userPermissions.indexOf('NhatKyGuiEmail') >= 0)">
+              <a [routerLink]="['/tien-ich/nhat-ky-gui-email']">
+                Nhật ký gửi Email
+              </a>
+            </li>
+            <li nz-menu-item [nzMatchRouter]="true" (click)="xoaCache()">
+              <a>Xóa bộ nhớ đệm</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+
+
+      <div style="float: right; font-weight: bold; margin-right: 14px;" title="">
+        <span *ngIf="userPermissions != null && (userPermissions === true || (this.userPermissions.indexOf('HoaDon') >= 0 && (thaoTacs.indexOf('HD_FULL') >= 0 || thaoTacs.indexOf('HD_CREATE') >= 0)))" class="text-huongdan text-huongdan-sky"
+          (click)="goTo('/hoa-don-dien-tu/quan-li-hoa-don-dien-tu',{'lhd':true})"><i nz-icon nzType="plus"
+            nzTheme="outline"></i> Lập hóa đơn</span>
+        <span class="text-huongdan" (click)="showHideHuongDan($event)"><i nz-icon nzType="pushpin" nzTheme="fill"></i>
+          Hướng dẫn khi bắt đầu sử dụng</span>
+        <img src="../../assets/phone.png" [ngStyle]="{'width':'20px', 'height':'20px', 'margin-top':'-5px'}" />
+        <a title="Số điện thoại chăm sóc khách hàng" style="font-size: 13px!important;color: #000000 !important;"
+          href="tel:0904286069">CSKH: 0904286069 - 0912708069</a>
+      </div>
+    </nz-header>
+    <nz-content>
+      <nz-breadcrumb [nzAutoGenerate]="true" [nzRouteLabel]="'customBreadcrumb'"></nz-breadcrumb>
+      <div class="inner-content">
+        <router-outlet></router-outlet>
+      </div>
+    </nz-content>
+  </nz-layout>
+  <!-- drawer -->
+  <nz-drawer [nzBodyStyle]="{padding:0}" [nzWidth]="256" [nzClosable]="false" [nzVisible]="isShowDrawer"
+    nzPlacement="left" (nzOnClose)="closeDrawer()">
+    <div class="body-drawer">
+      <nz-sider [nzTheme]="'light'" nzWidth="256px">
+        <div *ngIf="isShowSider;else templateSiler">
+        </div>
+      </nz-sider>
+    </div>
+  </nz-drawer>
+</nz-layout>
+
+<ng-template #templateSiler>
+  <div class="logo" *ngIf="isCollapsed; else Logo1">
+    <a routerLink="/">
+      <img src="../../assets/logo1.png" [ngStyle]="{'width':'50px'}" />
+      <!-- logo ngan -->
+    </a>
+  </div>
+  <ng-template #Logo1>
+    <div class="logo">
+      <a routerLink="/">
+        <img src="../../assets/logo.png" style="height: 50px;" />
+        <!-- logo dai -->
+      </a>
+    </div>
+  </ng-template>
+  <ul nz-menu nzTheme="light" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+    <li nzTitle="Bàn làm việc" nzIcon="cluster">
+    </li>
+    <li nz-submenu nzTitle="Tiền" nzIcon="money-collect">
+      <ul>
+        <li nz-menu-item [nzMatchRouter]="true" (click)="CollapseMenu()">
+          <a [routerLink]="['/tien/thu-chi-tien']">
+            Thu, chi tiền
+          </a>
+        </li>
+        <li nz-menu-item [nzMatchRouter]="true" (click)="CollapseMenu()">
+          <a [routerLink]="['/tien/kiem-ke-tien-mat']">
+            Kiểm kê tiền mặt
+          </a>
+        </li>
+        <li nz-menu-item [nzMatchRouter]="true" (click)="CollapseMenu()">
+          <a [routerLink]="['/tien/du-bao-dong-tien']">
+            Dự báo dòng tiền
+          </a>
+        </li>
+      </ul>
+    </li>
+    <li nz-submenu nzTitle="Mua hàng" nzIcon="shopping-cart">
+      <ul>
+        <li nz-menu-item [nzMatchRouter]="true" (click)="CollapseMenu()" (click)="CollapseMenu()">
+          <a class="fixLengtTextNotNoWrap" [routerLink]="['/mua-hang/don-mua-hang']">
+            Đơn mua hàng
+          </a>
+        </li>
+        <li nz-menu-item [nzMatchRouter]="true" (click)="CollapseMenu()" (click)="CollapseMenu()">
+          <a class="fixLengtTextNotNoWrap" [routerLink]="['/mua-hang/hop-dong-mua-hang']">
+            Hợp đồng mua hàng
+          </a>
+        </li>
+        <!-- <li nz-menu-divider></li> -->
+        <li nz-menu-item [nzMatchRouter]="true" (click)="CollapseMenu()" (click)="CollapseMenu()">
+          <a class="fixLengtTextNotNoWrap" [routerLink]="['/mua-hang/chung-tu-mua-hang']">
+            Chứng từ mua hàng
+          </a>
+        </li>
+
+        <li nz-menu-item [nzMatchRouter]="true" (click)="CollapseMenu()" (click)="CollapseMenu()">
+          <a class="fixLengtTextNotNoWrap" [routerLink]="['/mua-hang/tra-lai-hang-mua']">
+            Trả lại hàng mua
+          </a>
+        </li>
+        <li nz-menu-item [nzMatchRouter]="true" (click)="CollapseMenu()" (click)="CollapseMenu()">
+          <a class="fixLengtTextNotNoWrap" [routerLink]="['/mua-hang/giam-gia-hang-mua']">
+            Giảm giá hàng mua
+          </a>
+        </li>
+        <li nz-menu-item [nzMatchRouter]="true" (click)="CollapseMenu()" (click)="CollapseMenu()">
+          <a class="fixLengtTextNotNoWrap" [routerLink]="['/mua-hang/cong-no']">
+            Công nợ
+          </a>
+        </li>
+        <li nz-menu-item [nzMatchRouter]="true" (click)="CollapseMenu()" (click)="CollapseMenu()">
+          <a class="fixLengtTextNotNoWrap" [routerLink]="['/mua-hang/bao-cao-cong-no']">
+            Báo cáo phân tích
+          </a>
+        </li>
+      </ul>
+    </li>
+    <li nz-submenu nzTitle="Bán hàng" nzIcon="shop">
+      <ul>
+        <li nz-menu-item [nzMatchRouter]="true" (click)="CollapseMenu()" (click)="CollapseMenu()">
+          <a class="fixLengtTextNotNoWrap" [routerLink]="['/ban-hang/bao-gia']">
+            Báo giá
+          </a>
+        </li>
+        <li nz-menu-item [nzMatchRouter]="true" (click)="CollapseMenu()" (click)="CollapseMenu()">
+          <a class="fixLengtTextNotNoWrap" [routerLink]="['/ban-hang/don-dat-hang']">
+            Đơn đặt hàng
+          </a>
+        </li>
+        <!-- <li nz-menu-divider></li> -->
+        <li nz-menu-item [nzMatchRouter]="true" (click)="CollapseMenu()" (click)="CollapseMenu()">
+          <a class="fixLengtTextNotNoWrap" [routerLink]="['/ban-hang/chung-tu-ban-hang']">
+            Chứng từ bán hàng
+          </a>
+        </li>
+        <!-- <li nz-menu-divider></li> -->
+        <!-- <li nz-menu-item>
+          <a class="fixLengtTextNotNoWrap" [routerLink]="['/account/list']">
+            Hóa đơn
+          </a>
+        </li>
+        <li nz-menu-item>
+          <a class="fixLengtTextNotNoWrap" [routerLink]="['/account/list']">
+            Giảm giá bán hàng
+          </a>
+        </li> -->
+        <li nz-menu-item [nzMatchRouter]="true" (click)="CollapseMenu()" (click)="CollapseMenu()">
+          <a class="fixLengtTextNotNoWrap" [routerLink]="['/ban-hang/tra-lai-hang-ban']">
+            Trả lại hàng bán
+          </a>
+        </li>
+        <li nz-menu-item [nzMatchRouter]="true" (click)="CollapseMenu()" (click)="CollapseMenu()">
+          <a class="fixLengtTextNotNoWrap" [routerLink]="['/ban-hang/giam-gia-hang-ban']">
+            Giảm giá hàng bán
+          </a>
+        </li>
+        <li nz-menu-item [nzMatchRouter]="true" (click)="CollapseMenu()" (click)="CollapseMenu()">
+          <a class="fixLengtTextNotNoWrap" [routerLink]="['/ban-hang/cong-no']">
+            Công nợ
+          </a>
+        </li>
+        <li nz-menu-item [nzMatchRouter]="true" (click)="CollapseMenu()" (click)="CollapseMenu()">
+          <a class="fixLengtTextNotNoWrap" [routerLink]="['/ban-hang/bao-cao-cong-no']">
+            Báo cáo phân tích
+          </a>
+        </li>
+      </ul>
+    </li>
+    <li nz-submenu nzTitle="Kho" nzIcon="home">
+      <ul>
+        <li nz-menu-item [nzMatchRouter]="true" (click)="CollapseMenu()">
+          <a class="fixLengtTextNotNoWrap" [routerLink]="['/kho/nhap-xuat-kho']">
+            Nhập, xuất kho
+          </a>
+        </li>
+        <li nz-menu-item [nzMatchRouter]="true" (click)="CollapseMenu()">
+          <a class="fixLengtTextNotNoWrap" [routerLink]="['/kho/chuyen-kho']">
+            Chuyển kho
+          </a>
+        </li>
+        <li nz-menu-divider></li>
+        <li nz-menu-item [nzMatchRouter]="true" (click)="CollapseMenu()">
+          <a class="fixLengtTextNotNoWrap" [routerLink]="['/kho/kiem-ke']">
+            Kiểm kê
+          </a>
+        </li>
+      </ul>
+    </li>
+    <li nz-submenu nzTitle="Tài sản" nzIcon="euro">
+      <ul>
+        <li nz-menu-item (click)="CollapseMenu()" [nzMatchRouter]="true">
+          <a class="fixLengtTextNotNoWrap" [routerLink]="['/tai-san-co-dinh/so-tai-san']">
+            Sổ tài sản
+          </a>
+        </li>
+        <li nz-menu-item (click)="CollapseMenu()" [nzMatchRouter]="true">
+          <a class="fixLengtTextNotNoWrap" [routerLink]="['/tai-san-co-dinh/ghi-tang']">
+            Ghi tăng
+          </a>
+        </li>
+        <li nz-menu-item (click)="CollapseMenu()" [nzMatchRouter]="true">
+          <a class="fixLengtTextNotNoWrap" [routerLink]="['/tai-san-co-dinh/tinh-khau-hao']">
+            Tính khấu hao
+          </a>
+        </li>
+        <li nz-menu-item (click)="CollapseMenu()" [nzMatchRouter]="true">
+          <a class="fixLengtTextNotNoWrap" [routerLink]="['/tai-san-co-dinh/danh-gia-lai']">
+            Đánh giá lại
+          </a>
+        </li>
+        <li nz-menu-item (click)="CollapseMenu()" [nzMatchRouter]="true">
+          <a class="fixLengtTextNotNoWrap" [routerLink]="['/tai-san-co-dinh/dieu-chuyen']">
+            Điều chuyển
+          </a>
+        </li>
+        <li nz-menu-item (click)="CollapseMenu()" [nzMatchRouter]="true">
+          <a class="fixLengtTextNotNoWrap" [routerLink]="['/tai-san-co-dinh/ghi-giam']">
+            Ghi giảm
+          </a>
+        </li>
+        <li nz-menu-divider></li>
+        <li nz-menu-item (click)="CollapseMenu()" [nzMatchRouter]="true">
+          <a class="fixLengtTextNotNoWrap" [routerLink]="['/tai-san-co-dinh/kiem-ke']">
+            Kiểm kê
+          </a>
+        </li>
+        <li nz-menu-item (click)="CollapseMenu()">
+          <a class="fixLengtTextNotNoWrap" [routerLink]="['/tai-san-co-dinh/bao-cao-phan-tich']">
+            Báo cáo phân tích
+          </a>
+        </li>
+        <!-- <li nz-menu-item (click)="CollapseMenu()">
+          <a class="fixLengtTextNotNoWrap" [routerLink]="['/account/list']">
+            Khai báo CCDC đầu kỳ
+          </a>
+        </li> -->
+      </ul>
+    </li>
+    <li nz-submenu nzTitle="Chi phí trả trước" nzIcon="tool">
+      <ul>
+        <li nz-menu-item (click)="CollapseMenu()">
+          <a class="fixLengtTextNotNoWrap" [routerLink]="['/chi-phi-tra-truoc/so-theo-doi']">
+            Sổ theo dõi
+          </a>
+        </li>
+        <li nz-menu-item (click)="CollapseMenu()">
+          <a class="fixLengtTextNotNoWrap" [routerLink]="['/chi-phi-tra-truoc/ghi-tang']">
+            Ghi tăng
+          </a>
+        </li>
+        <li nz-menu-item (click)="CollapseMenu()">
+          <a class="fixLengtTextNotNoWrap" [routerLink]="['/chi-phi-tra-truoc/phan-bo-chi-phi']">
+            Phân bổ chi phí
+          </a>
+        </li>
+        <li nz-menu-item (click)="CollapseMenu()">
+          <a class="fixLengtTextNotNoWrap" [routerLink]="['/chi-phi-tra-truoc/dieu-chinh']">
+            Điều chỉnh
+          </a>
+        </li>
+        <li nz-menu-item (click)="CollapseMenu()">
+          <a class="fixLengtTextNotNoWrap" [routerLink]="['/chi-phi-tra-truoc/dieu-chuyen']">
+            Điều chuyển
+          </a>
+        </li>
+        <li nz-menu-item (click)="CollapseMenu()">
+          <a class="fixLengtTextNotNoWrap" [routerLink]="['/chi-phi-tra-truoc/ghi-giam']">
+            Ghi giảm
+          </a>
+        </li>
+        <li nz-menu-divider></li>
+        <li nz-menu-item (click)="CollapseMenu()">
+          <a class="fixLengtTextNotNoWrap" [routerLink]="['/chi-phi-tra-truoc/kiem-ke']">
+            Kiểm kê
+          </a>
+        </li>
+        <li nz-menu-item (click)="CollapseMenu()">
+          <a class="fixLengtTextNotNoWrap" [routerLink]="['/chi-phi-tra-truoc/bao-cao-phan-tich']">
+            Báo cáo phân tích
+          </a>
+        </li>
+      </ul>
+    </li>
+    <li nz-submenu nzTitle="Tổng hợp" nzIcon="block">
+      <ul>
+        <li nz-menu-item [nzMatchRouter]="true" (click)="CollapseMenu()">
+          <a class="fixLengtTextNotNoWrap" [routerLink]="['/tong-hop/chung-tu-nghiep-vu-khac']">
+            Chứng từ nghiệp vụ khác
+          </a>
+        </li>
+        <li nz-menu-item [nzMatchRouter]="true" (click)="CollapseMenu()">
+          <a class="fixLengtTextNotNoWrap" [routerLink]="['/tong-hop/ket-chuyen-lai-lo']">
+            Kết chuyển lãi lỗ
+          </a>
+        </li>
+        <li nz-menu-item [nzMatchRouter]="true">
+          <a class="fixLengtTextNotNoWrap" [routerLink]="['/tong-hop/khoa-so-ky-ke-toan']">
+            Khóa sổ kỳ kế toán
+          </a>
+        </li>
+        <li nz-menu-item [nzMatchRouter]="true" (click)="CollapseMenu()">
+          <a class="fixLengtTextNotNoWrap" [routerLink]="['/tong-hop/lap-bctc']">
+            Lập báo cáo tài chính
+          </a>
+        </li>
+      </ul>
+    </li>
+    <li nz-menu-item (click)="clickBaoCao()" [nzMatchRouter]="true">
+      <i nz-icon nzType="area-chart"></i>
+      <span>Báo cáo</span>
+    </li>
+    <li nz-menu-item (click)="clickHeThong()" [nzMatchRouter]="true">
+      <i nz-icon nzType="laptop"></i>
+      <span>Hệ thống</span>
+    </li>
+  </ul>
+</ng-template>
+<nz-back-top></nz-back-top>

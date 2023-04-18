@@ -1,0 +1,15 @@
+<div class="card-container">
+  <p class="tieuDe">Thông điệp</p>
+  <nz-tabset nzSize="small" [nzTabPosition]="'top'" [nzType]="'card'" [(nzSelectedIndex)]="selectedTab">
+    <nz-tab nzTitle="Gửi dữ liệu HĐĐT không mã" (nzClick)="clickTab('/hoa-don-dien-tu/thong-diep/gui-du-lieu-hddt-khong-ma')">
+      <ng-template nz-tab>
+        <app-tab-gui-du-lieu-hoa-don-khong-ma></app-tab-gui-du-lieu-hoa-don-khong-ma>
+      </ng-template>
+    </nz-tab>
+    <!-- <nz-tab nzTitle="Gửi dữ liệu HĐĐT để cấp mã" (nzClick)="clickTab('/hoa-don-dien-tu/thong-diep/gui-du-lieu-hddt-de-cap-ma')">
+      <ng-template nz-tab>
+        <app-tab-gui-du-lieu-hoa-don-de-cap-ma></app-tab-gui-du-lieu-hoa-don-de-cap-ma>
+      </ng-template>
+    </nz-tab> -->
+  </nz-tabset>
+</div>

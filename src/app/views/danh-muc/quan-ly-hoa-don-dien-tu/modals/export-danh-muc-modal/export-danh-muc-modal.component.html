@@ -1,0 +1,43 @@
+<nz-spin [nzSpinning]="spinning">
+  <div nz-row style="margin-bottom: 2px;">
+    <div nz-col nzSpan="18" style="text-align: left;">
+      <nz-radio-group *ngIf="refType === refTypeCompare.ThongBaoDieuChinhThongTinHoaDon" [(ngModel)]="radioType"
+        (ngModelChange)="changeLoaiThongBaoDieuChinh($event)">
+        <label nz-radio [nzValue]="1">Thông báo điều chỉnh thông tin hóa đơn</label>
+        <label nz-radio [nzValue]="2">Bảng kê hóa đơn chưa sử dụng</label>
+      </nz-radio-group>
+    </div>
+    <div nz-col nzSpan="6" style="text-align: right;">
+      <nz-button-group nzSize="small">
+        <button nz-button nz-dropdown [nzDropdownMenu]="menuTemplate">
+          <i nz-icon nzType="vertical-align-bottom" nzTheme="outline"></i>Xuất khẩu
+        </button>
+        <nz-dropdown-menu #menuTemplate="nzDropdownMenu">
+          <ul nz-menu>
+            <li nz-menu-item (click)="downloadFile(0)">
+              <img src="../../../../../../assets/pdf.png" width="15" height="15" />&nbsp;<span>PDF</span>
+            </li>
+            <ng-container *ngIf="refType === refTypeCompare.QuyetDinhApDungHoaDon">
+              <li nz-menu-item (click)="downloadFile(1)">
+                <img src="../../../../../../assets/doc.png" width="15" height="15" />&nbsp;<span>DOC</span>
+              </li>
+              <li nz-menu-item (click)="downloadFile(2)">
+                <img src="../../../../../../assets/docx.png" width="15" height="15" />&nbsp;<span>DOCX</span>
+              </li>
+            </ng-container>
+            <li *ngIf="refType !== refTypeCompare.QuyetDinhApDungHoaDon" nz-menu-item (click)="downloadFile(3)">
+              <img src="../../../../../../assets/xml.png" width="15" height="15" />&nbsp;<span>XML</span>
+            </li>
+          </ul>
+        </nz-dropdown-menu>
+        <button nz-button nzType="default" (click)="closeModal()">
+          <i nz-icon nzType="close" nzTheme="outline"></i>Đóng
+        </button>
+      </nz-button-group>
+    </div>
+  </div>
+
+  <ng-template [ngIf]="link">
+    <embed [src]="link | safe" style="width: 100%; height: 80vh;" />
+  </ng-template>
+</nz-spin>

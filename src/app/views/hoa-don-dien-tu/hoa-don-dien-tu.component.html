@@ -1,0 +1,39 @@
+<div class="card-container">
+  <nz-tabset nzSize="small" [nzTabPosition]="'top'" [nzType]="'card'" [(nzSelectedIndex)]="selectedTab"  [nzTabBarExtraContent]="soLuongHoaDonCoSaiSotTemplate">
+    <nz-tab [nzTitle]="isPhieuXuatKho ? 'Phiếu xuất kho điện tử' :  isPos ? 'Hóa đơn điện tử' : 'Hóa đơn điện tử'" (nzClick)="clickTab(isPhieuXuatKho ? '/phieu-xuat-kho/quan-li-phieu-xuat-kho' : isPos ? 'hoa-don-tu-mtt/quan-li-hoa-don-tu-mtt' : '/hoa-don-dien-tu/quan-li-hoa-don-dien-tu');">
+      <ng-template nz-tab>
+        <app-tab-hoa-don-dien-tu></app-tab-hoa-don-dien-tu>
+      </ng-template>
+    </nz-tab>   
+    <nz-tab [nzTitle]="isPhieuXuatKho ? 'Phiếu xuất kho xóa bỏ' : isPos ? 'Hóa đơn xóa bỏ' : 'Hóa đơn xóa bỏ'" (nzClick)="clickTab(isPhieuXuatKho ? '/phieu-xuat-kho/pxk-xoa-bo' : isPos ? 'hoa-don-tu-mtt/hoa-don-tu-mtt-xoa-bo' : '/hoa-don-dien-tu/hoa-don-xoa-bo');">
+      <ng-template nz-tab>
+        <app-tab-hoa-don-xoa-bo></app-tab-hoa-don-xoa-bo>
+      </ng-template>
+    </nz-tab>
+    <nz-tab [nzTitle]="isPhieuXuatKho ? 'Phiếu xuất kho thay thế' : isPos ? 'Hóa đơn thay thế' : 'Hóa đơn thay thế'" (nzClick)="clickTab(isPhieuXuatKho ? '/phieu-xuat-kho/pxk-thay-the' : isPos ? 'hoa-don-tu-mtt/hoa-don-tu-mtt-thay-the' : '/hoa-don-dien-tu/hoa-don-thay-the');">
+      <ng-template nz-tab>
+        <app-tab-hoa-don-thay-the></app-tab-hoa-don-thay-the>
+      </ng-template>
+    </nz-tab>
+    <nz-tab [nzTitle]="isPhieuXuatKho ? 'Phiếu xuất kho điều chỉnh' : isPos ? 'Hóa đơn điều chỉnh' : 'Hóa đơn điều chỉnh'" (nzClick)="clickTab(isPhieuXuatKho ? '/phieu-xuat-kho/pxk-dieu-chinh' : isPos ? 'hoa-don-tu-mtt/hoa-don-tu-mtt-dieu-chinh' : '/hoa-don-dien-tu/hoa-don-dieu-chinh');">
+      <ng-template nz-tab>
+        <app-tab-hoa-don-dieu-chinh></app-tab-hoa-don-dieu-chinh>
+      </ng-template>
+    </nz-tab>
+    <nz-tab *ngIf="isKhongCoMa && !isPos" [nzTitle]="isPhieuXuatKho ? 'Bảng tổng hợp dữ liệu phiếu xuất kho' : 'Bảng tổng hợp dữ liệu hóa đơn'" (nzClick)="clickTab(isPhieuXuatKho ? '/phieu-xuat-kho/bang-tong-hop-du-lieu-pxk' : '/hoa-don-dien-tu/bang-tong-hop-du-lieu-hoa-don');">
+      <ng-template nz-tab>
+        <app-tab-bang-tong-hop-du-lieu-hoa-don></app-tab-bang-tong-hop-du-lieu-hoa-don>
+      </ng-template>
+    </nz-tab>
+  </nz-tabset>
+  
+  <ng-template #soLuongHoaDonCoSaiSotTemplate>
+    <span class = "soLuongHoaDonSaiSot" (click) = "locHoaDonCoSaiSotChuaLapThongBao()" nz-tooltip nzTooltipTitle = "Xem chi tiết" nzTooltipPlacement = "bottom" *ngIf = "soLuongHoaDonSaiSotChuaLap04 > 0">
+      <span>Số lượng hóa đơn có sai sót chưa lập thông báo: </span>
+      <span style = "display: inline-block; color: red; font-weight: bold;">
+        <i nz-icon nzType="loading" nzTheme="outline" *ngIf = "soLuongHoaDonSaiSotChuaLap04 == -1"></i>
+        <span *ngIf = "soLuongHoaDonSaiSotChuaLap04 > -1">{{soLuongHoaDonSaiSotChuaLap04}}</span>
+      </span>
+    </span>
+  </ng-template>
+</div>

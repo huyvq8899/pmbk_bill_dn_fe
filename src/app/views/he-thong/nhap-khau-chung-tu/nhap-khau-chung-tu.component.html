@@ -1,0 +1,41 @@
+<nz-tabset class="tab-set" [nzTabPosition]="'left'" [(nzSelectedIndex)]="selectedIndex" (nzSelectChange)="changeTab($event)">
+    <nz-tab nzTitle="1. Chọn tệp nguồn" [nzDisabled]="true">
+        <div class="inner-content">
+            <app-chon-tep-nguon (changeLoaiChungTuEvent)="onChangeLoaiChungTu($event)"></app-chon-tep-nguon>
+        </div>
+    </nz-tab>
+    <nz-tab nzTitle="2. Kiểm tra dữ liệu" [nzDisabled]="true">
+        <div class="inner-content fixheight">
+            <app-import-khach-hang *ngIf="selectedLoaiChungTu === '1001'"></app-import-khach-hang>
+            <app-import-nhan-vien *ngIf="selectedLoaiChungTu === '1002'"></app-import-nhan-vien>
+            <app-import-vat-tu-hang-hoa *ngIf="selectedLoaiChungTu === '1003'"></app-import-vat-tu-hang-hoa>
+            <app-import-hoa-don *ngIf="selectedLoaiChungTu === '2001' || selectedLoaiChungTu === '2002'"></app-import-hoa-don>
+            <app-import-phieu-xuat-kho *ngIf="selectedLoaiChungTu === '2007' || selectedLoaiChungTu === '2008'"></app-import-phieu-xuat-kho>
+        </div>
+    </nz-tab>
+    <nz-tab nzTitle="3. Kết quả nhập khẩu" [nzDisabled]="true">
+        <div class="inner-content" style="margin-bottom: 5px;">
+            <div *ngIf="selectedLoaiChungTu === '1001' || selectedLoaiChungTu === '1002' || selectedLoaiChungTu === '1003'">
+                <app-result-import-danh-muc></app-result-import-danh-muc>
+            </div>
+            <div *ngIf="selectedLoaiChungTu === '2001' || selectedLoaiChungTu === '2002' || selectedLoaiChungTu === '2007' || selectedLoaiChungTu === '2008'">
+                <app-result-import-hoa-don></app-result-import-hoa-don>
+            </div>
+        </div>
+    </nz-tab>
+</nz-tabset>
+<div style="text-align: right;margin-bottom: 5px;padding: 8px 0px;border: 1px solid #e0e0e0;">
+    <nz-button-group>
+        <button nzSize="small" nz-button nzType="default" (click)="clickBack()" *ngIf="selectedIndex>0 && selectedIndex<2" [nzLoading]="isLoading" class="blueButton"><i nz-icon nzType="arrow-left" nzTheme="outline"></i>Quay lại</button>
+        <button nzSize="small" nz-button nzType="default" (click)="clickNext()" *ngIf="selectedIndex < 2" [nzLoading]="isLoading" style="margin-right: 12px;" [ngClass]="{'blueButton': selectedIndex === 0, 'greenButton': selectedIndex === 1}">
+      <ng-container *ngIf="selectedIndex === 0">
+        Tiếp tục<i nz-icon nzType="arrow-right" nzTheme="outline"></i>
+      </ng-container>
+      <ng-container *ngIf="selectedIndex === 1">
+        <i nz-icon nzType="check" nzTheme="outline"></i> Thực hiện
+      </ng-container>
+    </button>
+        <button class="filterDefaultButton" nzSize="small" nz-button nzType="default" (click)="clickNext()" *ngIf="selectedIndex == 2" [nzLoading]="isLoading"><i nz-icon nzType="select" nzTheme="outline"></i>&nbsp;Nhập
+      khẩu tiếp</button>
+    </nz-button-group>
+</div>

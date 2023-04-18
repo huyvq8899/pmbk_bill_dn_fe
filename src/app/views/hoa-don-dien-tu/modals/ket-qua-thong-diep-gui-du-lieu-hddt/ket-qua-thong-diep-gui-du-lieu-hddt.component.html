@@ -1,0 +1,102 @@
+<div nz-row class="inner-content box-content" style="margin-left: 8px; margin-right: 8px;">
+  <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="24" nzXl="24" class="box-border2">
+    <span class="box-title">Thông tin chung</span>
+    <nz-form-item>
+      <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="phienBan">Phiên bản</nz-form-label>
+      <nz-form-control [nzSm]="8" [nzXs]="24">
+        <input nz-input nzSize="small" [ngModel]="data.ttChung.pBan" [disabled]="true" id="phienBan" />
+      </nz-form-control>
+      <!-- <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="maNoiGui">Mã nơi gửi</nz-form-label>
+      <nz-form-control [nzSm]="8" [nzXs]="24">
+        <input nz-input nzSize="small" formControlName="maNoiGui" id="maNoiGui" />
+      </nz-form-control> -->
+      <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="maLoaiThongDiep">Mã loại thông điệp</nz-form-label>
+      <nz-form-control [nzSm]="8" [nzXs]="24">
+        <input nz-input nzSize="small" [ngModel]="data.ttChung.mltDiep" [disabled]="true" id="maLoaiThongDiep" />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <!-- <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="maNoiNhan">Mã nơi nhận</nz-form-label>
+      <nz-form-control [nzSm]="8" [nzXs]="24">
+        <input nz-input nzSize="small" formControlName="maNoiNhan" id="maNoiNhan" />
+      </nz-form-control> -->
+      <!-- <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="maLoaiThongDiep">Mã loại thông điệp</nz-form-label>
+      <nz-form-control [nzSm]="8" [nzXs]="24">
+        <input nz-input nzSize="small" formControlName="maLoaiThongDiep" id="maLoaiThongDiep" />
+      </nz-form-control> -->
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="maThongDiep">Mã thông điệp</nz-form-label>
+      <nz-form-control [nzSm]="8" [nzXs]="24">
+        <input nz-input nzSize="small" [ngModel]="data.ttChung.mtDiep" [disabled]="true" id="maThongDiep" />
+      </nz-form-control>
+      <!-- <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="maThongDiepThamChieu">Mã thông điệp tham chiếu</nz-form-label>
+      <nz-form-control [nzSm]="8" [nzXs]="24">
+        <input nz-input nzSize="small" formControlName="maThongDiepThamChieu" id="maThongDiepThamChieu" />
+      </nz-form-control> -->
+      <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="soLuong">Số lượng</nz-form-label>
+      <nz-form-control [nzSm]="8" [nzXs]="24">
+        <input nz-input nzSize="small" [ngModel]="data.ttChung.sLuong" [disabled]="true" id="soLuong" />
+      </nz-form-control>
+    </nz-form-item>
+    <!-- <nz-form-item>
+      <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="maSoThue">Mã số thuế</nz-form-label>
+      <nz-form-control [nzSm]="8" [nzXs]="24">
+        <input nz-input nzSize="small" formControlName="maSoThue" id="maSoThue" />
+      </nz-form-control>
+      <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="soLuong">Số lượng</nz-form-label>
+      <nz-form-control [nzSm]="8" [nzXs]="24">
+        <input nz-input nzSize="small" formControlName="soLuong" id="soLuong" />
+      </nz-form-control>
+    </nz-form-item> -->
+    <!-- <nz-form-item>
+      <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="trangThai">Trạng thái</nz-form-label>
+      <nz-form-control [nzSm]="8" [nzXs]="24">
+        <input nz-input nzSize="small" formControlName="trangThai" id="trangThai" />
+      </nz-form-control>
+    </nz-form-item> -->
+  </div>
+</div>
+
+<div nz-row class="inner-content box-content" style="margin-left: 8px; margin-right: 8px;">
+  <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="24" nzXl="24" class="box-border2">
+    <span class="box-title">Dữ liệu</span>
+    <nz-table [nzNoResult]="null" nzSize="small" #table [nzData]="list" nzBordered [nzShowPagination]="false"
+      [nzWidthConfig]="widthConfig" [nzScroll]="scrollConfig" class="table-chi-tiet-height">
+      <thead>
+        <tr>
+          <th nzAlign="center">STT</th>
+          <th nzAlign="center">Ngày hóa đơn</th>
+          <th nzAlign="center">Số hóa đơn</th>
+          <th nzAlign="center">Ký hiệu mẫu số hóa đơn</th>
+          <th nzAlign="center">Ký hiệu hóa đơn</th>
+          <th nzAlign="center">Lý do</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of table.data, let i=index">
+          <td nzAlign="center">{{data.stt}}</td>
+          <td nzAlign="center">{{data.nLap | date:'dd/MM/yyyy'}}</td>
+          <td>{{data.shDon}}</td>
+          <td>{{data.khmshDon}}</td>
+          <td>{{data.khhDon}}</td>
+          <td>
+            <div *ngFor="let item of data.dslDo">
+              {{item.mtLoi}}
+            </div>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot class="total-footer" *ngIf="list.length > 0">
+        <td colSpan="2">Số dòng = {{list.length}}</td>
+        <td colspan="4"></td>
+      </tfoot>
+    </nz-table>
+  </div>
+</div>
+
+<div *nzModalFooter>
+  <button nz-button nzType="default" (click)="export()" [nzLoading]="loadingExport"><i nz-icon
+    nzType="vertical-align-bottom" nzTheme="outline"></i>Xuất khẩu</button>
+  <button nz-button nzType="default" (click)="closeModal()" class="button-cancel">Đóng</button>
+</div>

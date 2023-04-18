@@ -1,0 +1,21 @@
+@import '../../../../shared/scss/modal.scss';
+
+.title {
+    text-align: center;
+    font-size: 18px !important;
+    padding: 10px 0 5px 0;
+}
+
+.status {
+    padding: 5px 10px;
+    border-radius: 15px;
+    color: white;
+
+    &-orange {
+        background-color: rgb(255, 115, 0);
+    }
+
+    &-green {
+        background-color: rgba(18, 179, 18, 0.74);
+    }
+}

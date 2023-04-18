@@ -1,0 +1,84 @@
+<nz-spin [nzSpinning]="spinning">
+  <div class="LuuY" style="margin-bottom: 10px!important; margin-top: 10px!important "><i nz-icon nzType="question-circle" nzTheme="outline"
+      class="customIcon"></i>{{msTitle}}</div>
+  <form nz-form>
+    <div nz-row>
+      <div nz-row class="box-border2" style="padding: 10px 10px !important;">
+        <div nz-row style="text-align: left;">
+          <div nz-col nzSpan="6">Mẫu số:</div>
+          <div nz-col nzSpan="18"><span *ngIf="dataReader">{{dataReader?.dltBao.mSo}}</span></div>
+        </div>
+        <div nz-row style="text-align: left;">
+          <div nz-col nzSpan="6">Tên thông báo:</div>
+          <div nz-col nzSpan="18"><span *ngIf="dataReader">{{dataReader?.dltBao.ten}}</span></div>
+        </div>
+
+        <div nz-row style="text-align: left;">
+          <div nz-col nzSpan="6">Số thông báo:</div>
+          <div nz-col nzSpan="18">
+            <span *ngIf="dataReader">{{dataReader.stBao?.so}}</span>
+          </div>
+        </div>
+
+        <div nz-row style="text-align: left;">
+          <div nz-col nzSpan="6">Ngày thông báo:</div>
+          <div nz-col nzSpan="18">
+            <span *ngIf="dataReader">{{dataReader?.stBao.ntBao | date: 'dd/MM/yyyy HH:mm:ss'}}</span>
+          </div>
+        </div>
+
+        <div nz-row style="text-align: left;">
+          <div nz-col nzSpan="6">Hình thức:</div>
+          <div nz-col nzSpan="18">
+            <span>
+              <span *ngIf="dataReader && dataReader.dltBao.htdKy == 1">Đăng ký</span>
+              <span *ngIf="dataReader && dataReader.dltBao.htdKy == 2">Thay đổi thông tin</span>
+            </span>
+          </div>
+        </div>
+
+        <div nz-row style="text-align: left;">
+          <div nz-col nzSpan="6">Trạng thái:</div>
+          <div nz-col nzSpan="18">
+            <span *ngIf="dataReader">
+              <span *ngIf="dataReader && dataReader.dltBao.ttxncqt == 1">Chấp nhận</span>
+              <span *ngIf="dataReader && dataReader.dltBao.ttxncqt == 2">Không chấp nhận</span>
+            </span>
+          </div>
+        </div>
+
+        <div nz-row style="text-align: left;">
+          <div nz-col nzSpan="6">Mã số thuế:</div>
+          <div nz-col nzSpan="18">
+            <span *ngIf="dataReader">
+              <span *ngIf="dataReader">{{dataReader?.dltBao.mst}}</span>
+            </span>
+          </div>
+        </div>
+
+        <div nz-row style="text-align: left;">
+          <div nz-col nzSpan="6">MCQT:</div>
+          <div nz-col nzSpan="18">
+            <span *ngIf="dataReader">
+              <span *ngIf="dataReader">{{dataReader?.dltBao.mccqt}}</span>
+            </span>
+          </div>
+        </div>
+
+      </div>
+      <nz-form-control [nzSm]="24" [nzXs]="24">
+        <label nz-checkbox [(ngModel)]="isAccept" (ngModelChange)="changeAccept($event)"
+          [ngModelOptions]="{standalone: true}"><span style="color: #0070C0">Tôi xác nhận và chịu trách nhiệm về việc
+            xác nhận thông tin.</span>
+        </label>
+      </nz-form-control>
+    </div>
+
+  </form>
+</nz-spin>
+<div *nzModalFooter style="padding-right: 4px!important;">
+  <button [disabled]="!isAccept" [nzLoading]="signing" nzSize="small" nz-button nzType="default" (click)="ConfirmImportMCQT()"
+    class="blueButton"><i nz-icon nzType="check" nzTheme="outline"></i>Xác nhận</button>
+  <button nzSize="small" [nzLoading]="signing" nz-button nzType="default" (click)="closeModal()"
+    class="button-cancel"><i nz-icon nzSize="small" nzType="close"></i>Hủy</button>
+</div>

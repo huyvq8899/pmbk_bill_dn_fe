@@ -1,0 +1,91 @@
+<nz-spin [nzSpinning]="spinning">
+  <div nz-row style="margin-bottom: 5px;">
+    <span>{{noiDungDieuChinhHoaDon}}</span>
+    <div nz-col style="float: right; margin-right: 2px;" *ngIf="boolCoPhatSinhNghiepVuNgoaiTe == 'true' || boolCoPhatSinhNghiepVuNgoaiTe == true">
+      <span>Loại tiền</span>&nbsp;
+      <nz-select disabled style="width:100px" nzSize="small" nzShowSearch nzPlaceHolder="Chọn loại"
+        [(ngModel)]="loaiTienId" id="loaiTienId"
+        [nzDropdownStyle]="searchCustomerOverlayStyle1">
+        <nz-option nzCustomContent nzDisabled="true">
+          <div nz-row>
+            <div nz-col nzXs="8" nzSm="8" nzMd="8" nzLg="8" nzXl="8">
+              Mã loại tiền
+            </div>
+            <div nz-col nzXs="16" nzSm="16" nzMd="16" nzLg="16" nzXl="16">
+              Tên loại tiền
+            </div>
+          </div>
+        </nz-option>
+        <nz-option *ngFor="let item of loaiTienSearchs" [nzValue]="item.loaiTienId" [nzLabel]="item.ma"
+          nzCustomContent>
+          <div nz-row>
+            <div title="{{item?.ma}}" nz-col nzXs="8" nzSm="8" nzMd="8" nzLg="8" nzXl="8">
+              <div class="text-ellipsis">{{item?.ma}}</div>
+            </div>
+            <div title="{{item?.ten}}" nz-col nzXs="16" nzSm="16" nzMd="16" nzLg="16" nzXl="16">
+              <div class="text-ellipsis">{{item?.ten}}</div>
+            </div>
+          </div>
+        </nz-option>
+      </nz-select>&nbsp;
+      <span>Tỷ giá</span>&nbsp;
+      <input style="width:100px" nz-input  nzSize="small" bkCurrencyMask [options]="{ precision: ddtp.getTyGia() }"   disabled [(ngModel)]="tyGia">
+    </div>
+  </div>
+  <div nz-row>
+    <nz-table [nzNoResult]="null" nzSize="small" #expandTable [nzData]="listData" [nzWidthConfig]="widthConfig"
+      [nzScroll]="scrollConfig" [nzFrontPagination]="false" [nzTotal]="listData.length" [nzPageIndex]="1"
+      [nzPageSize]="listData.length" nzBordered [nzHideOnSinglePage]="true">
+      <thead>
+        <tr>
+          <th nzShowCheckbox [(nzChecked)]="isAllDisplayDataChecked" [nzIndeterminate]="isIndeterminate"
+            (nzCheckedChange)="checkAll($event)"></th>
+          <th nzAlign="center">Tên hàng hóa, dịch vụ</th>
+          <th nzAlign="center">ĐVT</th>
+          <th nzAlign="center">Số lượng</th>
+          <th nzAlign="center">Đơn giá</th>
+          <th nzAlign="center">Thành tiền</th>
+          <th nzAlign="center" *ngIf="!isVND">Thành tiền quy đổi</th>
+          <th nzAlign="center">Tỷ lệ chiết khấu</th>
+          <th nzAlign="center">Tiền chiết khấu</th>
+          <th nzAlign="center" *ngIf="!isVND">Tiền chiết khấu quy đổi</th>
+          <th nzAlign="center">Thuế GTGT</th>
+          <th nzAlign="center">Tiền thuế GTGT</th>
+          <th nzAlign="center">Tiền thuế GTGT quy đổi</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let data of expandTable.data">
+          <tr>
+            <td nzShowCheckbox [(nzChecked)]="data.checked" (nzCheckedChange)="refreshStatus(data, $event)"></td>
+            <td>{{data?.tenHang}}</td>
+            <td>{{data?.donViTinh?.ten}}</td>
+            <td nzAlign="right">{{data?.soLuong}}</td>
+            <td nzAlign="right">{{data?.donGia | formatPrice:true:ddtp.getTienQuyDoi()}}</td>
+            <td nzAlign="right" *ngIf="!isVND">{{data?.thanhTien | formatPrice:true:ddtp.getTienQuyDoi()}}</td>
+            <td nzAlign="right">{{data?.thanhTienQuyDoi | formatPrice:true:ddtp.getTienQuyDoi()}}</td>
+            <td nzAlign="right">{{data?.tyLeChietKhau | formatPrice:true:ddtp.getHeSoTyLe()}}</td>
+            <td nzAlign="right" *ngIf="!isVND">{{data?.tienChietKhau | formatPrice:true:ddtp.getTienQuyDoi()}}</td>
+            <td nzAlign="right">{{data?.tienChietKhauQuyDoi | formatPrice:true:ddtp.getTienQuyDoi()}}</td>
+            <td>{{data?.thueGTGT}}</td>
+            <td nzAlign="right" *ngIf="!isVND">{{data?.tienThueGTGT | formatPrice:true:ddtp.getTienQuyDoi()}}</td>
+            <td nzAlign="right">{{data?.tienThueGTGTQuyDoi | formatPrice:true:ddtp.getTienQuyDoi()}}</td>
+          </tr>
+        </ng-container>
+      </tbody>
+      <tfoot *ngIf="listData.length > 0" class="total-footer">
+        <td colspan="2">Số dòng = {{listData.length}}</td>
+        <td [attr.colspan]="isVND ? 9 : 11"></td>
+      </tfoot>
+    </nz-table>
+  </div>
+</nz-spin>
+
+<div *nzModalFooter>
+  <button nzSize="small" nz-button nzType="default" (click)="submitForm()" class="blueButton">
+    <i nz-icon nzType="check"></i>Đồng ý
+  </button>
+  <button nzSize="small" nz-button nzType="default" (click)="closeModal()" class="button-cancel">
+    <i nz-icon nzType="close"></i>Đóng
+  </button>
+</div>

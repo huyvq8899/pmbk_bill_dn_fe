@@ -1,0 +1,95 @@
+@import "../../../../shared/scss/modal.scss";
+
+
+:host ::ng-deep .ant-tabs-nav-container {
+    height: auto !important;
+}
+
+:host ::ng-deep .ant-tabs .ant-tabs-left-bar .ant-tabs-tab,
+.ant-tabs .ant-tabs-right-bar .ant-tabs-tab {
+    display: block !important;
+    float: none !important;
+    margin: 0 0 0 0 !important;
+    padding: 1px 24px !important;
+}
+
+:host ::ng-deep .ant-tabs .ant-tabs-left-content {
+    padding-left: 10px;
+    padding-right: 8px;
+}
+
+.inner-content {
+    margin-bottom: 15px !important;
+}
+
+:host::ng-deep .ant-tabs-tab-active:hover {
+    color: white !important;
+}
+
+:host::ng-deep .ant-tabs-tab:hover {
+    color: black;
+}
+
+:host ::ng-deep .ant-tabs .ant-tabs-left-bar .ant-tabs-tab,
+.ant-tabs .ant-tabs-right-bar .ant-tabs-tab {
+    display: block !important;
+    float: none !important;
+    margin: 0 0 0 0 !important;
+    padding: 1px 24px !important;
+    cursor: default !important;
+    text-align: left !important;
+}
+
+.thiet-lap-gio-nx {
+    width: 100%;
+    position: relative;
+
+    .thoi-gian-nx {
+        position: absolute;
+        right: 0;
+        bottom: 4px;
+    }
+
+    [nz-radio] {
+        display: block;
+    }
+}
+
+.title-form{
+    text-align: left!important;
+    //margin-left:2px;
+}
+
+#layoutContent{
+    height: 90vh;
+    overflow-y: scroll;
+    margin: 4px 120px 30px 120px;
+    background-color: #fff;
+ }
+ 
+ #backgroundLayout{
+     background-color: rgba(119, 119, 119, 0.6);
+     height: 95vh;
+ }
+
+ #formLayout{
+     margin-left: 60px;
+     margin-right: 60px;
+ }
+ 
+ .info-circle{
+     background-color: #fff!important;
+     color: #0070c0;
+     font-weight: bold;
+ }
+
+ .circleInfo_Blue {
+    height: 12px;
+    width: 18px;
+    border: 0.1em solid #0070c0;
+    border-radius: 50%;
+    display: table-cell;
+    text-align: center;
+    color: #0070c0;
+    font-weight: 800 !important;
+}

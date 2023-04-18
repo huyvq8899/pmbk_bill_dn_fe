@@ -1,0 +1,21 @@
+@import '../../../../shared/scss/tab.scss';
+.taiLieuDinhKem
+{
+    color: black;
+}
+.taiLieuDinhKem:hover
+{
+    text-decoration: underline!important;
+}
+
+
+.ant-table-row-expanded2::after
+{
+    content: "\25BC"!important;
+}
+  
+.ant-table-row-collapsed2::after
+{
+    content: "\25BA"!important;
+}
+

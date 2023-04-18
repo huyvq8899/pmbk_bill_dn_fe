@@ -1,0 +1,39 @@
+<div class="card-container">
+  <nz-tabset nzSize="small" [nzTabPosition]="'top'" [nzType]="'card'" [(nzSelectedIndex)]="selectedTab">
+    <nz-tab nzTitle="Thông tin hóa đơn" (nzClick)="clickTab('/quan-ly/thong-tin-hoa-don');" *ngIf="globalConstants.UserPermissions != null">
+      <ng-template nz-tab>
+        <app-tab-thong-tin-hoa-don></app-tab-thong-tin-hoa-don>
+      </ng-template>
+    </nz-tab>
+    <nz-tab nzTitle="Mẫu hóa đơn" (nzClick)="clickTab('/quan-ly/mau-hoa-don');" *ngIf="globalConstants.UserPermissions != null && (globalConstants.UserPermissions === true || globalConstants.UserPermissions.indexOf('MauHoaDon') >= 0)">
+      <ng-template nz-tab>
+        <app-mau-hoa-don></app-mau-hoa-don>
+      </ng-template>
+    </nz-tab>
+    <nz-tab nzTitle="Thông điệp gửi" (nzClick)="clickTab('/quan-ly/thong-diep-gui');" *ngIf="globalConstants.UserPermissions != null && (globalConstants.UserPermissions === true || globalConstants.UserPermissions.indexOf('ThongDiepGui') >= 0)">
+      <ng-template nz-tab>
+        <app-thong-diep-gui></app-thong-diep-gui>
+      </ng-template>
+    </nz-tab>
+    <nz-tab nzTitle="Thông điệp nhận" (nzClick)="clickTab('/quan-ly/thong-diep-nhan');" *ngIf="globalConstants.UserPermissions != null && (globalConstants.UserPermissions === true || globalConstants.UserPermissions.indexOf('ThongDiepNhan') >= 0)">
+      <ng-template nz-tab>
+        <app-tab-thong-diep-nhan></app-tab-thong-diep-nhan>
+      </ng-template>
+    </nz-tab>
+    <nz-tab nzTitle="Bộ ký hiệu hóa đơn" (nzClick)="clickTab('/quan-ly/bo-ky-hieu-hoa-don');" *ngIf="globalConstants.UserPermissions != null && (globalConstants.UserPermissions === true || globalConstants.UserPermissions.indexOf('BoKyHieuHoaDon') >= 0)">
+      <ng-template nz-tab>
+        <app-tab-bo-ky-hieu-hoa-don></app-tab-bo-ky-hieu-hoa-don>
+      </ng-template>
+    </nz-tab>
+  </nz-tabset>
+
+  <!-- <ng-template #soLuongHoaDonCanRaSoatTemplate>
+    <span class = "soLuongHoaDonSaiSot" (click) = "locHoaDonCanRaSoat()" nz-tooltip nzTooltipTitle = "Xem chi tiết" nzTooltipPlacement = "bottom" *ngIf = "soLuongHoaDonCanRaSoat != 0">
+      <span>Số lượng thông báo về hóa đơn điện tử rà soát chưa giải trình: </span>
+      <span style = "display: inline-block; color: red; font-weight: bold;">
+        <i nz-icon nzType="loading" nzTheme="outline" *ngIf = "soLuongHoaDonCanRaSoat == -1"></i>
+        <span *ngIf = "soLuongHoaDonCanRaSoat > -1">{{soLuongHoaDonCanRaSoat}}</span>
+      </span>
+    </span>
+  </ng-template> -->
+</div>

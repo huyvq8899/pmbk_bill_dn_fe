@@ -1,0 +1,85 @@
+.bold-text {
+    font-weight: bold !important;
+}
+
+.parrent-text {
+    font-weight: bold;
+}
+
+.borderBottom {
+    border-bottom: solid;
+    border-bottom-width: 1px;
+    border-color: #e0e0e0;
+    padding-bottom: 10px;
+}
+
+.border {
+    border-left: solid;
+    border-left-width: 1px;
+    border-color: #e8e8e8;
+    padding-left: 15px;
+}
+
+:host ::ng-deep .ant-badge-dot {
+    background: #7abd1a;
+}
+
+.text-align-action {
+    text-align: center;
+    cursor: pointer;
+}
+
+.money {
+    text-align: right;
+    padding-right: 10px !important;
+}
+
+.search-box {
+    padding: 1px 2px 1px 2px;
+    color: black !important;
+}
+
+.search-box input {
+    width: 188px;
+    display: block;
+}
+
+.search-box button {
+    width: 90px;
+}
+
+.search-button {
+    margin-right: 8px;
+}
+
+:host ::ng-deep .ant-collapse>.ant-collapse-item>.ant-collapse-header {
+    padding: 0px 0px 0px 40px !important;
+    font-weight: bold;
+}
+
+:host ::ng-deep .ant-collapse-content>.ant-collapse-content-box {
+    padding: unset !important;
+}
+
+.box-title {
+    position: absolute;
+    top: -14px;
+    margin-left: 16px;
+    padding: 1px 8px;
+    color: #777;
+    background: #fff;
+    border-radius: 2px 2px 0 0;
+    transition: background-color 0.4s;
+}
+
+.title {
+    background-color: var(--primary-color1) !important;
+    color: black;
+    font-weight: bold;
+    padding: 4px 0px 4px 5px;
+}
+
+.box-border {
+    border: 1px solid #d1d1d1;
+    padding: 3px 10px 10px 10px;
+}

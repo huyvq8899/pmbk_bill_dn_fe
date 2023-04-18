@@ -1,0 +1,567 @@
+<div nz-row *ngIf="!isFromPhone;else mobileTemplate">
+  <div nz-col nzSpan="15">
+    <ng-template [ngIf]="fileUrl">
+      <embed [src]="fileUrl | safe" type="application/pdf" style="width: 100%; height: 90vh;" />
+    </ng-template>
+  </div>
+  <div nz-col nzSpan="9">
+    <div nz-row class="sider-bar">
+      <div nz-row>
+        <div nz-row class="inner-content">
+          <div class="box-border" style="margin: 5px;border-color: #1877f2; padding-bottom: 10px!important;">
+            <span
+              style="margin-top: 5px; margin-left: 2px; color: #1877f2; font-weight: bold; font-size: 20px!important;">Thông
+              tin hóa đơn</span>
+            <div nz-row style="margin-top: 5px">
+              <div style="top: 4px" nz-col nzSpan="12">Ký hiệu:</div>
+              <div nz-col nzSpan="12">
+                <input type="text" nzSize="small" nz-input [(ngModel)]="data.kyHieuShow" disabled />
+              </div>
+            </div>
+
+            <div nz-row style="margin-top: 5px">
+              <div style="top: 4px" nz-col nzSpan="12">Số hóa đơn:</div>
+              <div nz-col nzSpan="12">
+                <input type="text" nzSize="small" nz-input [(ngModel)]="data.soHoaDon" disabled />
+              </div>
+            </div>
+
+            <div nz-row style="margin-top: 5px">
+              <div style="top: 4px" nz-col nzSpan="12">Ngày hóa đơn:</div>
+              <div nz-col nzSpan="12">
+                <input type="text" nzSize="small" nz-input [(ngModel)]="data.ngayHoaDonShow" disabled />
+              </div>
+            </div>
+
+            <div nz-row style="margin-top: 5px">
+              <div style="top: 4px" nz-col nzSpan="12">Tổng tiền thanh toán:</div>
+              <div nz-col nzSpan="12">
+                <input type="text" nzSize="small" nz-input [(ngModel)]="data.tongTienThanhToanShow" disabled />
+              </div>
+            </div>
+
+
+            <div nz-row style="margin-top: 5px">
+              <div style="top: 3px" nz-col nzSpan="12">Trạng thái hóa đơn:</div>
+              <div nz-col nzSpan="12">
+                <ng-container *ngIf="data.idHoaDonSaiSotBiThayThe != null && data.hinhThucXoabo == null &&
+                data.hoaDonThayTheDaDuocCapMa != true && data.hoaDonDieuChinhDaDuocCapMa != true">
+                  <span>
+                    <span class="lightBlueRoundedShape" title="Hóa đơn gốc">Hóa đơn gốc</span>
+                    <span style="color: #ed7d31;"> | Thay hóa đơn gốc <strong>(SS)</strong></span>
+                  </span>
+                </ng-container>
+
+                <ng-container *ngIf="!(data.idHoaDonSaiSotBiThayThe != null && data.hinhThucXoabo == null &&
+                data.hoaDonThayTheDaDuocCapMa != true && data.hoaDonDieuChinhDaDuocCapMa != true)">
+                  <span *ngIf="data?.trangThai == 1">
+                    <span class="lightBlueRoundedShape" title="Hóa đơn gốc">Hóa đơn gốc</span>
+                    <span *ngIf="data.daBiDieuChinh == true" style="color: #ed7d31;"> | Bị điều chỉnh</span>
+                  </span>
+
+                  <span *ngIf="data.trangThai == 2 && data.hinhThucXoabo == 1"><span class="grayRoundedShape">Hóa
+                      đơn
+                      hủy </span><span style="color: #ed7d31;"> | Hóa đơn gốc <strong>(SS)</strong></span>
+                  </span>
+                  <span *ngIf="data.trangThai == 2 && data.hinhThucXoabo == 4">
+                    <span class="grayRoundedShape"> Hóa
+                      đơn
+                      hủy </span><span style="color: #ed7d31;"> | Hóa đơn thay thế
+                      <strong>(SS)</strong>
+                    </span>
+                  </span>
+                  <span *ngIf="data.trangThai == 2 && data.hinhThucXoabo == 6">
+                    <span class="grayRoundedShape"> Hóa
+                      đơn
+                      hủy </span><span style="color: #ed7d31;"> | Hóa đơn điều chỉnh
+                      <strong>(SS)</strong></span>
+                  </span>
+                  <span *ngIf="data.trangThai == 2 && data.hinhThucXoabo == 3 && data.backUpTrangThai==1"><span
+                      class="grayRoundedShape">Hóa đơn hủy </span><span style="color: #ed7d31;"> | Hóa đơn gốc
+                      <strong>(LDO)</strong></span>
+                  </span>
+                  <span *ngIf="data.trangThai == 2 && data.hinhThucXoabo == 3 && data.backUpTrangThai==3"><span
+                      class="grayRoundedShape">Hóa đơn hủy </span><span style="color: #ed7d31;"> | Hóa đơn
+                      thay
+                      thế <strong>(LDO)</strong></span>
+                  </span>
+                  <!-- <span *ngIf="(data.trangThai == 2 && data.daLapHoaDonThayThe == false)  && (data.hinhThucXoabo == 2 || data.hinhThucXoabo == 5)  && data.isNotCreateThayThe== null"><span  class="oldOrangeRoundedShape"> Xóa bỏ</span></span> -->
+                  <span
+                    *ngIf="(data.trangThai == 2 && data.daLapHoaDonThayThe == false)  && (data.hinhThucXoabo == 2 || data.hinhThucXoabo == 5)"><span
+                      class="oldOrangeRoundedShape"> Xóa bỏ</span>
+                  </span>
+                  <span
+                    *ngIf="(data.trangThai == 2 && data.daLapHoaDonThayThe == false) && data.isNotCreateThayThe== false"><span
+                      class="oldOrangeRoundedShape"> Xóa bỏ</span>
+                  </span>
+
+                  <span
+                    *ngIf="(data.trangThai == 2 && data.daLapHoaDonThayThe == true) && (data.hinhThucXoabo == 2 || data.hinhThucXoabo == 5) && (data.isNotCreateThayThe== false || data.isNotCreateThayThe== null)">
+                    <ng-container *ngIf="data.hoaDonThayTheDaDuocCapMa == true">
+                      <span *ngIf="data.backUpTrangThai == 1">
+                        <span class="lightBlueRoundedShape" title="Hóa đơn gốc">Hóa đơn gốc
+
+                        </span>
+                        <span style="color: #ed7d31;"> | Bị thay thế</span>
+                      </span>
+                      <span *ngIf="data.backUpTrangThai == 3">
+                        <span style="display: inline-block;" class="hoaDonThayTheRoundedShape" title="Hóa đơn thay thế">
+                          Thay thế
+                        </span>
+                        <span style="color: #ed7d31;"> | Bị thay thế</span>
+                      </span>
+                      <span *ngIf="data.backUpTrangThai == 4 && data.loaiDieuChinh == 1">
+                        <span class="hoaDonDieuChinhRoundedShape" title="Hóa đơn điều chỉnh tăng"> Điều
+                          chỉnh
+                          <span class="circleHoaDonDieuChinhTang">
+                            <i nz-icon nzType="arrow-up" nzTheme="outline"></i>
+                          </span>
+                        </span>
+                        <span style="color: #ed7d31;"> | Bị thay thế</span>
+                      </span>
+
+                      <span *ngIf="data.backUpTrangThai == 4 && data.loaiDieuChinh == 2">
+                        <span class="hoaDonDieuChinhRoundedShape" title="Hóa đơn điều chỉnh giảm">
+                          Điều chỉnh
+                          <span class="circleHoaDonDieuChinhGiam">
+                            <i nz-icon nzType="arrow-down" nzTheme="outline"></i>
+                          </span>
+                        </span>
+                        <span style="color: #ed7d31;"> | Bị thay thế</span>
+                      </span>
+
+                      <span *ngIf="data.backUpTrangThai == 4 && data.loaiDieuChinh == 3">
+                        <span class="hoaDonDieuChinhRoundedShape" title="Hóa đơn điều chỉnh thông tin">
+                          Điều chỉnh
+                          <span class="circleHoaDonDieuChinhThongTin">
+                            <i nz-icon nzType="info" nzTheme="outline"></i>
+                          </span>
+                        </span>
+                        <span style="color: #ed7d31;"> | Bị thay thế</span>
+                      </span>
+                    </ng-container>
+
+                    <ng-container *ngIf="data.hoaDonThayTheDaDuocCapMa != true">
+                      <span class="oldOrangeRoundedShape">Xóa bỏ</span>
+                    </ng-container>
+                  </span>
+
+                  <!-- <span *ngIf="(data.trangThai == 2 && data.daLapHoaDonThayThe == true) && data.isNotCreateThayThe== false"><span  class="hoaDonThayTheRoundedShape"> <b style="color: red;"><i nz-icon nzType="close" nzTheme="outline"></i></b> | Bị thay thế</span></span> -->
+
+                  <span *ngIf="data.trangThai == 2 && data.isNotCreateThayThe== true" class="grayRoundedShape">Hóa
+                    đơn
+                    hủy
+                  </span>
+
+                  <span *ngIf="data?.trangThai == 3" class="hoaDonThayTheRoundedShape" style="display: inline-block;"
+                    title="Hóa đơn thay thế">Thay
+                    thế
+                  </span>
+
+                  <span *ngIf="data?.trangThai == 4 && data?.loaiDieuChinh == 1">
+                    <span class="hoaDonDieuChinhRoundedShape" title="Hóa đơn điều chỉnh tăng"> Điều chỉnh
+                      <span class="circleHoaDonDieuChinhTang">
+                        <i nz-icon nzType="arrow-up" nzTheme="outline"></i>
+                      </span>
+                    </span>
+                  </span>
+
+                  <span *ngIf="data?.trangThai == 4 && data?.loaiDieuChinh == 2">
+                    <span class="hoaDonDieuChinhRoundedShape" title="Hóa đơn điều chỉnh giảm">
+                      Điều chỉnh
+                      <span class="circleHoaDonDieuChinhGiam">
+                        <i nz-icon nzType="arrow-down" nzTheme="outline"></i>
+                      </span>
+                    </span>
+                    <span *ngIf="data.daBiDieuChinh == true" style="color: #ed7d31;"> | Bị điều chỉnh</span>
+                  </span>
+
+                  <span *ngIf="data?.trangThai == 4 && data?.loaiDieuChinh == 3">
+                    <span class="hoaDonDieuChinhRoundedShape" title="Hóa đơn điều chỉnh thông tin">
+                      Điều chỉnh
+                      <span class="circleHoaDonDieuChinhThongTin">
+                        <i nz-icon nzType="info" nzTheme="outline"></i>
+                      </span>
+                    </span>
+
+                    <span *ngIf="data.daBiDieuChinh == true" style="color: #ed7d31;"> | Bị điều chỉnh</span>
+                  </span>
+                </ng-container>
+              </div>
+            </div>
+
+            <!-- <div nz-row style="margin-top: 10px!important; margin-bottom: 5px;">
+                            <div style="top: 3px" nz-col nzSpan="12">Phương thức chuyển dữ liệu:</div>
+                            <div nz-col nzSpan="12">
+                                <span *ngIf="ptChuyenDL == 0" style="text-align: center; margin-top: 5px!important;padding: 5px 33% !important;border-radius: 10px;background-color: #0070C0!important;color: white !important;font-weight: 600;height: 24px;">
+                  Từng hóa đơn
+                </span>
+                                <span *ngIf="ptChuyenDL == 1" style="text-align: center; margin-top: 5px!important;padding: 5px 33% !important;border-radius: 10px;background-color: #ed7d31!important;color: white !important;font-weight: 600;height: 24px;">
+                  Bảng tổng hợp
+                </span>
+                            </div>
+                        </div>
+
+                        <div nz-row style="margin-top: 10px!important; margin-bottom: 5px;">
+                            <div style="top: 1px" nz-col nzSpan="12">Trạng thái thỏa thuận:</div>
+                            <div nz-col nzSpan="12">
+                                <span style="text-align: center; padding: 5px 29.5% !important;border-radius: 10px!important; margin-top: 5px;color: white !important;font-weight: 600;height: 24px; background-color: #00b0f0!important;" *ngIf="data.isLapVanBanThoaThuan == true">
+                  {{data?.trangThaiThoaThuan}}
+                </span>
+                                <span style="text-align: center; padding: 5px 29.5% !important;border-radius: 10px!important; margin-top: 5px;color: white !important;font-weight: 600;height: 24px;background-color: #A5A5A5!important;" *ngIf="data.isLapVanBanThoaThuan != true">
+                  {{data?.trangThaiThoaThuan}}
+                </span>
+                            </div>
+                        </div> -->
+          </div>
+        </div>
+      </div>
+
+      <div nz-row style="margin: 5px; margin-right: 2px;">
+        <div nz-col nzSpan="12">
+          <button style="width: 98%;" class="blueButton" nzSize="small" nz-button nzType="default"
+            (click)="downloadPDF()" nz-tooltip><i nz-icon nzType="download" nzTheme="outline"></i>
+            Tải hóa đơn (PDF)
+          </button>
+        </div>
+        <div nz-col nzSpan="12">
+          <button style="width: 98%;" class="blueButton" nzSize="small" nz-button nzType="default"
+            (click)="downloadXML()" nz-tooltip><i nz-icon nzType="download" nzTheme="outline"></i>
+            Tải hóa đơn (XML)
+          </button>
+        </div>
+      </div>
+      <div nz-row style="margin: 5px; margin-right: 2px;">
+        <div nz-col nzSpan="12">
+          <button style="width: 98%;" class="yellowButton" nz-button nzSize="small" (click)="traCuuThongTinNguoiBan()"
+            nz-tooltip><i nz-icon nzType="search" nzTheme="outline"></i>
+            Tra cứu thông tin người bán
+          </button>
+        </div>
+        <div nz-col nzSpan="12">
+          <button style="width: 98%;" *ngIf="data.trangThaiQuyTrinh != trangThaiQuyTrinh.ChuaGuiCQT"  class="yellowButton" nz-button nzSize="small" (click)="xemCTS(1)" nz-tooltip><i
+            nz-icon nzType="eye" nzTheme="outline"></i>
+            Xem chứng thư số người bán
+          </button>
+        </div>
+      </div>
+      <div nz-row style="margin: 5px; margin-right: 2px;">
+        <div nz-col nzSpan="12">
+          <button style="width: 98%;" class="greenButton" nz-button nzSize="small" (click)="taiBoCai()" nz-tooltip><i
+              nz-icon nzType="download" nzTheme="outline"></i>
+            Tải BKSOFT KYSO
+          </button>
+        </div>
+        <div nz-col nzSpan="12">
+          <button *ngIf="(!data.isBuyerSigned || data.isBuyerSigned == false) && data.trangThaiQuyTrinh != trangThaiQuyTrinh.ChuaGuiCQT" style="width: 98%;" class="greenButton"
+            [nzLoading]="loading" nz-button nzSize="small" (click)="nguoiMuaKyDienTu()" nz-tooltip><i nz-icon
+              nzType="safety-certificate" nzTheme="outline"></i>
+            Người mua ký điện tử
+          </button>
+          <button *ngIf="data.isBuyerSigned == true" style="width: 98%;" class="greenButton" nz-button nzSize="small"
+            (click)="xemCTS(3)" nz-tooltip><i nz-icon nzType="eye" nzTheme="outline"></i>
+            Xem chứng thư số người mua
+          </button>
+        </div>
+      </div>
+      <div nz-row style="margin: 5px; margin-right: 2px;">
+        <div nz-col nzSpan="12">
+          <button *ngIf="data.trangThaiQuyTrinh == trangThaiQuyTrinh.CQTDaCapMa || data.trangThaiQuyTrinh == trangThaiQuyTrinh.HoaDonHopLe || data.trangThaiQuyTrinh == trangThaiQuyTrinh.HoaDonKhongHopKe"
+            style="width: 98%;" class="grayButton" nz-button nzSize="small" (click)="xemCTS(2)" nz-tooltip>
+              <i nz-icon nzType="eye" nzTheme="outline"></i>
+            Xem chứng thư số CQT
+          </button>
+        </div>
+      </div>
+
+      <div nz-row style="margin: 5px; height: 50%;">
+        <a href="{{images[0].url}}" target="_blank"><img style="width: 100%; height: 100%" [src]="images[0].source"></a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<ng-template #mobileTemplate>
+  <div nz-col nzSpan="24">
+    <ng-template [ngIf]="fileUrl">
+      <object [data]="'https://docs.google.com/viewerng/viewer?url='+fileUrl+'&embedded=true' | safe" frameborder="0"
+        height="100%" width="100%" type="application/pdf">
+        <iframe [src]="'https://docs.google.com/viewerng/viewer?url='+fileUrl+'&embedded=true' | safe" frameborder="0"
+          height="100%" width="100%" type="application/pdf" style="width: 100%; height: 90vh;"></iframe>
+      </object>
+    </ng-template>
+    <div style="background: white;">
+      <div class="sider-bar">
+        <div nz-row class="inner-content">
+          <div class="box-border" style="margin: 5px;border-color: #1877f2; padding-bottom: 10px!important;">
+            <span
+              style="margin-top: 5px; margin-left: 2px; color: #1877f2; font-weight: bold; font-size: 20px!important;">Thông
+              tin hóa đơn</span>
+            <div nz-row style="margin-top: 5px">
+              <div style="top: 4px" nz-col nzSpan="12">Ký hiệu:</div>
+              <div nz-col nzSpan="12">
+                <input type="text" nzSize="small" nz-input [(ngModel)]="data.kyHieuShow" disabled />
+              </div>
+            </div>
+
+            <div nz-row style="margin-top: 5px">
+              <div style="top: 4px" nz-col nzSpan="12">Số hóa đơn:</div>
+              <div nz-col nzSpan="12">
+                <input type="text" nzSize="small" nz-input [(ngModel)]="data.soHoaDon" disabled />
+              </div>
+            </div>
+
+            <div nz-row style="margin-top: 5px">
+              <div style="top: 4px" nz-col nzSpan="12">Ngày hóa đơn:</div>
+              <div nz-col nzSpan="12">
+                <input type="text" nzSize="small" nz-input [(ngModel)]="data.ngayHoaDonShow" disabled />
+              </div>
+            </div>
+
+            <div nz-row style="margin-top: 5px">
+              <div style="top: 4px" nz-col nzSpan="12">Tổng tiền thanh toán:</div>
+              <div nz-col nzSpan="12">
+                <input type="text" nzSize="small" nz-input [(ngModel)]="data.tongTienThanhToanShow" disabled />
+              </div>
+            </div>
+
+
+            <div nz-row style="margin-top: 5px">
+              <div style="top: 3px" nz-col nzSpan="12">Trạng thái hóa đơn:</div>
+              <div nz-col nzSpan="12">
+                <ng-container *ngIf="data.idHoaDonSaiSotBiThayThe != null && data.hinhThucXoabo == null &&
+                data.hoaDonThayTheDaDuocCapMa != true && data.hoaDonDieuChinhDaDuocCapMa != true">
+                  <span>
+                    <span class="lightBlueRoundedShape" title="Hóa đơn gốc">Hóa đơn gốc</span>
+                    <span style="color: #ed7d31;"> | Thay hóa đơn gốc <strong>(SS)</strong></span>
+                  </span>
+                </ng-container>
+
+                <ng-container *ngIf="!(data.idHoaDonSaiSotBiThayThe != null && data.hinhThucXoabo == null &&
+                data.hoaDonThayTheDaDuocCapMa != true && data.hoaDonDieuChinhDaDuocCapMa != true)">
+                  <span *ngIf="data?.trangThai == 1">
+                    <span class="lightBlueRoundedShape" title="Hóa đơn gốc">Hóa đơn gốc</span>
+                    <span *ngIf="data.daBiDieuChinh == true" style="color: #ed7d31;"> | Bị điều chỉnh</span>
+                  </span>
+
+                  <span *ngIf="data.trangThai == 2 && data.hinhThucXoabo == 1"><span class="grayRoundedShape">Hóa
+                      đơn
+                      hủy </span><span style="color: #ed7d31;"> | Hóa đơn gốc <strong>(SS)</strong></span>
+                  </span>
+                  <span *ngIf="data.trangThai == 2 && data.hinhThucXoabo == 4">
+                    <span class="grayRoundedShape"> Hóa
+                      đơn
+                      hủy </span><span style="color: #ed7d31;"> | Hóa đơn thay thế
+                      <strong>(SS)</strong>
+                    </span>
+                  </span>
+                  <span *ngIf="data.trangThai == 2 && data.hinhThucXoabo == 6">
+                    <span class="grayRoundedShape"> Hóa
+                      đơn
+                      hủy </span><span style="color: #ed7d31;"> | Hóa đơn điều chỉnh
+                      <strong>(SS)</strong></span>
+                  </span>
+                  <span *ngIf="data.trangThai == 2 && data.hinhThucXoabo == 3 && data.backUpTrangThai==1"><span
+                      class="grayRoundedShape">Hóa đơn hủy </span><span style="color: #ed7d31;"> | Hóa đơn gốc
+                      <strong>(LDO)</strong></span>
+                  </span>
+                  <span *ngIf="data.trangThai == 2 && data.hinhThucXoabo == 3 && data.backUpTrangThai==3"><span
+                      class="grayRoundedShape">Hóa đơn hủy </span><span style="color: #ed7d31;"> | Hóa đơn
+                      thay
+                      thế <strong>(LDO)</strong></span>
+                  </span>
+                  <!-- <span *ngIf="(data.trangThai == 2 && data.daLapHoaDonThayThe == false)  && (data.hinhThucXoabo == 2 || data.hinhThucXoabo == 5)  && data.isNotCreateThayThe== null"><span  class="oldOrangeRoundedShape"> Xóa bỏ</span></span> -->
+                  <span
+                    *ngIf="(data.trangThai == 2 && data.daLapHoaDonThayThe == false)  && (data.hinhThucXoabo == 2 || data.hinhThucXoabo == 5)"><span
+                      class="oldOrangeRoundedShape"> Xóa bỏ</span>
+                  </span>
+                  <span
+                    *ngIf="(data.trangThai == 2 && data.daLapHoaDonThayThe == false) && data.isNotCreateThayThe== false"><span
+                      class="oldOrangeRoundedShape"> Xóa bỏ</span>
+                  </span>
+
+                  <span
+                    *ngIf="(data.trangThai == 2 && data.daLapHoaDonThayThe == true) && (data.hinhThucXoabo == 2 || data.hinhThucXoabo == 5) && (data.isNotCreateThayThe== false || data.isNotCreateThayThe== null)">
+                    <ng-container *ngIf="data.hoaDonThayTheDaDuocCapMa == true">
+                      <span *ngIf="data.backUpTrangThai == 1">
+                        <span class="lightBlueRoundedShape" title="Hóa đơn gốc">Hóa đơn gốc
+
+                        </span>
+                        <span style="color: #ed7d31;"> | Bị thay thế</span>
+                      </span>
+                      <span *ngIf="data.backUpTrangThai == 3">
+                        <span style="display: inline-block;" class="hoaDonThayTheRoundedShape" title="Hóa đơn thay thế">
+                          Thay thế
+                        </span>
+                        <span style="color: #ed7d31;"> | Bị thay thế</span>
+                      </span>
+                      <span *ngIf="data.backUpTrangThai == 4 && data.loaiDieuChinh == 1">
+                        <span class="hoaDonDieuChinhRoundedShape" title="Hóa đơn điều chỉnh tăng"> Điều
+                          chỉnh
+                          <span class="circleHoaDonDieuChinhTang">
+                            <i nz-icon nzType="arrow-up" nzTheme="outline"></i>
+                          </span>
+                        </span>
+                        <span style="color: #ed7d31;"> | Bị thay thế</span>
+                      </span>
+
+                      <span *ngIf="data.backUpTrangThai == 4 && data.loaiDieuChinh == 2">
+                        <span class="hoaDonDieuChinhRoundedShape" title="Hóa đơn điều chỉnh giảm">
+                          Điều chỉnh
+                          <span class="circleHoaDonDieuChinhGiam">
+                            <i nz-icon nzType="arrow-down" nzTheme="outline"></i>
+                          </span>
+                        </span>
+                        <span style="color: #ed7d31;"> | Bị thay thế</span>
+                      </span>
+
+                      <span *ngIf="data.backUpTrangThai == 4 && data.loaiDieuChinh == 3">
+                        <span class="hoaDonDieuChinhRoundedShape" title="Hóa đơn điều chỉnh thông tin">
+                          Điều chỉnh
+                          <span class="circleHoaDonDieuChinhThongTin">
+                            <i nz-icon nzType="info" nzTheme="outline"></i>
+                          </span>
+                        </span>
+                        <span style="color: #ed7d31;"> | Bị thay thế</span>
+                      </span>
+                    </ng-container>
+
+                    <ng-container *ngIf="data.hoaDonThayTheDaDuocCapMa != true">
+                      <span class="oldOrangeRoundedShape">Xóa bỏ</span>
+                    </ng-container>
+                  </span>
+
+                  <!-- <span *ngIf="(data.trangThai == 2 && data.daLapHoaDonThayThe == true) && data.isNotCreateThayThe== false"><span  class="hoaDonThayTheRoundedShape"> <b style="color: red;"><i nz-icon nzType="close" nzTheme="outline"></i></b> | Bị thay thế</span></span> -->
+
+                  <span *ngIf="data.trangThai == 2 && data.isNotCreateThayThe== true" class="grayRoundedShape">Hóa
+                    đơn
+                    hủy
+                  </span>
+
+                  <span *ngIf="data?.trangThai == 3" class="hoaDonThayTheRoundedShape" style="display: inline-block;"
+                    title="Hóa đơn thay thế">Thay
+                    thế
+                  </span>
+
+                  <span *ngIf="data?.trangThai == 4 && data?.loaiDieuChinh == 1">
+                    <span class="hoaDonDieuChinhRoundedShape" title="Hóa đơn điều chỉnh tăng"> Điều chỉnh
+                      <span class="circleHoaDonDieuChinhTang">
+                        <i nz-icon nzType="arrow-up" nzTheme="outline"></i>
+                      </span>
+                    </span>
+                  </span>
+
+                  <span *ngIf="data?.trangThai == 4 && data?.loaiDieuChinh == 2">
+                    <span class="hoaDonDieuChinhRoundedShape" title="Hóa đơn điều chỉnh giảm">
+                      Điều chỉnh
+                      <span class="circleHoaDonDieuChinhGiam">
+                        <i nz-icon nzType="arrow-down" nzTheme="outline"></i>
+                      </span>
+                    </span>
+                    <span *ngIf="data.daBiDieuChinh == true" style="color: #ed7d31;"> | Bị điều chỉnh</span>
+                  </span>
+
+                  <span *ngIf="data?.trangThai == 4 && data?.loaiDieuChinh == 3">
+                    <span class="hoaDonDieuChinhRoundedShape" title="Hóa đơn điều chỉnh thông tin">
+                      Điều chỉnh
+                      <span class="circleHoaDonDieuChinhThongTin">
+                        <i nz-icon nzType="info" nzTheme="outline"></i>
+                      </span>
+                    </span>
+
+                    <span *ngIf="data.daBiDieuChinh == true" style="color: #ed7d31;"> | Bị điều chỉnh</span>
+                  </span>
+                </ng-container>
+              </div>
+            </div>
+
+            <!-- <div nz-row style="margin-top: 10px!important; margin-bottom: 5px;">
+                            <div style="top: 3px" nz-col nzSpan="12">Phương thức chuyển dữ liệu:</div>
+                            <div nz-col nzSpan="12">
+                                <span *ngIf="ptChuyenDL == 0" style="text-align: center; margin-top: 5px!important;padding: 5px 33% !important;border-radius: 10px;background-color: #0070C0!important;color: white !important;font-weight: 600;height: 24px;">
+                  Từng hóa đơn
+                </span>
+                                <span *ngIf="ptChuyenDL == 1" style="text-align: center; margin-top: 5px!important;padding: 5px 33% !important;border-radius: 10px;background-color: #ed7d31!important;color: white !important;font-weight: 600;height: 24px;">
+                  Bảng tổng hợp
+                </span>
+                            </div>
+                        </div>
+
+                        <div nz-row style="margin-top: 10px!important; margin-bottom: 5px;">
+                            <div style="top: 1px" nz-col nzSpan="12">Trạng thái thỏa thuận:</div>
+                            <div nz-col nzSpan="12">
+                                <span style="text-align: center; padding: 5px 29.5% !important;border-radius: 10px!important; margin-top: 5px;color: white !important;font-weight: 600;height: 24px; background-color: #00b0f0!important;" *ngIf="data.isLapVanBanThoaThuan == true">
+                  {{data?.trangThaiThoaThuan}}
+                </span>
+                                <span style="text-align: center; padding: 5px 29.5% !important;border-radius: 10px!important; margin-top: 5px;color: white !important;font-weight: 600;height: 24px;background-color: #A5A5A5!important;" *ngIf="data.isLapVanBanThoaThuan != true">
+                  {{data?.trangThaiThoaThuan}}
+                </span>
+                            </div>
+                        </div> -->
+          </div>
+        </div>
+      </div>
+
+      <div nz-row style="margin: 5px; margin-right: 2px;">
+        <div nz-col nzSpan="12">
+          <button style="width: 98%;" class="blueButton" nzSize="small" nz-button nzType="default"
+            (click)="downloadPDF()" nz-tooltip><i nz-icon nzType="download" nzTheme="outline"></i>
+            Tải hóa đơn (PDF)
+          </button>
+        </div>
+        <div nz-col nzSpan="12">
+          <button style="width: 98%;" class="blueButton" nzSize="small" nz-button nzType="default"
+            (click)="downloadXML()" nz-tooltip><i nz-icon nzType="download" nzTheme="outline"></i>
+            Tải hóa đơn (XML)
+          </button>
+        </div>
+      </div>
+      <div nz-row style="margin: 5px; margin-right: 2px;">
+        <div nz-col nzSpan="12">
+          <button style="width: 98%;" class="yellowButton" nz-button nzSize="small" (click)="traCuuThongTinNguoiBan()"
+            nz-tooltip><i nz-icon nzType="search" nzTheme="outline"></i>
+            Tra cứu thông tin người bán
+          </button>
+        </div>
+        <div nz-col nzSpan="12">
+          <button style="width: 98%;" class="yellowButton" nz-button nzSize="small" (click)="xemCTS(1)" nz-tooltip><i
+              nz-icon nzType="eye" nzTheme="outline"></i>
+            Xem chứng thư số người bán
+          </button>
+        </div>
+      </div>
+      <div nz-row style="margin: 5px; margin-right: 2px;">
+        <div nz-col nzSpan="12">
+          <button style="width: 98%;" class="greenButton" nz-button nzSize="small" (click)="taiBoCai()" nz-tooltip><i
+              nz-icon nzType="download" nzTheme="outline"></i>
+            Tải BKSOFT KYSO
+          </button>
+        </div>
+        <div nz-col nzSpan="12">
+          <button *ngIf="!data.isBuyerSigned || data.isBuyerSigned == false" style="width: 98%;" class="greenButton"
+            [nzLoading]="loading" nz-button nzSize="small" (click)="nguoiMuaKyDienTu()" nz-tooltip><i nz-icon
+              nzType="safety-certificate" nzTheme="outline"></i>
+            Người mua ký điện tử
+          </button>
+          <button *ngIf="data.isBuyerSigned == true" style="width: 98%;" class="greenButton" nz-button nzSize="small"
+            (click)="xemCTS(3)" nz-tooltip><i nz-icon nzType="eye" nzTheme="outline"></i>
+            Xem chứng thư số người mua
+          </button>
+        </div>
+      </div>
+      <div nz-row style="margin: 5px; margin-right: 2px;">
+        <div nz-col nzSpan="12">
+          <button style="width: 98%;" class="grayButton" nz-button nzSize="small" (click)="xemCTS(2)" nz-tooltip><i
+              nz-icon nzType="eye" nzTheme="outline"></i>
+            Xem chứng thư số CQT
+          </button>
+        </div>
+      </div>
+
+      <div nz-row style="margin: 5px; height: 50%;">
+        <a href="{{images[0].url}}" target="_blank"><img style="width: 100%; height: 100%" [src]="images[0].source"></a>
+      </div>
+    </div>
+  </div>
+</ng-template>

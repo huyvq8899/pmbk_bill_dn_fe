@@ -1,0 +1,90 @@
+<div nz-row style="margin-bottom: 5px;">
+  <div nz-row style="margin-left: 8px !important;">
+    <nz-button-group nzSize="small">
+      <button [disabled]="permission != true && thaoTacs.indexOf('BC_FULL') < 0 && thaoTacs.indexOf('BC_VIEW') < 0" nz-button nzType="default" (click)="clickChonBaoCao()" class="ant-btn-cus-1">
+        <i nz-icon nzType="file-search" nzTheme="outline"></i>Chọn tham số
+      </button>
+      <button [disabled]="permission != true && thaoTacs.indexOf('BC_FULL') < 0 && thaoTacs.indexOf('BC_VIEW') < 0" nz-button nzType="default" [disabled]="baoCao == null || baoCao == undefined" (click)="filterData(baoCao)" class="ant-btn-cus">
+        <i nz-icon nzType="retweet" nzTheme="outline"></i>Tải lại
+      </button>
+      <button [disabled]="(permission != true && thaoTacs.indexOf('BC_FULL') < 0 && (thaoTacs.indexOf('BC_VIEW') < 0 || thaoTacs.indexOf('BC_PRINT') < 0)) || listOfData == null || listOfData.length == 0" nz-button nzType="default" (click)="onPrintClick()" class="ant-btn-cus">
+        <i nz-icon nzType="printer" nzTheme="outline"></i>In
+      </button>
+      <button [nzDisabled]="(permission != true && thaoTacs.indexOf('BC_FULL') < 0 && (thaoTacs.indexOf('BC_VIEW') < 0 || thaoTacs.indexOf('BC_EXPORT') < 0)) || listOfData == null || listOfData.length == 0"  nz-button nzType="default" nz-dropdown nzTrigger="click" class="ant-btn-cus"
+      [nzDropdownMenu]="menuPrint">
+        <i nz-icon nzType="vertical-align-bottom" nzTheme="outline"></i>Xuất khẩu
+        <nz-dropdown-menu #menuPrint="nzDropdownMenu">
+          <ul nz-menu>
+            <li nz-menu-item (click)="exportExcel()">Excel</li>
+            <li nz-menu-item (click)="ExportPDF()">PDF</li>
+          </ul>
+        </nz-dropdown-menu>
+      </button>
+    </nz-button-group>
+  </div>
+  <div nz-row nzType="flex" nzJustify="space-around">
+    <div nz-col nzSpan="6">
+    </div>
+
+    <div nz-col nzSpan="12" class="textCenter">
+      <h2 style="text-transform: uppercase; font-weight: bolder; text-align: center;">Thống kê số lượng hóa đơn đã phát hành</h2>
+      <ng-container *ngIf="baoCao; else isEmptyTemplate">
+        <h3>
+            Từ ngày {{baoCao.tuNgay2}} đến ngày {{baoCao.denNgay2}}
+        </h3>
+      </ng-container>
+      <ng-template #isEmptyTemplate>
+        <div style="height: 20px;"></div>
+      </ng-template>
+    </div>
+
+    <div nz-col nzSpan="6" nzAlign="right">
+    </div>
+  </div>
+</div>
+    <!-- <hr style="border: 0.5px solid #d9d9d9" /> -->
+<div nz-row>
+<nz-table [nzNoResult]="null" nzSize="small" #fixedTable [nzData]="listOfData" nzBordered [nzTotal]="total"
+  [(nzPageIndex)]="displayData.PageNumber" [(nzPageSize)]="displayData.PageSize" [nzShowPagination]="false"
+  [nzLoading]="loading" [nzWidthConfig]="widthConfig" [nzScroll]="scrollConfig">
+  <thead>
+    <tr>
+      <th rowspan="2" class="textCenter">STT</th>
+      <th rowspan="2" class="textCenter">Tên loại hóa đơn</th>
+      <th rowspan="2" class="textCenter">Mẫu số hóa đơn</th>
+      <th rowspan="2" class="textCenter">Ký hiệu hóa đơn</th>
+      <th colspan = "3" class="textCenter">Số lượng hóa đơn sử dụng, xóa bỏ trong kỳ</th>
+    </tr>
+    <tr>
+      <th class="textCenter">Tổng số</th>
+      <th class="textCenter">Số lượng hóa đơn đã sử dụng</th>
+      <th class="textCenter" >Số lượng hóa đơn đã xóa bỏ</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of fixedTable.data; let i=index" >
+      <td>{{i+1}}</td>
+      <td class="textCenter">{{ data?.tenLoaiHoaDon }} </td>
+      <td class="textCenter">{{ data?.mauSo }} </td>
+      <td class="textCenter">{{ data?.kyHieu }}</td>
+      <td class="money">{{data.tongSo}}
+      </td>
+      <td class="money">{{data.daSuDung}}
+      </td>
+      <td class="money">{{data.daXoaBo}}
+      </td>
+    </tr>
+    <tr *ngFor="let obj of lstBangKeEmpty">
+      <td *ngFor="let empty of numberBangKeCols; let idx = index">
+          <span *ngIf="idx===0" class="font-while">.</span>
+      </td>
+    </tr>
+    <tr class="total-footer" *ngIf="listOfData.length > 0">
+      <td class="td-z-index" colspan="4">Số dòng = {{numberLine}}</td>
+      <td class="money bold-text">{{totalTongSo}}</td>
+      <td class="money bold-text">{{totalDaSuDung}}</td>
+      <td class="money bold-text">{{totalDaXoaBo}}</td>
+    </tr>
+  </tbody>
+</nz-table>
+</div>

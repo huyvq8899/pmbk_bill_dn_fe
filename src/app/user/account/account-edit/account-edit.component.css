@@ -1,0 +1,52 @@
+:host ::ng-deep .ant-form-item-label {
+    text-align: left;
+}
+nz-form-item {
+    margin-bottom: 0px;
+}
+
+nz-tree {
+    overflow: hidden;
+  }
+  
+  .custom-node {
+    cursor: pointer;
+    line-height: 24px;
+    margin-left: 4px;
+    display: inline-block;
+  }
+  
+  .folder-name {
+    margin-left: 4px;
+  }
+  
+  .file-desc,
+  .folder-desc {
+    padding: 0 8px;
+    display: inline-block;
+    background: #87ceff;
+    color: #ffffff;
+    position: relative;
+    left: 12px;
+  }
+  .box-title {
+    position: absolute;
+    top: -12px;
+    padding: 1px 8px;
+    color: #777;
+    background: #fff;
+    border-radius: 2px 2px 0 0;
+    transition: background-color 0.4s;
+  }
+  
+  .box-border {
+    border: solid;
+    border-width: 1px;
+    border-color: #e0e0e0;
+    padding: 10px;
+  }
+  
+  .inner-content {
+    margin-top: 15px;
+  }
+  

@@ -1,0 +1,34 @@
+<div class="card-container">
+  <nz-tabset nzSize="small" [nzTabPosition]="'top'" [nzType]="'card'" [(nzSelectedIndex)]="selectedTab">
+    <nz-tab nzTitle="Khách hàng" (nzClick)="clickTab('/danh-muc/khach-hang')"
+      *ngIf="globalConstants.UserPermissions != null && (globalConstants.UserPermissions === true || globalConstants.UserPermissions.indexOf('KhachHang') >= 0)">
+      <ng-template nz-tab>
+        <app-khach-hang></app-khach-hang>
+      </ng-template>
+    </nz-tab>
+    <nz-tab nzTitle="Nhân viên" (nzClick)="clickTab('/danh-muc/nhan-vien')"
+      *ngIf="boolQuanLyNhanVienBanHangTrenHoaDon && globalConstants.UserPermissions != null && (globalConstants.UserPermissions === true || globalConstants.UserPermissions.indexOf('NhanVien') >= 0)">
+      <ng-template nz-tab>
+        <app-nhan-vien></app-nhan-vien>
+      </ng-template>
+    </nz-tab>
+    <nz-tab nzTitle="Hàng hóa, dịch vụ" (nzClick)="clickTab('/danh-muc/hang-hoa-dich-vu')"
+      *ngIf="globalConstants.UserPermissions != null && (globalConstants.UserPermissions === true || globalConstants.UserPermissions.indexOf('HangHoaDichVu') >= 0)">
+      <ng-template nz-tab>
+        <app-hang-hoa-dich-vu></app-hang-hoa-dich-vu>
+      </ng-template>
+    </nz-tab>
+    <nz-tab nzTitle="Đơn vị tính" (nzClick)="clickTab('/danh-muc/don-vi-tinh')"
+      *ngIf="globalConstants.UserPermissions != null && (globalConstants.UserPermissions === true || globalConstants.UserPermissions.indexOf('DonViTinh') >= 0)">
+      <ng-template nz-tab>
+        <app-don-vi-tinh></app-don-vi-tinh>
+      </ng-template>
+    </nz-tab>
+    <nz-tab nzTitle="Loại tiền" (nzClick)="clickTab('/danh-muc/loai-tien')"
+      *ngIf="globalConstants.UserPermissions != null && (globalConstants.UserPermissions === true || globalConstants.UserPermissions.indexOf('LoaiTien') >= 0)">
+      <ng-template nz-tab>
+        <app-loai-tien></app-loai-tien>
+      </ng-template>
+    </nz-tab>
+  </nz-tabset>
+</div>

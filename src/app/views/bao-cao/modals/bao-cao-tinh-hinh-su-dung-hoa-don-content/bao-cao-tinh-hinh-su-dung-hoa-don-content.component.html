@@ -1,0 +1,323 @@
+<nz-spin [nzSpinning]="spinning">
+<div style="background: #fff; padding: 10px;">
+  <div nz-row style="margin-bottom: 5px;">
+    <div nz-row style="margin-left: 8px !important;">
+      <nz-button-group nzSize="small">
+        <button nz-button nz-tooltip nzTooltipTitle="F2" nzType="default" (click)="onAddObjClick()"
+          [disabled]="fbBtnPlusDisable || (permission != true && thaoTacs.indexOf('BC_FULL') < 0 && thaoTacs.indexOf('BC_CREATE') < 0)"
+          class="ant-btn-cus" [ngClass]="{'disabled-button-state-v3': fbBtnPlusDisable == true}">
+          <i nz-icon nzType="plus" nzTheme="outline"></i>Thêm
+        </button>
+        <button nz-button nz-tooltip nzTooltipTitle="F8" nzType="default" (click)="onEditClick()"
+          [disabled]="fbBtnEditDisable || (permission != true && thaoTacs.indexOf('BC_FULL') < 0 && thaoTacs.indexOf('BC_UPDATE') < 0)"
+          class="ant-btn-cus" [ngClass]="{'disabled-button-state-v3': fbBtnEditDisable == true}">
+          <i nz-icon nzType="edit" nzTheme="outline"></i>Sửa
+        </button>
+        <button nz-button nz-tooltip nzTooltipTitle="Alt + S" nzType="default" (click)="submitForm()"
+          [disabled]="fbBtnSaveDisable" [ngClass]="{'disabled-button-state-v3': fbBtnSaveDisable == true}"
+          class="ant-btn-cus button-save">
+          <i nz-icon nzType="save" nzTheme="outline"></i>Lưu
+        </button>
+        <button nz-button nz-tooltip nzTooltipTitle="F9" nzType="default" (click)="onDeleteClick()"
+          [disabled]="fbBtnDeleteDisable || (permission != true && thaoTacs.indexOf('BC_FULL') < 0 && thaoTacs.indexOf('BC_DELETE') < 0)"
+          [ngClass]="{'disabled-button-state-v3': fbBtnDeleteDisable == true}" class="button-close">
+          <i nz-icon nzType="delete" nzTheme="outline"></i>Xóa
+        </button>
+        <button nz-button nzType="default" (click)="onPrintClick()" [disabled]="fbBtnPrinterDisable" class="ant-btn-cus"
+          [ngClass]="{'disabled-button-state-v3': fbBtnPrinterDisable == true}">
+          <i nz-icon nzType="printer" nzTheme="outline"></i>In
+        </button>
+        <button nz-button nzType="default" nz-dropdown nzTrigger="click" [disabled]="fbBtnPrinterDisable" class="ant-btn-cus"
+          [ngClass]="{'disabled-button-state-v3': fbBtnPrinterDisable == true}" [nzDropdownMenu]="menuPrint">
+          <i nz-icon nzType="vertical-align-bottom" nzTheme="outline"></i>Xuất khẩu
+          <nz-dropdown-menu #menuPrint="nzDropdownMenu">
+            <ul nz-menu>
+              <li nz-menu-item (click)="exportExcel()">Excel</li>
+              <li nz-menu-item (click)="exportPdf()">PDF</li>
+            </ul>
+          </nz-dropdown-menu>
+        </button>
+        <button nz-button nzType="default" (click)="onHelpClick()" class="ant-btn-cus">
+          <i nz-icon nzType="question" nzTheme="outline"></i>Trợ giúp
+        </button>
+        <button nz-button nz-tooltip nzTooltipTitle="ESC" nzTooltipTitle="ESC" nzType="default" (click)="closeModal()"
+          class="ant-btn-cus button-close">
+          <i nz-icon nzType="close" nzTheme="outline"></i>Đóng
+        </button>
+      </nz-button-group>
+    </div>
+    <div nz-row nzType="flex" nzJustify="space-around">
+      <div nz-col nzSpan="6">
+      </div>
+
+      <div nz-col nzSpan="12" class="textCenter">
+          <h2 style="text-transform: uppercase; font-weight: bolder;">Báo cáo tình hình sử dụng hóa đơn</h2>
+          <h3>
+            Kỳ báo cáo: {{baoCao.dienGiai}}
+          </h3>
+          <h3>
+            Từ ngày {{ baoCao.tuNgay | date: 'dd/MM/yyyy' }} đến ngày {{ baoCao.denNgay | date: 'dd/MM/yyyy'}}
+          </h3>
+      </div>
+
+      <div nz-col nzSpan="6" nzAlign="right">
+      </div>
+    </div>
+
+    <div nz-row nzType="flex" nzJustify="space-around">
+      <h4>Tên tổ chức: {{ thongTinCty.tenDonVi }}</h4>
+      <h4>Mã số thuế : {{ thongTinCty.maSoThue }}</h4>
+      <h4>Địa chỉ    : {{ thongTinCty.diaChi }}</h4>
+    </div>
+
+    <form nz-form [formGroup]="baoCaoForm" class="container">
+      <!-- <hr style="border: 0.5px solid #d9d9d9" /> -->
+      <nz-table [nzNoResult]="null" nzSize="small" #fixedTable [nzData]="listOfData" nzBordered [nzTotal]="total"
+        [(nzPageIndex)]="displayData.PageNumber" [(nzPageSize)]="displayData.PageSize" [nzShowPagination]="false"
+        [nzLoading]="loading" [nzScroll]="scrollConfig" [nzWidthConfig]="widthConfig">
+        <thead>
+          <tr>
+            <th rowspan="4" class="textCenter">
+              <button nz-button nzType="default" type="button" nzSize="small" (click)="addItem()"
+                  [disabled]="!fbEnableEdit"><i nz-icon nzType="plus" nzTheme="outline"></i></button>
+            </th>
+            <th rowspan="4" class="textCenter">STT</th>
+            <th rowspan="4" class="textCenter">Tên loại hóa đơn</th>
+            <th rowspan="4" class="textCenter">Ký hiệu mẫu số hóa đơn</th>
+            <th rowspan="4" class="textCenter">Ký hiệu hóa đơn</th>
+            <th colspan="5" class="textCenter">Số tồn đầu kỳ, mua/phát sinh trong kỳ</th>
+            <th colspan="10" class="textCenter">Số sử dụng, xóa bỏ, mất, hủy trong kỳ</th>
+            <th rowspan="2" colspan="3" class="textCenter">Tồn cuối kỳ</th>
+          </tr>
+          <tr>
+            <th rowspan="3" class="textCenter">Tổng số</th>
+            <th colspan="2" class="textCenter">Số tồn đầu kỳ</th>
+            <th colspan="2" class="textCenter">Số phát sinh trong kỳ</th>
+            <th colspan="3" class="textCenter">Tổng số xóa bỏ, mất hủy trong kỳ</th>
+            <th colspan="7" class="textCenter">Trong đó</th>
+          </tr>
+          <tr>
+            <th rowspan="2" class="textCenter">Từ số</th>
+            <th rowspan="2" class="textCenter">Đến số</th>
+            <th rowspan="2" class="textCenter">Từ số</th>
+            <th rowspan="2" class="textCenter">Đến số</th>
+            <th rowspan="2" class="textCenter">Từ số</th>
+            <th rowspan="2" class="textCenter">Đến số</th>
+            <th rowspan="2" class="textCenter">Cộng</th>
+            <th rowspan="2" class="textCenter">Số lượng đã sử dụng</th>
+            <th colspan="2" class="textCenter">Xóa bỏ</th>
+            <th colspan="2" class="textCenter">Mất</th>
+            <th colspan="2" class="textCenter">Hủy</th>
+            <th rowspan="2" class="textCenter">Từ số</th>
+            <th rowspan="2" class="textCenter">Đến số</th>
+            <th rowspan="2" class="textCenter">Số lượng</th>
+          </tr>
+          <tr>
+            <th class="textCenter">Số lượng</th>
+            <th class="textCenter">Số</th>
+            <th class="textCenter">Số lượng</th>
+            <th class="textCenter">Số</th>
+            <th class="textCenter">Số lượng</th>
+            <th class="textCenter">Số</th>
+          </tr>
+        </thead>
+        <tbody formArrayName="chiTiets">
+          <tr *ngFor="let data of baoCaoForm.get('chiTiets')['controls']; let i = index"
+          [formGroupName]="i">
+          <td nzAlign="center">
+            <button nzSize="small" type="button" nz-button nzType="button" (click)="removeRow(i)"
+              [disabled]="!fbEnableEdit" class="button-minus"><i nz-icon nzType="minus"
+                nzTheme="outline"></i></button>
+          </td>
+          <td nzAlign="center">
+            {{i+1}}
+          </td>
+          <td>
+            <nz-form-item>
+              <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng chọn!">
+                <nz-select style="width: 100%" nzSize="small" nzShowSearch formControlName="loaiHoaDon"
+                    title="Loại hóa đơn">
+                    <nz-option nzLabel="Hóa đơn giá trị gia tăng" [nzValue]="1"></nz-option>
+                    <nz-option nzLabel="Hóa đơn bán hàng" [nzValue]="2"></nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+          </td>
+          <td>
+            <nz-form-item>
+              <nz-form-control [nzSm]="24" [nzXs]="24">
+                <input nz-input nzSize="small" formControlName="mauSo" style="width: 100%;">
+              </nz-form-control>
+            </nz-form-item>
+          </td>
+          <td nzAlign="center">
+            <nz-form-control [nzSm]="24" [nzXs]="24">
+              <input nz-input nzSize="small" formControlName="kyHieu" style="width: 100%;">
+            </nz-form-control>
+          </td>
+          <td nzAlign="right">
+            <nz-form-item>
+              <nz-form-control [nzSm]="24" [nzXs]="24">
+                <input style="text-align: right;" nz-input bkCurrencyMask [options]="{ precision: ddtp.getSoLuong() }" type="text" nzSize="small" formControlName="tongSo" style="width: 100%;">
+              </nz-form-control>
+            </nz-form-item>
+          </td>
+          <td>
+            <nz-form-item>
+              <nz-form-control [nzSm]="24" [nzXs]="24">
+                <input nz-input nzSize="small" formControlName="tonDauKyTu" style="width: 100%;">
+              </nz-form-control>
+            </nz-form-item>
+          </td>
+          <td>
+            <nz-form-item>
+              <nz-form-control [nzSm]="24" [nzXs]="24">
+                <input nz-input nzSize="small" formControlName="tonDauKyDen" style="width: 100%;">
+              </nz-form-control>
+            </nz-form-item>
+          </td>
+          <td>
+            <nz-form-item>
+              <nz-form-control [nzSm]="24" [nzXs]="24">
+                <input nz-input nzSize="small" formControlName="trongKyTu" style="width: 100%;">
+              </nz-form-control>
+            </nz-form-item>
+          </td>
+          <td>
+            <nz-form-item>
+              <nz-form-control [nzSm]="24" [nzXs]="24">
+                <input nz-input nzSize="small" formControlName="trongKyDen" style="width: 100%;">
+              </nz-form-control>
+            </nz-form-item>
+          </td>
+          <td>
+            <nz-form-item>
+              <nz-form-control [nzSm]="24" [nzXs]="24">
+                <input nz-input nzSize="small" formControlName="suDungTu" style="width: 100%;">
+              </nz-form-control>
+            </nz-form-item>
+          </td>
+          <td>
+            <nz-form-item>
+              <nz-form-control [nzSm]="24" [nzXs]="24">
+                <input nz-input nzSize="small" formControlName="suDungDen" style="width: 100%;">
+              </nz-form-control>
+            </nz-form-item>
+          </td>
+          <td>
+            <nz-form-item>
+              <nz-form-control [nzSm]="24" [nzXs]="24">
+                <input nz-input type="text" bkCurrencyMask [options]="{ precision: ddtp.getSoLuong() }" nzSize="small" formControlName="tongSoSuDung" style="width: 100%;">
+              </nz-form-control>
+            </nz-form-item>
+          </td>
+          <td>
+            <nz-form-item>
+              <nz-form-control [nzSm]="24" [nzXs]="24">
+                <input nz-input type="text" bkCurrencyMask [options]="{ precision: ddtp.getSoLuong() }" nzSize="small" formControlName="daSuDung" style="width: 100%;">
+              </nz-form-control>
+            </nz-form-item>
+          </td>
+          <td>
+            <nz-form-item>
+              <nz-form-control [nzSm]="24" [nzXs]="24">
+                <input nz-input type="text" bkCurrencyMask [options]="{ precision: ddtp.getSoLuong() }" nzSize="small" formControlName="daXoaBo" style="width: 100%;">
+              </nz-form-control>
+            </nz-form-item>
+          </td>
+          <td>
+            <nz-form-item>
+              <nz-form-control [nzSm]="24" [nzXs]="24">
+                <input nz-input nzSize="small" formControlName="soXoaBo" style="width: 100%;">
+              </nz-form-control>
+            </nz-form-item>
+          </td>
+          <td>
+            <nz-form-item>
+              <nz-form-control [nzSm]="24" [nzXs]="24">
+                <input nz-input  bkCurrencyMask [options]="{ precision: ddtp.getSoLuong() }" type="text" nzSize="small" formControlName="daMat" style="width: 100%;">
+              </nz-form-control>
+            </nz-form-item>
+          </td>
+          <td>
+            <nz-form-item>
+              <nz-form-control [nzSm]="24" [nzXs]="24">
+                <input nz-input  nzSize="small" formControlName="soMat" style="width: 100%;">
+              </nz-form-control>
+            </nz-form-item>
+          </td>  
+          <td>
+            <nz-form-item>
+              <nz-form-control [nzSm]="24" [nzXs]="24">
+                <input nz-input  bkCurrencyMask [options]="{ precision: ddtp.getSoLuong() }" type="text" nzSize="small" formControlName="daHuy" style="width: 100%;">
+              </nz-form-control>
+            </nz-form-item>
+          </td>
+          <td>
+            <nz-form-item>
+              <nz-form-control [nzSm]="24" [nzXs]="24">
+                <input nz-input nzSize="small" formControlName="soHuy" style="width: 100%;">
+              </nz-form-control>
+            </nz-form-item>
+          </td>
+          <td>
+            <nz-form-item>
+              <nz-form-control [nzSm]="24" [nzXs]="24">
+                <input nz-input nzSize="small" formControlName="tonCuoiKyTu" style="width: 100%;">
+              </nz-form-control>
+            </nz-form-item>
+          </td>
+          <td>
+            <nz-form-item>
+              <nz-form-control [nzSm]="24" [nzXs]="24">
+                <input nz-input nzSize="small" formControlName="tonCuoiKyDen" style="width: 100%;">
+              </nz-form-control>
+            </nz-form-item>
+          </td>
+          <td>
+            <nz-form-item>
+              <nz-form-control [nzSm]="24" [nzXs]="24">
+                <input nz-input  bkCurrencyMask [options]="{ precision: ddtp.getSoLuong() }" type="text" nzSize="small" formControlName="soLuongTon" style="width: 100%;">
+              </nz-form-control>
+            </nz-form-item>
+          </td>        
+        </tr>
+          <tr class="total-footer" *ngIf="listOfData.length > 0">
+            <td class="td-z-index" colspan="4">Số dòng = {{numberLine}}</td>
+            <td class="money bold-text">{{ this.baoCaoForm.getRawValue().chiTiets | sum: 'tongSo' }}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="money bold-text">{{ this.baoCaoForm.getRawValue().chiTiets | sum: 'tongSoSuDung' }}</td>
+            <td class="money bold-text">{{ this.baoCaoForm.getRawValue().chiTiets | sum: 'daSuDung' }}</td>
+            <td class="money bold-text">{{ this.baoCaoForm.getRawValue().chiTiets | sum: 'daXoaBo' }}</td>
+            <td></td>
+            <td class="money bold-text">{{ this.baoCaoForm.getRawValue().chiTiets | sum: 'daMat' }}</td>
+            <td></td>
+            <td class="money bold-text">{{ this.baoCaoForm.getRawValue().chiTiets | sum: 'daHuy' }}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="money bold-text">{{ this.baoCaoForm.getRawValue().chiTiets | sum: 'soLuongTon' }}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+
+      <div nz-row style="margin-top: 4px;">
+        <div nz-col nzSpan="8">
+          <input nz-input nzSize="small" formControlName="tenNguoiLap" >
+        </div>
+        <div nz-col nzSpan="8">
+          <input nz-input nzSize="small" formControlName="tenNguoiDaiDienPhapLuat">
+        </div>
+        <div nz-col nzSpan="8">
+          <input nz-input type="date" nzSize="small" formControlName="ngayLap">
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+</nz-spin>

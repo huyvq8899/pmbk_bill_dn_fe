@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="41" height="41" viewBox="0 0 41 41">
+  <g id="Font" transform="translate(0.5 0.5)">
+    <rect id="Rectangle_15482" data-name="Rectangle 15482" width="40" height="40" rx="5" fill="none" stroke="#ccc" stroke-width="1"/>
+    <g id="Group_26961" data-name="Group 26961" transform="translate(9.495 11.59)">
+      <path id="Path_29749" data-name="Path 29749" d="M135.849,20.291a10.191,10.191,0,0,0-.86-2.231c-.43-.726-.7-.914-2.177-.914h-2.687V30.232c0,2.1.215,2.392,2.768,2.553v.753h-7.819v-.753c2.5-.161,2.714-.43,2.714-2.553V17.146h-2.445c-1.478,0-1.908.162-2.365.968a12.252,12.252,0,0,0-.887,2.177h-.806c.161-1.64.322-3.333.4-4.837h.618c.4.645.7.618,1.451.618H134.4a1.351,1.351,0,0,0,1.371-.618h.645c0,1.262.107,3.2.241,4.756Z" transform="translate(-121.285 -15.454)" fill="#1492e6"/>
+    </g>
+    <g id="Group_26962" data-name="Group 26962" transform="translate(22.689 20.976)">
+      <path id="Path_29750" data-name="Path 29750" d="M141.288,25.721H138.4v7.817h-1.183V25.721h-2.848V24.79h6.915Z" transform="translate(-134.373 -24.79)" fill="#494a4d"/>
+    </g>
+  </g>
+</svg>

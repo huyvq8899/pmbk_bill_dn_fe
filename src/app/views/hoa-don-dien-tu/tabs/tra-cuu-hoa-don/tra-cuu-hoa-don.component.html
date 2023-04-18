@@ -1,0 +1,189 @@
+<div *ngIf="!isFromPhone; else phoneTemplate" nz-row class="container">
+  <div class="sider-bar-content">
+    <div class="text-center">
+      <h1 style="text-transform: uppercase; text-shadow: 1vh;" class="title">Tra cứu hóa đơn </h1>
+    </div>
+    <div class="input-search">
+      <div nz-row style="margin-bottom: 5px">
+        <button nz-button nzSize="default" style="color: #0044bd !important; background-color: white!important; font-weight: 600 !important;" *ngIf="loaiTraCuu == 'code'" (click)="changeSelectTab(0)">Mã tra cứu</button>
+        <button nz-button nzSize="default" style="color: white !important; background-color: #0044bd!important; font-weight: 600 !important;" *ngIf="loaiTraCuu == 'file'" (click)="changeSelectTab(0)">Mã tra cứu</button>
+        <button nz-button nzSize="default" style="margin-left: 5px;color: #0044bd !important; background-color: white!important;  font-weight: 600 !important;" *ngIf="loaiTraCuu == 'file'" (click)="changeSelectTab(1)">Tệp tra cứu</button>
+        <button nz-button nzSize="default" style="margin-left: 5px;color: white !important; background-color: #0044bd!important; font-weight: 600 !important;" *ngIf="loaiTraCuu == 'code'" (click)="changeSelectTab(1)">Tệp tra cứu</button>
+      </div>
+      <form nz-form *ngIf="loaiTraCuu == 'code'" [formGroup]="traCuuBangMaForm" (ngSubmit)="submitForm()" autocomplete="off">
+
+        <!-- <nz-form-item>
+          <nz-form-control [nzErrorTip]="errorDomain">
+            <input type="text" nz-input placeholder="Nhập website tạo hóa đơn..." formControlName="domain"
+                id="domain"/>
+            <ng-template #errorDomain let-control>
+              <ng-container *ngIf="control.hasError('required')">
+                Vui lòng nhập website!
+              </ng-container>
+            </ng-template>
+          </nz-form-control>
+        </nz-form-item> -->
+
+        <nz-form-item>
+          <nz-form-control [nzErrorTip]="errorLookupCode">
+            <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+              <input style="color: #0044bd !important" type="text" nz-input placeholder="Nhập mã tra cứu..." formControlName="maTraCuu"
+                id="maTraCuu" [nzSize]="'large'" class="search-control" />
+            </nz-input-group>
+            <ng-template #errorLookupCode let-control>
+              <ng-container *ngIf="control.hasError('required')">
+                Vui lòng nhập mã tra cứu!
+              </ng-container>
+              <ng-container *ngIf="control.hasError('incorrect')">
+                Mã tra cứu không đúng. Vui lòng nhập lại!
+              </ng-container>
+            </ng-template>
+            <ng-template #suffixIconButton>
+              <button nz-button nzType="primary" id="search" nzSearch class="search-control" [nzLoading]="loading">
+                <i nz-icon nzType="search"></i>
+              </button>
+            </ng-template>
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+      <form nz-form *ngIf="loaiTraCuu == 'file'" [formGroup]="traCuuBangFileForm" (ngSubmit)="submitForm()" autocomplete="off">
+
+        <!-- <nz-form-item>
+          <nz-form-control [nzErrorTip]="errorDomain">
+            <input type="text" nz-input placeholder="Nhập website tạo hóa đơn..." formControlName="domain"
+                id="domain"/>
+            <ng-template #errorDomain let-control>
+              <ng-container *ngIf="control.hasError('required')">
+                Vui lòng nhập website!
+              </ng-container>
+            </ng-template>
+          </nz-form-control>
+        </nz-form-item> -->
+
+        <nz-form-item>
+          <nz-form-control [nzErrorTip]="errorLookupFile">
+            <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+              <input style="color: #0044bd !important" type="text" readonly nz-input placeholder="Chọn tệp tra cứu..." formControlName="fileTraCuu"
+                id="fileTraCuu" [nzSize]="'large'" style="cursor: pointer;" class="search-control"
+                (click)="fileInput.click()" />
+              <input #fileInput type="file" (change)="chooseXml($event)" style="display:none;" />
+            </nz-input-group>
+            <ng-template #errorLookupFile let-control>
+              <ng-container *ngIf="control.hasError('required')">
+                Vui lòng chọn tệp tra cứu!
+              </ng-container>
+              <ng-container *ngIf="control.hasError('incorrect')">
+                Tệp tra cứu không đúng. Vui lòng chọn lại!
+              </ng-container>
+            </ng-template>
+            <ng-template #suffixIconButton>
+              <button nz-button nzType="primary" nzSearch class="search-control" [nzLoading]="loading">
+                <i nz-icon nzType="search"></i>
+              </button>
+            </ng-template>
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+    </div>
+  </div>
+</div>
+
+<ng-template #phoneTemplate>
+  <div nz-row class="container">
+     <div class="sider-bar-content">
+        <div class="text-center">
+         <h1 style="text-transform: uppercase; text-shadow: 1vh;" class="title">Tra cứu hóa đơn </h1>
+        </div>
+    <div class="input-search">
+      <div nz-row style="margin-bottom: 5px;
+        margin-top: 5px;
+       border: white;
+          border-radius: 34px;
+      background-color: white;
+      display: flex;">
+        <button class="btn-1" nz-button nzSize="default" *ngIf="loaiTraCuu == 'code'" (click)="changeSelectTab(0)">Tra
+          cứu theo mã tra cứu</button>
+        <button class="btn-2" nz-button nzSize="default" *ngIf="loaiTraCuu == 'file'" (click)="changeSelectTab(0)">Tra
+          cứu theo mã tra cứu</button>
+        <button class="btn-1" nz-button nzSize="default" *ngIf="loaiTraCuu == 'file'" (click)="changeSelectTab(1)">Tra
+          cứu theo tệp XML</button>
+        <button class="btn-2" nz-button nzSize="default" *ngIf="loaiTraCuu == 'code'" (click)="changeSelectTab(1)">Tra
+          cứu theo tệp XML</button>
+      </div>
+      <form nz-form *ngIf="loaiTraCuu == 'code'" [formGroup]="traCuuBangMaForm" (ngSubmit)="submitForm()"
+        autocomplete="off">
+        <nz-form-item>
+          <nz-form-control [nzErrorTip]="errorLookupCode">
+            <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton" style="width:150%">
+              <input style="color: #0044bd !important;border-radius: 6px 0px 0px 6px !important;" type="text" nz-input
+                placeholder="Nhập mã tra cứu. Không để trống" formControlName="maTraCuu" id="maTraCuu"
+                [nzSize]="'large'" class="search-control" />
+            </nz-input-group>
+
+            <ng-template #errorLookupCode let-control>
+              <ng-container *ngIf="control.hasError('required')" style="color: white;">
+                Vui lòng nhập mã tra cứu
+              </ng-container>
+              <ng-container *ngIf="control.hasError('incorrect')">
+                Mã tra cứu không đúng. Vui lòng nhập lại!
+              </ng-container>
+            </ng-template>
+            <ng-template #suffixIconButton>
+              <button nz-button nzType="primary" id="search" nzSearch class="search-control" [nzLoading]="loading"
+                (click)="submitForm()">
+                <i nz-icon nzType="search"></i>
+              </button>
+            </ng-template>
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+      <form nz-form *ngIf="loaiTraCuu == 'file'" [formGroup]="traCuuBangFileForm" (ngSubmit)="submitForm()"
+        autocomplete="off">
+        <nz-form-item>
+          <nz-form-control [nzErrorTip]="errorLookupFile">
+            <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton" style="width:150%">
+              <input
+                style="color: #0044bd !important;width: 100%;border-radius: 6px 0px 0px 6px !important;cursor: pointer;"
+                type="text" readonly nz-input placeholder="Chọn tệp tra cứu. Không để trống"
+                formControlName="fileTraCuu" id="fileTraCuu" [nzSize]="'large'" class="search-control"
+                (click)="fileInput.click()" />
+              <input #fileInput type="file" (change)="chooseXml($event)" style="display:none;" />
+            </nz-input-group>
+            <ng-template #errorLookupFile let-control>
+              <ng-container *ngIf="control.hasError('required')">
+                Vui lòng chọn tệp tra cứu
+              </ng-container>
+              <ng-container *ngIf="control.hasError('incorrect')">
+                Tệp tra cứu không đúng. Vui lòng chọn lại!
+              </ng-container>
+            </ng-template>
+            <ng-template #suffixIconButton>
+              <button nz-button nzType="primary" nzSearch class="search-control" [nzLoading]="loading"
+                (click)="submitForm()">
+                <i nz-icon nzType="search"></i>
+              </button>
+            </ng-template>
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+    </div>
+  </div>
+</div>
+</ng-template>
+<div nz-row *ngIf="!isFromPhone;else phoneCarousel" class="slider-bar">
+  <nz-carousel nzAutoPlay>
+    <div nz-carousel-content *ngFor="let item of images">
+        <a href="{{item.url}}" target="_blank"><img [src]="item.source" class="image-slider"></a>
+    </div>
+  </nz-carousel>
+</div>
+
+<ng-template #phoneCarousel>
+  <div nz-row class="slider-bar">
+    <nz-carousel nzAutoPlay>
+      <div nz-carousel-content *ngFor="let item of images">
+        <a href="{{item.url}}" target="_blank"><img [src]="item.source" class="image-slider-mobile"></a>
+      </div>
+    </nz-carousel>
+  </div>
+</ng-template>

@@ -1,0 +1,38 @@
+<nz-spin [nzSpinning]="spinning">
+    <form nz-form>
+        <div class="inner-content">
+            <div class="box-border" style="margin: 5px;border: 1px solid gray;min-height: 200px;padding: 10px;">
+                <div nz-row [nzGutter]="{ xs: 8, sm: 16, md: 24, lg: 32 }" style="margin: 5px 0;">
+                    <div nz-col class="gutter-row" [nzSpan]="24">
+                        <div class="file-list">
+                            <div nz-row style="padding: 5px 0;" [nzGutter]="{ xs: 8, sm: 16, md: 24, lg: 32 }" class="file-item" *ngFor="let item of listFile;  let i = index">
+                                <div nz-col class="gutter-row" [nzSpan]="1">
+                                    {{i+1}}.
+                                </div>
+                                <div nz-col class="gutter-row" [nzSpan]="23">
+                                    <a (click)="downloadFile(item)">{{item.tenGoc}}</a> &nbsp;
+                                    <i style="color: red;cursor: pointer;" (click)="deleteFile(item)" nz-icon nzType="close" nzTheme="outline"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</nz-spin>
+
+<div *nzModalFooter style="padding-right: 4px!important; ">
+    <div nz-row>
+        <div nz-col nzSpan="12" style="text-align: left;">
+            <button nz-button (click)="fImport.click()" class="blueButton" nzSize="small">
+          <i nz-icon nzType="paper-clip" nzTheme="outline"></i>
+      Đính kèm...
+    </button>
+            <input id="fImport" type="file" #fImport (change)="uploadFile($event)" style="display: none;" multiple>
+        </div>
+        <div nz-col nzSpan="12" style="text-align: right;">
+            <button nz-button nzType="default" nzSize="small" (click)="destroyModal()" class="button-cancel"><i nz-icon nzType="close" nzTheme="outline"></i> Đóng</button>
+        </div>
+    </div>
+</div>

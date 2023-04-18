@@ -1,0 +1,92 @@
+<nz-spin [nzSpinning]="spinning">
+    <form nz-form *ngIf="mainForm" [formGroup]="mainForm">
+        <div nz-row class="inner-content">
+            <nz-form-item>
+                <nz-form-label [nzSm]="5" [nzXs]="24" [nzNoColon]="true" nzFor="mLTDiep" title="Loại thông điệp (Tờ khai/Thông báo/Đơn)">Loại thông điệp (Tờ khai/Thông báo/Đơn):</nz-form-label>
+                <nz-form-control [nzSm]="19" [nzXs]="24">
+                    <nz-select nzPlaceHolder="Chọn loại thông điệp (Tờ khai/Thông báo/Đơn):" nzSize="small" nzShowSearch nzAllowClear formControlName="mLTDiep" [(ngModel)]="this.selectedLoaiTD" (ngModelChange)="changeLoaiTDiep($event)">
+                        <nz-option *ngFor="let item of loaiThongDieps" nzCustomContent [nzLabel]="item?.ten" [nzValue]="item?.ma">{{item?.ten}}
+                            <!-- {{item.ma}} - {{item.ten}} -->
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label [nzSm]="5" [nzXs]="24" [nzNoColon]="true" nzFor="cQTQLy" title="Cơ quan thuế quản lý">Cơ quan thuế quản lý:
+                </nz-form-label>
+                <nz-form-control [nzSm]="19" [nzXs]="24">
+                    <input type="text" readonly nzSize="small" nz-input formControlName="cQTQLy" id="cQTQLy" />
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label [nzSm]="5" [nzXs]="24" [nzNoColon]="true" nzFor="pPTThue" title="Phương pháp tính thuế GTGT">Phương pháp tính thuế GTGT:
+                </nz-form-label>
+                <nz-form-control [nzSm]="19" [nzXs]="24">
+                    <input type="text" readonly nzSize="small" nz-input formControlName="pPTThue" id="pPTThue" multiple/>
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label [nzSm]="5" [nzXs]="24" [nzNoColon]="true">Kỳ kê khai thuế GTGT:
+                </nz-form-label>
+                <nz-form-control [nzSm]="19" [nzXs]="24">
+                    <input type="text" readonly nzSize="small" nz-input formControlName="kyKeKhaiThue" />
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label [nzNoColon]="true" class="title-form" [nzSm]="5" [nzXs]="24" nzFor="hThuc" title="hThuc">Hình thức:
+                </nz-form-label>
+                <nz-form-control [nzSm]="19" [nzXs]="24">
+                    <nz-select *ngIf="mainForm.get('mLTDiep').value != 300" nzPlaceHolder="Chọn hình thức đăng ký" nzSize="small" nzShowSearch nzAllowClear formControlName="hThuc">
+                        <nz-option *ngFor="let item of hinhThucs" nzCustomContent [nzLabel]="item?.ten" [nzValue]="item?.id">{{item?.ten}}
+                            <!-- {{item.ma}} - {{item.ten}} -->
+                        </nz-option>
+                    </nz-select>
+                    <nz-select *ngIf="mainForm.get('mLTDiep').value == 300" nzPlaceHolder="Chọn hình thức đăng ký" nzSize="small" nzShowSearch formControlName="hThuc" nzDisabled>
+                        <nz-option *ngFor="let item of hinhThucs" nzCustomContent [nzLabel]="item?.ten" [nzValue]="item?.id">{{item?.ten}}
+                            <!-- {{item.ma}} - {{item.ten}} -->
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item *ngIf="mainForm.get('mLTDiep').value == 300">
+                <nz-form-label [nzSm]="5" [nzXs]="24" [nzNoColon]="true" nzFor="loai">Loại
+                </nz-form-label>
+                <nz-form-control [nzSm]="19" [nzXs]="24">
+                    <nz-radio-group formControlName="loaiThongBao">
+                        <label nz-radio nzValue="1">Thông báo hủy/giải trình của NNT</label>
+                        <label nz-radio nzValue="3">Thông báo hủy/giải trình của NNT (KHÁC)</label>
+                        <i nz-icon class="info-circle" nzTheme="fill" nzType="info-circle" nz-tooltip [nzTooltipTitle]="toolTip3" nzPlacement="top"></i>
+                        <ng-template #toolTip3>
+                            <div>Thông báo hủy/giải trình của NNT cho các hóa đơn:<br> 1 - Hóa đơn điện tử theo Nghị định 123/2020/NĐ-CP được lập từ phần mềm giải pháp khác<br> 2 - Hóa đơn có loại áp dụng hóa đơn khác loại Hóa đơn điện tử theo Nghị định
+                                123/2020/NĐ-CP
+                            </div>
+                        </ng-template>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <label nz-radio nzValue="2">Thông báo hủy/giải trình của NNT theo thông báo của CQT</label>
+                    </nz-radio-group>
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item *ngIf="(mainForm.get('hThuc').value == 2 || mainForm.get('mLTDiep').value == 300) && coPhatSinhUyNhiemLapHoaDon">
+                <nz-form-control [nzSm]="5" [nzXs]="24">
+                </nz-form-control>
+                <nz-form-control [nzSm]="19" [nzXs]="24">
+                    <label nz-checkbox (ngModelChange)="changeUyNhiem($event)" formControlName="nhanUyNhiem" style="margin-right: 70px">Ủy nhiệm lập hóa đơn</label>
+                    <nz-radio-group [nzDisabled]="mainForm.get('nhanUyNhiem').value == false" formControlName="loaiUyNhiem">
+                        <label nz-radio nzValue="1">Bên ủy nhiệm</label>
+                        <label nz-radio nzValue="2">Bên nhận ủy nhiệm</label>
+                    </nz-radio-group>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </form>
+</nz-spin>
+
+<div *nzModalFooter style="padding-right: 4px!important;">
+    <button nzSize="small" nz-button nzType="default" (click)="next()" class="blueButton">Tiếp tục<i nz-icon nzType="arrow-right" nzTheme="outline"></i></button>
+    <button nzSize="small" nz-button nzType="default" (click)="destroyModal()" class="button-cancel"><i nz-icon nzSize="small" nzType="close"></i>Hủy</button>
+</div>

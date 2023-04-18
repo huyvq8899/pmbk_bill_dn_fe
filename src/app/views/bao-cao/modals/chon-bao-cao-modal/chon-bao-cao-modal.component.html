@@ -1,0 +1,48 @@
+<nz-spin [nzSpinning]="spinning">
+  <div class="container">
+    <div nz-row class="inner-content">
+      <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="24" nzXl="24" class="box-border" style="padding-bottom: 5px">
+        <span class="box-title"><b>Tham số</b></span>
+        <nz-form-item>
+          <nz-form-label nzFor="kyBaoCao" [nzSm]="3" [nzXs]="24">Kỳ báo cáo</nz-form-label>
+          <nz-form-control [nzSm]="9" [nzXs]="24">
+            <nz-select nzSize="small" nzShowSearch [ngModelOptions]="{standalone: true}" (ngModelChange)="changeKyBaoCao($event)"
+              [(ngModel)]="displayData.Ky" [nzDropdownStyle]="searchCustomerOverlayStyle">
+              <nz-option nzCustomContent *ngFor="let item of kyBaoCaos" [nzValue]="item.key" [nzLabel]="item.value">
+                {{item.value}}
+              </nz-option>
+            </nz-select>
+          </nz-form-control>
+          <nz-form-label [nzSm]="3" [nzXs]="24" nzFor="nam">Năm</nz-form-label>
+          <nz-form-control [nzSm]="9" [nzXs]="24" >
+            <input type="number" nz-input nzSize="small" [(ngModel)]="displayData.nam" min="1900"  max="2999" (ngModelChange)="changeNam($event)" [disabled]="displayData.Ky == 0"/>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label [nzSm]="3" [nzXs]="24" nzFor="tuNgay">Từ</nz-form-label>
+          <nz-form-control [nzSm]="9" [nzXs]="24" >
+            <input type="date" nz-input nzSize="small" [ngModelOptions]="{standalone: true}" [(ngModel)]="displayData.fromDate" min="1900-01-01"  max="2999-12-31" 
+              (ngModelChange)="setDate()" (blur)="blurDate()" />
+          </nz-form-control>
+          <nz-form-label [nzSm]="3" [nzXs]="24" nzFor="denNgay">Đến</nz-form-label>
+          <nz-form-control [nzSm]="9" [nzXs]="24">
+            <input type="date" nz-input nzSize="small"  [ngModelOptions]="{standalone: true}"  [(ngModel)]="displayData.toDate" min="1900-01-01"  max="2999-12-31" s
+              (ngModelChange)="setDate()" (blur)="blurDate()"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+  </div>
+</nz-spin>
+
+<div *nzModalFooter>
+  <div nz-row>
+    <div nz-col nzSpan="12" style="text-align: left;">
+      <button nz-button nzType="default" (click)="xoaDieuKien()" class="button-clear">Xóa điều kiện</button>
+    </div>
+    <div nz-col nzSpan="12" style="text-align: right;">
+      <button nz-button nzType="default" (click)="saveChanges()" class="button-agree">Xác nhận</button>
+      <button nz-button nzType="default" (click)="destroyModal()" class="button-cancel">Đóng</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,33 @@
+
+  <div class="content">
+    <div class="content-header">
+      <img width="220px" height="60px" src="../../../../../assets/logo-ICORP.png">
+    </div>
+    <div id="login-form">
+      <div class="title">Thiết lập kết nối đến máy chủ ký số</div>
+      <div style = "font-style: italic;">Thông tin kết nối do đơn vị cung cấp cho Quý khách.</div>
+      <!-- <div style = "font-style: italic;padding-bottom: 10px;">Phần mềm sẽ không lưu thông tin kết nối của Quý khách</div> -->
+      <form nz-form [formGroup]="loginForm" class="login-form" (ngSubmit)="submitForm()" autocomplete="off">
+        <nz-form-item>
+          <nz-form-control nzErrorTip="Vui lòng nhập mã định danh!">
+            <nz-input-group nzPrefixIcon="user">
+              <input type="text" nz-input formControlName="agreementUUID" placeholder="Mã định danh" autofocus />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-control nzErrorTip="Vui lòng nhập mật khẩu!">
+            <nz-input-group nzPrefixIcon="lock">
+              <input type="password" nz-input formControlName="passCode" placeholder="Mật khẩu" />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item style="margin-bottom: 0;text-align: center;">
+          <nz-form-control>
+            <button  nzSize="small" class="footer-save" id="button-login" nz-button nzBlock [nzType]="'default'" [nzLoading]="isLoadingLogin"><span nz-icon nzType="login" nzTheme="outline"></span>&nbsp;Đăng nhập</button>
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+    </div>
+  </div>
+<!-- <button nz-button [nzType]="'primary'" (click)="updateDB()">Update Database</button> -->

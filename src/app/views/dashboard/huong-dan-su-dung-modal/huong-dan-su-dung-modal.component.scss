@@ -1,0 +1,247 @@
+#hdsd {
+    width: 80%;
+    margin: 40px auto !important;
+    border: 1px solid var(--primary-color1) !important;
+    box-shadow: 2px 3px 6px 0px rgb(0 0 0 / 55%);
+    .gutter-row {
+        margin-bottom: 20px;
+    }
+    .header-huongdan {
+        background-color: var(--primary-color1) !important;
+        text-align: center;
+        padding: 4px 0px;
+        // box-shadow: 2px 3px 6px 0px rgb(0 0 0 / 55%);
+    }
+    span {
+        font-weight: 600;
+        color: black;
+        // font-size: 13px !important;
+        vertical-align: middle;
+    }
+    .btn-breadcrumb {
+        width: 100%;
+        position: relative;
+    }
+    .btn-breadcrumb .btn {
+        border-color: transparent;
+        border: 0px solid transparent;
+        border-right: 1px solid transparent !important;
+        // font-size: 13px;
+    }
+    .btn-breadcrumb .btn-left {
+        width: 40px !important;
+        background-color: #a4a4a4;
+        height: 27px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 3;
+        text-align: center;
+    }
+    .btn-breadcrumb .btn:after {
+        content: " ";
+        display: block;
+        width: 0;
+        height: 0;
+        border-top: 13px solid transparent;
+        border-bottom: 14px solid transparent;
+        border-left: 16px solid #a4a4a4;
+        position: absolute;
+        top: 0;
+        left: 40px;
+        z-index: 3;
+    }
+    .box-border {
+        border: none;
+        padding: 0 !important;
+        box-shadow: 2px 3px 6px 0px rgb(0 0 0 / 55%);
+        &:hover {
+            box-shadow: 0px 0px 6px 1px rgb(0 0 0 / 75%);
+            transform: scale(1.02);
+            .btn-breadcrumb-orange .btn-left {
+                border-right: 1px solid #a4a4a4;
+                transform: scale(1.02);
+            }
+        }
+    }
+    .btn-breadcrumb-orange {
+        .btn-left {
+            background-color: #a4a4a4;
+            top: 6px;
+            text-align: center;
+        }
+        .btn:after {
+            border-left-color: #a4a4a4;
+        }
+        .btn-text {
+            margin-top: 3px;
+            display: inline-flex;
+        }
+    }
+    .header-huongdan-2 {
+        text-align: right;
+        padding: 9px 10px 11px 0px;
+        box-shadow: none;
+        border-left: 1px solid var(--primary-color1) !important;
+    }
+    .box-content-hd {
+        padding: 15px 0px 20px;
+        border: 1px solid var(--primary-color1) !important;
+        .btn-breadcrumb .btn-left {
+            height: 24px;
+        }
+        .btn-breadcrumb .btn:after {
+            border-top: 12px solid transparent;
+            border-bottom: 12px solid transparent;
+        }
+        .btn {
+            // font-size: 13px !important;
+            font-weight: 600 !important;
+            padding: 0px 13px !important;
+            width: 100%;
+            height: 30px;
+            &-blue {
+                background: var(--item-active-color) !important;
+                color: white !important;
+                border: 1px solid var(--item-active-color) !important;
+                &:hover {
+                    background: #fff !important;
+                    color: var(--item-active-color) !important;
+                }
+            }
+            &-sky {
+                background: rgb(0, 176, 240);
+                color: white !important;
+                border: 1px solid rgb(0, 176, 240) !important;
+                width: 100%;
+                &:hover {
+                    background: #fff !important;
+                    color: rgb(0, 176, 240) !important;
+                }
+            }
+            &-xoabo {
+                background-color: #FF0000B2;
+                color: #fff;
+                border: 1px solid #FF0000B2;
+                &:hover {
+                    background-color: #fff;
+                    color: #FF0000B2!important;
+                }
+            }
+            &-lapThayThe {
+                background-color: #70AD47;
+                color: white;
+                border: 1px solid #70AD47;
+                &:hover {
+                    color: #70AD47!important;
+                    background-color: white;
+                }
+            }
+        }
+        .xemhd {
+            padding: 0px 13px !important;
+            margin-right: 5px;
+            border-radius: 4px;
+            color: black;
+            border: 1px solid #000;
+            cursor: pointer;
+            float: left;
+            font-weight: normal;
+            &:hover {
+                background: #a4a4a4 !important;
+                border: 1px solid #a4a4a4;
+            }
+        }
+        .xemvideo {
+            span {
+                color: black;
+                margin-top: -4px;
+            }
+            color: black;
+            font-weight: normal !important;
+            float: right;
+            border-radius: 4px;
+            padding: 0px 13px !important;
+            cursor: pointer;
+        }
+        .mg-top-10 {
+            margin-top: 20px;
+        }
+    }
+    .col {
+        &-left {}
+        &-right {
+            margin-top: 4px;
+            text-align: right;
+            padding-right: 10px;
+            float: right;
+        }
+    }
+    .btn-dong {
+        // font-size: 13px !important;
+        font-weight: 600 !important;
+        padding: 3px 13px !important;
+        color: red !important;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        &:hover {
+            border: 1px solid red;
+            cursor: pointer;
+        }
+    }
+    .btn-faq {
+        // font-size: 13px !important;
+        font-weight: 600 !important;
+        padding: 3px 13px !important;
+        color: #000 !important;
+        font-style: italic;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        &:hover {
+            border: 1px solid #000;
+            cursor: pointer;
+        }
+    }
+}
+
+@media only screen and (max-width: 1400px) {
+    #hdsd {
+        width: 90%;
+    }
+}
+
+@media only screen and (max-width: 1300px) {
+    #hdsd {
+        width: 98%;
+    }
+}
+
+@media only screen and (max-width: 1200px) {
+    #hdsd .box-content-hd .xemhd,
+    #hdsd .box-content-hd .xemvideo {
+        padding: 0px 4px !important;
+    }
+}
+
+@media only screen and (max-width: 992px) {
+    #hdsd {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 992px) and (min-width: 769px) {
+    #hdsd .box-content-hd .xemhd {
+        padding: 0px 13px !important;
+        width: 100%;
+        text-align: center;
+    }
+    #hdsd .box-content-hd .xemvideo {
+        float: left;
+        text-align: center;
+        margin-top: 5px;
+        width: 100%;
+    }
+    #hdsd .box-content-hd .btn-blue {
+        overflow: hidden;
+    }
+}

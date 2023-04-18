@@ -1,0 +1,66 @@
+@import '../../scss/modal.scss';
+
+.boldText
+{
+    font-weight: bolder!important;
+}
+
+.justifiedText
+{
+    text-align: justify!important;
+}
+
+.button-text-left {
+    float: left;
+    color: #7f7fe7;
+    font-style: italic;
+    cursor: pointer;
+}
+
+.flex-row {
+    display: flex;
+    flex-direction: row;
+
+    .flex1 {
+        width: 120px;
+    }
+
+    .flex2 {
+        width: 50px;
+    }
+
+    .flex3 {
+        flex: 1;
+        font-style: italic;
+        color: #1877F2;
+
+        span {
+            cursor: pointer;
+        }
+    }
+}
+
+.xemvideo {
+    span {
+        color: black;
+        margin-top: 0px;
+        padding-right: 5px;
+    }
+    //box-shadow: 2px 3px 6px 0px rgb(0 0 0 / 45%);
+    color: black;
+    background: #a4a4a4 !important;
+    font-weight: normal !important;
+    border: 1px solid #a4a4a4;
+    border-radius: 4px;
+    padding: 2px 13px !important;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    margin-left: 5px;
+
+    &:hover{
+        color: black;
+        border: 1px solid #000;
+        background: #fff!important;
+    }
+}

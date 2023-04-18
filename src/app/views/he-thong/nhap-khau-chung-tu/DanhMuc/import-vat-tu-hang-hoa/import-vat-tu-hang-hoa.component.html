@@ -1,0 +1,34 @@
+<nz-table [nzNoResult]="null" nzSize="small" nzBordered #basicTable nzShowPagination="false" [nzData]="listData"
+  [nzScroll]="scrollConfig" [nzLoading]="isLoading">
+  <thead>
+    <tr>
+      <th [nzWidth]="'5%'" nzAlign="center">Dòng số</th>
+      <th [nzWidth]="'10%'" nzAlign="center">Mã hàng</th>
+      <th [nzWidth]="'16%'" nzAlign="center">Tên hàng</th>
+      <th [nzWidth]="'5%'" nzAlign="center" title = "Đơn vị tính">ĐVT</th>
+      <th [nzWidth]="'10%'" nzAlign="center">Giá bán</th>
+      <th [nzWidth]="'9%'" nzAlign="center">Giá bán là đơn giá<br>sau thuế</th>
+      <th [nzWidth]="'8%'" nzAlign="center">Thuế GTGT (%)</th>
+      <th [nzWidth]="'10%'" nzAlign="center">Tỷ lệ chiết khấu (%)</th>
+      <th [nzWidth]="'15%'" nzAlign="center">Mô tả</th>
+      <th [nzWidth]="'12%'" nzAlign="center" nzRight="0px">Tình trạng</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of listData; let i = index">
+      <td>{{item?.row}}</td>
+      <td title="{{ item?.ma }}">{{ item?.ma }}</td>
+      <td title="{{ item?.ten }}">{{ item?.ten }}</td>
+      <td title="{{ item?.tenDonViTinh }}">{{ item?.tenDonViTinh }}</td>
+      <td title="{{ item?.donGiaBan }}" class = "money">{{item?.donGiaBan | formatPrice:true:ddtp.getDonGiaQuyDoi() }}</td>
+      <td title="{{ item?.isGiaBanLaDonGiaSauThue }}" class = "money">{{item?.isGiaBanLaDonGiaSauThueText }} </td>
+      <td title="{{ item?.thueGTGTText }}" class = "money">{{item?.thueGTGTText }}</td>
+      <td title="{{ item?.tyLeChietKhau }}" class = "money">{{item?.tyLeChietKhau | formatPrice:true:ddtp.getHeSoTyLe() }}</td>
+      <td title="{{ item?.moTa }}">{{item?.moTa }} </td>
+      <td nzRight="0px" title="{{ item?.errorMessage }}">
+        <span *ngIf="item?.hasError" style="color: red !important;">{{item?.errorMessage}}</span>
+        <span *ngIf="!item?.hasError">{{item?.errorMessage}}</span>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>

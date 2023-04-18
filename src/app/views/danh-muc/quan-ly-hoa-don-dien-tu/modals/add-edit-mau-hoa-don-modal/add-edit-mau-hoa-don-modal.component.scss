@@ -1,0 +1,68 @@
+@import "../../../../../shared/scss/modal.scss";
+
+.tab-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+        padding: 5px 10px;
+    }
+}
+
+.menu-item-selected {
+    background-color: #1877f2;
+    color: white;
+    font-weight: bold;
+}
+
+.tabset1 {
+    border: 1px solid rgba(119, 119, 119, 0.6);
+}
+
+.tabset2 {
+    border-left: 1px solid rgba(119, 119, 119, 0.6);
+    border-top: 1px solid rgba(119, 119, 119, 0.6);
+    border-bottom: 1px solid rgba(119, 119, 119, 0.6);
+}
+
+.right-side {
+    border-right: 1px solid rgba(119, 119, 119, 0.6);
+    border-top: 1px solid rgba(119, 119, 119, 0.6);
+    border-bottom: 1px solid rgba(119, 119, 119, 0.6);
+    width: 100%; 
+    overflow: auto;
+}
+
+#btnCancel {
+    position: absolute;
+    bottom: 9px;
+    left: 75px;
+}
+
+.config-template-row {
+    display: flex;
+
+    .col1 {
+        width: 390px;
+    }
+
+    .col2 {
+        flex: 1; 
+        overflow-x: auto;
+    }
+}
+
+.action-footer-container {
+    border-left: 1px solid rgba(119, 119, 119, 0.6);
+    border-right: 1px solid rgba(119, 119, 119, 0.6);
+    padding: 15px;
+    background-color: #fff;
+}
+
+.action-background-footer-container {
+    border-left: 1px solid rgba(119, 119, 119, 0.6);
+    border-right: 1px solid rgba(119, 119, 119, 0.6);
+    padding: 15px;
+    background-color: #fff;
+}

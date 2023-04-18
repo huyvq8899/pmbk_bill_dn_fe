@@ -1,0 +1,59 @@
+<div style="width: 350px;">
+    <div nz-row class="ant-popover-title" style="margin-bottom: 5px;padding: 10px;">
+        <div nz-col nzSpan="24">Lọc dữ liệu</div>
+    </div>
+    <div style="padding: 5px 10px;">
+        <div nz-row clas="row" style="margin-bottom: 5px;">
+            <div nz-col nzSpan="24" class="">
+                <nz-select [nzDisabled]="isDisabledColKey" style="width: 100%" nzShowSearch [(ngModel)]="selectColKey" [nzSize]="'small'" (ngModelChange)="colChangeValue($event)">
+                    <nz-option nzCustomContent *ngFor="let item of listColKey" [nzLabel]="item.text" [nzValue]="item.value">
+                        <div nz-row>
+                            <div title="{{item.text}}">
+                                <div class="text-ellipsis">{{item.text}}</div>
+                            </div>
+                        </div>
+                    </nz-option>
+                </nz-select>
+            </div>
+        </div>
+        <div nz-row clas="row" style="margin-bottom: 5px;">
+            <div nz-col nzSpan="{{dataType ==1 && !isSearchDate ? '10': '14'}}" class="">
+                <nz-select style="width: 95%" nzShowSearch [(ngModel)]="conditionValue" [nzSize]="'small'" [nzDropdownStyle]="dropdownStyle">
+                    <nz-option nzCustomContent *ngFor="let item of conditions" [nzLabel]="item.text" [nzValue]="item.value">
+                        <div nz-row>
+                            <div title="{{item.text}}">
+                                <div class="text-ellipsis">{{item.text}}</div>
+                            </div>
+                        </div>
+                    </nz-option>
+                </nz-select>
+            </div>
+            <div nz-col nzSpan="{{dataType == 1 && !isSearchDate ? '14': '10'}}" *ngIf="dataTemp">
+                <ng-container *ngIf="this.isSearchDate ==false">
+                    <input *ngIf="dataType === 1" nzSize="small" [disabled]="conditionValue == 11 || conditionValue == 12" nz-input placeholder="Nhập giá trị lọc" [(ngModel)]="dataTemp.colValue" autofocus/>
+                    <input *ngIf="dataType === 2" nzSize="small" [disabled]="conditionValue == 11 || conditionValue == 12" nz-input placeholder="Nhập giá trị lọc" [(ngModel)]="dataTemp.colValue" bkCurrencyMask [options]="{ precision: ddtp.getDonGiaQuyDoi() }" />
+                    <input *ngIf="dataType === 3" nzSize="small" type="date" [disabled]="conditionValue == 11 || conditionValue == 12" nz-input [(ngModel)]="dataTemp.colValue" autofocus/>
+                </ng-container>
+                <ng-container *ngIf="this.isSearchDate == true && conditionValue != 13">
+                    <input style="width: 100%;" nzSize="small" type="date" max="2999-12-31" nz-input placeholder="" [(ngModel)]="dataTemp.colValue" (keydown.enter)="filterVisible= false" />
+                </ng-container>
+                <ng-container *ngIf="this.isSearchDate == true && conditionValue == 13">
+                    <input style="width: 100%;margin-bottom: 5px;" nzSize="small" type="date" max="2999-12-31" nz-input placeholder="Từ" [(ngModel)]="fromDate" (keydown.enter)="filterVisible= false" />
+                    <input style="width: 100%;" nzSize="small" type="date" max="2999-12-31" nz-input placeholder="Đến" [(ngModel)]="toDate" (keydown.enter)="filterVisible= false" />
+                </ng-container>
+            </div>
+        </div>
+        <div class="filterFooterLine"></div>
+        <div nz-row nzGutter="8">
+            <div nz-col nzSpan="24" style="text-align: right;">
+                <button nzSize="small" nz-button nzType="default" (click)="removeFilter()" class="filterDefaultButton">
+            Hủy lọc
+          </button>
+                <button style="margin-left:5px" nzSize="small" nz-button nzType="default" (click)="filter()" class="button-clear">
+        Lọc
+      </button>
+            </div>
+        </div>
+    </div>
+
+</div>

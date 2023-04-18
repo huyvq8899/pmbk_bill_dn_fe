@@ -1,0 +1,133 @@
+<div nz-row class="inner-content">
+  <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="24" nzXl="24">
+    <form *ngIf="isAddNew" nz-form [formGroup]="userForm" autocomplete="off" (ngSubmit)="saveChanges()">
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="fullName" nzRequired>Họ và tên</nz-form-label>
+        <nz-form-control [nzSm]="18" [nzXs]="24" nzErrorTip="Vui lòng nhập họ tên !">
+          <input nz-input type="text" formControlName="fullName" id="fullName">
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="userName">Tên đăng nhập</nz-form-label>
+        <nz-form-control [nzSm]="18" [nzXs]="24" [nzErrorTip]="errorTpl"
+          nzExtra="Tài khoản sẽ không thể thay đổi - vui lòng lựa chọn tài khoản phù hợp.">
+          <input nz-input formControlName="userName" id="userName" autocomplete="new-userName">
+          <ng-template #errorTpl let-control>
+            <ng-container *ngIf="control.hasError('required')">
+              Vui lòng nhập tài khoản !
+            </ng-container>
+            <ng-container *ngIf="control.hasError('checkUserName')">
+              Tên tài khoản đã tồn tại !
+            </ng-container>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="email">E-mail</nz-form-label>
+        <nz-form-control [nzSm]="18" [nzXs]="24" [nzErrorTip]="errorMail">
+          <input nz-input formControlName="email" id="email">
+          <ng-template #errorMail let-control>
+            <ng-container *ngIf="control.hasError('required')">
+              Vui lòng nhập email !
+            </ng-container>
+            <ng-container *ngIf="control.hasError('email')">
+              Email không hợp lệ !
+            </ng-container>
+            <ng-container *ngIf="control.hasError('checkMail')">
+              Email đã tồn tại vui lòng chọn email khác!
+            </ng-container>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="title">Chức danh</nz-form-label>
+        <nz-form-control [nzSm]="18" [nzXs]="24" >
+          <input nz-input type="title" formControlName="title" id="title">
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzRequired [nzSm]="6" [nzXs]="24" nzFor="roleId">Phân quyền sử dụng</nz-form-label>
+        <nz-form-control [nzSm]="18" [nzXs]="24" nzErrorTip="Vui lòng chọn quyền thành viên !"
+          nzExtra="Phân quyền sử dụng hệ thống">
+          <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn quyền cho thành viên" formControlName="roleId"
+            id="roleId">
+            <nz-option *ngFor="let item of roles" [nzValue]="item.roleId" [nzLabel]="item.roleName">
+            </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+    <form *ngIf="!isAddNew" nz-form [formGroup]="userForm" autocomplete="off" (ngSubmit)="saveChanges()"
+      style="padding-right: 20px;">
+      <nz-form-item>
+        <nz-form-label [nzSm]="24" [nzXs]="24" nzFor="fullName" nzRequired>Họ và tên</nz-form-label>
+        <nz-form-control [nzSm]="18" [nzXs]="24" nzErrorTip="Vui lòng nhập họ tên !">
+          <input nz-input type="text" formControlName="fullName" id="fullName">
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="24" [nzXs]="24" nzRequired nzFor="userName">Tên đăng nhập</nz-form-label>
+        <nz-form-control [nzSm]="18" [nzXs]="24" [nzErrorTip]="errorTpl">
+          <input nz-input formControlName="userName" id="userName" autocomplete="new-userName">
+          <ng-template #errorTpl let-control>
+            <ng-container *ngIf="control.hasError('required')">
+              Vui lòng nhập tài khoản !
+            </ng-container>
+            <ng-container *ngIf="control.hasError('checkUserName')">
+              Tên tài khoản đã tồn tại !
+            </ng-container>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="24" [nzXs]="24" nzRequired nzFor="email">E-mail</nz-form-label>
+        <nz-form-control [nzSm]="18" [nzXs]="24" [nzErrorTip]="errorMail">
+          <input nz-input formControlName="email" id="email">
+          <ng-template #errorMail let-control>
+            <ng-container *ngIf="control.hasError('required')">
+              Vui lòng nhập email !
+            </ng-container>
+            <ng-container *ngIf="control.hasError('email')">
+              Email không hợp lệ !
+            </ng-container>
+            <ng-container *ngIf="control.hasError('checkMail')">
+              Email đã tồn tại vui lòng chọn email khác!
+            </ng-container>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="24" [nzXs]="24" nzFor="title">Chức danh</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24" >
+          <input nz-input type="title" formControlName="title" id="title">
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="24" [nzXs]="24" nzRequired nzFor="dateOfBirth">Ngày sinh</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24">
+          <input type="date" nz-input formControlName="dateOfBirth" id="dateOfBirth">
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="24" [nzXs]="24" nzFor="phone">Điện thoại</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24">
+          <input nz-input type="phone" formControlName="phone" id="phone">
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="24" [nzXs]="24" nzFor="address">Địa chỉ</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24">
+          <textarea nz-input formControlName="address" id="address"></textarea>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <button style="margin-top: 10px;" nz-button nzType="default" type="submit" [nzLoading]="isLoading" class="footer-save">
+          Xác nhận
+        </button>
+      </nz-form-item>
+      <div style="display: none;">
+        <label nz-checkbox formControlName="isAdmin" id="isAdmin"></label>
+      </div>
+    </form>
+  </div>
+</div>

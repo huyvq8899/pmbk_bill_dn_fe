@@ -1,0 +1,17 @@
+<div style="display: flex;flex-direction: column;flex: 1;height: 100%;">
+  <div nz-row class="dinh-dang-hd-container">
+    <div nz-col nzSpan="24" style="text-align: center;">
+      <nz-radio-group [(ngModel)]="dinhDangHoaDon" (ngModelChange)="changeDinhDangHoaDon($event)">
+        <label *ngFor="let item of dinhDangHoaDons" nz-radio [nzValue]="item.value">{{item.text}}</label>
+      </nz-radio-group>
+    </div>
+    <button *ngIf="!this.isDaKyDienTu && !disabledEdit" nzSize="small" nz-button nzType="default" (click)="kyDienTu()" class="button-clear" [nzLoading]="isLoading">
+      <i nz-icon nzType="safety-certificate" nzTheme="outline"></i>Ký điện tử
+    </button>
+  </div>
+  <div style="flex: 1; overflow: auto;">
+    <div class="parent-iframe">
+      <iframe id="iframeDynamic" #iframe (load)="onLoad(iframe)"></iframe>
+    </div>
+  </div>
+</div>

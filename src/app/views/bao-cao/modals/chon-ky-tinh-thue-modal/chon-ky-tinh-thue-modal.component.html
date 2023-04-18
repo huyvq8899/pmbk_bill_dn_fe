@@ -1,0 +1,65 @@
+<nz-spin [nzSpinning]="spinning">
+  <div class="container">
+    <nz-radio-group [(ngModel)]="kyOption" (ngModelChange)="changeKy($event)">
+      <label nz-radio nzValue="Thang">Tháng</label>
+      <label nz-radio nzValue="Quy">Quý</label>
+    </nz-radio-group>
+    <div nz-row class="inner-content">
+      <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="24" nzXl="24" class="box-border" style="padding-bottom: 5px">
+        <span class="box-title"><b>Tham số</b></span>
+        <form nz-form [formGroup]="baoCaoForm">
+          <nz-form-item>
+            <ng-container *ngIf="kyOption == 'Quy'">
+              <nz-form-label nzFor="quy" [nzSm]="3" [nzXs]="24">Quý</nz-form-label>
+              <nz-form-control [nzSm]="9" [nzXs]="24">
+                <nz-select nzSize="small" nzShowSearch formControlName="quy" (ngModelChange)="changeQuy($event)" [nzDropdownStyle]="searchCustomerOverlayStyle">
+                  <nz-option nzCustomContent *ngFor="let item of quys" [nzValue]="item" [nzLabel]="item">
+                    {{item}}
+                  </nz-option>
+                </nz-select>
+              </nz-form-control>
+            </ng-container>
+            <ng-container *ngIf="kyOption == 'Thang'">
+              <nz-form-label nzFor="thang" [nzSm]="3" [nzXs]="24">Tháng</nz-form-label>
+              <nz-form-control [nzSm]="9" [nzXs]="24">
+                <nz-select nzSize="small" nzShowSearch formControlName="thang" (ngModelChange)="changeThang($event)" [nzDropdownStyle]="searchCustomerOverlayStyle">
+                  <nz-option nzCustomContent *ngFor="let item of thangs" [nzValue]="item" [nzLabel]="item">
+                    {{item}}
+                  </nz-option>
+                </nz-select>
+              </nz-form-control>
+            </ng-container>
+
+            <nz-form-label nzFor="nam" [nzSm]="3" [nzXs]="24">Năm</nz-form-label>
+            <nz-form-control [nzSm]="9" [nzXs]="24">
+              <input nz-input nzSize="small" type="number" min="1900" max="2100" formControlName="nam" step="1">
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-label [nzSm]="3" [nzXs]="24" nzFor="tuNgay">Từ</nz-form-label>
+            <nz-form-control [nzSm]="9" [nzXs]="24" >
+              <input type="date" nz-input nzSize="small" formControlName="tuNgay" min="1900-01-01"  max="2999-12-31" />
+            </nz-form-control>
+            <nz-form-label [nzSm]="3" [nzXs]="24" nzFor="denNgay">Đến</nz-form-label>
+            <nz-form-control [nzSm]="9" [nzXs]="24">
+              <input type="date" nz-input nzSize="small" formControlName="denNgay" min="1900-01-01"  max="2999-12-31"/>
+            </nz-form-control>
+          </nz-form-item>
+        </form>
+      </div>
+    </div>
+  </div>
+</nz-spin>
+
+<div *nzModalFooter>
+  <div nz-row>
+    <div nz-col nzSpan="12" style="text-align: left;">
+      <button nz-button nzType="default" (click)="xoaDieuKien()" class="button-clear">Xóa điều kiện</button>
+    </div>
+    <div nz-col nzSpan="12" style="text-align: right;">
+      <button nz-button nzType="default" (click)="saveChanges()" class="button-agree">Xác nhận</button>
+      <button nz-button nzType="default" (click)="destroyModal()" class="button-cancel">Đóng</button>
+    </div>
+  </div>
+</div>

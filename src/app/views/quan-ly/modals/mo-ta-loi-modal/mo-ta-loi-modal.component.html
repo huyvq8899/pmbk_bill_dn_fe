@@ -1,0 +1,15 @@
+<div nz-row>
+  <div id="content" class="box-border" style = "margin: 5px; padding-left: 2px;">
+    <ng-container>
+      <div nz-row [innerHTML] = "moTaLoi">
+      </div>
+    </ng-container>
+  </div>
+  <div nz-row *nzModalFooter>
+    <button style="float: right; margin-right: 5px;"
+      nz-button nzSize="small" nzType="default" class="button-cancel" (click)="destroyModal()" nz-tooltip><i nz-icon nzType="close" nzTheme="outline"></i>Đóng
+    </button>
+  </div>
+</div>
+
+  
