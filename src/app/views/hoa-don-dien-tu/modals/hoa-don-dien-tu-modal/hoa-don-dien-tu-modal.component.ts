@@ -3531,7 +3531,41 @@ export class HoaDonDienTuModalComponent extends ModalShortKeyEventHandler implem
       //   return;
       // }
 
-      if (data.loaiDieuChinh == 1) {
+      if (data.loaiDieuChinh == 0) {
+        var isError = false;
+        for (let i = 0; i < data.hoaDonChiTiets.length; i++) {
+          if (((data.hoaDonChiTiets[i].soLuong * data.hoaDonChiTiets[i].donGia > 0) && (data.hoaDonChiTiets[i].soLuong < 0 || data.hoaDonChiTiets[i].donGia < 0)) || ((data.hoaDonChiTiets[i].soLuong * data.hoaDonChiTiets[i].donGiaSauThue > 0) && (data.hoaDonChiTiets[i].soLuong < 0 || data.hoaDonChiTiets[i].donGiaSauThue < 0))) {
+            isError = true;
+            break;
+          }
+        }
+
+        if (isError == true) {
+          this.modalService.create({
+            nzContent: MessageBoxModalComponent,
+            nzMaskClosable: false,
+            nzClosable: false,
+            nzKeyboard: false,
+            nzWidth: '500px',
+            nzStyle: { top: '100px' },
+            nzBodyStyle: { padding: '1px' },
+            nzComponentParams: {
+              msTitle: "Kiểm tra lại",
+              msContent: `Bạn đang lập hóa đơn điều chỉnh chung (gồm cả: điều chỉnh tăng, điều chỉnh giảm và điều chỉnh thông tin). Theo đó:<br>
+              - Giá trị <b>Số lượng</b>, <b>Đơn giá</b> không đồng thời ghi dấu âm.<br>
+              Vui lòng kiểm tra lại!`,
+              msMessageType: MessageType.Warning,
+              msCloseText: TextGlobalConstants.TEXT_CONFIRM_CLOSE,
+              msOnClose: () => {
+              }
+            }
+          });
+
+          this.spinning = false;
+          return;
+        }
+      }
+      else if (data.loaiDieuChinh == 1) {
         if (data.tongTienThanhToan < 0 || data.tongTienThanhToanQuyDoi < 0 || (data.tongTienChietKhau < 0 && data.tongTienChietKhauQuyDoi < 0 && data.tongTienThueGTGT < 0 && data.tongTienThueGTGTQuyDoi < 0 && data.tongTienHang < 0 && data.tongTienHangQuyDoi < 0)) {
           this.modalService.create({
             nzContent: MessageBoxModalComponent,

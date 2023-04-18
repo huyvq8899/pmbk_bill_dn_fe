@@ -52,15 +52,21 @@
                             <nz-option nzCustomContent *ngFor="let item of loaiTrangThaiHoaDonDieuChinhs" [nzLabel]="item.name" [nzValue]="item.key">
                                 <div [style.padding-left.px]="item.level * 20" [style.font-weight]="item.isParent == true  ? 'bold' : 'normal'" nz-row>
                                     {{item.name}}
-                                    <span class="circleHoaDonDieuChinhTang cumstomizedCircle" *ngIf="item.key == 1" style="margin-top: -3px!important">
+                                    <span class="circleHoaDonDieuChinhChung cumstomizedCircle" *ngIf="item.key == 1"
+                                    style="margin-top: -3px!important">
+                                    <span
+                                        style="font-family: Arial, Helvetica; margin-top: -1px!important; display: block;">C</span>
+                                    </span>
+
+                                    <span class="circleHoaDonDieuChinhTang cumstomizedCircle" *ngIf="item.key == 2" style="margin-top: -3px!important">
                                         <i nz-icon nzType="arrow-up" nzTheme="outline"></i>
                                     </span>
 
-                                    <span class="circleHoaDonDieuChinhGiam cumstomizedCircle" *ngIf="item.key == 2" style="margin-top: -3px!important">
+                                    <span class="circleHoaDonDieuChinhGiam cumstomizedCircle" *ngIf="item.key == 3" style="margin-top: -3px!important">
                                         <i nz-icon nzType="arrow-down" nzTheme="outline"></i>
                                     </span>
 
-                                    <span class="circleHoaDonDieuChinhThongTin" *ngIf="item.key == 3">
+                                    <span class="circleHoaDonDieuChinhThongTin" *ngIf="item.key == 4">
                                       <i nz-icon nzType="info" nzTheme="outline"></i>
                                     </span>
                                 </div>
@@ -185,25 +191,33 @@
                     <span class="oldOrangeRoundedShape" [title]="txtHD_PXK_UPPER + ' xóa bỏ'">Đã bị xóa bỏ</span>
                             </span>
                             <span *ngIf="item.trangThai == 3"><span class="hoaDonThayTheRoundedShape" [title]="txtHD_PXK_UPPER + ' thay thế'">{{txtHD_PXK_UPPER}} thay thế</span></span>
-                            <span *ngIf="item.trangThai == 4  && item?.loaiDieuChinh == 1">
-                    <span class="hoaDonDieuChinhRoundedShape" [title]="txtHD_PXK_UPPER + ' điều chỉnh tăng'">{{txtHD_PXK_UPPER}} điều chỉnh
-                      <span class="circleHoaDonDieuChinhTang">
-                        <i nz-icon nzType="arrow-up" nzTheme="outline"></i>
-                      </span>
+                            <span *ngIf="item.trangThai == 4  && item?.loaiDieuChinh == 0">
+                                <span class="hoaDonDieuChinhRoundedShape"
+                                    title="{{txtHD_PXK_UPPER}} điều chỉnh chung">{{txtHD_PXK_UPPER}} điều chỉnh
+                                    <span class="circleHoaDonDieuChinhChung">
+                                        <span>C</span>
+                                    </span>
+                                </span>
                             </span>
+                            <span *ngIf="item.trangThai == 4  && item?.loaiDieuChinh == 1">
+                                <span class="hoaDonDieuChinhRoundedShape" [title]="txtHD_PXK_UPPER + ' điều chỉnh tăng'">{{txtHD_PXK_UPPER}} điều chỉnh
+                                    <span class="circleHoaDonDieuChinhTang">
+                                        <i nz-icon nzType="arrow-up" nzTheme="outline"></i>
+                                    </span>
+                                </span>
                             </span>
                             <span *ngIf="item.trangThai == 4  && item?.loaiDieuChinh == 2">
-                    <span class="hoaDonDieuChinhRoundedShape" [title]="txtHD_PXK_UPPER + ' điều chỉnh giảm'">{{txtHD_PXK_UPPER}} điều chỉnh
-                      <span class="circleHoaDonDieuChinhGiam">
-                        <i nz-icon nzType="arrow-down" nzTheme="outline"></i>
-                      </span>
-                            </span>
+                                <span class="hoaDonDieuChinhRoundedShape" [title]="txtHD_PXK_UPPER + ' điều chỉnh giảm'">{{txtHD_PXK_UPPER}} điều chỉnh
+                                    <span class="circleHoaDonDieuChinhGiam">
+                                        <i nz-icon nzType="arrow-down" nzTheme="outline"></i>
+                                    </span>
+                                </span>
                             </span>
                             <span *ngIf="item.trangThai == 4  && item?.loaiDieuChinh == 3">
-                    <span class="hoaDonDieuChinhRoundedShape" [title]="txtHD_PXK_UPPER + ' chỉnh thông tin'">{{txtHD_PXK_UPPER}} điều chỉnh
-                      <span class="circleHoaDonDieuChinhThongTin">
-                        <i nz-icon nzType="info" nzTheme="outline"></i>
-                            </span>
+                                <span class="hoaDonDieuChinhRoundedShape" [title]="txtHD_PXK_UPPER + ' chỉnh thông tin'">{{txtHD_PXK_UPPER}} điều chỉnh
+                                <span class="circleHoaDonDieuChinhThongTin">
+                                    <i nz-icon nzType="info" nzTheme="outline"></i>
+                                </span>
                             </span>
                             </span>
                             </span>

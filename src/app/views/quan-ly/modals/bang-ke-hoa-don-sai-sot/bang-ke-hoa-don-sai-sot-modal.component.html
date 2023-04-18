@@ -100,9 +100,15 @@
                                             đơn
                                             hủy</span>
                                         <span *ngIf="data?.trangThaiHoaDon?.trangThai == 3" class="hoaDonThayTheRoundedShape">Hoá đơn thay thế</span>
+                                        <span *ngIf="data?.trangThaiHoaDon?.trangThai == 4 && data?.trangThaiHoaDon?.loaiDieuChinh == 0">
+                                            <span class="hoaDonDieuChinhRoundedShape" title="Hóa đơn điều chỉnh chung"> Điều chỉnh
+                                                <span class="circleHoaDonDieuChinhChung">C
+                                                </span>
+                                        </span>
+                                        </span>
                                         <span *ngIf="data?.trangThaiHoaDon?.trangThai == 4 && data?.trangThaiHoaDon?.loaiDieuChinh == 1">
                                             <span class="hoaDonDieuChinhRoundedShape" title="Hóa đơn điều chỉnh tăng">
-                                                Hóa đơn điều
+                                                Điều
                                                 chỉnh
                                                 <span class="circleHoaDonDieuChinhTang"><i nz-icon nzType="arrow-up"
                                                         nzTheme="outline"></i>
@@ -112,7 +118,7 @@
 
                                         <span *ngIf="data?.trangThaiHoaDon?.trangThai == 4 && data?.trangThaiHoaDon?.loaiDieuChinh == 2">
                                             <span class="hoaDonDieuChinhRoundedShape" title="Hóa đơn điều chỉnh giảm">
-                                                Hóa đơn điều
+                                                Điều
                                                 chỉnh
                                                 <span class="circleHoaDonDieuChinhGiam">
                                                     <i nz-icon nzType="arrow-down" nzTheme="outline"></i>
@@ -125,7 +131,7 @@
                                         <span *ngIf="data?.trangThaiHoaDon?.trangThai == 4 && data?.trangThaiHoaDon?.loaiDieuChinh == 3">
                                             <span class="hoaDonDieuChinhRoundedShape"
                                                 title="Hóa đơn điều chỉnh thông tin">
-                                                Hóa đơn điều
+                                                Điều
                                                 chỉnh
                                                 <span class="circleHoaDonDieuChinhThongTin">
                                                     <i nz-icon nzType="info" nzTheme="outline"></i>

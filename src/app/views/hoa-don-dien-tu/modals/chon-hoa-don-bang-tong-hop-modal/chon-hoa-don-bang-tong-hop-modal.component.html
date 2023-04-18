@@ -185,7 +185,12 @@
                                         </span>
                             <span style="color: #ed7d31;"> | Bị thay thế</span>
                             </span>
-
+                            <span *ngIf="data.value.trangThaiHoaDon == 4 && data.value.loaiDieuChinh == 0">
+                                <span class="hoaDonDieuChinhRoundedShape" title="Hóa đơn điều chỉnh chung"> Điều chỉnh
+                                    <span class="circleHoaDonDieuChinhChung">C
+                                    </span>
+                            </span>
+                            </span>
                             <span *ngIf="data?.backUpTrangThai == 4 && data?.loaiDieuChinh == 1">
                                         <span class="hoaDonDieuChinhRoundedShape" title="Hóa đơn điều chỉnh tăng">Điều chỉnh
                                             <span class="circleHoaDonDieuChinhTang"><i nz-icon nzType="arrow-up" nzTheme="outline"></i></span>
